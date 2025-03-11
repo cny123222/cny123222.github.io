@@ -4,6 +4,66 @@
   
   
   <entry>
+    <title>扩散模型(1)：从理论出发</title>
+    <link href="/2025/03/11/%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B-1-%EF%BC%9A%E4%BB%8E%E7%90%86%E8%AE%BA%E5%87%BA%E5%8F%91/"/>
+    <url>/2025/03/11/%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B-1-%EF%BC%9A%E4%BB%8E%E7%90%86%E8%AE%BA%E5%87%BA%E5%8F%91/</url>
+    
+    <content type="html"><![CDATA[<p>本文将从理论出发，分析<strong>扩散模型</strong>（diffusion model）的实现原理，着重用可视化的方式理解模型过程。</p><span id="more"></span><h1>模型概述</h1><h1>加噪过程</h1><h1>去噪过程</h1>]]></content>
+    
+    
+    <categories>
+      
+      <category>深度学习</category>
+      
+      <category>扩散模型</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>深度学习</tag>
+      
+      <tag>扩散模型</tag>
+      
+      <tag>理论讲解</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>分治法(1)：Karatsuba算法与大O表示法</title>
+    <link href="/2025/03/11/%E5%88%86%E6%B2%BB%E6%B3%95-1-%EF%BC%9AKaratsuba%E7%AE%97%E6%B3%95%E4%B8%8E%E5%A4%A7O%E8%A1%A8%E7%A4%BA%E6%B3%95/"/>
+    <url>/2025/03/11/%E5%88%86%E6%B2%BB%E6%B3%95-1-%EF%BC%9AKaratsuba%E7%AE%97%E6%B3%95%E4%B8%8E%E5%A4%A7O%E8%A1%A8%E7%A4%BA%E6%B3%95/</url>
+    
+    <content type="html"><![CDATA[<p>本文将以大整数乘法的<strong>Karatsuba算法</strong>为例，介绍<strong>分治算法</strong>（Divide and Conquer），并介绍时间复杂度分析的<strong>大O表示法</strong>。</p><span id="more"></span><h1>Karatsuba算法</h1><h2 id="从大整数乘法开始">从大整数乘法开始</h2><h2 id="分治的首次尝试">分治的首次尝试</h2><h2 id="Karatsuba算法">Karatsuba算法</h2><h2 id="拓展到矩阵乘法">拓展到矩阵乘法</h2><h1>时间复杂度</h1><h2 id="基本模型">基本模型</h2><h2 id="大O表示法">大O表示法</h2>]]></content>
+    
+    
+    <categories>
+      
+      <category>算法</category>
+      
+      <category>分治法</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>算法</tag>
+      
+      <tag>大O表示法</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>算法：聪明人的计算艺术</title>
     <link href="/2025/03/11/%E7%AE%97%E6%B3%95%EF%BC%9A%E8%81%AA%E6%98%8E%E4%BA%BA%E7%9A%84%E8%AE%A1%E7%AE%97%E8%89%BA%E6%9C%AF/"/>
     <url>/2025/03/11/%E7%AE%97%E6%B3%95%EF%BC%9A%E8%81%AA%E6%98%8E%E4%BA%BA%E7%9A%84%E8%AE%A1%E7%AE%97%E8%89%BA%E6%9C%AF/</url>

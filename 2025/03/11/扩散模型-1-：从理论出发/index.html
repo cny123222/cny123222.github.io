@@ -19,27 +19,28 @@
   <meta name="author" content="Nuoyan Chen">
   <meta name="keywords" content="">
   
-    <meta name="description" content="这是算法系列博客的开篇介绍，基于上海交通大学AI2615《算法设计与分析》课程的学习历程与深度思考。">
+    <meta name="description" content="本文将从理论出发，分析扩散模型（diffusion model）的实现原理，着重用可视化的方式理解模型过程。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="算法：聪明人的计算艺术">
-<meta property="og:url" content="https://cny123222.github.io/2025/03/11/%E7%AE%97%E6%B3%95%EF%BC%9A%E8%81%AA%E6%98%8E%E4%BA%BA%E7%9A%84%E8%AE%A1%E7%AE%97%E8%89%BA%E6%9C%AF/index.html">
+<meta property="og:title" content="扩散模型(1)：从理论出发">
+<meta property="og:url" content="https://cny123222.github.io/2025/03/11/%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B-1-%EF%BC%9A%E4%BB%8E%E7%90%86%E8%AE%BA%E5%87%BA%E5%8F%91/index.html">
 <meta property="og:site_name" content="Nuoyan Chen&#39;s Blog">
-<meta property="og:description" content="这是算法系列博客的开篇介绍，基于上海交通大学AI2615《算法设计与分析》课程的学习历程与深度思考。">
+<meta property="og:description" content="本文将从理论出发，分析扩散模型（diffusion model）的实现原理，着重用可视化的方式理解模型过程。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://cny123222.github.io/img/brain.png">
-<meta property="article:published_time" content="2025-03-11T06:00:04.000Z">
-<meta property="article:modified_time" content="2025-03-11T07:05:58.309Z">
+<meta property="og:image" content="https://cny123222.github.io/img/diffusion.png">
+<meta property="article:published_time" content="2025-03-11T07:36:03.000Z">
+<meta property="article:modified_time" content="2025-03-11T07:40:19.419Z">
 <meta property="article:author" content="Nuoyan Chen">
-<meta property="article:tag" content="算法">
-<meta property="article:tag" content="系列介绍">
+<meta property="article:tag" content="深度学习">
+<meta property="article:tag" content="扩散模型">
+<meta property="article:tag" content="理论讲解">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://cny123222.github.io/img/brain.png">
+<meta name="twitter:image" content="https://cny123222.github.io/img/diffusion.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>算法：聪明人的计算艺术 - Nuoyan Chen&#39;s Blog</title>
+  <title>扩散模型(1)：从理论出发 - Nuoyan Chen&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -219,7 +220,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="算法：聪明人的计算艺术"></span>
+            <span id="subtitle" data-typed-text="扩散模型(1)：从理论出发"></span>
           
         </div>
 
@@ -235,7 +236,7 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-03-11 14:00" pubdate>
+        <time datetime="2025-03-11 15:36" pubdate>
           March 11, 2025 pm
         </time>
       </span>
@@ -247,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          506 words
+          47 words
         
       </span>
     
@@ -258,7 +259,7 @@
         
         
         
-          5 mins
+          1 mins
         
       </span>
     
@@ -308,37 +309,16 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">算法：聪明人的计算艺术</h1>
+            <h1 id="seo-header">扩散模型(1)：从理论出发</h1>
             
             
               <div class="markdown-body">
                 
-                <p>这是算法系列博客的开篇介绍，基于上海交通大学AI2615《算法设计与分析》课程的学习历程与深度思考。</p>
+                <p>本文将从理论出发，分析<strong>扩散模型</strong>（diffusion model）的实现原理，着重用可视化的方式理解模型过程。</p>
 <span id="more"></span>
-<h2 id="导言：我的算法认知进化史">导言：我的算法认知进化史</h2>
-<blockquote>
-<p>“任何足够复杂的技术都与魔法无异” —— 克拉克第三定律</p>
-</blockquote>
-<p>本人并非信息竞赛选手，但从小一直非常羡慕身边的信竞生，时常听闻他们讨论各种算法和题目，觉得非常厉害。毕竟在我的经验中，似乎只有最聪明的同学才会学习算法，参加信竞。</p>
-<p>但是进入大学，我也选择了计算机专业，接触到各种算法，这学期正在修读<strong>张宇昊老师</strong>的算法设计与分析课程。几节课后，我发现我的经验没错——学习算法确实需要聪明！但算法远不止于此。</p>
-<p>中学时我曾参加过化学竞赛，当时有一本经典的有机教材，叫做Art（有机反应机理的书写艺术）。但这次，每当张老师介绍前人如何设计和改进出巧妙的算法，大幅缩减计算规模时，我常常感叹，<strong>算法何尝不是一种艺术</strong>。</p>
-<h2 id="系列内容">系列内容</h2>
-<p>在这个系列中，我将<strong>基于AI2615课程</strong>，整理我的算法<strong>学习笔记和思考心得</strong>，并加以<strong>可视化</strong>。我们将主要着眼于<strong>算法的设计和理论分析</strong>，而<strong>不是代码实现</strong>。</p>
-<ul>
-<li>对于较为简单的部分，我可能一笔带过。</li>
-<li>对于重点或难点的算法，我会写得尽可能详细。</li>
-</ul>
-<h2 id="路线图">路线图</h2>
-<p>本系列将按照<strong>AI2615</strong>的课程内容展开，主要部分为：</p>
-<ul>
-<li>分治法（Divide and Conquer）</li>
-<li>图（Graphs）</li>
-<li>贪心算法（Greedy）</li>
-<li>动态规划（Dynamic Programming）</li>
-<li>网络最大流（Max Flow）</li>
-<li>NP-hard问题（NP-hardness）</li>
-</ul>
-<p>希望我的博客能对你们学习算法有所帮助，或是能给同样在学这门课的同学一个期末复习提纲，感谢大家的支持。</p>
+<h1>模型概述</h1>
+<h1>加噪过程</h1>
+<h1>去噪过程</h1>
 
                 
               </div>
@@ -357,8 +337,15 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E7%AE%97%E6%B3%95/" class="category-chain-item">算法</a>
+  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" class="category-chain-item">深度学习</a>
   
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B/" class="category-chain-item">扩散模型</a>
+  
+  
+
   
 
       </span>
@@ -372,9 +359,11 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E7%AE%97%E6%B3%95/" class="print-no-link">#算法</a>
+        <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" class="print-no-link">#深度学习</a>
       
-        <a href="/tags/%E7%B3%BB%E5%88%97%E4%BB%8B%E7%BB%8D/" class="print-no-link">#系列介绍</a>
+        <a href="/tags/%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B/" class="print-no-link">#扩散模型</a>
+      
+        <a href="/tags/%E7%90%86%E8%AE%BA%E8%AE%B2%E8%A7%A3/" class="print-no-link">#理论讲解</a>
       
     </div>
   
@@ -386,8 +375,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>算法：聪明人的计算艺术</div>
-      <div>https://cny123222.github.io/2025/03/11/算法：聪明人的计算艺术/</div>
+      <div>扩散模型(1)：从理论出发</div>
+      <div>https://cny123222.github.io/2025/03/11/扩散模型-1-：从理论出发/</div>
     </div>
     <div class="license-meta">
       
@@ -431,15 +420,15 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/03/11/%E5%88%86%E6%B2%BB%E6%B3%95-1-%EF%BC%9AKaratsuba%E7%AE%97%E6%B3%95%E4%B8%8E%E5%A4%A7O%E8%A1%A8%E7%A4%BA%E6%B3%95/" title="分治法(1)：Karatsuba算法与大O表示法">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">分治法(1)：Karatsuba算法与大O表示法</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/2025/03/11/%E5%88%86%E6%B2%BB%E6%B3%95-1-%EF%BC%9AKaratsuba%E7%AE%97%E6%B3%95%E4%B8%8E%E5%A4%A7O%E8%A1%A8%E7%A4%BA%E6%B3%95/" title="分治法(1)：Karatsuba算法与大O表示法">
+                        <span class="hidden-mobile">分治法(1)：Karatsuba算法与大O表示法</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>
