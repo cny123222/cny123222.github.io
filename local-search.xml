@@ -4,13 +4,27 @@
   
   
   <entry>
-    <title>Hello World</title>
-    <link href="/2025/03/10/hello-world/"/>
-    <url>/2025/03/10/hello-world/</url>
+    <title>算法：聪明人的计算艺术</title>
+    <link href="/2025/03/11/%E7%AE%97%E6%B3%95%EF%BC%9A%E8%81%AA%E6%98%8E%E4%BA%BA%E7%9A%84%E8%AE%A1%E7%AE%97%E8%89%BA%E6%9C%AF/"/>
+    <url>/2025/03/11/%E7%AE%97%E6%B3%95%EF%BC%9A%E8%81%AA%E6%98%8E%E4%BA%BA%E7%9A%84%E8%AE%A1%E7%AE%97%E8%89%BA%E6%9C%AF/</url>
     
-    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start">Quick Start</h2><h3 id="Create-a-new-post">Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo new <span class="hljs-string">&quot;My New Post&quot;</span><br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server">Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo server<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files">Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo generate<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites">Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo deploy<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
+    <content type="html"><![CDATA[<p>这是算法系列博客的开篇介绍，基于上海交通大学AI2615《算法设计与分析》课程的学习历程与深度思考。</p><span id="more"></span><h2 id="导言：我的算法认知进化史">导言：我的算法认知进化史</h2><blockquote><p>“任何足够复杂的技术都与魔法无异” —— 克拉克第三定律</p></blockquote><p>本人并非信息竞赛选手，但从小一直非常羡慕身边的信竞生，时常听闻他们讨论各种算法和题目，觉得非常厉害。毕竟在我的经验中，似乎只有最聪明的同学才会学习算法，参加信竞。</p><p>但是进入大学，我也选择了计算机专业，接触到各种算法，这学期正在修读<strong>张宇昊老师</strong>的算法设计与分析课程。几节课后，我发现我的经验没错——学习算法确实需要聪明！但算法远不止于此。</p><p>中学时我曾参加过化学竞赛，当时有一本经典的有机教材，叫做Art（有机反应机理的书写艺术）。但这次，每当张老师介绍前人如何设计和改进出巧妙的算法，大幅缩减计算规模时，我常常感叹，<strong>算法何尝不是一种艺术</strong>。</p><h2 id="系列内容">系列内容</h2><p>在这个系列中，我将<strong>基于AI2615课程</strong>，整理我的算法<strong>学习笔记和思考心得</strong>，并加以<strong>可视化</strong>。我们将主要着眼于<strong>算法的设计和理论分析</strong>，而<strong>不是代码实现</strong>。</p><ul><li>对于较为简单的部分，我可能一笔带过。</li><li>对于重点或难点的算法，我会写得尽可能详细。</li></ul><h2 id="路线图">路线图</h2><p>本系列将按照<strong>AI2615</strong>的课程内容展开，主要部分为：</p><ul><li>分治法（Divide and Conquer）</li><li>图（Graphs）</li><li>贪心算法（Greedy）</li><li>动态规划（Dynamic Programming）</li><li>网络最大流（Max Flow）</li><li>NP-hard问题（NP-hardness）</li></ul><p>希望我的博客能对你们学习算法有所帮助，或是能给同样在学这门课的同学一个期末复习提纲，感谢大家的支持。</p>]]></content>
     
     
+    <categories>
+      
+      <category>算法</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>算法</tag>
+      
+      <tag>系列介绍</tag>
+      
+    </tags>
     
   </entry>
   
