@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/g1.png">
 <meta property="article:published_time" content="2025-03-11T15:35:20.000Z">
-<meta property="article:modified_time" content="2025-03-14T02:22:11.325Z">
+<meta property="article:modified_time" content="2025-03-14T03:09:50.539Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="算法">
 <meta property="article:tag" content="图论">
@@ -250,7 +250,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          935 words
+          1.4k words
         
       </span>
     
@@ -261,7 +261,7 @@
         
         
         
-          8 mins
+          12 mins
         
       </span>
     
@@ -527,32 +527,47 @@
 <li><strong>可达性</strong>：能否从一个顶点<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi></mrow><annotation encoding="application/x-tex">u</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">u</span></span></span></span>走到另一个顶点<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi></mrow><annotation encoding="application/x-tex">v</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span></span></span></span>。</li>
 <li><strong>连通分量</strong>：在无向图中，指顶点间两两可达的的极大子图。“极大”是说再加入任何一个顶点，都会不满足顶点间两两可达。</li>
 </ul>
-<p>{ % note info % }<br>
-关于有向图的连通分量概念，我们会在后文中提及。<br>
-{ % endnote % }</p>
+<div class="note note-info">
+            <p>关于有向图的连通分量概念，我们会在后文中提及。</p>
+          </div>
 <h2 id="可达性问题">可达性问题</h2>
 <p>让我们先来关注<strong>可达性</strong>问题，即给定一个以邻接表存储的图<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo stretchy="false">(</mo><mi>V</mi><mo separator="true">,</mo><mi>E</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">G(V, E)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">G</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mclose">)</span></span></span></span>和一个顶点<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi></mrow><annotation encoding="application/x-tex">u</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">u</span></span></span></span>，要求所有从<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi></mrow><annotation encoding="application/x-tex">u</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">u</span></span></span></span>出发能到达的顶点。</p>
-<h3 id="算法设计">算法设计</h3>
+<h3 id="探索算法设计">探索算法设计</h3>
 <p>这应该如何思考？我们有如下观察：</p>
 <ol>
 <li>首先，如果<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi></mrow><annotation encoding="application/x-tex">v</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span></span></span></span>在<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi></mrow><annotation encoding="application/x-tex">u</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">u</span></span></span></span>的邻接表中，那么<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi></mrow><annotation encoding="application/x-tex">v</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span></span></span></span>是可达的。</li>
 <li>其次，如果<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi></mrow><annotation encoding="application/x-tex">v</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span></span></span></span>是可达的，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi></mrow><annotation encoding="application/x-tex">v</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span></span></span></span>的邻接表中的顶点也是可达的。</li>
 </ol>
 <p>那么，我们就可以考虑一个<strong>递归的探索</strong>过程，即先从<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi></mrow><annotation encoding="application/x-tex">u</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">u</span></span></span></span>开始探索，对每一个在<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi></mrow><annotation encoding="application/x-tex">u</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">u</span></span></span></span>的邻接表中的顶点<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi></mrow><annotation encoding="application/x-tex">v</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span></span></span></span>，探索<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi></mrow><annotation encoding="application/x-tex">v</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span></span></span></span>。这样就可以探索到所有从<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi></mrow><annotation encoding="application/x-tex">u</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">u</span></span></span></span>出发能到达的顶点。</p>
-<p><img src="img4.png" srcset="/img/loading.gif" lazyload alt="朴素DFS算法设计"></p>
+<p><img src="img4.png" srcset="/img/loading.gif" lazyload alt="朴素探索算法设计"></p>
 <p>这个算法有没有问题呢？请你考虑当图中<strong>出现了环</strong>的情况。</p>
-<p><img src="img4.png" srcset="/img/loading.gif" lazyload alt="朴素DFS算法设计"></p>
+<p><img src="img5.gif" srcset="/img/loading.gif" lazyload alt="朴素探索算法动画"></p>
 <p>这时，我们的算法可能陷入死循环，因为它会不断重复地探索已经探索过的顶点。</p>
-<p>{ % note info % }<br>
-事实上，这个算法无法完成用归纳法正确性证明，原因是<strong>每次的问题规模没有缩小</strong>，即要探索的顶点数没有减少。<br>
-{ % endnote % }</p>
+<div class="note note-info">
+            <p>事实上，这个算法无法完成用归纳法正确性证明，原因是<strong>每次的问题规模没有缩小</strong>，即要探索的顶点数没有减少。</p>
+          </div>
+<p>为了避免探索已经探索过的顶点，我们应该怎么做？最简单的想法是，对已经到达过的顶点<strong>做标记</strong>，被标记过的顶点不再探索。这样，我们就有了如下的改进算法。</p>
+<p><img src="img6.png" srcset="/img/loading.gif" lazyload alt="探索算法设计"></p>
+<p>可以发现，在函数<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mi>x</mi><mi>p</mi><mi>l</mi><mi>o</mi><mi>r</mi><mi>e</mi><mo stretchy="false">(</mo><mi>v</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">explore(v)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">e</span><span class="mord mathnormal">x</span><span class="mord mathnormal" style="margin-right:0.01968em;">pl</span><span class="mord mathnormal">ore</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mclose">)</span></span></span></span>执行完后，所有被标记的顶点都是可达的，从而我们<strong>得到了一个含有<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">v</mi></mrow><annotation encoding="application/x-tex">\bm{v}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4444em;"></span><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.03704em;">v</span></span></span></span></span></span>的连通分量</strong>（无向图中）！</p>
+<h3 id="从探索算法到DFS">从探索算法到DFS</h3>
+<p>那么，如果我们想知道整个图中所有的连通分量呢？此时我们就需要搜索整张图。不难想到，我们可以遍历所有顶点，<strong>从每个未探索过的顶点开始探索</strong>。这样每一次完整的探索，都对应了一个连通分量。这就是深度优先搜索（DFS）算法。</p>
+<p><img src="img7.png" srcset="/img/loading.gif" lazyload alt="DFS算法设计"></p>
 <h3 id="时间复杂度分析">时间复杂度分析</h3>
+<p>DFS算法的时间复杂度似乎是一个棘手的问题。有一种思路是，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mi>x</mi><mi>p</mi><mi>l</mi><mi>o</mi><mi>r</mi><mi>e</mi></mrow><annotation encoding="application/x-tex">explore</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">e</span><span class="mord mathnormal">x</span><span class="mord mathnormal" style="margin-right:0.01968em;">pl</span><span class="mord mathnormal">ore</span></span></span></span>函数会被执行<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∣</mi><mi>V</mi><mi mathvariant="normal">∣</mi></mrow><annotation encoding="application/x-tex">|V|</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mord">∣</span></span></span></span>次，每次执行会遍历该顶点相邻的所有边。</p>
+<ul>
+<li>若采用邻接矩阵，每次找一个顶点相邻的所有边需要检查全部顶点，时间复杂度为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi mathvariant="normal">∣</mi><mi>V</mi><mi mathvariant="normal">∣</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(|V|)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mord">∣</span><span class="mclose">)</span></span></span></span>，因此DFS的总时间复杂度为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi><mrow><mi mathvariant="bold-italic">O</mi><mo stretchy="false">(</mo><mi mathvariant="bold">∣</mi><mi mathvariant="bold-italic">V</mi><msup><mi mathvariant="bold">∣</mi><mn mathvariant="bold">2</mn></msup><mo stretchy="false">)</mo></mrow></mi></mrow><annotation encoding="application/x-tex">\bm{O(|V|^2)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.03194em;">O</span><span class="mopen mathbf">(</span><span class="mord mathbf">∣</span><span class="mord boldsymbol" style="margin-right:0.25555em;">V</span><span class="mord"><span class="mord mathbf">∣</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathbf mtight">2</span></span></span></span></span></span></span></span><span class="mclose mathbf">)</span></span></span></span></span></span>。</li>
+<li>若采用邻接表，整体上来看每条边会被检查常数次（无向图2次/有向图1次），时间复杂度为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi mathvariant="normal">∣</mi><mi>E</mi><mi mathvariant="normal">∣</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(|E|)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord">∣</span><span class="mclose">)</span></span></span></span>，因此DFS的总时间复杂度为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi><mrow><mi mathvariant="bold-italic">O</mi><mo stretchy="false">(</mo><mi mathvariant="bold">∣</mi><mi mathvariant="bold-italic">V</mi><mo mathvariant="bold-italic">+</mo><mi mathvariant="bold-italic">E</mi><mi mathvariant="bold">∣</mi><mo stretchy="false">)</mo></mrow></mi></mrow><annotation encoding="application/x-tex">\bm{O(|V+E|)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.03194em;">O</span><span class="mopen mathbf">(</span><span class="mord mathbf">∣</span><span class="mord boldsymbol" style="margin-right:0.25555em;">V</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin mathbf">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord boldsymbol" style="margin-right:0.05451em;">E</span><span class="mord mathbf">∣</span><span class="mclose mathbf">)</span></span></span></span></span></span>。</li>
+</ul>
+<p>在这里，我们还可以使用之前介绍的<strong>负责论证（charging argument）</strong> 的思路来思考。</p>
+<p><img src="img8.png" srcset="/img/loading.gif" lazyload alt="基于负责论证的DFS时间复杂度分析"></p>
 <h2 id="求连通分量">求连通分量</h2>
 <h1>求连通分量</h1>
 <h1>检查是否有环</h1>
 <h1>拓扑排序</h1>
 <h1>求强连通分量</h1>
-
+<div class="note note-secondary">
+            <p>注：本文中所有图片均来自张宇昊老师的课程PPT。</p>
+          </div>
                 
               </div>
             
