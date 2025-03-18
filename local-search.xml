@@ -125,9 +125,9 @@
       
       <tag>算法</tag>
       
-      <tag>FFT</tag>
-      
       <tag>分治法</tag>
+      
+      <tag>FFT</tag>
       
     </tags>
     
@@ -187,13 +187,13 @@
       
       <tag>算法</tag>
       
+      <tag>分治法</tag>
+      
       <tag>快速选择</tag>
       
       <tag>随机算法</tag>
       
       <tag>中位数的中位数</tag>
-      
-      <tag>分治法</tag>
       
     </tags>
     
@@ -222,13 +222,13 @@
       
       <tag>算法</tag>
       
+      <tag>分治法</tag>
+      
       <tag>正确性分析</tag>
       
       <tag>主定理</tag>
       
       <tag>归并排序</tag>
-      
-      <tag>分治法</tag>
       
     </tags>
     
@@ -288,11 +288,11 @@
       
       <tag>算法</tag>
       
+      <tag>分治法</tag>
+      
       <tag>Karatsuba算法</tag>
       
       <tag>时间复杂度</tag>
-      
-      <tag>分治法</tag>
       
     </tags>
     
