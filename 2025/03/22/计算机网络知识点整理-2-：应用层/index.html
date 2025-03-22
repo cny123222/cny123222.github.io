@@ -19,14 +19,16 @@
   <meta name="author" content="Nuoyan Chen">
   <meta name="keywords" content="">
   
-    <meta property="og:type" content="article">
+    <meta name="description" content="这是SJTU-CS3611《计算机网络》课程的知识点整理系列。本文整理部分为“第2章：应用层”。">
+<meta property="og:type" content="article">
 <meta property="og:title" content="计算机网络知识点整理(2)：应用层">
 <meta property="og:url" content="https://cny123222.github.io/2025/03/22/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-2-%EF%BC%9A%E5%BA%94%E7%94%A8%E5%B1%82/index.html">
 <meta property="og:site_name" content="Nuoyan Chen&#39;s Blog">
+<meta property="og:description" content="这是SJTU-CS3611《计算机网络》课程的知识点整理系列。本文整理部分为“第2章：应用层”。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/cn2.jpg">
 <meta property="article:published_time" content="2025-03-22T09:37:15.000Z">
-<meta property="article:modified_time" content="2025-03-22T09:45:46.079Z">
+<meta property="article:modified_time" content="2025-03-22T10:23:27.979Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="计算机网络">
 <meta property="article:tag" content="知识点整理">
@@ -246,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          0 words
+          926 words
         
       </span>
     
@@ -257,7 +259,7 @@
         
         
         
-          1 mins
+          8 mins
         
       </span>
     
@@ -381,7 +383,213 @@
             
               <div class="markdown-body">
                 
-                
+                <p>这是SJTU-CS3611《计算机网络》课程的知识点整理系列。本文整理部分为“第2章：应用层”。</p>
+<span id="more"></span>
+<h2 id="一、应用层协议基本原理">一、应用层协议基本原理</h2>
+<h3 id="1-网络应用体系结构">1. 网络应用体系结构</h3>
+<ul>
+<li>​<strong>C/S架构</strong>
+<ul>
+<li>服务器：永久在线、固定IP、集中式管理（Web/FTP/Email）</li>
+<li>客户端：间歇性连接、动态IP、不直接通信</li>
+</ul>
+</li>
+<li>​<strong>P2P架构</strong>
+<ul>
+<li>无中心服务器、节点兼具客户端与服务端角色（BitTorrent/Skype）</li>
+<li>优势：自扩展性强、成本低</li>
+<li>挑战：动态IP、管理复杂</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-进程通信">2. 进程通信</h3>
+<ul>
+<li>​<strong>套接字（Socket）​</strong>
+<ul>
+<li>应用层与传输层接口，通过IP+端口标识进程（HTTP:80/SMTP:25）</li>
+<li>关键概念：面向连接（TCP） vs 无连接（UDP）</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-运输层服务选择">3. 运输层服务选择</h3>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>TCP</th>
+<th>UDP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>可靠性</td>
+<td>可靠（重传机制）</td>
+<td>不可靠</td>
+</tr>
+<tr>
+<td>连接方式</td>
+<td>面向连接（三次握手）</td>
+<td>无连接</td>
+</tr>
+<tr>
+<td>流量控制</td>
+<td>有（滑动窗口）</td>
+<td>无</td>
+</tr>
+<tr>
+<td>拥塞控制</td>
+<td>有（慢启动/拥塞避免）</td>
+<td>无</td>
+</tr>
+<tr>
+<td>适用场景</td>
+<td>Web/Email/文件传输</td>
+<td>实时音视频/DNS/SNMP</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="二、HTTP协议（重点！）">二、HTTP协议（重点！）</h2>
+<h3 id="1-核心机制">1. 核心机制</h3>
+<ul>
+<li>
+<p>​<strong>无状态性</strong></p>
+<ul>
+<li>服务器不保存客户端状态，通过Cookie维持会话</li>
+<li>​<strong>Cookie工作流程</strong>：Set-Cookie头 → 客户端存储 → 后续请求携带Cookie</li>
+</ul>
+</li>
+<li>
+<p>​<strong>持久连接</strong></p>
+<ul>
+<li>HTTP/1.1默认，减少TCP握手开销</li>
+<li>对比非持久连接：每个对象需单独连接（2RTT → 1RTT优化）</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-报文结构">2. 报文结构</h3>
+<ul>
+<li>
+<p>​<strong>请求报文</strong></p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs http"><span class="hljs-keyword">GET</span> <span class="hljs-string">/index.html</span> <span class="hljs-meta">HTTP/1.1</span><br><span class="hljs-attribute">Host</span><span class="hljs-punctuation">: </span>www.example.com<br><span class="hljs-attribute">User-Agent</span><span class="hljs-punctuation">: </span>Mozilla/5.0<br></code></pre></td></tr></table></figure>
+<ul>
+<li>方法：GET（获取资源）/POST（提交数据）/HEAD（获取头部）</li>
+</ul>
+</li>
+<li>
+<p><strong>​响应报文</strong></p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs http"><span class="hljs-meta">HTTP/1.1</span> <span class="hljs-number">200</span> OK<br><span class="hljs-attribute">Content-Type</span><span class="hljs-punctuation">: </span>text/html<br><span class="hljs-attribute">Content-Length</span><span class="hljs-punctuation">: </span>1234<br></code></pre></td></tr></table></figure>
+<ul>
+<li>状态码：200（成功）/301（重定向）/404（未找到）/503（服务不可用）</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-缓存机制（高频考点！）">3. 缓存机制（高频考点！）</h3>
+<ul>
+<li>
+<p>​Web缓存作用</p>
+<ul>
+<li>降低延迟、减少带宽消耗</li>
+<li>条件GET：If-Modified-Since头验证资源更新</li>
+</ul>
+</li>
+<li>
+<p>​缓存命中率计算</p>
+<ul>
+<li>公式：总延迟 = 命中率×缓存延迟 + (1-命中率)×源服务器延迟</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-HTTP演进">4. HTTP演进</h3>
+<ul>
+<li>​HTTP/2
+<ul>
+<li>多路复用（解决队头阻塞）、头部压缩、服务器推送</li>
+</ul>
+</li>
+<li>​HTTP/3
+<ul>
+<li>基于QUIC（UDP实现可靠传输）、0-RTT连接建立</li>
+</ul>
+</li>
+</ul>
+<h2 id="三、电子邮件系统">三、电子邮件系统</h2>
+<h3 id="1-核心协议">1. 核心协议</h3>
+<ul>
+<li>​SMTP（发件协议）​
+<ul>
+<li>命令交互式（HELO/MAIL FROM/RCPT TO/DATA）</li>
+<li>7位ASCII限制，Base64编码附件</li>
+</ul>
+</li>
+<li>​POP3/IMAP（收件协议）​
+<ul>
+<li>POP3：下载即删除，无状态</li>
+<li>IMAP：服务器存储状态，支持文件夹管理</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-邮件报文格式">2. 邮件报文格式</h3>
+<ul>
+<li>MIME扩展：支持多媒体附件（Content-Type/Content-Transfer-Encoding）</li>
+</ul>
+<h2 id="四、DNS系统">四、DNS系统</h2>
+<h3 id="1-分层结构">1. 分层结构</h3>
+<ul>
+<li>​根DNS（13组集群）​ → ​TLD（.com/.org）​ → ​权威DNS（域名注册）​ → ​本地DNS</li>
+</ul>
+<h3 id="2-查询过程">2. 查询过程</h3>
+<ul>
+<li>​递归查询：本地DNS全权代理（客户端→本地DNS→根→TLD→权威）</li>
+<li>​迭代查询：每一步返回下一跳地址</li>
+</ul>
+<h3 id="3-资源记录类型">3. 资源记录类型</h3>
+<ul>
+<li>​A记录​（域名→IPv4）</li>
+<li>​AAAA记录​（域名→IPv6）</li>
+<li>​CNAME​（别名→规范名）</li>
+<li>​MX记录​（邮件服务器）</li>
+</ul>
+<h3 id="4-DNS安全">4. DNS安全</h3>
+<ul>
+<li>​DDoS攻击：针对根/TLD服务器</li>
+<li>​DNSSEC：数据签名防止欺骗</li>
+</ul>
+<h2 id="五、P2P与文件分发">五、P2P与文件分发</h2>
+<h3 id="1-BitTorrent机制">1. BitTorrent机制</h3>
+<ul>
+<li>​Tracker服务器：协调节点列表</li>
+<li>​Tit-for-Tat策略：优先服务高速上传节点</li>
+<li>​Chunk选择：最稀缺优先（rarest first）</li>
+</ul>
+<h3 id="2-分发效率对比">2. 分发效率对比</h3>
+<ul>
+<li>​C/S模型：时间 ∝ N（客户端数）</li>
+<li>​P2P模型：时间 ∝ max(NF/us, F/dmin)</li>
+</ul>
+<h2 id="六、视频流与CDN">六、视频流与CDN</h2>
+<h3 id="1-DASH技术">1. DASH技术</h3>
+<ul>
+<li>​自适应码率：动态选择分辨率（带宽探测 → Manifest文件选择）</li>
+</ul>
+<h3 id="2-CDN部署策略">2. CDN部署策略</h3>
+<ul>
+<li>​Enter Deep：深入ISP网络（Akamai）</li>
+<li>​Bring Home：集中骨干网（Limelight）</li>
+</ul>
+<h2 id="七、Socket编程">七、Socket编程</h2>
+<h3 id="1-UDP套接字">1. UDP套接字</h3>
+<ul>
+<li>​无连接：sendto()/recvfrom()需指定地址</li>
+<li>代码框架：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># Client</span><br>clientSocket = socket(AF_INET, SOCK_DGRAM)<br>clientSocket.sendto(data, (serverIP, port))<br><br><span class="hljs-comment"># Server</span><br>serverSocket.bind((<span class="hljs-string">&#x27;&#x27;</span>, port))<br>data, addr = serverSocket.recvfrom(<span class="hljs-number">1024</span>)<br></code></pre></td></tr></table></figure>
+<h3 id="2-TCP套接字">2. TCP套接字</h3>
+<ul>
+<li>​三次握手：connect() → accept()</li>
+<li>代码框架：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># Client</span><br>clientSocket.connect((serverIP, port))<br>clientSocket.send(data)<br><br><span class="hljs-comment"># Server</span><br>connectionSocket, addr = serverSocket.accept()<br>data = connectionSocket.recv(<span class="hljs-number">1024</span>)<br></code></pre></td></tr></table></figure>
                 
               </div>
             
