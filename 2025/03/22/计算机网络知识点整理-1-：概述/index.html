@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/cn1.jpg">
 <meta property="article:published_time" content="2025-03-22T04:32:51.000Z">
-<meta property="article:modified_time" content="2025-03-22T06:01:26.260Z">
+<meta property="article:modified_time" content="2025-03-22T09:31:31.110Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="计算机网络">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.8k words
+          1.9k words
         
       </span>
     
@@ -603,11 +603,32 @@
 <li>为何互联网选择分组交换？ → ​<strong>高效利用带宽，适应数据突发性</strong></li>
 </ul>
 <h3 id="1-3-4-网络的网络（ISP层次）">1.3.4 网络的网络（ISP层次）</h3>
-<ul>
-<li>​<strong>Tier-1 ISP</strong>：全球骨干网络（如AT&amp;T、中国电信）</li>
-<li>​<strong>IXP（互联网交换点）​</strong>：多个ISP互联减少时延</li>
-<li>​<strong>内容提供商网络</strong>：自建网络直连用户（如Google、Netflix）</li>
-</ul>
+<table>
+<thead>
+<tr>
+<th>​<strong>层级</strong></th>
+<th>​<strong>定义与作用</strong></th>
+<th>​<strong>典型示例</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>​<strong>Tier-1 ISP</strong></td>
+<td>全球骨干网络，不依赖其他ISP实现全互联，构成互联网核心</td>
+<td>AT&amp;T、中国电信</td>
+</tr>
+<tr>
+<td>​<strong>IXP（互联网交换点）​</strong></td>
+<td>多个ISP直接互联的枢纽，减少流量绕行，降低时延</td>
+<td>DE-CIX、AMS-IX</td>
+</tr>
+<tr>
+<td>​<strong>内容提供商网络</strong></td>
+<td>自建全球分布式网络，直连用户和ISP，优化服务性能</td>
+<td>Google、Netflix</td>
+</tr>
+</tbody>
+</table>
 <hr>
 <h2 id="1-4-分组交换网中的时延、丢包和吞吐量">1.4 分组交换网中的时延、丢包和吞吐量</h2>
 <h3 id="1-4-1-时延类型">1.4.1 时延类型</h3>
@@ -623,12 +644,12 @@
 <tr>
 <td>​<strong>传输时延</strong></td>
 <td>将分组推送到链路的时间</td>
-<td>数据包大小(L) / 链路速率®</td>
+<td>数据包大小 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi></mrow><annotation encoding="application/x-tex">L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">L</span></span></span></span> / 链路速率 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi></mrow><annotation encoding="application/x-tex">R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span></td>
 </tr>
 <tr>
 <td>​<strong>传播时延</strong></td>
 <td>比特在链路上的传播时间</td>
-<td>物理距离(d)/信号速度(s)</td>
+<td>物理距离 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi></mrow><annotation encoding="application/x-tex">d</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">d</span></span></span></span> / 信号速度 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">s</span></span></span></span></td>
 </tr>
 <tr>
 <td>​<strong>处理时延</strong></td>
@@ -668,7 +689,7 @@
 <li>​<strong>关键结论</strong>：
 <ul>
 <li>流量强度越接近1，排队时延增长越快（指数级上升）</li>
-<li>流量强度超过1时，系统无法处理流量，需丢弃分组</li>
+<li>流量强度超过1时，系统无法处理流量，需丢弃分组（丢包）</li>
 </ul>
 </li>
 </ul>
@@ -676,7 +697,7 @@
 <p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>d</mi><mtext>总</mtext></msub><mo>=</mo><mi>N</mi><mo>×</mo><mrow><mo fence="true">(</mo><msub><mi>d</mi><mtext>处理</mtext></msub><mo>+</mo><mfrac><mi>L</mi><mi>R</mi></mfrac><mo>+</mo><mfrac><mi>d</mi><mi>s</mi></mfrac><mo fence="true">)</mo></mrow><mo>+</mo><msub><mi>d</mi><mtext>排队</mtext></msub></mrow><annotation encoding="application/x-tex">d_{\text{总}} = N \times \left( d_{\text{处理}} + \frac{L}{R} + \frac{d}{s} \right) + d_{\text{排队}} 
 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord cjk_fallback mtight">总</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:2.4em;vertical-align:-0.95em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">(</span></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord cjk_fallback mtight">处理</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">L</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">s</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">d</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">)</span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord cjk_fallback mtight">排队</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span></p>
 <ul>
-<li>$ N $: 跳数（经过的路由器数量）</li>
+<li>经过的路由器数量为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">N - 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span></li>
 <li>$ L <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>:</mo><mtext>分组大小，</mtext></mrow><annotation encoding="application/x-tex">: 分组大小，</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">分组大小，</span></span></span></span> R <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>:</mo><mtext>链路速率，</mtext></mrow><annotation encoding="application/x-tex">: 链路速率，</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">链路速率，</span></span></span></span> d <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>:</mo><mtext>链路长度，</mtext></mrow><annotation encoding="application/x-tex">: 链路长度，</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">链路长度，</span></span></span></span> s $: 传播速度（≈2×10⁸ m/s）</li>
 <li>$ d_{\text{处理}} $: 处理时延（固定微秒级，通常可忽略）</li>
 <li>$ d_{\text{排队}} $: 所有链路的排队时延总和</li>
