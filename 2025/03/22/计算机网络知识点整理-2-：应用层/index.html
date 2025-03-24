@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/cn2.jpg">
 <meta property="article:published_time" content="2025-03-22T09:37:15.000Z">
-<meta property="article:modified_time" content="2025-03-24T03:08:07.829Z">
+<meta property="article:modified_time" content="2025-03-24T05:51:26.534Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="计算机网络">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.7k words
+          1.9k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          15 mins
+          17 mins
         
       </span>
     
@@ -384,7 +384,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on March 24, 2025 am
+                    Last updated on March 24, 2025 pm
                   
                 
               </p>
@@ -414,7 +414,7 @@
 <h3 id="2-1-2-进程通信">2.1.2 进程通信</h3>
 <ul>
 <li>​<strong>套接字（Socket）​</strong>：应用层与传输层接口</li>
-<li><strong>进程寻址</strong>：IP地址+端口号（HTTP:80/SMTP:25）</li>
+<li><strong>进程寻址</strong>：IP地址+端口号（HTTP:80 / SMTP:25）</li>
 </ul>
 <h3 id="2-1-3-运输层服务选择">2.1.3 运输层服务选择</h3>
 <table>
@@ -449,7 +449,7 @@
 <tr>
 <td style="text-align:center">适用场景</td>
 <td style="text-align:center">Web/Email/文件传输/远程终端访问</td>
-<td style="text-align:center">实时音视频/P2P文件分享</td>
+<td style="text-align:center">实时音视频</td>
 </tr>
 </tbody>
 </table>
@@ -502,7 +502,7 @@
 <li>
 <p><strong>​Web缓存作用</strong></p>
 <ul>
-<li>​<strong>降低延迟</strong>：就近获取资源减少传输时间</li>
+<li>​<strong>降低时延</strong>：就近获取资源减少传输时间</li>
 <li>​<strong>减少带宽消耗</strong>：避免重复下载相同内容</li>
 <li>​<strong>缓解服务器压力</strong>：减少直接请求源服务器的次数</li>
 </ul>
@@ -511,52 +511,50 @@
 <p><strong>条件GET验证</strong></p>
 </li>
 </ul>
-<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs http"><span class="hljs-keyword">GET</span> <span class="hljs-string">/file.txt</span> <span class="hljs-meta">HTTP/1.1</span><br><span class="hljs-attribute">If-Modified-Since</span><span class="hljs-punctuation">: </span>Wed, 21 Oct 2024 07:28:00 GMT<br><br><span class="language-apache"><span class="hljs-attribute">HTTP</span>/<span class="hljs-number">1</span>.<span class="hljs-number">1</span> <span class="hljs-number">304</span> Not Modified</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs http"><span class="hljs-keyword">GET</span> <span class="hljs-string">/file.txt</span> <span class="hljs-meta">HTTP/1.1</span><br><span class="hljs-attribute">Host</span><span class="hljs-punctuation">: </span>www.example.com<br><span class="hljs-attribute">If-Modified-Since</span><span class="hljs-punctuation">: </span>Wed, 9 Sep 2015 09:23:@4<br></code></pre></td></tr></table></figure>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs http"><span class="hljs-meta">HTTP/1.1</span> <span class="hljs-number">304</span> Not Modified<br><span class="hljs-attribute">Date</span><span class="hljs-punctuation">: </span>Sat, 10 Oct 2015 15:39:29<br><span class="hljs-attribute">Server</span><span class="hljs-punctuation">: </span>Apache/1.3.0 (Unix)<br><br><span class="language-clojure">(<span class="hljs-name"><span class="hljs-built_in">empty</span></span> entity body)</span><br></code></pre></td></tr></table></figure>
 <ul>
 <li>
-<p>服务器返回304时，客户端使用本地缓存副本</p>
+<p>服务器返回 <code>304</code> 时，客户端使用本地缓存副本</p>
 </li>
 <li>
-<p><strong>​缓存命中率计算</strong></p>
-<ul>
-<li>公式：总延迟 = 命中率×缓存延迟 + (1-命中率)×源服务器延迟</li>
-</ul>
+<p><strong>​缓存命中率计算</strong>：总延迟 = 命中率×缓存延迟 + (1-命中率)×源服务器延迟</p>
 </li>
 </ul>
 <h3 id="2-2-4-HTTP演进">2.2.4 HTTP演进</h3>
 <ul>
 <li><strong>HTTP/2</strong>
 <ul>
-<li>帧调度机制（解决HOL阻塞）、服务器推送、优先级</li>
+<li>帧调度机制（解决HOL阻塞）、服务器推送、优先级机制</li>
 </ul>
 </li>
 <li><strong>​HTTP/3</strong>
 <ul>
-<li>基于QUIC（UDP实现可靠传输）</li>
+<li>基于QUIC（UDP实现）</li>
 </ul>
 </li>
 </ul>
 <h2 id="2-3-电子邮件（TCP-C-S架构）">2.3 电子邮件（TCP / C-S架构）</h2>
-<h3 id="2-3-1-核心协议">2.3.1 核心协议</h3>
+<p><img src="img4.png" srcset="/img/loading.gif" lazyload alt="电子邮件协议及其通信实体"></p>
 <ul>
-<li><strong>​SMTP（发件协议）​</strong>
+<li>
+<p><strong>​SMTP（发件协议）​</strong></p>
 <ul>
-<li>命令交互式（HELO/MAIL FROM/RCPT TO/DATA）</li>
-<li>7位ASCII限制</li>
+<li>命令交互式（HELO / MAIL FROM / RCPT TO / DATA / QUIT）</li>
+<li>仅限7位ASCII码文本邮件（MIME 支持多媒体附件）</li>
 </ul>
 </li>
-<li><strong>​POP3/IMAP（收件协议）​</strong>
+<li>
+<p><strong>POP3 / ​IMAP（收件协议）​</strong></p>
 <ul>
-<li>POP3：下载即删除，无状态</li>
 <li>IMAP：服务器存储状态，支持文件夹管理</li>
 </ul>
 </li>
+<li>
+<p>发件和收件均可使用 HTTP</p>
+</li>
 </ul>
-<h3 id="2-3-2-邮件报文格式">2.3.2 邮件报文格式</h3>
-<ul>
-<li>MIME扩展：支持多媒体附件</li>
-</ul>
-<h2 id="2-4-DNS（UDP-为主-C-S架构）">2.4 DNS（UDP 为主 / C-S架构）</h2>
+<h2 id="2-4-DNS（UDP-C-S架构）">2.4 DNS（UDP / C-S架构）</h2>
 <h3 id="2-4-1-分层结构">2.4.1 分层结构</h3>
 <ul>
 <li><code>根DNS</code> <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> <code>顶级域(TLD) DNS</code>（.com/.org） <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> <code>权威DNS</code> <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> <code>本地DNS</code></li>
@@ -566,70 +564,35 @@
 <li>​<strong>递归查询</strong>：本地DNS全权代理</li>
 <li><strong>​迭代查询</strong>：每一步返回下一跳地址</li>
 </ul>
-<h3 id="2-4-3-资源记录类型">2.4.3 资源记录类型</h3>
+<p><img src="img5.png" srcset="/img/loading.gif" lazyload alt="本地 DNS 的两种查询过程"></p>
+<h3 id="2-4-3-资源记录（RR）">2.4.3 资源记录（RR）</h3>
 <ul>
-<li><code>A记录</code>（域名 → IPv4地址）</li>
-<li><code>NS记录</code>（域名 → 权威DNS服务器）</li>
-<li><code>CNAME记录</code>​（别名 → 规范名）</li>
-<li><code>MX记录</code>（域名 → 邮件服务器）</li>
+<li><strong>记录格式</strong>：<code>(Name, Value, Type, TTL)</code></li>
+<li><strong>TTL（生存时间）</strong>：该记录应当从缓存中删除的时间</li>
+<li><strong>Type</strong>：
+<ul>
+<li><code>A</code>：主机名 → IP 地址</li>
+<li><code>NS</code>：域名 → 权威 DNS 服务器的主机名</li>
+<li><code>CNAME</code>​：主机别名 → 规范主机名</li>
+<li><code>MX</code>： （邮件服务器）简单别名 → 规范主机名</li>
 </ul>
-<h3 id="2-4-4-DNS安全">2.4.4 DNS安全</h3>
+</li>
+</ul>
+<h3 id="2-4-4-报文格式">2.4.4 报文格式</h3>
+<p><img src="img6.png" srcset="/img/loading.gif" lazyload alt="DNS 查询和回答报文格式"></p>
+<ul>
+<li>可以用 <code>nslooksup</code> 程序发送 DNS 查询报文</li>
+</ul>
+<h3 id="2-4-5-DNS-安全">2.4.5 DNS 安全</h3>
 <ul>
 <li><strong>​DDoS攻击</strong>：向根域名服务器发送大量流量</li>
 <li><strong>​欺骗攻击</strong>：拦截DNS查询，返回虚假响应</li>
 </ul>
-<h2 id="2-5-P2P文件分发（UDP为主-P2P架构）">2.5 P2P文件分发（UDP为主 / P2P架构）</h2>
-<h3 id="2-5-1-BitTorrent核心机制">2.5.1 BitTorrent核心机制</h3>
-<h4 id="核心组件">核心组件</h4>
-<ul>
-<li>​<strong>Tracker服务器</strong>
-<ul>
-<li>维护活跃节点列表</li>
-<li>响应节点查询请求</li>
-</ul>
-</li>
-</ul>
-<h4 id="分块策略">分块策略</h4>
-<table>
-<thead>
-<tr>
-<th>策略</th>
-<th>原理</th>
-<th>优势</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>​<strong>最稀缺优先</strong></td>
-<td>优先下载全网最少副本的分块</td>
-<td>加速文件完整传播</td>
-</tr>
-<tr>
-<td>​<strong>随机块选择</strong></td>
-<td>随机选择分块下载</td>
-<td>快速积累初始分块，降低冷启动延迟</td>
-</tr>
-</tbody>
-</table>
-<h4 id="节点协作">节点协作</h4>
-<ul>
-<li>​<strong>Tit-for-Tat</strong>
-<ul>
-<li>优先服务上传速度最快的4个邻居</li>
-<li>每10秒重新评估邻居节点</li>
-</ul>
-</li>
-<li>​<strong>乐观解封</strong>
-<ul>
-<li>每30秒随机选择一个节点提供带宽</li>
-<li>发现潜在高速节点，鼓励新节点加入</li>
-</ul>
-</li>
-</ul>
-<h3 id="2-5-2-分发效率公式推导">2.5.2 分发效率公式推导</h3>
+<h2 id="2-5-P2P文件分发（TCP-P2P架构）">2.5 P2P文件分发（TCP / P2P架构）</h2>
+<h3 id="2-5-1-分发时间公式">2.5.1 分发时间公式</h3>
 <h4 id="C-S模型">C/S模型</h4>
-<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>T</mi><mrow><mi>C</mi><mi>S</mi></mrow></msub><mo>=</mo><mi>max</mi><mo>⁡</mo><mrow><mo fence="true">(</mo><mfrac><mrow><mi>N</mi><mi>F</mi></mrow><msub><mi>u</mi><mi>s</mi></msub></mfrac><mo separator="true">,</mo><mfrac><mi>F</mi><msub><mi>d</mi><mrow><mi>m</mi><mi>i</mi><mi>n</mi></mrow></msub></mfrac><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">T_{CS} = \max\left( \frac{NF}{u_s}, \frac{F}{d_{min}} \right) 
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05764em;">CS</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.4em;vertical-align:-0.95em;"></span><span class="mop">max</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">(</span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">s</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">NF</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">min</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">)</span></span></span></span></span></span></span></p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>D</mi><mrow><mi>C</mi><mi>S</mi></mrow></msub><mo>=</mo><mi>max</mi><mo>⁡</mo><mrow><mo fence="true">(</mo><mfrac><mrow><mi>N</mi><mi>F</mi></mrow><msub><mi>u</mi><mi>s</mi></msub></mfrac><mo separator="true">,</mo><mfrac><mi>F</mi><msub><mi>d</mi><mrow><mi>m</mi><mi>i</mi><mi>n</mi></mrow></msub></mfrac><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">D_{CS} = \max\left( \frac{NF}{u_s}, \frac{F}{d_{min}} \right) 
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05764em;">CS</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.4em;vertical-align:-0.95em;"></span><span class="mop">max</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">(</span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">s</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">NF</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">min</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">)</span></span></span></span></span></span></span></p>
 <ul>
 <li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span>：客户端数量</li>
 <li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi></mrow><annotation encoding="application/x-tex">F</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span></span></span></span>：文件总大小</li>
@@ -637,10 +600,10 @@
 <li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>d</mi><mrow><mi>m</mi><mi>i</mi><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">d_{min}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">min</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>：最慢客户端下载带宽</li>
 </ul>
 <h4 id="P2P模型">P2P模型</h4>
-<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>T</mi><mrow><mi>P</mi><mn>2</mn><mi>P</mi></mrow></msub><mo>=</mo><mi>max</mi><mo>⁡</mo><mrow><mo fence="true">(</mo><mfrac><mi>F</mi><msub><mi>u</mi><mi>s</mi></msub></mfrac><mo separator="true">,</mo><mfrac><mi>F</mi><msub><mi>d</mi><mrow><mi>m</mi><mi>i</mi><mi>n</mi></mrow></msub></mfrac><mo separator="true">,</mo><mfrac><mrow><mi>N</mi><mi>F</mi></mrow><mrow><msub><mi>u</mi><mi>s</mi></msub><mo>+</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>N</mi></munderover><msub><mi>u</mi><mi>i</mi></msub></mrow></mfrac><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">T_{P2P} = \max\left( \frac{F}{u_s}, \frac{F}{d_{min}}, \frac{NF}{u_s + \sum_{i=1}^N u_i} \right) 
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">P</span><span class="mord mtight">2</span><span class="mord mathnormal mtight" style="margin-right:0.13889em;">P</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:3em;vertical-align:-1.25em;"></span><span class="mop">max</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size4">(</span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">s</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">min</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.1288em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">s</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:0em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9812em;"><span style="top:-2.4003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.10903em;">N</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2997em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">NF</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.1709em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size4">)</span></span></span></span></span></span></span></p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>D</mi><mrow><mi>P</mi><mn>2</mn><mi>P</mi></mrow></msub><mo>=</mo><mi>max</mi><mo>⁡</mo><mrow><mo fence="true">(</mo><mfrac><mi>F</mi><msub><mi>u</mi><mi>s</mi></msub></mfrac><mo separator="true">,</mo><mfrac><mi>F</mi><msub><mi>d</mi><mrow><mi>m</mi><mi>i</mi><mi>n</mi></mrow></msub></mfrac><mo separator="true">,</mo><mfrac><mrow><mi>N</mi><mi>F</mi></mrow><mrow><msub><mi>u</mi><mi>s</mi></msub><mo>+</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>N</mi></munderover><msub><mi>u</mi><mi>i</mi></msub></mrow></mfrac><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">D_{P2P} = \max\left( \frac{F}{u_s}, \frac{F}{d_{min}}, \frac{NF}{u_s + \sum_{i=1}^N u_i} \right) 
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">P</span><span class="mord mtight">2</span><span class="mord mathnormal mtight" style="margin-right:0.13889em;">P</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:3em;vertical-align:-1.25em;"></span><span class="mop">max</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size4">(</span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">s</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">min</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.1288em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">s</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:0em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9812em;"><span style="top:-2.4003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.10903em;">N</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2997em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">NF</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.1709em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size4">)</span></span></span></span></span></span></span></p>
 <ul>
-<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>u</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">u_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>：第i个客户端的平均上传带宽</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>u</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">u_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>：第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span> 个客户端的上传带宽</li>
 </ul>
 <h4 id="效率对比结论">效率对比结论</h4>
 <table>
@@ -667,84 +630,78 @@
 </tr>
 </tbody>
 </table>
-<h2 id="2-6-视频流与内容分发网（HTTP-TCP-C-S架构）">2.6 视频流与内容分发网（HTTP / TCP / C-S架构）</h2>
-<h3 id="2-6-1-DASH技术（Dynamic-Adaptive-Streaming-over-HTTP）">2.6.1 DASH技术（Dynamic Adaptive Streaming over HTTP）</h3>
-<h4 id="技术原理">技术原理</h4>
+<h3 id="2-5-2-BitTorrent">2.5.2 BitTorrent</h3>
+<h4 id="核心内容">核心内容</h4>
 <ul>
-<li>​<strong>视频分片</strong>：将视频切割为多个2~10秒的片段（不同码率版本并存）</li>
-<li>​<strong>Manifest文件</strong>：描述分片的URL、码率、分辨率等元数据</li>
+<li><strong>文件分块</strong></li>
+<li><strong>洪流（torrent）</strong>：一组交换文件块的对等体</li>
+<li>​<strong>追踪器（tracker）</strong>：能追踪参与洪流的对等体</li>
 </ul>
-<h4 id="客户端决策流程">客户端决策流程</h4>
-<ol>
-<li>​<strong>初始带宽探测</strong>：首次请求低码率分片以测试网络状况。</li>
+<h4 id="请求策略——最稀缺优先">请求策略——最稀缺优先</h4>
+<ul>
+<li>优先请求邻居中副本最少的块</li>
+<li>均衡分块的副本数量，加速文件完整传播</li>
+</ul>
+<h4 id="发送策略——​Tit-for-Tat">发送策略——​<strong>Tit-for-Tat</strong></h4>
+<ul>
+<li>优先发送给上传速度最快的4个邻居，每10秒重新评估</li>
+<li>每30秒随机选择另一个节点发送数据块</li>
+<li>能发现潜在高速节点，对等方速率趋于协调</li>
+</ul>
+<h2 id="2-6-视频流与内容分发网（HTTP-TCP-C-S架构）">2.6 视频流与内容分发网（HTTP / TCP / C-S架构）</h2>
+<h3 id="2-6-1-DASH（Dynamic-Adaptive-Streaming-over-HTTP）">2.6.1 DASH（Dynamic Adaptive Streaming over HTTP）</h3>
+<ul>
+<li>​<strong>不同速率编码</strong>：将视频切割为多个片段，每个块以多个不同速率编码</li>
 <li>​<strong>动态码率调整</strong>：
 <ul>
-<li>带宽充足时，切换更高码率分片。</li>
-<li>带宽不足时，降级至低码率分片。</li>
+<li>带宽充足时，请求更高码率分片</li>
+<li>带宽不足时，请求更低码率分片</li>
 </ul>
 </li>
-<li>​<strong>缓冲区管理</strong>：维持5~10秒播放缓冲防止卡顿。</li>
-</ol>
+<li>​<strong>缓冲区管理</strong>：维持5~10秒播放缓冲防止卡顿</li>
+</ul>
 <h3 id="2-6-2-CDN（内容分发网络）">2.6.2 CDN（内容分发网络）</h3>
-<h4 id="核心策略">核心策略</h4>
+<h4 id="核心概念">核心概念</h4>
+<p>CDN通过地理分布的服务器节点缓存内容，将用户请求重定向到最优节点以提升访问速度。主要解决大规模内容分发的带宽压力与延迟问题。</p>
+<h4 id="服务器部署策略">服务器部署策略</h4>
 <table>
 <thead>
 <tr>
-<th>策略</th>
-<th>部署方式</th>
-<th>优点</th>
-<th>缺点</th>
-<th>典型厂商</th>
+<th style="text-align:center">策略</th>
+<th style="text-align:center">部署方式</th>
+<th style="text-align:center">优点</th>
+<th style="text-align:center">缺点</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Enter Deep</td>
-<td>边缘节点深入ISP网络</td>
-<td>低延迟、高可用性</td>
-<td>部署成本高</td>
-<td>Akamai</td>
+<td style="text-align:center">Enter Deep</td>
+<td style="text-align:center">边缘节点深入ISP网络</td>
+<td style="text-align:center">低延迟、高吞吐量</td>
+<td style="text-align:center">部署和维护成本高</td>
 </tr>
 <tr>
-<td>Bring Home</td>
-<td>集中部署在骨干网关键节点</td>
-<td>维护成本低</td>
-<td>跨ISP延迟较高</td>
-<td>Limelight</td>
+<td style="text-align:center">Bring Home</td>
+<td style="text-align:center">集中部署在关键节点（如IXP）</td>
+<td style="text-align:center">管理成本低</td>
+<td style="text-align:center">延迟较高、带宽利用率较低</td>
 </tr>
 </tbody>
 </table>
-<h4 id="缓存机制">缓存机制</h4>
+<h4 id="关键技术">关键技术</h4>
 <ul>
-<li>​<strong>主动推送</strong>
-<ul>
-<li>预加载热点内容到边缘节点</li>
-<li>使用流行度预测算法（LRU/LFU）</li>
-</ul>
-</li>
-<li>​<strong>动态路由</strong>
-<ul>
-<li>用户DNS查询重定向至CDN的DNS服务器</li>
-<li>基于用户IP、节点负载、网络状态返回最优节点IP</li>
-</ul>
-</li>
+<li>​<strong>DNS重定向</strong>：通过修改DNS响应将用户请求导向最近的CDN节点</li>
+<li>​<strong>集群选择策略</strong>：基于时延测量、地理位置、网络拓扑等指标选择最优服务节点</li>
+<li>​<strong>内容缓存机制</strong>：使用拉取/推送策略在节点间同步热门内容</li>
+<li>​<strong>动态适配</strong>：根据实时网络状况调整内容分发路径</li>
 </ul>
 <h2 id="2-7-套接字编程">2.7 套接字编程</h2>
-<h3 id="2-7-1-UDP套接字">2.7.1 UDP套接字</h3>
-<ul>
-<li>无连接、不可靠、适用于实时应用</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># Client</span><br>clientSocket = socket(AF_INET, SOCK_DGRAM)<br>clientSocket.sendto(data, (serverIP, port))<br><br><span class="hljs-comment"># Server</span><br>serverSocket.bind((<span class="hljs-string">&#x27;&#x27;</span>, port))<br>data, addr = serverSocket.recvfrom(<span class="hljs-number">1024</span>)<br></code></pre></td></tr></table></figure>
-<h3 id="2-7-2-TCP套接字">2.7.2 TCP套接字</h3>
-<ul>
-<li>面向连接、可靠传输</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># Client</span><br>clientSocket.connect((serverIP, port))<br>clientSocket.send(data)<br><br><span class="hljs-comment"># Server</span><br>connectionSocket, addr = serverSocket.accept()<br>data = connectionSocket.recv(<span class="hljs-number">1024</span>)<br></code></pre></td></tr></table></figure>
-<h3 id="2-7-3-​API核心操作">2.7.3 ​API核心操作</h3>
-<ul>
-<li>服务端：<code>bind()</code> → <code>listen()</code> → <code>accept()</code></li>
-<li>客户端：<code>connect()</code> → <code>send()</code> / <code>recv()</code></li>
-</ul>
+<h3 id="2-7-1-UDP套接字编程">2.7.1 UDP套接字编程</h3>
+<p><strong>特性</strong>：无连接、不可靠传输、适用于实时应用（如视频会议）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 客户端核心流程</span><br>clientSocket = socket(AF_INET, SOCK_DGRAM)  <span class="hljs-comment"># 创建UDP套接字</span><br>clientSocket.sendto(message.encode(), (serverName, serverPort))  <span class="hljs-comment"># 发送报文</span><br>reponse, serverAddress = clientSocket.recvfrom(<span class="hljs-number">2048</span>)  <span class="hljs-comment"># 接收报文</span><br>reponse = response.decode()<br>clientSocket.close()  <span class="hljs-comment"># 关闭套接字</span><br><br><span class="hljs-comment"># 服务端核心流程</span><br>serverSocket = socket(AF_INET, SOCK_DGRAM)  <span class="hljs-comment"># 创建UDP套接字</span><br>serverSocket.bind((<span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-number">12000</span>))  <span class="hljs-comment"># 绑定端口号</span><br><span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>    message, clientAddress = serverSocket.recvfrom(<span class="hljs-number">2048</span>) <span class="hljs-comment"># 接收报文</span><br>    serverSocket.sendto(reponse.encode(), clientAddress)  <span class="hljs-comment"># 发送报文</span><br></code></pre></td></tr></table></figure>
+<h3 id="2-7-2-TCP套接字编程">2.7.2 TCP套接字编程</h3>
+<p><strong>特性</strong>：面向连接、可靠传输、保证数据顺序</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 客户端核心流程</span><br>clientSocket = socket(AF_INET, SOCK_STREAM)  <span class="hljs-comment"># 创建TCP套接字</span><br>clientSocket.connect((serverName, serverPort))  <span class="hljs-comment"># 建立TCP连接</span><br>clientSocket.send(message.encode())  <span class="hljs-comment"># 发送报文</span><br>reponse = clientSocket.recv(<span class="hljs-number">1024</span>).decode()  <span class="hljs-comment"># 接收报文</span><br>clientSocket.close()  <span class="hljs-comment"># 关闭套接字及连接</span><br><br><span class="hljs-comment"># 服务端核心流程</span><br>serverSocket = socket(AF_INET, SOCK_STREAM)  <span class="hljs-comment"># 创建TCP套接字</span><br>serverSocket.bind((<span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-number">12000</span>)) <span class="hljs-comment"># 绑定端口号</span><br>serverSocket.listen(<span class="hljs-number">1</span>)     <span class="hljs-comment"># 开始监听连接</span><br><span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>    connectionSocket, addr = serverSocket.accept() <span class="hljs-comment"># 接受新连接</span><br>    message = connectionSocket.recv(<span class="hljs-number">1024</span>).decode()  <span class="hljs-comment"># 接收报文</span><br>    connectionSocket.send(reponse.encode())   <span class="hljs-comment"># 发送报文</span><br>    connectionSocket.close()  <span class="hljs-comment"># 关闭该连接</span><br></code></pre></td></tr></table></figure>
 
                 
               </div>
