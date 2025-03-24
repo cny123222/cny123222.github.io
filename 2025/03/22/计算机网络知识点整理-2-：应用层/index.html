@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/cn2.jpg">
 <meta property="article:published_time" content="2025-03-22T09:37:15.000Z">
-<meta property="article:modified_time" content="2025-03-24T08:11:08.483Z">
+<meta property="article:modified_time" content="2025-03-24T08:50:32.905Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="计算机网络">
 <meta property="article:tag" content="知识点整理">
@@ -523,16 +523,8 @@
 </ul>
 <h3 id="2-2-4-HTTP演进">2.2.4 HTTP演进</h3>
 <ul>
-<li><strong>HTTP/2</strong>
-<ul>
-<li>帧调度机制（解决HOL阻塞）、服务器推送、优先级机制</li>
-</ul>
-</li>
-<li><strong>​HTTP/3</strong>
-<ul>
-<li>基于QUIC（UDP实现）</li>
-</ul>
-</li>
+<li><strong>HTTP/2</strong>：帧调度机制（解决HOL阻塞）、服务器推送、优先级机制</li>
+<li><strong>​HTTP/3</strong>：基于QUIC（UDP实现）</li>
 </ul>
 <h2 id="2-3-电子邮件（TCP-C-S架构）">2.3 电子邮件（TCP / C-S架构）</h2>
 <p><img src="img4.png" srcset="/img/loading.gif" lazyload alt="电子邮件协议及其通信实体"></p>
@@ -699,9 +691,8 @@
 <h4 id="关键技术">关键技术</h4>
 <ul>
 <li>​<strong>DNS重定向</strong>：通过修改DNS响应将用户请求导向最近的CDN节点</li>
-<li>​<strong>集群选择策略</strong>：基于时延测量、地理位置、网络拓扑等指标选择最优服务节点</li>
+<li>​<strong>集群选择策略</strong>：基于时延测量、地理位置等指标选择最优服务节点</li>
 <li>​<strong>内容缓存机制</strong>：使用拉取/推送策略在节点间同步热门内容</li>
-<li>​<strong>动态适配</strong>：根据实时网络状况调整内容分发路径</li>
 </ul>
 <h2 id="2-7-套接字编程">2.7 套接字编程</h2>
 <h3 id="2-7-1-UDP套接字编程">2.7.1 UDP套接字编程</h3>
