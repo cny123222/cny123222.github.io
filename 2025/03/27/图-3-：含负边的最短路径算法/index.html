@@ -19,27 +19,29 @@
   <meta name="author" content="Nuoyan Chen">
   <meta name="keywords" content="">
   
-    <meta name="description" content="这是算法系列博客的开篇介绍，基于上海交通大学AI2615《算法设计与分析》课程的学习历程与深度思考。">
+    <meta name="description" content="本文为算法课程的知识点复习，主要复习内容为含负边的最短路径算法——Bellman-Ford算法。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="算法：聪明人的计算艺术">
-<meta property="og:url" content="https://cny123222.github.io/2025/03/11/%E7%AE%97%E6%B3%95%EF%BC%9A%E8%81%AA%E6%98%8E%E4%BA%BA%E7%9A%84%E8%AE%A1%E7%AE%97%E8%89%BA%E6%9C%AF/index.html">
+<meta property="og:title" content="图(3)：含负边的最短路径算法">
+<meta property="og:url" content="https://cny123222.github.io/2025/03/27/%E5%9B%BE-3-%EF%BC%9A%E5%90%AB%E8%B4%9F%E8%BE%B9%E7%9A%84%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E7%AE%97%E6%B3%95/index.html">
 <meta property="og:site_name" content="Nuoyan Chen&#39;s Blog">
-<meta property="og:description" content="这是算法系列博客的开篇介绍，基于上海交通大学AI2615《算法设计与分析》课程的学习历程与深度思考。">
+<meta property="og:description" content="本文为算法课程的知识点复习，主要复习内容为含负边的最短路径算法——Bellman-Ford算法。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://cny123222.github.io/img/brain.png">
-<meta property="article:published_time" content="2025-03-11T06:00:04.000Z">
-<meta property="article:modified_time" content="2025-03-27T04:07:41.787Z">
+<meta property="og:image" content="https://cny123222.github.io/img/g3.png">
+<meta property="article:published_time" content="2025-03-27T04:36:17.000Z">
+<meta property="article:modified_time" content="2025-03-27T07:56:50.555Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="算法">
-<meta property="article:tag" content="系列介绍">
+<meta property="article:tag" content="图论">
+<meta property="article:tag" content="Bellman-Ford">
+<meta property="article:tag" content="最短路径">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://cny123222.github.io/img/brain.png">
+<meta name="twitter:image" content="https://cny123222.github.io/img/g3.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>算法：聪明人的计算艺术 - Nuoyan Chen&#39;s Blog</title>
+  <title>图(3)：含负边的最短路径算法 - Nuoyan Chen&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -219,7 +221,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="算法：聪明人的计算艺术"></span>
+            <span id="subtitle" data-typed-text="图(3)：含负边的最短路径算法"></span>
           
         </div>
 
@@ -235,8 +237,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-03-11 14:00" pubdate>
-          March 11, 2025 pm
+        <time datetime="2025-03-27 12:36" pubdate>
+          March 27, 2025 pm
         </time>
       </span>
     
@@ -247,7 +249,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          506 words
+          370 words
         
       </span>
     
@@ -258,7 +260,7 @@
         
         
         
-          5 mins
+          4 mins
         
       </span>
     
@@ -338,7 +340,7 @@
       
         <a href="/2025/03/11/%E7%AE%97%E6%B3%95%EF%BC%9A%E8%81%AA%E6%98%8E%E4%BA%BA%E7%9A%84%E8%AE%A1%E7%AE%97%E8%89%BA%E6%9C%AF/" title="算法：聪明人的计算艺术"
            class="list-group-item list-group-item-action
-           active">
+           ">
           <span class="category-post">算法：聪明人的计算艺术</span>
         </a>
       
@@ -424,17 +426,17 @@
     
     
     <div class="category-sub row nomargin-x">
-      <a class="category-subitem collapsed
+      <a class="category-subitem 
           list-group-item category-item-action col-10 col-md-11 col-xm-11" title="图"
         id="heading-63db5605ac2d3a21f0abd506c9531209" role="tab" data-toggle="collapse" href="#collapse-63db5605ac2d3a21f0abd506c9531209"
-        aria-expanded="false"
+        aria-expanded="true"
       >
         图
         <span class="list-group-count">(3)</span>
         <i class="iconfont icon-arrowright"></i>
       </a>
       
-      <div class="category-collapse collapse " id="collapse-63db5605ac2d3a21f0abd506c9531209"
+      <div class="category-collapse collapse show" id="collapse-63db5605ac2d3a21f0abd506c9531209"
            role="tabpanel" aria-labelledby="heading-63db5605ac2d3a21f0abd506c9531209">
         
         
@@ -464,7 +466,7 @@
       
         <a href="/2025/03/27/%E5%9B%BE-3-%EF%BC%9A%E5%90%AB%E8%B4%9F%E8%BE%B9%E7%9A%84%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E7%AE%97%E6%B3%95/" title="图(3)：含负边的最短路径算法"
            class="list-group-item list-group-item-action
-           ">
+           active">
           <span class="category-post">图(3)：含负边的最短路径算法</span>
         </a>
       
@@ -491,7 +493,7 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">算法：聪明人的计算艺术</h1>
+            <h1 id="seo-header">图(3)：含负边的最短路径算法</h1>
             
               <p id="updated-time" class="note note-default" style="">
                 
@@ -504,32 +506,85 @@
             
               <div class="markdown-body">
                 
-                <p>这是算法系列博客的开篇介绍，基于上海交通大学AI2615《算法设计与分析》课程的学习历程与深度思考。</p>
+                <p>本文为算法课程的<strong>知识点复习</strong>，主要复习内容为<strong>含负边的最短路径算法</strong>——Bellman-Ford算法。</p>
 <span id="more"></span>
-<h2 id="导言：我的算法认知进化史">导言：我的算法认知进化史</h2>
-<blockquote>
-<p>“任何足够复杂的技术都与魔法无异” —— 克拉克第三定律</p>
-</blockquote>
-<p>本人并非信息竞赛选手，但从小一直非常羡慕身边的信竞生，时常听闻他们讨论各种算法和题目，觉得非常厉害。毕竟在我的经验中，似乎只有最聪明的同学才会学习算法，参加信竞。</p>
-<p>但是进入大学，我也选择了计算机专业，接触到各种算法，这学期正在修读<strong>张宇昊老师</strong>的算法设计与分析课程。几节课后，我发现我的经验没错——学习算法确实需要聪明！但算法远不止于此。</p>
-<p>中学时我曾参加过化学竞赛，当时有一本经典的有机教材，叫做Art（有机反应机理的书写艺术）。但这次，每当张老师介绍前人如何设计和改进出巧妙的算法，大幅缩减计算规模时，我常常感叹，<strong>算法何尝不是一种艺术</strong>。</p>
-<h2 id="系列内容">系列内容</h2>
-<p>在这个系列中，我将<strong>基于AI2615课程</strong>，整理我的算法<strong>学习笔记和思考心得</strong>，并加以<strong>可视化</strong>。我们将主要着眼于<strong>算法的设计和理论分析</strong>，而<strong>不是代码实现</strong>。</p>
+<h2 id="Bellman-Ford算法">Bellman-Ford算法</h2>
+<h3 id="算法特点">算法特点</h3>
 <ul>
-<li>对于较为简单的部分，我可能一笔带过。</li>
-<li>对于重点或难点的算法，我会写得尽可能详细。</li>
+<li>允许处理<strong>负权边</strong></li>
+<li>通过<strong>多轮松弛操作</strong>逐步逼近最优解</li>
+<li>可检测图中<strong>是否存在负权环</strong></li>
 </ul>
-<h2 id="路线图">路线图</h2>
-<p>本系列将按照<strong>AI2615</strong>的课程内容展开，主要部分为：</p>
+<h3 id="算法步骤">算法步骤</h3>
+<p><img src="img1.png" srcset="/img/loading.gif" lazyload alt="Bellman-Ford算法设计"></p>
+<ol>
+<li>
+<p><strong>初始化</strong>：源点距离设为0，其他顶点距离设为无穷大</p>
+</li>
+<li>
+<p><strong>松弛操作</strong>：对每条边<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>u</mi><mo separator="true">,</mo><mi>v</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(u, v)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mclose">)</span></span></span></span>，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mi>i</mi><mi>s</mi><mi>t</mi><mo stretchy="false">[</mo><mi>v</mi><mo stretchy="false">]</mo><mo>=</mo><mi>min</mi><mo>⁡</mo><mo stretchy="false">(</mo><mi>d</mi><mi>i</mi><mi>s</mi><mi>t</mi><mo stretchy="false">[</mo><mi>v</mi><mo stretchy="false">]</mo><mo separator="true">,</mo><mi>d</mi><mi>i</mi><mi>s</mi><mi>t</mi><mo stretchy="false">[</mo><mi>u</mi><mo stretchy="false">]</mo><mo>+</mo><mi>d</mi><mo stretchy="false">(</mo><mi>u</mi><mo separator="true">,</mo><mi>v</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">dist[v] = \min(dist[v], dist[u] + d(u, v))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">d</span><span class="mord mathnormal">i</span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">min</span><span class="mopen">(</span><span class="mord mathnormal">d</span><span class="mord mathnormal">i</span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mclose">]</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">d</span><span class="mord mathnormal">i</span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mopen">[</span><span class="mord mathnormal">u</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">d</span><span class="mopen">(</span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mclose">))</span></span></span></span></p>
+</li>
+<li>
+<p><strong>迭代过程</strong>：执行 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">V-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> 轮松弛操作</p>
+</li>
+<li>
+<p><strong>负权环检测</strong>：额外执行第<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi></mrow><annotation encoding="application/x-tex">V</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span></span></span></span>轮松弛，若仍有距离更新则存在负权环</p>
+</li>
+</ol>
+<h3 id="正确性证明">正确性证明</h3>
 <ul>
-<li>分治法（Divide and Conquer）</li>
-<li>图（Graphs）</li>
-<li>贪心算法（Greedy）</li>
-<li>动态规划（Dynamic Programming）</li>
-<li>网络最大流（Max Flow）</li>
-<li>NP-hard问题（NP-hardness）</li>
+<li>
+<p><strong>引理1</strong>：第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span> 轮松弛后，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mi>i</mi><mi>s</mi><mi>t</mi><mo stretchy="false">[</mo><mi>v</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">dist[v]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">d</span><span class="mord mathnormal">i</span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mclose">]</span></span></span></span> 是最多含 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span> 条边的最短距离。</p>
+<ul>
+<li>可用数学归纳法证明</li>
 </ul>
-<p>希望我的博客能对你们学习算法有所帮助，或是能给同样在学这门课的同学一个期末复习提纲，感谢大家的支持。</p>
+</li>
+<li>
+<p><strong>引理2</strong>：无负权环时，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">V-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> 轮后必达稳定状态。</p>
+</li>
+</ul>
+<p><img src="img2.png" srcset="/img/loading.gif" lazyload alt="Bellman-Ford算法正确性证明思路"></p>
+<h3 id="时间复杂度">时间复杂度</h3>
+<ul>
+<li>时间复杂度为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi><mrow><mi mathvariant="bold-italic">O</mi><mo stretchy="false">(</mo><mi mathvariant="bold">∣</mi><mi mathvariant="bold-italic">V</mi><mi mathvariant="bold">∣</mi><mo mathvariant="bold-italic">⋅</mo><mi mathvariant="bold">∣</mi><mi mathvariant="bold-italic">E</mi><mi mathvariant="bold">∣</mi><mo stretchy="false">)</mo></mrow></mi></mrow><annotation encoding="application/x-tex">\bm{O(|V| \cdot |E|)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.03194em;">O</span><span class="mopen mathbf">(</span><span class="mord mathbf">∣</span><span class="mord boldsymbol" style="margin-right:0.25555em;">V</span><span class="mord mathbf">∣</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin mathbf">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathbf">∣</span><span class="mord boldsymbol" style="margin-right:0.05451em;">E</span><span class="mord mathbf">∣</span><span class="mclose mathbf">)</span></span></span></span></span></span></li>
+</ul>
+<h2 id="Dijkstra-算法与-Bellman-Ford-算法对比">Dijkstra 算法与 Bellman-Ford 算法对比</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">特征</th>
+<th style="text-align:center">Dijkstra算法</th>
+<th style="text-align:center">Bellman-Ford算法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><strong>适用范围</strong></td>
+<td style="text-align:center">仅非负权图</td>
+<td style="text-align:center">任意权图（含负权）</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>时间复杂度</strong></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi mathvariant="normal">∣</mi><mi>E</mi><mi mathvariant="normal">∣</mi><mo>+</mo><mi mathvariant="normal">∣</mi><mi>V</mi><mi mathvariant="normal">∣</mi><mi>log</mi><mo>⁡</mo><mi mathvariant="normal">∣</mi><mi>V</mi><mi mathvariant="normal">∣</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(|E| + |V| \log |V|)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord">∣</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mord">∣</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mord">∣</span><span class="mclose">)</span></span></span></span></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi mathvariant="normal">∣</mi><mi>V</mi><mi mathvariant="normal">∣</mi><mo>⋅</mo><mi mathvariant="normal">∣</mi><mi>E</mi><mi mathvariant="normal">∣</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(|V| \cdot |E|)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mord">∣</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord">∣</span><span class="mclose">)</span></span></span></span></td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>空间复杂度</strong></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi mathvariant="normal">∣</mi><mi>V</mi><mi mathvariant="normal">∣</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(|V|)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mord">∣</span><span class="mclose">)</span></span></span></span></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi mathvariant="normal">∣</mi><mi>V</mi><mi mathvariant="normal">∣</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(|V|)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mord">∣</span><span class="mclose">)</span></span></span></span></td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>处理负权边</strong></td>
+<td style="text-align:center">不可用</td>
+<td style="text-align:center">支持</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>检测负权环</strong></td>
+<td style="text-align:center">无此功能</td>
+<td style="text-align:center">支持</td>
+</tr>
+</tbody>
+</table>
 
                 
               </div>
@@ -551,6 +606,13 @@
   <a href="/categories/%E7%AE%97%E6%B3%95/" class="category-chain-item">算法</a>
   
   
+    <span>></span>
+    
+  <a href="/categories/%E7%AE%97%E6%B3%95/%E5%9B%BE/" class="category-chain-item">图</a>
+  
+  
+
+  
 
       </span>
     
@@ -565,7 +627,11 @@
       
         <a href="/tags/%E7%AE%97%E6%B3%95/" class="print-no-link">#算法</a>
       
-        <a href="/tags/%E7%B3%BB%E5%88%97%E4%BB%8B%E7%BB%8D/" class="print-no-link">#系列介绍</a>
+        <a href="/tags/%E5%9B%BE%E8%AE%BA/" class="print-no-link">#图论</a>
+      
+        <a href="/tags/Bellman-Ford/" class="print-no-link">#Bellman-Ford</a>
+      
+        <a href="/tags/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/" class="print-no-link">#最短路径</a>
       
     </div>
   
@@ -577,8 +643,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>算法：聪明人的计算艺术</div>
-      <div>https://cny123222.github.io/2025/03/11/算法：聪明人的计算艺术/</div>
+      <div>图(3)：含负边的最短路径算法</div>
+      <div>https://cny123222.github.io/2025/03/27/图-3-：含负边的最短路径算法/</div>
     </div>
     <div class="license-meta">
       
@@ -590,7 +656,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>March 11, 2025</div>
+          <div>March 27, 2025</div>
         </div>
       
       
@@ -622,15 +688,15 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/03/11/%E5%88%86%E6%B2%BB%E6%B3%95-1-%EF%BC%9AKaratsuba%E7%AE%97%E6%B3%95%E4%B8%8E%E5%A4%A7O%E8%A1%A8%E7%A4%BA%E6%B3%95/" title="分治法(1)：Karatsuba算法与大O表示法">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">分治法(1)：Karatsuba算法与大O表示法</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/2025/03/24/Verilog%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/" title="Verilog编程入门">
+                        <span class="hidden-mobile">Verilog编程入门</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>
