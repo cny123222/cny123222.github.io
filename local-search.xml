@@ -31,35 +31,6 @@
   
   
   <entry>
-    <title>计算机网络知识点整理(3)：传输层</title>
-    <link href="/2025/03/24/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-3-%EF%BC%9A%E4%BC%A0%E8%BE%93%E5%B1%82/"/>
-    <url>/2025/03/24/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-3-%EF%BC%9A%E4%BC%A0%E8%BE%93%E5%B1%82/</url>
-    
-    <content type="html"><![CDATA[<p>这是SJTU-CS3611《计算机网络》课程的知识点整理系列。本文整理部分为“第3章：传输层”。(未更新)</p><span id="more"></span>]]></content>
-    
-    
-    <categories>
-      
-      <category>计算机网络</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>计算机网络</tag>
-      
-      <tag>知识点整理</tag>
-      
-      <tag>期末复习</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>计算机网络知识点整理(2)：应用层</title>
     <link href="/2025/03/22/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-2-%EF%BC%9A%E5%BA%94%E7%94%A8%E5%B1%82/"/>
     <url>/2025/03/22/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-2-%EF%BC%9A%E5%BA%94%E7%94%A8%E5%B1%82/</url>
@@ -161,42 +132,11 @@
     
     <tags>
       
-      <tag>备忘录</tag>
-      
       <tag>期末复习</tag>
       
+      <tag>备忘录</tag>
+      
       <tag>量子物理</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>扩散模型(2)：代码实战</title>
-    <link href="/2025/03/11/%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B-2-%EF%BC%9A%E4%BB%A3%E7%A0%81%E5%AE%9E%E6%88%98/"/>
-    <url>/2025/03/11/%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B-2-%EF%BC%9A%E4%BB%A3%E7%A0%81%E5%AE%9E%E6%88%98/</url>
-    
-    <content type="html"><![CDATA[<p>(未更新)</p>]]></content>
-    
-    
-    <categories>
-      
-      <category>深度学习</category>
-      
-      <category>扩散模型</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>深度学习</tag>
-      
-      <tag>扩散模型</tag>
-      
-      <tag>代码实践</tag>
       
     </tags>
     
@@ -399,37 +339,6 @@
       <tag>主定理</tag>
       
       <tag>归并排序</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>扩散模型(1)：从理论出发</title>
-    <link href="/2025/03/11/%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B-1-%EF%BC%9A%E4%BB%8E%E7%90%86%E8%AE%BA%E5%87%BA%E5%8F%91/"/>
-    <url>/2025/03/11/%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B-1-%EF%BC%9A%E4%BB%8E%E7%90%86%E8%AE%BA%E5%87%BA%E5%8F%91/</url>
-    
-    <content type="html"><![CDATA[<p>本文将从理论出发，分析<strong>扩散模型</strong>（diffusion model）的实现原理，着重用可视化的方式理解模型过程。(未更新)</p><span id="more"></span><h2 id="模型概述">模型概述</h2><h2 id="加噪过程">加噪过程</h2><h2 id="去噪过程">去噪过程</h2>]]></content>
-    
-    
-    <categories>
-      
-      <category>深度学习</category>
-      
-      <category>扩散模型</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>深度学习</tag>
-      
-      <tag>扩散模型</tag>
-      
-      <tag>理论讲解</tag>
       
     </tags>
     
