@@ -19,19 +19,22 @@
   <meta name="author" content="Nuoyan Chen">
   <meta name="keywords" content="">
   
-    <meta name="description" content="这是算法系列博客的开篇介绍，基于上海交通大学AI2615《算法设计与分析》课程的学习历程与深度思考。">
+    <meta name="description" content="本文为SJTU-AI2615算法课程的期中复习，主要复习内容为分治法、图、贪心算法。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="算法：聪明人的计算艺术">
-<meta property="og:url" content="https://cny123222.github.io/2025/03/11/%E7%AE%97%E6%B3%95%EF%BC%9A%E8%81%AA%E6%98%8E%E4%BA%BA%E7%9A%84%E8%AE%A1%E7%AE%97%E8%89%BA%E6%9C%AF/index.html">
+<meta property="og:title" content="算法：期中复习">
+<meta property="og:url" content="https://cny123222.github.io/2025/04/23/%E7%AE%97%E6%B3%95%EF%BC%9A%E6%9C%9F%E4%B8%AD%E5%A4%8D%E4%B9%A0/index.html">
 <meta property="og:site_name" content="Nuoyan Chen&#39;s Blog">
-<meta property="og:description" content="这是算法系列博客的开篇介绍，基于上海交通大学AI2615《算法设计与分析》课程的学习历程与深度思考。">
+<meta property="og:description" content="本文为SJTU-AI2615算法课程的期中复习，主要复习内容为分治法、图、贪心算法。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/brain.png">
-<meta property="article:published_time" content="2025-03-11T06:00:04.000Z">
-<meta property="article:modified_time" content="2025-04-23T07:20:12.641Z">
+<meta property="article:published_time" content="2025-04-23T07:22:05.000Z">
+<meta property="article:modified_time" content="2025-04-23T07:58:58.311Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="算法">
-<meta property="article:tag" content="系列介绍">
+<meta property="article:tag" content="期中复习">
+<meta property="article:tag" content="分治法">
+<meta property="article:tag" content="图论">
+<meta property="article:tag" content="贪心算法">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://cny123222.github.io/img/brain.png">
   
@@ -39,7 +42,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>算法：聪明人的计算艺术 - Nuoyan Chen&#39;s Blog</title>
+  <title>算法：期中复习 - Nuoyan Chen&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -219,7 +222,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="算法：聪明人的计算艺术"></span>
+            <span id="subtitle" data-typed-text="算法：期中复习"></span>
           
         </div>
 
@@ -235,8 +238,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-03-11 14:00" pubdate>
-          March 11, 2025 pm
+        <time datetime="2025-04-23 15:22" pubdate>
+          April 23, 2025 pm
         </time>
       </span>
     
@@ -247,7 +250,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          506 words
+          411 words
         
       </span>
     
@@ -258,7 +261,7 @@
         
         
         
-          5 mins
+          4 mins
         
       </span>
     
@@ -338,7 +341,7 @@
       
         <a href="/2025/04/23/%E7%AE%97%E6%B3%95%EF%BC%9A%E6%9C%9F%E4%B8%AD%E5%A4%8D%E4%B9%A0/" title="算法：期中复习"
            class="list-group-item list-group-item-action
-           ">
+           active">
           <span class="category-post">算法：期中复习</span>
         </a>
       
@@ -347,7 +350,7 @@
       
         <a href="/2025/03/11/%E7%AE%97%E6%B3%95%EF%BC%9A%E8%81%AA%E6%98%8E%E4%BA%BA%E7%9A%84%E8%AE%A1%E7%AE%97%E8%89%BA%E6%9C%AF/" title="算法：聪明人的计算艺术"
            class="list-group-item list-group-item-action
-           active">
+           ">
           <span class="category-post">算法：聪明人的计算艺术</span>
         </a>
       
@@ -638,7 +641,7 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">算法：聪明人的计算艺术</h1>
+            <h1 id="seo-header">算法：期中复习</h1>
             
               <p id="updated-time" class="note note-default" style="">
                 
@@ -651,32 +654,63 @@
             
               <div class="markdown-body">
                 
-                <p>这是算法系列博客的开篇介绍，基于上海交通大学AI2615《算法设计与分析》课程的学习历程与深度思考。</p>
+                <p>本文为SJTU-AI2615算法课程的<strong>期中复习</strong>，主要复习内容为<strong>分治法、图、贪心算法</strong>。</p>
 <span id="more"></span>
-<h2 id="导言：我的算法认知进化史">导言：我的算法认知进化史</h2>
-<blockquote>
-<p>“任何足够复杂的技术都与魔法无异” —— 克拉克第三定律</p>
-</blockquote>
-<p>本人并非信息竞赛选手，但从小一直非常羡慕身边的信竞生，时常听闻他们讨论各种算法和题目，觉得非常厉害。毕竟在我的经验中，似乎只有最聪明的同学才会学习算法，参加信竞。</p>
-<p>但是进入大学，我也选择了计算机专业，接触到各种算法，这学期正在修读<strong>张宇昊老师</strong>的算法设计与分析课程。几节课后，我发现我的经验没错——学习算法确实需要聪明！但算法远不止于此。</p>
-<p>中学时我曾参加过化学竞赛，当时有一本经典的有机教材，叫做Art（有机反应机理的书写艺术）。但这次，每当张老师介绍前人如何设计和改进出巧妙的算法，大幅缩减计算规模时，我常常感叹，<strong>算法何尝不是一种艺术</strong>。</p>
-<h2 id="系列内容">系列内容</h2>
-<p>在这个系列中，我将<strong>基于AI2615课程</strong>，整理我的算法<strong>学习笔记和思考心得</strong>，并加以<strong>可视化</strong>。我们将主要着眼于<strong>算法的设计和理论分析</strong>，而<strong>不是代码实现</strong>。</p>
+<h2 id="分治法">分治法</h2>
+<h3 id="算法设计思路">算法设计思路</h3>
+<p><img src="img1.png" srcset="/img/loading.gif" lazyload alt="分治法示意图"></p>
 <ul>
-<li>对于较为简单的部分，我可能一笔带过。</li>
-<li>对于重点或难点的算法，我会写得尽可能详细。</li>
+<li><strong>分治法框架</strong>:
+<ol>
+<li><strong>分解</strong>​（Divide）：将原问题分解为几个规模更小的子问题</li>
+<li><strong>递归</strong>​（Recurse）：递归解决子问题（递归基直接求解）</li>
+<li><strong>合并</strong>​（Combine）：将子问题的解整合为原问题解</li>
+</ol>
+</li>
+<li><strong>设计关键点</strong>：合并步骤的时间复杂度需<strong>低于暴力解法</strong></li>
 </ul>
-<h2 id="路线图">路线图</h2>
-<p>本系列将按照<strong>AI2615</strong>的课程内容展开，主要部分为：</p>
+<h3 id="正确性证明思路">正确性证明思路</h3>
 <ul>
-<li>分治法（Divide and Conquer）</li>
-<li>图（Graphs）</li>
-<li>贪心算法（Greedy）</li>
-<li>动态规划（Dynamic Programming）</li>
-<li>网络最大流（Max Flow）</li>
-<li>NP-hard问题（NP-hardness）</li>
+<li><strong>数学归纳法</strong>：对问题规模 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 进行归纳证明
+<ul>
+<li>基例：验证最小规模问题的正确性</li>
+<li>归纳：假设子问题正确，证明合并后解正确</li>
 </ul>
-<p>希望我的博客能对你们学习算法有所帮助，或是能给同样在学这门课的同学一个期末复习提纲，感谢大家的支持。</p>
+</li>
+</ul>
+<h3 id="复杂度分析思路">复杂度分析思路</h3>
+<ul>
+<li><strong>建立递推关系式</strong></li>
+<li><strong>主定理</strong>：</li>
+</ul>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>T</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo>=</mo><mi>a</mi><mi>T</mi><mrow><mo fence="true">(</mo><mfrac><mi>n</mi><mi>b</mi></mfrac><mo fence="true">)</mo></mrow><mo>+</mo><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mi>d</mi></msup><mo stretchy="false">)</mo><mo>=</mo><mrow><mo fence="true">{</mo><mtable rowspacing="0.36em" columnalign="left left" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mtext> </mtext><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mi>d</mi></msup><mo stretchy="false">)</mo></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mtext>if </mtext><mi>a</mi><mo>&lt;</mo><msup><mi>b</mi><mi>d</mi></msup><mo separator="true">,</mo></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mtext> </mtext><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mrow><msub><mrow><mi>log</mi><mo>⁡</mo></mrow><mi>b</mi></msub><mi>a</mi></mrow></msup><mo stretchy="false">)</mo></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mtext>if </mtext><mi>a</mi><mo>&gt;</mo><msup><mi>b</mi><mi>d</mi></msup><mo separator="true">,</mo></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mtext> </mtext><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mi>d</mi></msup><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mtext>if </mtext><mi>a</mi><mo>=</mo><msup><mi>b</mi><mi>d</mi></msup><mi mathvariant="normal">.</mi></mrow></mstyle></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">T(n) = a T\left( \frac{n}{b} \right) + O(n^d) = 
+    \begin{cases} 
+        \, O(n^d) &amp; \text{if } a &lt; b^d, \\
+        \, O(n^{\log_b a}) &amp; \text{if } a &gt; b^d, \\
+        \, O(n^d \log n) &amp; \text{if } a = b^d.
+    \end{cases}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.836em;vertical-align:-0.686em;"></span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size2">(</span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.1076em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">b</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size2">)</span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.1491em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8991em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">d</span></span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:4.32em;vertical-align:-1.91em;"></span><span class="minner"><span class="mopen"><span class="delimsizing mult"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.35em;"><span style="top:-2.2em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎩</span></span></span><span style="top:-2.192em;"><span class="pstrut" style="height:3.15em;"></span><span style="height:0.316em;width:0.8889em;"><svg xmlns="http://www.w3.org/2000/svg" width="0.8889em" height="0.316em" style="width:0.8889em" viewBox="0 0 888.89 316" preserveAspectRatio="xMinYMin"><path d="M384 0 H504 V316 H384z M384 0 H504 V316 H384z"/></svg></span></span><span style="top:-3.15em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎨</span></span></span><span style="top:-4.292em;"><span class="pstrut" style="height:3.15em;"></span><span style="height:0.316em;width:0.8889em;"><svg xmlns="http://www.w3.org/2000/svg" width="0.8889em" height="0.316em" style="width:0.8889em" viewBox="0 0 888.89 316" preserveAspectRatio="xMinYMin"><path d="M384 0 H504 V316 H384z M384 0 H504 V316 H384z"/></svg></span></span><span style="top:-4.6em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎧</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.85em;"><span></span></span></span></span></span></span><span class="mord"><span class="mtable"><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.41em;"><span style="top:-4.41em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">d</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span><span style="top:-2.97em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mop mtight"><span class="mop mtight"><span class="mtight">l</span><span class="mtight">o</span><span class="mtight" style="margin-right:0.01389em;">g</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2302em;"><span style="top:-2.2341em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2659em;"><span></span></span></span></span></span></span><span class="mspace mtight" style="margin-right:0.1952em;"></span><span class="mord mathnormal mtight">a</span></span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span><span style="top:-1.53em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">d</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.91em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:1em;"></span><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.41em;"><span style="top:-4.41em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord text"><span class="mord">if </span></span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">d</span></span></span></span></span></span></span></span><span class="mpunct">,</span></span></span><span style="top:-2.97em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord text"><span class="mord">if </span></span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">d</span></span></span></span></span></span></span></span><span class="mpunct">,</span></span></span><span style="top:-1.53em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord text"><span class="mord">if </span></span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">d</span></span></span></span></span></span></span></span><span class="mord">.</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.91em;"><span></span></span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<h3 id="重要算法">重要算法</h3>
+<h4 id="Karatsuba-算法">Karatsuba 算法</h4>
+<p><img src="img2.png" srcset="/img/loading.gif" lazyload alt="Karatsuba 算法"></p>
+<ul>
+<li><strong>时间复杂度</strong>：</li>
+</ul>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>T</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo>=</mo><mn>3</mn><mi>T</mi><mrow><mo fence="true">(</mo><mfrac><mi>n</mi><mn>2</mn></mfrac><mo fence="true">)</mo></mrow><mo>+</mo><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mtext> </mtext><mo>⇒</mo><mtext> </mtext><mi>T</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo>=</mo><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mrow><msub><mrow><mi>log</mi><mo>⁡</mo></mrow><mn>2</mn></msub><mn>3</mn></mrow></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">T(n) = 3T\left(\frac{n}{2}\right) + O(n) \, \Rightarrow \, T(n) = O(n^{\log_2 3})
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.836em;vertical-align:-0.686em;"></span><span class="mord">3</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size2">(</span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.1076em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size2">)</span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⇒</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.1491em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8991em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mop mtight"><span class="mop mtight"><span class="mtight">l</span><span class="mtight">o</span><span class="mtight" style="margin-right:0.01389em;">g</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1944em;"><span style="top:-2.2341em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2659em;"><span></span></span></span></span></span></span><span class="mspace mtight" style="margin-right:0.1952em;"></span><span class="mord mtight">3</span></span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></p>
+<h4 id="归并排序">归并排序</h4>
+<ul>
+<li><strong>正确性分析</strong>：数学归纳法</li>
+<li><strong>时间复杂度</strong>：</li>
+</ul>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>T</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo>=</mo><mn>2</mn><mi>T</mi><mrow><mo fence="true">(</mo><mfrac><mi>n</mi><mn>2</mn></mfrac><mo fence="true">)</mo></mrow><mo>+</mo><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mtext> </mtext><mo>⇒</mo><mtext> </mtext><mi>T</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo>=</mo><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">T(n) = 2T\left(\frac{n}{2}\right) + O(n) \, \Rightarrow \, T(n) = O(n \log n)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.836em;vertical-align:-0.686em;"></span><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size2">(</span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.1076em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size2">)</span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⇒</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></span></p>
+<h4 id="求逆序数">求逆序数</h4>
+<h4 id="快速选择算法">快速选择算法</h4>
+<h4 id="求最近点对">求最近点对</h4>
+<h4 id="快速傅立叶变换">快速傅立叶变换</h4>
+<h2 id="图">图</h2>
+<h2 id="贪心算法">贪心算法</h2>
 
                 
               </div>
@@ -712,7 +746,13 @@
       
         <a href="/tags/%E7%AE%97%E6%B3%95/" class="print-no-link">#算法</a>
       
-        <a href="/tags/%E7%B3%BB%E5%88%97%E4%BB%8B%E7%BB%8D/" class="print-no-link">#系列介绍</a>
+        <a href="/tags/%E6%9C%9F%E4%B8%AD%E5%A4%8D%E4%B9%A0/" class="print-no-link">#期中复习</a>
+      
+        <a href="/tags/%E5%88%86%E6%B2%BB%E6%B3%95/" class="print-no-link">#分治法</a>
+      
+        <a href="/tags/%E5%9B%BE%E8%AE%BA/" class="print-no-link">#图论</a>
+      
+        <a href="/tags/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/" class="print-no-link">#贪心算法</a>
       
     </div>
   
@@ -724,8 +764,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>算法：聪明人的计算艺术</div>
-      <div>https://cny123222.github.io/2025/03/11/算法：聪明人的计算艺术/</div>
+      <div>算法：期中复习</div>
+      <div>https://cny123222.github.io/2025/04/23/算法：期中复习/</div>
     </div>
     <div class="license-meta">
       
@@ -737,7 +777,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>March 11, 2025</div>
+          <div>April 23, 2025</div>
         </div>
       
       
@@ -769,15 +809,15 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/03/11/%E5%88%86%E6%B2%BB%E6%B3%95-1-%EF%BC%9AKaratsuba%E7%AE%97%E6%B3%95%E4%B8%8E%E5%A4%A7O%E8%A1%A8%E7%A4%BA%E6%B3%95/" title="分治法(1)：Karatsuba算法与大O表示法">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">分治法(1)：Karatsuba算法与大O表示法</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/2025/04/22/%E7%BD%91%E7%BB%9C%E6%B5%81-1-%EF%BC%9A%E7%AE%97%E6%B3%95%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8/" title="网络流(1)：算法及其应用">
+                        <span class="hidden-mobile">网络流(1)：算法及其应用</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>
