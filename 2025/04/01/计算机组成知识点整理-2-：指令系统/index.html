@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/cod2.png">
 <meta property="article:published_time" content="2025-04-01T04:59:50.000Z">
-<meta property="article:modified_time" content="2025-04-15T04:42:08.791Z">
+<meta property="article:modified_time" content="2025-04-16T02:36:18.629Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="计算机组成">
 <meta property="article:tag" content="知识点整理">
@@ -80,7 +80,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"cny123222.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":4},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"cny123222.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -402,7 +402,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on April 15, 2025 pm
+                    Last updated on April 16, 2025 am
                   
                 
               </p>
@@ -632,11 +632,10 @@
 </ul>
 <h3 id="2-7-3-跳转寻址">2.7.3 跳转寻址</h3>
 <ul>
-<li><strong>UJ 型指令</strong></li>
-<li><code>jal</code>：PC 相对寻址；<code>jalr</code>：绝对地址</li>
+<li><code>jal</code>：UJ 型指令，PC 相对寻址</li>
+<li><code>jalr</code>：I 型指令，绝对地址</li>
 <li>对于<strong>长跳转</strong>（32 位地址），<code>lui</code> 将 address[31:12] 写入临时寄存器，  <code>jalr</code> 将 address[11:1] 加到临时寄存器并跳转到目标位置</li>
 </ul>
-<p><img src="img10.png" srcset="/img/loading.gif" lazyload alt="RISC-V寻址模式总结"></p>
 <h2 id="2-8-同步">2.8 同步</h2>
 <ul>
 <li>两个处理器共享存储器中的某一位置，若不同步，则发生<strong>数据竞争</strong></li>
