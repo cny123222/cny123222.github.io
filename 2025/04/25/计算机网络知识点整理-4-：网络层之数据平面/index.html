@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/%E8%AE%A1%E7%BD%91.png">
 <meta property="article:published_time" content="2025-04-25T05:59:41.000Z">
-<meta property="article:modified_time" content="2025-05-08T13:55:15.072Z">
+<meta property="article:modified_time" content="2025-05-08T14:29:08.209Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="知识点整理">
 <meta property="article:tag" content="期末复习">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.1k words
+          1k words
         
       </span>
     
@@ -404,44 +404,29 @@
                 <p>这是SJTU-CS3611《计算机网络》课程的知识点整理系列。本文整理部分为“第4章：网络层之数据平面”。</p>
 <span id="more"></span>
 <h2 id="4-1-网络层概述">4.1 网络层概述</h2>
-<h3 id="数据平面-vs-控制平面">数据平面 vs 控制平面</h3>
-<table>
-<thead>
-<tr>
-<th><strong>数据平面</strong></th>
-<th><strong>控制平面</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>本地每路由器功能</td>
-<td>网络范围逻辑</td>
-</tr>
-<tr>
-<td>决定数据包如何从输入端口转发到输出端口</td>
-<td>确定数据包在端到端路径上的路由方式</td>
-</tr>
-<tr>
-<td>基于转发表执行转发（硬件实现，纳秒级）</td>
-<td>运行路由算法（软件实现，秒级）</td>
-</tr>
-</tbody>
-</table>
-<h3 id="网络服务模型">网络服务模型</h3>
 <ul>
-<li><strong>尽力而为服务（Best-Effort）</strong>：无带宽、延迟、顺序保证（互联网默认）</li>
-<li><strong>服务质量（QoS）模型</strong>：
+<li><strong>核心功能</strong>
 <ul>
-<li>ATM CBR（恒定比特率）：严格保障带宽、延迟</li>
-<li>IntServ（集成服务）：端到端资源预留</li>
-<li>DiffServ（区分服务）：基于优先级分类</li>
+<li><strong>转发</strong>：路由器根据转发表将分组转移到适当的输出链路
+<ul>
+<li>路由器本地操作，时间尺度短，通常用硬件实现，数据平面执行</li>
+</ul>
+</li>
+<li><strong>路由</strong>：确定分组从源到目的地所采取的端到端路径
+<ul>
+<li>网络范围，时间尺度长，通常用软件实现，控制平面执行</li>
 </ul>
 </li>
 </ul>
-<h3 id="转发与路由">转发与路由</h3>
+</li>
+<li><strong>控制平面的实现方法</strong>：
 <ul>
-<li><strong>转发（Forwarding）</strong>：路由器本地操作，将分组从输入链路移动到输出链路（类比：立交桥通过）</li>
-<li><strong>路由（Routing）</strong>：端到端路径规划（类比：行程规划）</li>
+<li>路由选择算法决定了路由器转发表的内容</li>
+<li><strong>传统方法</strong>：路由选择算法运行在每台路由器中</li>
+<li><strong>SDN 方法</strong>：远程控制器计算并分发转发表给路由器</li>
+</ul>
+</li>
+<li><strong>网络服务模型</strong>：因特网仅提供尽力而为服务（无到达、时延、顺序、带宽保证）</li>
 </ul>
 <h2 id="4-2-路由器">4.2 路由器</h2>
 <h3 id="核心组件">核心组件</h3>
