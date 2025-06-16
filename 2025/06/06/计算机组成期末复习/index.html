@@ -1,0 +1,1989 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Nuoyan Chen">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="这是SJTU-ICE2603《计算机组成》课程的期末复习。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机组成期末复习">
+<meta property="og:url" content="https://cny123222.github.io/2025/06/06/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Nuoyan Chen&#39;s Blog">
+<meta property="og:description" content="这是SJTU-ICE2603《计算机组成》课程的期末复习。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cny123222.github.io/img/%E8%AE%A1%E7%BB%84.png">
+<meta property="article:published_time" content="2025-06-06T08:51:00.000Z">
+<meta property="article:modified_time" content="2025-06-10T11:15:24.348Z">
+<meta property="article:author" content="Nuoyan Chen">
+<meta property="article:tag" content="计算机组成">
+<meta property="article:tag" content="知识点整理">
+<meta property="article:tag" content="期末复习">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cny123222.github.io/img/%E8%AE%A1%E7%BB%84.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>计算机组成期末复习 - Nuoyan Chen&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"cny123222.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 80vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Nuoyan Chen&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/nanjing.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.4)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="计算机组成期末复习"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Nuoyan Chen
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-06 16:51" pubdate>
+          June 6, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8.5k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          71 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="计算机组成"
+        id="heading-e64a83de4627390b1e9bb9ab855b7284" role="tab" data-toggle="collapse" href="#collapse-e64a83de4627390b1e9bb9ab855b7284"
+        aria-expanded="true"
+      >
+        计算机组成
+        <span class="list-group-count">(8)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-e64a83de4627390b1e9bb9ab855b7284"
+           role="tabpanel" aria-labelledby="heading-e64a83de4627390b1e9bb9ab855b7284">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/03/24/Verilog%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/" title="Verilog编程入门"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Verilog编程入门</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/06/06/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0/" title="计算机组成期末复习"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">计算机组成期末复习</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/31/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-1-%EF%BC%9A%E6%A6%82%E8%BF%B0/" title="计算机组成知识点整理(1)：概述"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">计算机组成知识点整理(1)：概述</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/04/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-2-%EF%BC%9A%E6%8C%87%E4%BB%A4%E7%B3%BB%E7%BB%9F/" title="计算机组成知识点整理(2)：指令系统"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">计算机组成知识点整理(2)：指令系统</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/04/07/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-3-%EF%BC%9A%E7%AE%97%E6%9C%AF%E8%BF%90%E7%AE%97/" title="计算机组成知识点整理(3)：算术运算"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">计算机组成知识点整理(3)：算术运算</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/04/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-4-%EF%BC%9A%E5%A4%84%E7%90%86%E5%99%A8/" title="计算机组成知识点整理(4)：处理器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">计算机组成知识点整理(4)：处理器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/05/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-5-%EF%BC%9A%E5%AD%98%E5%82%A8%E5%99%A8/" title="计算机组成知识点整理(5)：存储器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">计算机组成知识点整理(5)：存储器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/05/28/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-6-%EF%BC%9A%E5%B9%B6%E8%A1%8C%E5%A4%84%E7%90%86%E5%99%A8/" title="计算机组成知识点整理(6)：并行处理器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">计算机组成知识点整理(6)：并行处理器</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">计算机组成期末复习</h1>
+            
+              <p id="updated-time" class="note note-default" style="">
+                
+                  
+                    Last updated on June 10, 2025 pm
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>这是SJTU-ICE2603《计算机组成》课程的期末复习。</p>
+<span id="more"></span>
+<div class="note note-info">
+            <p>简答题关键词：性能、功耗、成本、容量、速度、可靠性、并行</p>
+          </div>
+<h2 id="第一章-计算机的抽象与技术">第一章 计算机的抽象与技术</h2>
+<h3 id="1-当前计算机发展的现状、所处的阶段及与过去的区别">1. 当前计算机发展的现状、所处的阶段及与过去的区别</h3>
+<ul>
+<li><strong>后 PC 时代的特征</strong>：
+<ul>
+<li><strong>个人移动设备</strong>替代个人电脑
+<ul>
+<li>电池供电</li>
+<li>无线连接互联网</li>
+<li>价格低</li>
+</ul>
+</li>
+<li><strong>云计算</strong>接替传统服务器
+<ul>
+<li>仓储级计算机</li>
+<li>软件即服务（在本地和云上各运行一部分软件）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-程序性能及评价的方法">2. 程序性能及评价的方法</h3>
+<ul>
+<li><strong>程序性能的影响因素</strong>：
+<ul>
+<li><strong>算法</strong>：决定了语句和执行 I/O 操作的数量</li>
+<li><strong>编程语言、编译器和体系结构</strong>：决定了每条语句对应的机器指令数量</li>
+<li><strong>处理器和存储系统</strong>：决定了指令的执行速度</li>
+<li><strong>I/O 系统</strong>：决定了 I/O 操作的执行速度</li>
+</ul>
+</li>
+<li><strong>性能的衡量指标</strong>：执行时间（或吞吐量）
+<ul>
+<li>时间是唯一对计算机性能进行测量的完整而可靠的指标<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>CPU 时间</mtext><mo>=</mo><mfrac><mrow><mtext>指令数</mtext><mo>×</mo><mtext>CPI</mtext></mrow><mtext>时钟频率</mtext></mfrac></mrow><annotation encoding="application/x-tex">\text{CPU 时间} = \frac{\text{指令数} \times \text{CPI}}{\text{时钟频率}}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord">CPU </span><span class="mord cjk_fallback">时间</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0463em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord cjk_fallback">时钟频率</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord cjk_fallback">指令数</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord text"><span class="mord">CPI</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+</li>
+<li><strong>算法、编程语言、编译器</strong>：影响指令数和 CPI</li>
+<li><strong>指令集体系结构</strong>：影响指令数、CPI 和时钟频率</li>
+</ul>
+</li>
+<li><strong>基准测评程序（benchmark）</strong>：
+<ul>
+<li>不同指令架构需使用对应编译的测试集</li>
+<li>通常用<strong>高级语言</strong>编写，依赖编译器优化生成高效代码</li>
+<li>广泛应用于计算机性能评估</li>
+</ul>
+</li>
+<li><strong>性能的提升方法</strong>：
+<ul>
+<li><strong>并行</strong>：
+<ul>
+<li><strong>数据级并行</strong>：子字并行</li>
+<li><strong>指令级并行</strong>：多指令发射和乱序执行（循环展开）</li>
+<li><strong>线程级并行</strong>：多核硬件（循环并行）</li>
+</ul>
+</li>
+<li><strong>存储层次</strong>：高速缓存分块技术</li>
+<li><strong>流水线</strong>、<strong>预测</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="3-8-个伟大的思想所指代的意义">3. 8 个伟大的思想所指代的意义</h3>
+<ol>
+<li>面向<strong>摩尔定律</strong>设计</li>
+<li>使用<strong>抽象</strong>简化设计</li>
+<li>​加速<strong>经常性</strong>事件</li>
+<li>通过<strong>并行</strong>提高性能</li>
+<li>通过<strong>流水线</strong>提高性能</li>
+<li>通过<strong>预测</strong>提高性能</li>
+<li>​<strong>存储层次</strong></li>
+<li>​通过冗余提高<strong>可靠</strong>性</li>
+</ol>
+<h3 id="4-计算机的组成部分">4. 计算机的组成部分</h3>
+<ul>
+<li><strong>软件</strong>：
+<ul>
+<li><strong>系统软件</strong>：操作系统、编译器、加载程序、汇编器等</li>
+<li><strong>应用软件</strong>：数据库系统等</li>
+</ul>
+</li>
+<li><strong>硬件</strong>：输入部件、输出部件、存储器、数据通路（运算器）、控制器
+<ul>
+<li>数据通路和控制器构成了处理器</li>
+</ul>
+</li>
+</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-0a3dcba1" role="button" aria-expanded="false" aria-controls="collapse-0a3dcba1">
+        <div class="fold-arrow">▶</div>补充：普林斯顿架构 和 哈佛架构 的对比
+      </div>
+      <div class="fold-collapse collapse" id="collapse-0a3dcba1">
+        <div class="fold-content">
+          <h4 id="普林斯顿架构（冯·诺伊曼架构）">普林斯顿架构（冯·诺伊曼架构）</h4><ul><li>特点<ul><li><strong>​统一存储体</strong>：指令和数据存放在同一存储器中，均以二进制形式存储</li><li><strong>​统一编址</strong>：内存和 I/O 端口共享唯一的地址空间</li><li><strong>​共享总线</strong>：指令和数据通过同一总线传输，按地址逐行存取</li></ul></li><li>优点<ul><li><strong>​设计简单</strong>：硬件结构单一，复杂度低</li><li><strong>​灵活性强</strong>：存储器空间动态分配；程序可动态修改自身代码</li><li><strong>成本低</strong>：节省硬件资源</li></ul></li><li>缺点<ul><li><strong>​性能瓶颈</strong>：指令取指与数据存取无法并行，效率受限</li><li><strong>​安全性风险</strong>：指令与数据混存可能导致程序被意外修改</li></ul></li></ul><h4 id="哈佛架构">哈佛架构</h4><ul><li>特点<ul><li><strong>​分离存储体</strong>：指令存储器和数据存储器物理隔离，独立编址</li><li><strong>​独立总线</strong>：指令和数据通过不同总线传输，支持并行访问</li></ul></li><li>优点<ul><li><strong>​高并行性</strong>：指令与数据并行存取，消除总线竞争，提升执行速度</li><li><strong>​安全性高</strong>：代码与数据隔离，防止程序被篡改</li><li><strong>​实时性强</strong>：适用于嵌入式系统和高吞吐量场景</li></ul></li><li>缺点<ul><li><strong>硬件复杂</strong>：需独立的总线和存储控制器</li><li><strong>灵活性差</strong>：指令与数据存储器容量固定；程序无法动态修改自身代码</li><li><strong>成本高</strong>：需要更多硬件资源</li></ul></li></ul><h4 id="小结">小结</h4><table><thead><tr><th style="text-align:center">​对比维度</th><th style="text-align:center">​普林斯顿架构</th><th style="text-align:center">​哈佛架构</th></tr></thead><tbody><tr><td style="text-align:center">​存储体设计</td><td style="text-align:center">指令与数据共享存储体</td><td style="text-align:center">指令与数据分离存储体</td></tr><tr><td style="text-align:center">​总线类型</td><td style="text-align:center">单一总线，分时复用</td><td style="text-align:center">独立指令总线和数据总线</td></tr><tr><td style="text-align:center">​性能瓶颈</td><td style="text-align:center">存在冯·诺依曼瓶颈</td><td style="text-align:center">并行访问，无总线竞争</td></tr><tr><td style="text-align:center">​典型应用</td><td style="text-align:center">通用计算机（如PC、服务器）</td><td style="text-align:center">嵌入式系统、DSP、物联网设备</td></tr><tr><td style="text-align:center">​成本与复杂度</td><td style="text-align:center">低</td><td style="text-align:center">高</td></tr></tbody></table>
+        </div>
+      </div>
+    </div>
+<h3 id="5-指令集体系结构（ISA）">5. 指令集体系结构（ISA）</h3>
+<ul>
+<li><strong>指令集体系结构（ISA）</strong>：硬件和底层软件之间的接口
+<ul>
+<li>包含了编写二进制机器语言程序所需的全部信息，如指令、I/O 设备等</li>
+</ul>
+</li>
+</ul>
+<h3 id="6-CPI、降低功耗的方法">6. CPI、降低功耗的方法</h3>
+<ul>
+<li><strong>CPI</strong>：算法、编程语言、编译器、ISA、硬件都会影响 CPI</li>
+<li><strong>降低功耗的方法</strong>：
+<ul>
+<li><strong>硬件</strong>：降低时钟频率、降低电压、采用低功耗器件（如漏电流更小的晶体管）</li>
+<li><strong>软件</strong>：优化算法、编译器优化等</li>
+</ul>
+</li>
+</ul>
+<h3 id="7-单处理器和多处理器">7. 单处理器和多处理器</h3>
+<ul>
+<li><strong>多核处理器</strong>：一个芯片上有多个处理器</li>
+<li>需要显式地并行编程，挑战在于提高性能、负载均衡、通信和同步</li>
+</ul>
+<h2 id="第二章-计算机的语言">第二章 计算机的语言</h2>
+<h3 id="1-指令集，CISC-和-RISC，RISC-V">1. 指令集，CISC 和 RISC，RISC-V</h3>
+<ul>
+<li><strong>指令集</strong>：一台计算机的全部指令</li>
+<li><strong>CISC 和 RISC</strong>：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">对比项目</th>
+<th style="text-align:center">CISC</th>
+<th style="text-align:center">RISC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">指令系统</td>
+<td style="text-align:center">复杂，庞大</td>
+<td style="text-align:center">简单，精简</td>
+</tr>
+<tr>
+<td style="text-align:center">指令数目</td>
+<td style="text-align:center">一般大于 200 条</td>
+<td style="text-align:center">一般小于 100 条</td>
+</tr>
+<tr>
+<td style="text-align:center">指令字长</td>
+<td style="text-align:center">不固定</td>
+<td style="text-align:center">定长</td>
+</tr>
+<tr>
+<td style="text-align:center">可访存指令</td>
+<td style="text-align:center">不加限制</td>
+<td style="text-align:center">只有 LOAD / STORE 指令</td>
+</tr>
+<tr>
+<td style="text-align:center">各种指令执行时间</td>
+<td style="text-align:center">相差较大</td>
+<td style="text-align:center">绝大多数在一个周期内完成</td>
+</tr>
+<tr>
+<td style="text-align:center">各种指令使用频度</td>
+<td style="text-align:center">相差很大</td>
+<td style="text-align:center">都比较常用</td>
+</tr>
+<tr>
+<td style="text-align:center">通用寄存器数量</td>
+<td style="text-align:center">较少</td>
+<td style="text-align:center">多</td>
+</tr>
+<tr>
+<td style="text-align:center">目标代码</td>
+<td style="text-align:center">难以用优化编译生成高效的目标代码程序</td>
+<td style="text-align:center">采用优化的编译程序，生成代码较为高效</td>
+</tr>
+<tr>
+<td style="text-align:center">控制方式</td>
+<td style="text-align:center">绝大多数为微程序控制</td>
+<td style="text-align:center">绝大多数为组合逻辑控制</td>
+</tr>
+<tr>
+<td style="text-align:center">指令流水线</td>
+<td style="text-align:center">可以通过一定方式实现</td>
+<td style="text-align:center">必须实现</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>RISC-V 的特点</strong>：定长指令、精简指令集、32 个 通用寄存器</li>
+</ul>
+<h3 id="2-指令，操作数、寄存器、立即数、有符号、无符号、符号扩展，不同进制的数值转换">2. 指令，操作数、寄存器、立即数、有符号、无符号、符号扩展，不同进制的数值转换</h3>
+<ul>
+<li><strong>指令</strong>：RISC-V 的常见指令</li>
+</ul>
+<p><img src="img1.png" srcset="/img/loading.gif" lazyload alt="RISC-V 汇编语言1"></p>
+<p><img src="img2.png" srcset="/img/loading.gif" lazyload alt="RISC-V 汇编语言2"></p>
+<ul>
+<li>
+<p><strong>操作数</strong>：</p>
+<ul>
+<li><strong>寄存器操作数</strong>：32 个 64 位寄存器（<strong>字表示 32 位</strong>）</li>
+<li><strong>存储器操作数</strong>：内存按字节编址，小端模式存储，无对齐限制
+<ul>
+<li><strong>小端模式</strong>：低位字节位于字中的低地址</li>
+</ul>
+</li>
+<li><strong>立即数操作数</strong></li>
+</ul>
+</li>
+<li>
+<p><strong>数字的表示</strong>：</p>
+<ul>
+<li><strong>有符号整数</strong>：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mo>−</mo><msub><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub><msup><mn>2</mn><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>+</mo><msub><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>2</mn></mrow></msub><msup><mn>2</mn><mrow><mi>n</mi><mo>−</mo><mn>2</mn></mrow></msup><mo>+</mo><mo>⋯</mo><mo>+</mo><msub><mi>x</mi><mn>1</mn></msub><msup><mn>2</mn><mn>1</mn></msup><mo>+</mo><msub><mi>x</mi><mn>0</mn></msub><msup><mn>2</mn><mn>0</mn></msup></mrow><annotation encoding="application/x-tex">x = -x_{n-1} 2^{n-1} + x_{n-2} 2^{n-2} + \cdots + x_1 2^1 + x_0 2^0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.0224em;vertical-align:-0.2083em;"></span><span class="mord">−</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0224em;vertical-align:-0.2083em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">2</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="minner">⋯</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9641em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9641em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span></span></span></span></span></span></span></span>，表示范围：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><msup><mn>2</mn><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>∼</mo><msup><mn>2</mn><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">-2^{n-1} \sim 2^{n - 1} - 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span></li>
+<li><strong>有符号数取负</strong>：按位取反再加 1</li>
+<li><strong>符号扩展</strong>：把符号位复制到左边</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-指令集设计的原则：RISC-V-的各种指令类型、寻址模式和基本的算术运算">3. 指令集设计的原则：RISC-V 的各种指令类型、寻址模式和基本的算术运算</h3>
+<ul>
+<li><strong>指令集设计原则</strong>：
+<ul>
+<li><strong>简单源于规整</strong>：易于实现，成本更低，性能更高</li>
+<li><strong>更少则更快</strong>：过多的存储器会增加时钟周期</li>
+<li><strong>优秀的设计需要适当的折中</strong></li>
+</ul>
+</li>
+<li><strong>RISC-V 的指令类型</strong>：</li>
+</ul>
+<p><img src="img3.png" srcset="/img/loading.gif" lazyload alt="RISC-V 的指令类型"></p>
+<ul>
+<li><strong>寻址模式</strong>：立即数寻址、寄存器寻址、基址寻址、PC 相对寻址
+<ul>
+<li><strong>PC 相对寻址</strong>：目标地址 = PC + 立即数 × 2</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-指令简单分类，了解简单程序编程，子程序调用方法和堆栈操作">4. 指令简单分类，了解简单程序编程，子程序调用方法和堆栈操作</h3>
+<ul>
+<li><strong>指令的简单分类</strong>：数据传输指令、算术运算指令、逻辑运算指令、移位运算指令、条件分支指令、无条件跳转指令</li>
+<li><strong>简单程序编程</strong>：分支结构、循环结构</li>
+<li><strong>子程序调用方法</strong>：将参数放在过程可以访问到的位置 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> 获取过程所需的存储空间 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> 执行过程中的操作 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> 将结果值放在调用程序可以访问到的位置 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> 将控制返回到初始点
+<ul>
+<li><strong>过程调用</strong>：将下一条指令的地址（PC + 4）保存在 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">1</mn></mrow><annotation encoding="application/x-tex">\mathtt{x1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x1</span></span></span></span></span> 中，跳转到目标地址<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs riscv">jal x1, ProcedureLabel<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>过程返回</strong>：跳转到 0 + <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">1</mn></mrow><annotation encoding="application/x-tex">\mathtt{x1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x1</span></span></span></span></span> 中保存的地址，把 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">0</mn></mrow><annotation encoding="application/x-tex">\mathtt{x0}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x0</span></span></span></span></span> 用作目的寄存器<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs riscv">jalr x0, 0(x1)<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>寄存器约定</strong>：
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">10</mn></mrow><mo>∼</mo><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">17</mn></mrow></mrow><annotation encoding="application/x-tex">\mathtt{x10} \sim \mathtt{x17}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x10</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x17</span></span></span></span></span>：参数寄存器，用于传递参数或返回值</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">1</mn></mrow><annotation encoding="application/x-tex">\mathtt{x1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x1</span></span></span></span></span>：返回地址寄存器，用于返回到起始点</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">5</mn></mrow><mo>∼</mo><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">7</mn></mrow></mrow><annotation encoding="application/x-tex">\mathtt{x5} \sim \mathtt{x7}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x5</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x7</span></span></span></span></span>，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">28</mn></mrow><mo>∼</mo><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">31</mn></mrow></mrow><annotation encoding="application/x-tex">\mathtt{x28} \sim \mathtt{x31}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x28</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x31</span></span></span></span></span>: 临时寄存器，被调用者不需要保留其中的值</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">8</mn></mrow><mo>∼</mo><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">9</mn></mrow></mrow><annotation encoding="application/x-tex">\mathtt{x8} \sim \mathtt{x9}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x8</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x9</span></span></span></span></span>，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">18</mn></mrow><mo>∼</mo><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">27</mn></mrow></mrow><annotation encoding="application/x-tex">\mathtt{x18} \sim \mathtt{x27}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x18</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x27</span></span></span></span></span>: 保存寄存器，如用到这些寄存器，被调用者需先保存原值，用完再恢复原值</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>堆栈操作</strong>：
+<ul>
+<li><strong>栈指针</strong>（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="monospace">s</mi><mi mathvariant="monospace">p</mi></mrow><annotation encoding="application/x-tex">\mathtt{sp}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6528em;vertical-align:-0.2222em;"></span><span class="mord"><span class="mord mathtt">sp</span></span></span></span></span> 或 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">2</mn></mrow><annotation encoding="application/x-tex">\mathtt{x2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x2</span></span></span></span></span>）指向栈顶</li>
+<li><strong>帧指针</strong>（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="monospace">f</mi><mi mathvariant="monospace">p</mi></mrow><annotation encoding="application/x-tex">\mathtt{fp}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.2222em;"></span><span class="mord"><span class="mord mathtt">fp</span></span></span></span></span> 或 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">8</mn></mrow><annotation encoding="application/x-tex">\mathtt{x8}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x8</span></span></span></span></span>）指向帧的第一个双字</li>
+<li>注意，栈向<strong>低地址</strong>方向扩展</li>
+</ul>
+</li>
+</ul>
+<p><img src="img4.png" srcset="/img/loading.gif" lazyload alt="过程调用之前、之中和之后栈的分配情况"></p>
+<h3 id="5-常量的使用、同步指令">5. 常量的使用、同步指令</h3>
+<ul>
+<li><strong>32 位常量</strong>：加载 20 位常量到 rd[31:12]，符号扩展 rd[63:32]，将 rd[11:0] 清零</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs riscv">lui rd, constant<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>同步指令</strong>：两个处理器共享存储器中的某一位置
+<ul>
+<li><strong>预留取数</strong>：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs riscv">lr.d rd,(rs1)<br></code></pre></td></tr></table></figure>
+<ul>
+<li>从地址 rs1 处取数，保存到 rd</li>
+<li>对内存地址设置预留</li>
+</ul>
+</li>
+<li><strong>条件存数</strong>：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs riscv">sc.d rd,rs2,(rs1)<br></code></pre></td></tr></table></figure>
+<ul>
+<li>将 rs2 的内容保存到地址 rs1</li>
+<li>如果从 <code>lr.d</code> 之后该位置没有被更改则执行成功，在 rd 中返回 0</li>
+<li>如果该位置被更改则执行失败，在 rd 中返回非 0 值</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="6-RISC-V-的指令集相对于-x86-的优点">6. RISC-V 的指令集相对于 x86 的优点</h3>
+<ul>
+<li><strong>更能充分利用芯片面积</strong>：CISC 采用微程序控制，其控制存储器占 CPU 芯片面积的 50% 以上；而 RISC 采用组合逻辑控制，其硬布线逻辑只占 CPU 芯片面积的 10% 左右。</li>
+<li><strong>运算速度快</strong>：RISC 的指令数、寻址方式和指令格式种类少，又设有多个通用寄存器，采用流水线技术，所以运算速度更快，大多数指令在一个时钟周期内完成。</li>
+<li><strong>便于设计、成本低、可靠性高</strong>：RISC 指令系统简单，因此机器设计周期短；其逻辑简单，出错概率低，有错也易发现，因此可靠性高。</li>
+<li><strong>有利于编译程序代码优化</strong>：RISC 指令类型少，寻址方式少，使编译程序容易选择更有效的指令和寻址方式，并适当地调整指令顺序，使得代码执行更高效化。</li>
+</ul>
+<h3 id="7-编译器，汇编器有关的概念">7. 编译器，汇编器有关的概念</h3>
+<ul>
+<li><strong>编译器</strong>：将高级语言程序转换为汇编语言程序（或直接生成目标模块）</li>
+<li><strong>汇编器</strong>：将汇编语言程序转换为目标模块</li>
+<li><strong>目标模块(.o)的组成</strong>：
+<ul>
+<li>头：描述目标模块的内容</li>
+<li>代码段：翻译后的指令</li>
+<li>静态数据段：分配的数据，作用于程序生命周期</li>
+<li>重定位信息：依赖于程序加载的绝对地址的内容（用于加载程序）</li>
+<li>符号表：匹配标签名和指令所在地址及外部引用（用于链接模块）</li>
+<li>调试信息：用于关联到源代码</li>
+</ul>
+</li>
+</ul>
+<h2 id="第三章-计算机的算术运算">第三章 计算机的算术运算</h2>
+<h3 id="1-数字的计算机表达方法">1. 数字的计算机表达方法</h3>
+<ul>
+<li><strong>整数和浮点数的表示</strong>：见其他部分</li>
+</ul>
+<h3 id="2-整数的运算：加法和减法、乘法和除法处理溢出">2. 整数的运算：加法和减法、乘法和除法处理溢出</h3>
+<ul>
+<li><strong>上溢</strong>：一个数字的绝对值过大，超出数据类型的表示范围</li>
+<li><strong>下溢</strong>：一个数字的绝对值过小，无法在给定的精度下表示</li>
+<li><strong>加法和减法的溢出判断</strong>：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">操作</th>
+<th style="text-align:center">操作数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span></span></span></span> 符号</th>
+<th style="text-align:center">操作数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span> 符号</th>
+<th style="text-align:center">溢出条件（结果符号）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>+</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">A+B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\ge 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\ge 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">&lt;0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></td>
+</tr>
+<tr>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>+</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">A+B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">&lt;0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">&lt;0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\ge 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></td>
+</tr>
+<tr>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>−</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">A-B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\ge 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">&lt;0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">&lt;0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></td>
+</tr>
+<tr>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>−</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">A-B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">&lt;0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\ge 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\ge 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>乘法和除法的溢出处理</strong>：
+<ul>
+<li><strong>乘法</strong>：用 <code>mulh</code> / <code>mulhu</code> 的结果来检查 64 位的溢出</li>
+<li><strong>除法</strong>：不产生错误，只返回预先定义的结果</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-浮点实数：表示及运算">3. 浮点实数：表示及运算</h3>
+<ul>
+<li><strong>浮点数的表示</strong>：
+<ul>
+<li>
+<p><strong>规格化的科学计数法</strong>： <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1.</mn><mi>x</mi><mi>x</mi><mi>x</mi><mi>x</mi><mi>x</mi><mi>x</mi><mi>x</mi><mi>x</mi><msub><mi>x</mi><mn>2</mn></msub><mo>×</mo><msup><mn>2</mn><mrow><mi>y</mi><mi>y</mi><mi>y</mi><mi>y</mi></mrow></msup></mrow><annotation encoding="application/x-tex">1.xxxxxxxxx_2 \times 2^{yyyy}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7944em;vertical-align:-0.15em;"></span><span class="mord">1.</span><span class="mord mathnormal">xxxxxxxx</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6644em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">yyyy</span></span></span></span></span></span></span></span></span></span></span></span></p>
+</li>
+<li>
+<p><strong>IEEE 浮点格式</strong>：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">符号位</th>
+<th style="text-align:center">指数位</th>
+<th style="text-align:center">尾数位</th>
+<th style="text-align:center">偏阶</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">单精度（32位）</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">8</td>
+<td style="text-align:center">23</td>
+<td style="text-align:center">127</td>
+</tr>
+<tr>
+<td style="text-align:center">双精度（64位）</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">11</td>
+<td style="text-align:center">52</td>
+<td style="text-align:center">1023</td>
+</tr>
+</tbody>
+</table>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>x</mi><mo>=</mo><mo stretchy="false">(</mo><mo>−</mo><mn>1</mn><msup><mo stretchy="false">)</mo><mi>S</mi></msup><mo>×</mo><mo stretchy="false">(</mo><mn>1</mn><mo>+</mo><mtext>尾数</mtext><mo stretchy="false">)</mo><mo>×</mo><msup><mn>2</mn><mrow><mo stretchy="false">(</mo><mtext>指数</mtext><mo>−</mo><mtext>偏阶</mtext><mo stretchy="false">)</mo></mrow></msup></mrow><annotation encoding="application/x-tex">x = (-1)^S × (1 + \text{尾数}) × 2^{(\text{指数} - \text{偏阶})}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.1413em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">−</span><span class="mord">1</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8913em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05764em;">S</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord text"><span class="mord cjk_fallback">尾数</span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.938em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.938em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord text mtight"><span class="mord cjk_fallback mtight">指数</span></span><span class="mbin mtight">−</span><span class="mord text mtight"><span class="mord cjk_fallback mtight">偏阶</span></span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span></span></span></span></span></p>
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span>：符号位（0 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⇒</mo></mrow><annotation encoding="application/x-tex">\Rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">⇒</span></span></span></span> 非负数，1 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⇒</mo></mrow><annotation encoding="application/x-tex">\Rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">⇒</span></span></span></span> 负数）</li>
+<li>规格化二进制数的前导位 1 是隐含的，即有效位数是 24 或 53 位</li>
+<li>指数 = 实际指数 + 偏阶</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>浮点数的加法</strong>：
+<ul>
+<li><strong>步骤</strong>：
+<ol>
+<li>对齐二进制小数点（右移指数小的数）</li>
+<li>将有效数字相加</li>
+<li>规格化结果并检查上溢 / 下溢</li>
+<li>舍入，如有需要再次规格化</li>
+</ol>
+</li>
+<li><strong>通常占几个周期</strong>，<strong>可流水线化</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="4-了解算术运行的硬件实现方法和特点">4. 了解算术运行的硬件实现方法和特点</h3>
+<ul>
+<li><strong>加法</strong>：通过超前进位加法器可分解为独立阶段，<strong>支持流水线化</strong></li>
+<li><strong>减法</strong>：通过补码转为加法实现，同样<strong>支持流水线化</strong></li>
+<li><strong>乘法</strong>：
+<ul>
+<li>
+<p><strong>串行乘法器</strong>：</p>
+<p><img src="img5.png" srcset="/img/loading.gif" lazyload alt="串行乘法器"></p>
+</li>
+<li>
+<p><strong>快速乘法器</strong>：每个乘数位提供一个 64 位加法器，<strong>可流水线化</strong></p>
+<p><img src="img6.png" srcset="/img/loading.gif" lazyload alt="快速乘法器"></p>
+</li>
+</ul>
+</li>
+<li><strong>除法</strong>：
+<ul>
+<li>
+<p><strong>除法器</strong>：</p>
+<p><img src="img7.png" srcset="/img/loading.gif" lazyload alt="除法器"></p>
+</li>
+<li>
+<p><strong>无法并行</strong>：减法取决于余数的符号，<strong>不能流水线化</strong></p>
+</li>
+<li>
+<p><strong>SRT 除法</strong>：可以通过预测多位商再纠正错误的方法来加速</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-RISC-V-的算术运行指令">5. RISC-V 的算术运行指令</h3>
+<ul>
+<li><strong>RISC-V 乘法指令</strong>：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">指令</th>
+<th style="text-align:center">功能描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>mul</code></td>
+<td style="text-align:center">取乘积低 64 位</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>mulh</code></td>
+<td style="text-align:center">有符号乘法取高 64 位</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>mulhu</code></td>
+<td style="text-align:center">无符号乘法取高64位</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>mulhsu</code></td>
+<td style="text-align:center">有符号 × 无符号取高 64 位</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>RISC-V 除法指令</strong>：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">指令</th>
+<th style="text-align:center">功能描述</th>
+<th style="text-align:center">指令</th>
+<th style="text-align:center">功能描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>div</code></td>
+<td style="text-align:center">有符号除法</td>
+<td style="text-align:center"><code>divu</code></td>
+<td style="text-align:center">无符号除法</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>rem</code></td>
+<td style="text-align:center">有符号取余</td>
+<td style="text-align:center"><code>remu</code></td>
+<td style="text-align:center">无符号取余</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>RISC-V 浮点指令</strong>：</li>
+</ul>
+<p><img src="img8.png" srcset="/img/loading.gif" lazyload alt="RISC-V 浮点指令"></p>
+<h3 id="6-子字并行，SIMD">6. 子字并行，SIMD</h3>
+<ul>
+<li><strong>子字并行</strong>：在一个宽字内部进行的并行操作
+<ul>
+<li>如：在 128 位加法器内并行操作 16 个 8 位操作数</li>
+<li>用于图像和音频应用对短向量的同时运算</li>
+<li>又称<strong>数据级并行</strong>、向量并行、SIMD (单指令多数据)</li>
+</ul>
+</li>
+</ul>
+<h3 id="7-结合律问题">7. 结合律问题</h3>
+<ul>
+<li><strong>浮点加法不满足结合律</strong>：
+<ul>
+<li><strong>原因</strong>：浮点算术精度有限</li>
+<li><strong>结果</strong>；并行计算机可能按不同顺序计算，导致不同结果</li>
+</ul>
+</li>
+</ul>
+<h3 id="8-运算精度和表达范围">8. 运算精度和表达范围</h3>
+<ul>
+<li><strong>浮点表示范围</strong>：
+<ul>
+<li>指数全 0 和全 1 为保留值</li>
+<li><strong>单精度</strong>：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>±</mo><mn>1.0</mn><mo>×</mo><msup><mn>2</mn><mrow><mo>−</mo><mn>126</mn></mrow></msup><mo>∼</mo><mo>±</mo><mn>2.0</mn><mo>×</mo><msup><mn>2</mn><mrow><mo>+</mo><mn>127</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\pm 1.0 \times 2^{-126} \sim \pm 2.0 \times 2^{+127}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">±</span><span class="mord">1.0</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">126</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">±</span><span class="mord">2.0</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">+</span><span class="mord mtight">127</span></span></span></span></span></span></span></span></span></span></span></span></li>
+<li><strong>双精度</strong>：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>±</mo><mn>1.0</mn><mo>×</mo><msup><mn>2</mn><mrow><mo>−</mo><mn>1022</mn></mrow></msup><mo>∼</mo><mo>±</mo><mn>2.0</mn><mo>×</mo><msup><mn>2</mn><mrow><mo>+</mo><mn>1023</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\pm 1.0 \times 2^{-1022} \sim \pm 2.0 \times 2^{+1023}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">±</span><span class="mord">1.0</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">1022</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">±</span><span class="mord">2.0</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">+</span><span class="mord mtight">1023</span></span></span></span></span></span></span></span></span></span></span></span></li>
+</ul>
+</li>
+<li><strong>浮点精度</strong>：
+<ul>
+<li><strong>单精度</strong>：约 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mrow><mo>−</mo><mn>23</mn></mrow></msup></mrow><annotation encoding="application/x-tex">2^{-23}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">23</span></span></span></span></span></span></span></span></span></span></span></span></li>
+<li><strong>双精度</strong>：约 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mrow><mo>−</mo><mn>52</mn></mrow></msup></mrow><annotation encoding="application/x-tex">2^{-52}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">52</span></span></span></span></span></span></span></span></span></span></span></span></li>
+</ul>
+</li>
+</ul>
+<h2 id="第四章-处理器">第四章 处理器</h2>
+<h3 id="1-RISC-V-的实现方法（单周期实现，流水线实现）">1. RISC-V 的实现方法（单周期实现，流水线实现）</h3>
+<ul>
+<li>做过实验了这个应该都会吧～</li>
+</ul>
+<h3 id="2-指令的执行过程，时序电路和组合电路">2. 指令的执行过程，时序电路和组合电路</h3>
+<ul>
+<li><strong>指令的执行过程</strong>：
+<ol>
+<li>根据当前 PC 值取指</li>
+<li>读取寄存器</li>
+<li>用 ALU 计算
+<ul>
+<li>算术运算结果</li>
+<li>用于取数 / 存数的存储器地址</li>
+<li>分支比较</li>
+</ul>
+</li>
+<li>访问数据存储器以取数 / 存数</li>
+<li>PC + 4 或 指向目标地址</li>
+</ol>
+</li>
+</ul>
+<h3 id="3-数据通路，ALU，控制单元">3. 数据通路，ALU，控制单元</h3>
+<ul>
+<li><strong>数据通路</strong>：</li>
+</ul>
+<p><img src="img9.png" srcset="/img/loading.gif" lazyload alt="RISC-V 指令系统核心集的简单数据通路"></p>
+<ul>
+<li><strong>ALU</strong>：算术逻辑单元，是组合逻辑电路</li>
+<li><strong>控制单元</strong>：从指令得到控制信号，是组合逻辑电路</li>
+</ul>
+<h3 id="4-单周期实现的性能问题">4. 单周期实现的性能问题</h3>
+<ul>
+<li><strong>时钟周期过长</strong>：为满足最长指令路径，导致周期过长
+<ul>
+<li><strong>违反设计原则</strong>：加速大概率事件</li>
+</ul>
+</li>
+<li><strong>扩展性差</strong>：无法支持浮点运算等复杂指令</li>
+<li><strong>吞吐量低</strong>：CPI = 1 但周期过长，实际吞吐量低</li>
+</ul>
+<h3 id="5-流水线的加速比，设计方法和指导原则">5. 流水线的加速比，设计方法和指导原则</h3>
+<ul>
+<li><strong>流水线加速比</strong>：等于流水线级数（各级耗时相同且大量指令）
+<ul>
+<li>若不平衡，时钟周期取决于最慢的操作</li>
+<li>通过<strong>提高吞吐量</strong>来提高性能</li>
+</ul>
+</li>
+<li><strong>面向流水线设计</strong>：指令长度相同、格式规整、存储器操作数只在 load / store 指令中</li>
+<li><strong>指导原则</strong>：加速大概率事件、指令级并行</li>
+</ul>
+<h3 id="6-五级流水线的实现方法，指令运行多周期流水图">6. 五级流水线的实现方法，指令运行多周期流水图</h3>
+<ul>
+<li><strong>五级流水线</strong>：
+<ol>
+<li><strong>IF</strong>：从指令存储器中读取指令</li>
+<li><strong>ID</strong>：指令译码以及读寄存器</li>
+<li><strong>EX</strong>：执行操作或计算地址</li>
+<li><strong>MEM</strong>：访问存储器操作数（如有）</li>
+<li><strong>WB</strong>：将结果写回寄存器（如有）</li>
+</ol>
+</li>
+<li><strong>实现</strong>：
+<ul>
+<li>增加各级间寄存器（用于保持前一周期产生的信息）</li>
+<li>保留目标寄存器号</li>
+</ul>
+</li>
+</ul>
+<p><img src="img10.png" srcset="/img/loading.gif" lazyload alt="流水线数据通路"></p>
+<h3 id="7-流水线的控制，指令冒险和解决方法">7. 流水线的控制，指令冒险和解决方法</h3>
+<ul>
+<li><strong>结构冒险</strong>：
+<ul>
+<li><strong>原因</strong>：所需资源正被占用</li>
+<li><strong>举例</strong>：第一条指令从存储器取数据的同时，第四条指令从同一存储器取指令</li>
+<li><strong>策略</strong>：分离指令和数据存储器或 cache（采用哈佛架构）</li>
+</ul>
+</li>
+<li><strong>数据冒险</strong>：
+<ul>
+<li><strong>原因</strong>：需要等待先前的指令完成数据读写</li>
+<li><strong>举例</strong>：一条加法指令后面紧跟着一条使用其结果的减法指令</li>
+<li><strong>策略</strong>：
+<ul>
+<li><strong>旁路</strong>（前推）：当算出结果就直接使用，不等到结果被存入寄存器</li>
+<li><strong>取数-使用型数据冒险</strong>：无法靠旁路来避免阻塞，需要<strong>阻塞 1 个周期</strong>（或重排代码解决）</li>
+<li><strong>阻塞方法</strong>：
+<ul>
+<li>强制将 ID/EX 寄存器中的控制信号置 0</li>
+<li>阻止 PC 和 IF/ID 寄存器更新</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>控制冒险</strong>：
+<ul>
+<li><strong>原因</strong>：对控制行为的决策依赖于先前的指令</li>
+<li><strong>举例</strong>：需要根据分支结果取得下一条指令</li>
+<li><strong>策略</strong>：
+<ul>
+<li><strong>分支预测</strong>
+<ul>
+<li><strong>简单方法</strong>：预测分支不发生</li>
+<li><strong>静态预测</strong>：基于典型的分支行为</li>
+<li><strong>动态预测</strong>：保存每个分支的历史记录并据此预测未来
+<ul>
+<li><strong>分支预测缓存</strong>：按分支指令地址索引，保存分支结果</li>
+<li><strong>2位预测</strong>：仅在连续两次预测错误时改变</li>
+<li><strong>分支目标缓存</strong>：使用一个缓存来保存目标地址</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>缩短分支延迟</strong>：将用于确定分支结果的硬件移到 ID 级，此时预测错误只需要<strong>阻塞 1 个周期</strong></li>
+<li><strong>阻塞方法</strong>：使用 IF.Flush 清空 IF/ID 寄存器中的指令字段</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="8-提升流水线性能的方法">8. 提升流水线性能的方法</h3>
+<ul>
+<li><strong>增加流水线级数</strong>：时钟周期更短，吞吐量更高</li>
+<li><strong>平衡各段延迟</strong>：拆分长周期阶段，最慢阶段决定整体频率</li>
+<li><strong>编译器辅助优化</strong>：重排代码，减少流水线停顿；循环展开，提高并行度</li>
+<li><strong>多发射技术</strong>：指令级并行，超标量、超长指令字</li>
+</ul>
+<h3 id="9-异常处理和中断机制对流水线运行的影响">9. 异常处理和中断机制对流水线运行的影响</h3>
+<ul>
+<li><strong>异常处理</strong>：
+<ul>
+<li><strong>保存发生异常的指令地址</strong>：SEPC（系统异常程序计数器）</li>
+<li><strong>记录异常发生的原因</strong>：SCAUSE（系统例外原因寄存器）</li>
+<li><strong>跳转到处理程序</strong>：
+<ul>
+<li>操作系统读取异常原因，并跳转相应处理程序</li>
+<li>决定采取的动作，如重启程序或终止程序</li>
+</ul>
+</li>
+<li><strong>向量式中断</strong>（另一种方式）：
+<ul>
+<li>处理程序的地址由中断原因决定（基址寄存器加上异常原因偏移）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>对流水线运行的影响</strong>：
+<ul>
+<li>清除流水线中之后的指令</li>
+<li>将例外入口地址送给 PC 寄存器</li>
+<li>将引发异常的指令地址保存在 SEPC 寄存器中</li>
+</ul>
+</li>
+</ul>
+<h3 id="10-指令级并行，多发射，多发射多周期流水图">10. 指令级并行，多发射，多发射多周期流水图</h3>
+<ul>
+<li><strong>多发射</strong>：一个时钟周期内发射多条指令</li>
+<li><strong>静态多发射</strong>：由<strong>编译器</strong>来支持指令打包和处理冒险
+<ul>
+<li><strong>超长指令字</strong>：将指令分组为发射包</li>
+</ul>
+</li>
+<li><strong>动态多发射</strong>：即超标量，由<strong>硬件</strong>来判断当前周期发射的指令数
+<ul>
+<li><strong>执行过程</strong>：取指和译码单元（按序发射）、功能单元（乱序执行）、提交单元（按序提交）</li>
+</ul>
+</li>
+</ul>
+<h3 id="11-循环展开，推测执行、态调度等技术与编译器和运行功耗等的关联">11. 循环展开，推测执行、态调度等技术与编译器和运行功耗等的关联</h3>
+<ul>
+<li><strong>循环展开</strong>：一种编译技术，复制循环体以展现更高的并行度
+<ul>
+<li><strong>寄存器重命名</strong>：避免循环带来的反相关</li>
+</ul>
+</li>
+<li><strong>推测执行</strong>：允许编译器或处理器<strong>猜测指令的行为</strong>，并允许其他与被推测指令相关的指令<strong>提前开始执行</strong>
+<ul>
+<li>要<strong>检查</strong>预测结果是否正确；若预测错误，要进行<strong>恢复</strong></li>
+<li><strong>编译器推测</strong>：根据推测结果重排指令，可以包含从错误中恢复的指令</li>
+<li><strong>硬件推测</strong>：缓存结果，直至确定结果正确；若推测错误，则清除缓存</li>
+</ul>
+</li>
+<li><strong>静态调度</strong>：<strong>编译器</strong>必须消除部分或全部冒险</li>
+<li><strong>动态调度</strong>：用<strong>硬件</strong>对指令执行顺序进行重排，避免了对编译器调度的需求
+<ul>
+<li>不是所有的流水线停顿都能静态预测、无法总是对分支做静态调度</li>
+</ul>
+</li>
+<li><strong>与运行功耗的关联</strong>：循环展开、推测错误、动态调度都会增大功耗</li>
+</ul>
+<h2 id="第五章-存储器层次结构">第五章 存储器层次结构</h2>
+<h3 id="1-局部性原理，存储器层级结构">1. 局部性原理，存储器层级结构</h3>
+<ul>
+<li><strong>时间局部性</strong>：如果某个数据项被访问，那么在不久的将来它可能再次被访问</li>
+<li><strong>空间局部性</strong>：如果某个数据项被访问，与它地址相邻的数据项可能很快也将被访问</li>
+<li><strong>存储器层次结构</strong>：磁盘 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> 主存储器 (DRAM) <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> cache (SRAM)
+<ul>
+<li><strong>特点</strong>：离处理器越近，访问速度越快，价格越昂贵，容量越小</li>
+<li><strong>目的</strong>：以最低的价格为用户提供最大容量的存储，同时访问速度与最快的存储相当</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-存储分类及使用上的特点">2. 存储分类及使用上的特点</h3>
+<ul>
+<li><strong>SRAM</strong>：易失性，用于高速缓存，不需要刷新</li>
+<li><strong>DRAM</strong>：易失性，用于主存，需要周期性刷新
+<ul>
+<li>具有行缓冲器，支持突发传输</li>
+</ul>
+</li>
+<li><strong>闪存</strong>：非易失性，写操作会对器件本身产生磨损（耗损均衡）</li>
+<li><strong>磁盘</strong>：非易失性，柱面、盘面、扇区</li>
+</ul>
+<h3 id="3-高速缓存存储器（直接映射、组相联、全相连；标记、有效位，块，命中，缺失；写直达，写回，写分配，写不分配）">3. 高速缓存存储器（直接映射、组相联、全相连；标记、有效位，块，命中，缺失；写直达，写回，写分配，写不分配）</h3>
+<ul>
+<li><strong>地址映射方式</strong>：
+<ul>
+<li><strong>直接映射</strong>：每个存储地址都被直接映射到 cache 中的确定位置
+<ul>
+<li><strong>cache 块号</strong>：由 <code>块地址 % cache块数</code> 决定</li>
+</ul>
+</li>
+<li><strong>全相连映射</strong>：数据块可以存放在 cache 的任意位置
+<ul>
+<li><strong>比对方式</strong>：每次搜索所有的项</li>
+</ul>
+</li>
+<li><strong>组相连映射</strong>：每个数据块在 cache 中有 n 个位置可放
+<ul>
+<li><strong>cache 组号</strong>：<code>块地址 % cache组数</code></li>
+<li><strong>比对方式</strong>：每次搜索给定组的所有项</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>cache 数据块</strong>：
+<ul>
+<li><strong>索引</strong>：用来选择数据块（块地址低位）</li>
+<li><strong>标记</strong>：记录块地址信息（块地址高位），用于确定所需数据块是否在 cache 中</li>
+<li><strong>有效位</strong>：表示该表项中是否保存了有效数据</li>
+</ul>
+</li>
+<li><strong>写策略</strong>：
+<ul>
+<li><strong>写直达</strong>：同时更新 cache 和主存，需写缓冲降低延迟
+<ul>
+<li><strong>写缺失处理</strong>：写分配（取入 cache 并更新）、写不分配（只更新主存）</li>
+</ul>
+</li>
+<li><strong>写回</strong>：仅更新 cache，替换时写回主存，需脏位标记修改过的块
+<ul>
+<li><strong>写缺失处理</strong>：通常写分配（取入 cache 并更新）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-Cache-性能的度量（平均访问时间，缺失代价；对程序性能评估时的影响）">4. Cache 性能的度量（平均访问时间，缺失代价；对程序性能评估时的影响）</h3>
+<ul>
+<li><strong>平均访问时间</strong>：<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>AMAT</mtext><mo>=</mo><mtext>命中时间</mtext><mo>+</mo><mtext>缺失率</mtext><mo>×</mo><mtext>缺失代价</mtext></mrow><annotation encoding="application/x-tex">\text{AMAT} = \text{命中时间} + \text{缺失率} × \text{缺失代价}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord">AMAT</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord text"><span class="mord cjk_fallback">命中时间</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord text"><span class="mord cjk_fallback">缺失率</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord cjk_fallback">缺失代价</span></span></span></span></span></span></p>
+</li>
+<li><strong>缺失代价</strong>：
+<ul>
+<li><strong>强制缺失</strong>：首次访问一个块时</li>
+<li><strong>容量缺失</strong>：由于 cache 的大小有限，被替换掉的块随后又被访问到</li>
+<li><strong>冲突缺失</strong>：在非全相连 cache 中，很多块为了竞争同一个组导致的缺失</li>
+</ul>
+</li>
+<li><strong>对性能评估的影响</strong>：降低缺失代价或缺失率，可以提高性能</li>
+</ul>
+<h3 id="5-Cache-的替换规则，多级-Cache-的设计目标">5. Cache 的替换规则，多级 Cache 的设计目标</h3>
+<ul>
+<li><strong>替换规则</strong>：
+<ul>
+<li><strong>随机替换</strong></li>
+<li><strong>最近最少使用（LRU）</strong>：优先替换最久未访问的块</li>
+</ul>
+</li>
+<li><strong>多级 cache 的设计目标</strong>：降低缺失代价
+<ul>
+<li><strong>一级 cache</strong>：侧重于最小命中时间，以提高工作频率</li>
+<li><strong>二级 cache</strong>：侧重于低缺失率，避免访问主存储器</li>
+</ul>
+</li>
+</ul>
+<h3 id="6-与高级-CPU、算法等的交互作用影响（如何充分发挥-Cache-的作用）">6. 与高级 CPU、算法等的交互作用影响（如何充分发挥 Cache 的作用）</h3>
+<ul>
+<li><strong>与高级 CPU 的交互作用</strong>：
+<ul>
+<li>乱序执行 CPU 能在 cache 缺失期间执行指令</li>
+<li>缺失造成的影响取决于程序的数据流动，需要进行系统仿真</li>
+</ul>
+</li>
+<li><strong>与算法的交互作用</strong>：
+<ul>
+<li>缺失取决于存储器的访问模式，包括算法行为和编译器优化</li>
+</ul>
+</li>
+<li><strong>如何充分发挥 cache 的作用</strong>：使用乱序执行 CPU、算法优化、编译器优化、循环展开</li>
+</ul>
+<h3 id="7-可信度、可靠性">7. 可信度、可靠性</h3>
+<ul>
+<li><strong>可靠性</strong>：系统能够持续提供用户需求的服务的度量
+<ul>
+<li><strong>度量方法</strong>：平均无故障时间（MTTF，mean time to failure）</li>
+<li>平均修复时间（MTTR，mean time to repair）</li>
+<li>平均失效间隔时间（MTBF，mean time between failures）</li>
+</ul>
+</li>
+</ul>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>MTBF</mtext><mo>=</mo><mtext>MTTF</mtext><mo>+</mo><mtext>MTTR</mtext></mrow><annotation encoding="application/x-tex">\text{MTBF} = \text{MTTF} + \text{MTTR}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord">MTBF</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord text"><span class="mord">MTTF</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord">MTTR</span></span></span></span></span></span></p>
+<ul>
+<li><strong>可用性</strong>：系统正常工作时间在连续两次服务中断间隔时间中所占的比例</li>
+</ul>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>可用性</mtext><mo>=</mo><mfrac><mtext>MTTF</mtext><mrow><mtext>MTTF</mtext><mo>+</mo><mtext>MTTR</mtext></mrow></mfrac></mrow><annotation encoding="application/x-tex">\text{可用性} = \frac{\text{MTTF}}{\text{MTTF} + \text{MTTR}}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord cjk_fallback">可用性</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.1297em;vertical-align:-0.7693em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord">MTTF</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord text"><span class="mord">MTTR</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord">MTTF</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<h3 id="8-虚拟机技术，存储器保护技术">8. 虚拟机技术，存储器保护技术</h3>
+<ul>
+<li><strong>虚拟机作用</strong>：更好地隔离多客户、避免安全性和可靠性问题、有助于资源共享</li>
+<li><strong>虚拟机监视器</strong>：支持虚拟机的软件
+<ul>
+<li>将虚拟资源映射到物理资源、隔离客户端状态</li>
+<li>控制特权态的访问、I/O、异常和中断等</li>
+</ul>
+</li>
+<li><strong>指令集支持</strong>：分为用户模式和系统模式
+<ul>
+<li>特权指令仅在系统模式下可用（用户状态下会内陷）</li>
+<li>所有物理资源只允许用特权指令访问</li>
+</ul>
+</li>
+<li><strong>存储器保护技术</strong>：
+<ul>
+<li>不同任务可以共享其部分虚拟地址空间，但要防止不当访问</li>
+<li>页表和其他状态信息只在超级用户模式下可访问</li>
+</ul>
+</li>
+</ul>
+<h3 id="9-虚拟存储器（地址转换、页，页表、缺页、缺页代价、缺页处理；页表的控制、存储和组织；TLB，TLB-的缺失及处理方法，TLB-与-Cache-的关系）">9. 虚拟存储器（地址转换、页，页表、缺页、缺页代价、缺页处理；页表的控制、存储和组织；TLB，TLB 的缺失及处理方法，TLB 与 Cache 的关系）</h3>
+<ul>
+<li><strong>虚拟存储器</strong>：将主存储器作为辅存的 cache 使用</li>
+<li><strong>地址转换</strong>：CPU 和 OS 将虚拟地址转换为物理地址
+<ul>
+<li><strong>虚拟地址</strong>：高位为虚拟页号，低位为页内偏移</li>
+<li><strong>物理地址</strong>：高位为物理页号，低位为页内偏移</li>
+<li><strong>页表</strong>：位于内存中，保存着虚拟页号和物理页号之间的转换关系</li>
+</ul>
+</li>
+<li><strong>缺页代价</strong>：缺页时必须从磁盘取这一页</li>
+<li><strong>缺页处理</strong>：CPU 中断后 OS 处理（对比 cache 缺失由硬件处理）</li>
+<li><strong>页表</strong>：页表项构成的数组，按虚页号索引
+<ul>
+<li><strong>有效位为有效</strong>：页表项存储物理页号及其他状态位（引用位、脏位等）</li>
+<li><strong>有效位为无效</strong>：页表项指向它在磁盘交换区中的位置</li>
+</ul>
+</li>
+<li><strong>替换策略</strong>：最近最少使用（LRU），降低缺页率</li>
+<li><strong>写策略</strong>：写回策略，原因是写磁盘时间开销大</li>
+<li><strong>快表（TLB）</strong>：页表的 cache，记录最近使用的地址映射信息，避免每次访问页表</li>
+<li><strong>TLB 缺失</strong>：
+<ul>
+<li><strong>页在内存中</strong>：从内存读页表项，更新 TLB，然后重试</li>
+<li><strong>页不在内存中</strong>：OS 进行取页并更新页表，然后重启引起缺页的指令</li>
+</ul>
+</li>
+<li><strong>TLB 和 cache 的关系</strong>：</li>
+</ul>
+<pre><code class=" mermaid">graph TD
+    A[虚拟地址] --&gt; B&#123;TLB命中?&#125;
+    B -- 是 --&gt; C[获取物理地址]
+    B -- 否 --&gt; D[查页表]
+    D --&gt; E&#123;页在内存?&#125;
+    E -- 是 --&gt; F[更新TLB并获取物理地址]
+    E -- 否 --&gt; G&#123;主存有空闲页?&#125;
+    G -- 否 --&gt; H[磁盘页读入主存]
+    G -- 否 --&gt; I[选一页替换]
+    I --&gt; H[页读入主存]
+    H --&gt; J[更新页表和TLB]
+    C --&gt; K[cache命中?]
+    F --&gt; K[cache命中?]
+    K -- 是 --&gt; L[读cache数据]
+    K -- 否 --&gt; M&#123;cache有空闲块?&#125;
+    M -- 是 --&gt; N[主存块读入cache]
+    M -- 否 --&gt; O[选一块替换]
+    O --&gt; N[主存块读入cache]
+    N --&gt; L[读cache数据]
+</code></pre>
+<h3 id="10-Cache-一致性定义，Cache-一致性协议">10. Cache 一致性定义，Cache 一致性协议</h3>
+<ul>
+<li><strong>cache 一致性定义</strong>：
+<ul>
+<li><strong>非正式定义</strong>：读操作返回最新写入的值</li>
+<li><strong>正式定义</strong>：
+<ul>
+<li>P 写 X，P 读 X（其间没有写操作），那么读操作返回写操作的值</li>
+<li>P1 写 X， P2 读 X（充分长时间后），那么读操作返回写操作的值</li>
+<li>P1 写 X，P2 写 X，那么所有处理器看到的写操作顺序相同</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>cache 一致性协议</strong>：
+<ul>
+<li><strong>监听协议</strong>：每个 cache 监视总线的读/写
+<ul>
+<li><strong>写无效协议</strong>：cache 要写一个块时，获得独占访问；写入时使得其他 cache 中的副本无效</li>
+</ul>
+</li>
+<li><strong>基于目录的协议</strong>：cache 和存储器记录一个目录中块的共享状态</li>
+</ul>
+</li>
+</ul>
+<h3 id="11-存储器一致性问题">11. 存储器一致性问题</h3>
+<ul>
+<li><strong>存储器一致性问题</strong>：写入值何时可以被其他读取操作看到
+<ul>
+<li>直到所有处理器都看见一个写操作时，写操作才完成</li>
+<li>处理器不会重排写操作的顺序（但可以重排读操作的顺序）</li>
+</ul>
+</li>
+</ul>
+<h3 id="12-DGEMM-算法的优化方案">12. DGEMM 算法的优化方案</h3>
+<ul>
+<li><strong>目标</strong>：在数据被替换之前尽量多用到</li>
+<li><strong>优化方法</strong>：分块放入 cache 运算</li>
+</ul>
+<h2 id="第六章-从客户机到云的并行处理器">第六章 从客户机到云的并行处理器</h2>
+<h3 id="1-多处理器：伸缩性、可用性、功耗效率">1. 多处理器：伸缩性、可用性、功耗效率</h3>
+<ul>
+<li><strong>伸缩性</strong>：计算能力提升以处理更大规模任务</li>
+<li><strong>可用性</strong>：单个处理器故障时，其余处理器可继续提供服务</li>
+<li><strong>功耗效率</strong>：相同计算任务，多核协作比单核高频运行更省电</li>
+</ul>
+<h3 id="2-任务级（进程级）并行、并行处理程序">2. 任务级（进程级）并行、并行处理程序</h3>
+<ul>
+<li><strong>任务级（进程级）并行</strong>：运行多个相互独立的任务，能提高吞吐量</li>
+<li><strong>并行处理程序</strong>：多个处理器上运行单个程序</li>
+</ul>
+<h3 id="3-多核微处理器">3. 多核微处理器</h3>
+<ul>
+<li><strong>多核微处理器</strong>：包含多个处理器（核）的微处理器</li>
+</ul>
+<h3 id="4-并行处理的软硬件分类方法（串行、并行；顺序、并发）">4. 并行处理的软硬件分类方法（串行、并行；顺序、并发）</h3>
+<ul>
+<li><strong>硬件分类</strong>：
+<ul>
+<li><strong>串行</strong>：每个时钟周期只执行一条指令</li>
+<li><strong>并行</strong>：通过多处理器或超标量等设计同时执行多条指令​</li>
+</ul>
+</li>
+<li><strong>软件分类</strong>：
+<ul>
+<li><strong>顺序</strong>：程序指令按先后次序执行，如矩阵乘法 / 编译器</li>
+<li><strong>并发</strong>：程序包含多个可独立调度的执行单元，如操作系统</li>
+</ul>
+</li>
+<li>顺序/并发软件可运行于串行/并行硬件</li>
+</ul>
+<h3 id="5-并行处理的指令与数据流分类方法">5. 并行处理的指令与数据流分类方法</h3>
+<ul>
+<li><strong>SISD</strong>：单指令流单数据流，如单处理器</li>
+<li><strong>SIMD</strong>：单指令流多数据流，<strong>数据级并行</strong>，如向量处理器</li>
+<li><strong>MISD</strong>：多指令流单数据流，没有实例</li>
+<li><strong>MIMD</strong>：多指令流多数据流，<strong>线程/进程级并行</strong>，如多核 CPU、集群</li>
+</ul>
+<h3 id="6-并行编程，强比例缩放和弱比例缩放">6. 并行编程，强比例缩放和弱比例缩放</h3>
+<ul>
+<li><strong>并行编程的困难</strong>：调度和划分、均衡负载、通信开销</li>
+<li><strong>强比例缩放</strong>：保持问题规模不变时所测量的加速比，提升困难</li>
+<li><strong>弱比例缩放</strong>：问题规模与处理器的数量成比例增长时所测量的加速比</li>
+</ul>
+<h3 id="7-SPMD、SIMD、MIMD（向量处理器；多媒体扩展）">7. SPMD、SIMD、MIMD（向量处理器；多媒体扩展）</h3>
+<ul>
+<li><strong>SPMD</strong>：单程序多数据流，即单个程序运行在所有处理器上，属于 MIMD</li>
+<li><strong>向量处理器</strong>：高度流水的功能单元，每个向量寄存器包含多个数据元，属于 SIMD
+<ul>
+<li><strong>优势</strong>：降低指令带宽、减少流水线停顿、简化数据并行编程、减少数据冒险的硬件检查、可通过交叉存储器降低访存开销、降低功耗和能耗、避免循环导致的控制冒险</li>
+</ul>
+</li>
+<li><strong>多媒体扩展</strong>：与向量处理器类似，但不支持按步长存取、操作数量少</li>
+</ul>
+<h3 id="8-多线程（粗颗粒度、细颗粒度、同时多线程）">8. 多线程（粗颗粒度、细颗粒度、同时多线程）</h3>
+<ul>
+<li><strong>细粒度多线程</strong>：在每个时钟周期之后切换线程
+<ul>
+<li>能隐藏停顿造成的吞吐量损失，但单个线程执行速度减慢</li>
+</ul>
+</li>
+<li><strong>粗粒度多线程</strong>：仅在长时间阻塞时切换线程（如末级 cache 缺失）
+<ul>
+<li>不会减慢单个线程的执行速度，但无法隐藏短阻塞，降低吞吐量损失有限</li>
+</ul>
+</li>
+<li><strong>同时多线程（SMT）</strong>：多发射和动态调度多线程指令
+<ul>
+<li>充分利用并行功能单元、动态调度解决相关性问题</li>
+<li>线程级并行、指令级并行</li>
+</ul>
+</li>
+</ul>
+<h3 id="9-共享内存多处理器（SMP）：UMA、NUMA，锁变量">9. 共享内存多处理器（SMP）：UMA、NUMA，锁变量</h3>
+<ul>
+<li><strong>共享内存多处理器</strong>：为所有处理器提供统一物理地址空间</li>
+<li><strong>存储器访问时间</strong>：
+<ul>
+<li><strong>UMA（统一内存访问）</strong>：访存延迟不依赖于是哪个处理器的请求</li>
+<li><strong>NUMA（非统一内存访问）</strong>：访存延迟取决于哪个处理器访问哪个存储</li>
+</ul>
+</li>
+<li><strong>同步机制</strong>：用锁来同步共享变量，同一时刻仅允许一个处理器访问数据</li>
+</ul>
+<h3 id="10-CPU-和-GPU-的工作原理及异同">10. CPU 和 GPU 的工作原理及异同</h3>
+<ul>
+<li><strong>工作原理</strong>：高度并行化，是由多线程 SIMD 处理器组成的 MIMD</li>
+<li><strong>GPU 与 CPU 的异同</strong>：
+<ul>
+<li>都含有计算单元、存储单元和控制单元，但 GPU 的计算单元更多，存储单元和控制单元简化</li>
+<li>CPU <strong>面向低延迟设计</strong>，有强大的 ALU、大容量 cache、复杂的控制逻辑</li>
+<li>GPU <strong>面向高吞吐设计</strong>，cache 容量小，控制逻辑简单，ALU 能耗低</li>
+</ul>
+</li>
+</ul>
+<h2 id="希望大家考试取得好成绩！">希望大家考试取得好成绩！</h2>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90/" class="category-chain-item">计算机组成</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90/" class="print-no-link">#计算机组成</a>
+      
+        <a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86/" class="print-no-link">#知识点整理</a>
+      
+        <a href="/tags/%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0/" class="print-no-link">#期末复习</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>计算机组成期末复习</div>
+      <div>https://cny123222.github.io/2025/06/06/计算机组成期末复习/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Nuoyan Chen</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>June 6, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/12/%E7%AE%97%E6%B3%95%EF%BC%9A%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0/" title="算法：期末复习">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">算法：期末复习</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/05/28/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0/" title="计算机网络期末复习">
+                        <span class="hidden-mobile">计算机网络期末复习</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"cny123222/cny123222.github.io","repo-id":"R_kgDOOFgnVw","category":"Announcements","category-id":"DIC_kwDOOFgnV84CnwXM","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"en"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
