@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/OS.png">
 <meta property="article:published_time" content="2025-06-13T11:11:53.000Z">
-<meta property="article:modified_time" content="2025-06-17T05:37:17.487Z">
+<meta property="article:modified_time" content="2025-06-18T07:24:31.134Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="课程笔记">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.6k words
+          2.7k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          13 mins
+          23 mins
         
       </span>
     
@@ -322,7 +322,7 @@
         aria-expanded="true"
       >
         操作系统
-        <span class="list-group-count">(1)</span>
+        <span class="list-group-count">(2)</span>
         <i class="iconfont icon-arrowright"></i>
       </a>
       
@@ -340,6 +340,15 @@
            class="list-group-item list-group-item-action
            active">
           <span class="category-post">操作系统(1)：概述</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/06/18/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-2-%EF%BC%9A%E5%A4%84%E7%90%86%E6%9C%BA%E7%AE%A1%E7%90%86/" title="操作系统(2)：处理机管理"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">操作系统(2)：处理机管理</span>
         </a>
       
     
@@ -366,7 +375,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on June 17, 2025 pm
+                    Last updated on June 18, 2025 pm
                   
                 
               </p>
@@ -462,13 +471,23 @@
 <h2 id="1-3-操作系统的运行环境">1.3 操作系统的运行环境</h2>
 <h3 id="1-3-1-操作系统的运行机制">1.3.1 操作系统的运行机制</h3>
 <ul>
-<li><strong>两类程序</strong>：
+<li><strong>内核</strong>：操作系统最重要最核心的部分，由很多内核程序组成
 <ul>
-<li><strong>内核程序</strong>：可以执行特权指令
+<li><strong>时钟管理</strong>：实现计时功能，时钟中断可实现进程切换</li>
+<li><strong>中断处理</strong>：负责实现中断机制（保护和恢复中断现场的信息，转移控制权到处理程序）</li>
+<li><strong>原语</strong>：是一种特殊的程序
 <ul>
-<li><strong>内核</strong>：操作系统最重要最核心的部分，由很多内核程序组成</li>
+<li>处于操作系统最底层，最接近硬件</li>
+<li>运行具有原子性，只能一气呵成，不能中断</li>
+<li>运行时间较短，但调用频繁，如 CPU 切换</li>
 </ul>
 </li>
+<li><strong>系统资源管理</strong>：进程管理、存储器管理、设备管理</li>
+</ul>
+</li>
+<li><strong>两类程序</strong>：
+<ul>
+<li><strong>内核程序</strong>：可以执行特权指令</li>
 <li><strong>应用程序</strong>：不可以执行特权指令</li>
 </ul>
 </li>
@@ -498,7 +517,7 @@
 <li><strong>内核态-&gt;用户态</strong>：操作系统用一条特权指令将 PSW 中的标志位设置为用户态</li>
 <li><strong>用户态-&gt;内核态</strong>：CPU 检测到中断信号后，会立即变为内核态（硬件自动完成）
 <ul>
-<li>并停止运行当前的应用程序，转而运行处理中断或异常信号的内核程序</li>
+<li>并停止运行当前的应用程序，转而运行处理中断信号的内核程序</li>
 </ul>
 </li>
 </ul>
@@ -564,8 +583,148 @@
 </li>
 </ul>
 <h2 id="1-4-操作系统结构">1.4 操作系统结构</h2>
+<ul>
+<li><strong>分层法</strong>：内核分为多层，每层单向调用更低一层提供的接口
+<ul>
+<li><strong>优点</strong>：
+<ul>
+<li>便于调试和验证（自底向上逐层调试验证）</li>
+<li>易扩充和易维护，各层之间调用接口清晰固定</li>
+</ul>
+</li>
+<li><strong>缺点</strong>：
+<ul>
+<li>仅可调用相邻低层，难以合理定义各层的边界</li>
+<li>效率低，不可跨层调用，系统调用执行时间长</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>模块化</strong>：将内核划分为多个模块，各模块之间相互协作
+<ul>
+<li>内核由主模块和可加载内核模块组成
+<ul>
+<li><strong>主模块</strong>：只负责核心功能，如进程调度、内存管理</li>
+<li><strong>可加载内核模块</strong>：可动态加载新模块到内核，而无需重新编译整个内核</li>
+</ul>
+</li>
+<li><strong>优点</strong>：
+<ul>
+<li>模块间逻辑清晰易于维护，确定模块接口后可多模块同时开发</li>
+<li>支持动态加载新的内核模块（如安装设备驱动程序），增强 OS 适应性</li>
+<li>任何模块都可以直接调用其他模块，无需采用消息传递进行通信，效率高</li>
+</ul>
+</li>
+<li><strong>缺点</strong>：
+<ul>
+<li>模块间的接口定义未必合理实用</li>
+<li>模块间相互依赖，更难调试和验证</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>宏内核（大内核）</strong>：将操作系统的主要功能模块都作为系统内核，运行在核心态
+<ul>
+<li><strong>优点</strong>：内核各模块间可以相互调用，性能高</li>
+<li><strong>缺点</strong>：
+<ul>
+<li>内核庞大，结构复杂，难以维护</li>
+<li>内核中某个功能模块出错，可能导致整个系统崩溃</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>微内核</strong>：只把最基本的功能保留在内核（中断、原语、进程通信等）
+<ul>
+<li><strong>优点</strong>：
+<ul>
+<li>内核功能少，结构清晰，方便维护</li>
+<li>可靠性高，内核外某个功能模块出错不会导致整个系统崩溃</li>
+</ul>
+</li>
+<li><strong>缺点</strong>：
+<ul>
+<li>需要频繁地在内核态和用户态之间切换，性能低</li>
+<li>用户态下的各功能模块不可直接相互调，只能通过内核的消息传递来间接通信</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>外核</strong>：内核负责进程调度和通信等功能，外核负责为用户进程分配未经抽象的硬件资源
+<ul>
+<li><strong>优点</strong>：
+<ul>
+<li>用户进程可以更灵活地使用硬件</li>
+<li>减少了虚拟硬件资源的映射层，效率提高</li>
+</ul>
+</li>
+<li><strong>缺点</strong>：
+<ul>
+<li>降低了系统的一致性</li>
+<li>使系统更加复杂</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 <h2 id="1-5-操作系统引导">1.5 操作系统引导</h2>
+<ul>
+<li><strong>操作系统引导</strong>：操作系统的加载和启动过程</li>
+<li><strong>引导过程</strong>：
+<ol>
+<li>CPU 读取并执行 ROM 中的引导程序（BIOS），先硬件自检再开机</li>
+<li>将主引导记录（MBR）读入内存，执行磁盘引导程序，扫描分区表</li>
+<li>从活动分区（即操作系统所在分区）读入分区引导记录（PBR），执行其中的程序</li>
+<li>从根目录下找到操作系统初始化程序（即启动管理器）并执行，完成开机动作</li>
+</ol>
+</li>
+</ul>
 <h2 id="1-6-虚拟机">1.6 虚拟机</h2>
+<ul>
+<li><strong>虚拟机</strong>：利用虚拟化技术，将一台物理机器虚拟化为多台虚拟机器</li>
+<li><strong>虚拟机管理程序（VMM）</strong>：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">对比维度</th>
+<th style="text-align:center">第一类 VMM</th>
+<th style="text-align:center">第二类 VMM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">对物理资源的控制权</td>
+<td style="text-align:center">直接运行在硬件之上，能直接控制和分配物理资源</td>
+<td style="text-align:center">运行在宿主 OS 之上，依赖于宿主 OS 为其分配物理资源</td>
+</tr>
+<tr>
+<td style="text-align:center">资源分配方式</td>
+<td style="text-align:center">安装客户 OS 时，VMM 自行分配存储空间，分配未经抽象的物理硬件</td>
+<td style="text-align:center">VMM 为客户 OS 分配宿主 OS 提供的虚拟内存</td>
+</tr>
+<tr>
+<td style="text-align:center">性能</td>
+<td style="text-align:center">更好</td>
+<td style="text-align:center">更差，需要宿主 OS 作为中介</td>
+</tr>
+<tr>
+<td style="text-align:center">可支持的虚拟机数量</td>
+<td style="text-align:center">更多，不需要和宿主 OS 竞争资源</td>
+<td style="text-align:center">更少，宿主 OS 本身和宿主 OS 上运行的进程也要使用物理资源</td>
+</tr>
+<tr>
+<td style="text-align:center">虚拟机的可迁移性</td>
+<td style="text-align:center">更差</td>
+<td style="text-align:center">更好，只需导出镜像文件即可迁移到另一台宿主 OS 上，商业化应用更广泛</td>
+</tr>
+<tr>
+<td style="text-align:center">运行模式</td>
+<td style="text-align:center">运行在最高特权级，可以执行最高特权指令</td>
+<td style="text-align:center">部分运行在用户态、部分运行在内核态，客户 OS 发出的特权指令会被 VMM 捕获，并转化为 VMM 对宿主 OS 的系统调用</td>
+</tr>
+</tbody>
+</table>
 
                 
               </div>
@@ -659,6 +818,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2025/06/18/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-2-%EF%BC%9A%E5%A4%84%E7%90%86%E6%9C%BA%E7%AE%A1%E7%90%86/" title="操作系统(2)：处理机管理">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">操作系统(2)：处理机管理</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
