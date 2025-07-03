@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/OS.png">
 <meta property="article:published_time" content="2025-06-18T07:29:35.000Z">
-<meta property="article:modified_time" content="2025-07-02T13:21:28.578Z">
+<meta property="article:modified_time" content="2025-07-03T04:59:05.192Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="课程笔记">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          926 words
+          2.1k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          8 mins
+          18 mins
         
       </span>
     
@@ -375,7 +375,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on July 2, 2025 pm
+                    Last updated on July 3, 2025 pm
                   
                 
               </p>
@@ -434,7 +434,7 @@
 <li><strong>程序段</strong>：程序的代码（指令序列）</li>
 <li><strong>数据段</strong>：运行过程中产生的各种数据（如程序中定义的变量）</li>
 </ul>
-<h3 id="2-1-3-进程的状态和转换">2.1.3 进程的状态和转换</h3>
+<h3 id="2-1-3-进程的状态与转换">2.1.3 进程的状态与转换</h3>
 <ul>
 <li><strong>进程的五种状态</strong>：
 <ul>
@@ -492,6 +492,162 @@ E -- 事件发生 --&gt; B;
 </ul>
 </li>
 </ul>
+<h3 id="2-1-4-进程控制">2.1.4 进程控制</h3>
+<ul>
+<li><strong>进程控制</strong>：实现进程状态的转换</li>
+<li><strong>实现方式</strong>：用<strong>原语</strong>实现
+<ul>
+<li>原语是一种特殊的程序</li>
+<li>原语的执行必须一气呵成，不可中断</li>
+<li>原语用关中断和开中断来实现</li>
+</ul>
+</li>
+<li><strong>相关原语</strong>：
+<ul>
+<li><strong>进程的创建</strong>：
+<ul>
+<li><strong>创建原语</strong>：无 --&gt; 创建态 --&gt; 就绪态
+<ul>
+<li>申请空白 PCB</li>
+<li>为新进程分配所需资源</li>
+<li>初始化 PCB</li>
+<li>将 PCB 插入就绪队列</li>
+</ul>
+</li>
+<li><strong>引起进程创建的事件</strong>：用户登录、作业调度、提供服务、应用请求</li>
+</ul>
+</li>
+<li><strong>进程的终止</strong>：
+<ul>
+<li><strong>撤销原语</strong>：就绪态 / 阻塞态 / 运行态 --&gt; 终止态 --&gt; 无
+<ul>
+<li>从 PCB 集合中找到终止进程的 PCB</li>
+<li>若进程正在运行，立即剥夺 CPU，将 CPU 分配给其他进程</li>
+<li>终止其所有子进程</li>
+<li>将该进程拥有的所有资源归还给父进程或操作系统</li>
+<li>删除 PCB</li>
+</ul>
+</li>
+<li><strong>引起进程终止的事件</strong>：正常结束、异常结束、外界干预</li>
+</ul>
+</li>
+<li><strong>进程的阻塞</strong>：
+<ul>
+<li><strong>阻塞原语</strong>：运行态 --&gt; 阻塞态
+<ul>
+<li>找到要阻塞的进程对应的 PCB</li>
+<li>保护进程运行现场，将 PCB 状态信息设置为阻塞态，暂停进程运行</li>
+<li>将 PCB 插入相应事件的等待队列</li>
+</ul>
+</li>
+<li><strong>引起进程阻塞的事件</strong>：
+<ul>
+<li>需要系统分配某种资源</li>
+<li>需要等待相互合作的其他进程完成工作</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>进程的唤醒</strong>：
+<ul>
+<li><strong>唤醒原语</strong>：阻塞态 --&gt; 就绪态
+<ul>
+<li>在事件等待队列中找到 PCB</li>
+<li>将 PCB 从等待队列移除，设置进程为就绪态</li>
+<li>将 PCB 插入就绪队列，等待被调度</li>
+</ul>
+</li>
+<li><strong>引起进程唤醒的事件</strong>：等待的事件发生</li>
+</ul>
+</li>
+<li><strong>进程的切换</strong>：
+<ul>
+<li><strong>切换原语</strong>：运行态 --&gt; 阻塞态 / 就绪态，就绪态 --&gt; 运行态
+<ul>
+<li>将运行环境信息存入 PCB</li>
+<li>PCB 移入相应队列</li>
+<li>选择另一个进程执行，并更新其 PCB</li>
+<li>根据 PCB 恢复新进程所需的运行环境</li>
+</ul>
+</li>
+<li><strong>引起进程切换的事件</strong>：
+<ul>
+<li>当前进程时间片到</li>
+<li>有更高优先级的进程到达</li>
+<li>当前进程主动阻塞</li>
+<li>当前进程终止</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="note note-info">
+            <p><strong>总结</strong>：控制原语要做的三类操作：</p><ol><li>更新 PCB 中的信息（修改进程状态、保存 / 恢复运行环境）</li><li>将 PCB 插入合适的队列</li><li>分配 / 回收资源</li></ol>
+          </div>
+<h3 id="2-1-5-进程的通信">2.1.5 进程的通信</h3>
+<ul>
+<li><strong>共享存储</strong>：
+<ul>
+<li>设置一个共享内存区域，并映射到进程的虚拟地址空间</li>
+<li>要互斥地访问共享空间（通信进程负责实现，使用内核提供的同步互斥工具）</li>
+<li><strong>两种方式</strong>：基于数据结构的共享（低级）、基于存储区的共享（高级）</li>
+</ul>
+</li>
+<li><strong>消息传递</strong>：
+<ul>
+<li>传递结构化的消息（包含消息头和消息体）</li>
+<li>系统提供发送 / 接收原语</li>
+<li><strong>两种方式</strong>：
+<ul>
+<li><strong>直接通信方式</strong>：发送进程指明接收进程的 ID，消息直接挂到接接收进程的消息队列中</li>
+<li><strong>间接通信方式</strong>：以“信箱”作为中间体进行消息传递</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>管道通信</strong>：
+<ul>
+<li>设置一个特殊的共享文件（管道，本质上是一片内存缓冲区）</li>
+<li>一个管道只能实现半双工通信，实现双向同时通信要建立两个管道</li>
+<li>各进程要互斥访问管道（由操作系统负责实现互斥）</li>
+<li>管道写满时，写进程阻塞；管道读空时，读进程阻塞</li>
+</ul>
+</li>
+<li><strong>信号</strong>：
+<ul>
+<li><strong>作用</strong>：用于通知进程某个特性事件发生（实现简单的进程间通信）</li>
+<li><strong>信号的发送</strong>：
+<ul>
+<li>可以由一个进程给另一个进程发送信号</li>
+<li>可以由操作系统内核给进程发送信号</li>
+<li>一个进程也可以给自己发送信号</li>
+</ul>
+</li>
+<li><strong>信号的保存</strong>：在每个进程的 PCB 中，用两个 n bit 位向量表示待处理信号、被阻塞信号</li>
+<li><strong>信号的处理</strong>：
+<ul>
+<li><strong>处理时机</strong>：当进程从内核态转为用户态时，例行检查是否有待处理信号，如果有，即处理信号</li>
+<li><strong>如何处理</strong>：
+<ul>
+<li><strong>执行默认的信号处理程序</strong>：操作系统内核对每一种信号都有默认的处理程序</li>
+<li><strong>执行用户定义的信号处理程序</strong>：允许进程通过系统调用，自定义某些信号的处理程序，覆盖操作系统的默认处理</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>特点</strong>：
+<ul>
+<li>不同的操作系统，对信号类型的定义各不相同</li>
+<li>重复收到的同类信号，将被简单地丢弃</li>
+<li>有些信号既不能被用户自定义处理函数，也不能被阻塞</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-1-6-线程和多进程模型">2.1.6 线程和多进程模型</h3>
 <h2 id="2-2-CPU-调度">2.2 CPU 调度</h2>
 <h2 id="2-3-同步与互斥">2.3 同步与互斥</h2>
 <h2 id="2-4-死锁">2.4 死锁</h2>
