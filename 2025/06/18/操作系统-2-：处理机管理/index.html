@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/OS.png">
 <meta property="article:published_time" content="2025-06-18T07:29:35.000Z">
-<meta property="article:modified_time" content="2025-07-03T04:59:05.192Z">
+<meta property="article:modified_time" content="2025-07-04T02:13:59.652Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="课程笔记">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.1k words
+          3k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          18 mins
+          25 mins
         
       </span>
     
@@ -375,7 +375,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on July 3, 2025 pm
+                    Last updated on July 4, 2025 am
                   
                 
               </p>
@@ -418,7 +418,7 @@
 <li><strong>进程控制和管理信息</strong>：
 <ul>
 <li>CPU、磁盘、网络流量使用情况统计等</li>
-<li>进程当前状态：就绪态/阻塞态/运行态等</li>
+<li>进程当前状态：就绪态 / 阻塞态 / 运行态等</li>
 </ul>
 </li>
 <li><strong>资源分配清单</strong>：
@@ -617,7 +617,11 @@ E -- 事件发生 --&gt; B;
 </li>
 <li><strong>信号</strong>：
 <ul>
-<li><strong>作用</strong>：用于通知进程某个特性事件发生（实现简单的进程间通信）</li>
+<li><strong>作用</strong>：用于通知进程某个特性事件发生（实现简单的进程间通信）
+<ul>
+<li>也常作为异常处理的一种配套机制</li>
+</ul>
+</li>
 <li><strong>信号的发送</strong>：
 <ul>
 <li>可以由一个进程给另一个进程发送信号</li>
@@ -647,10 +651,110 @@ E -- 事件发生 --&gt; B;
 </ul>
 </li>
 </ul>
-<h3 id="2-1-6-线程和多进程模型">2.1.6 线程和多进程模型</h3>
+<h3 id="2-1-6-线程和多线程模型">2.1.6 线程和多线程模型</h3>
+<ul>
+<li><strong>线程</strong>：是基本的 CPU 执行单元，也是程序执行流的最小单位</li>
+<li><strong>线程机制的作用</strong>：
+<ul>
+<li><strong>资源分配、调度</strong>：
+<ul>
+<li>传统进程机制中，进程是资源分配、调度的基本单位</li>
+<li>引入线程后，进程是资源分配的基本单位，线程是调度的基本单位</li>
+</ul>
+</li>
+<li><strong>并发性</strong>：
+<ul>
+<li>传统进程机制中，只能进程间并发</li>
+<li>引入线程后，各线程间也能并发，提升了并发度</li>
+</ul>
+</li>
+<li><strong>系统开销</strong>：
+<ul>
+<li>传统的进程间并发，需要切换进程的运行环境，系统开销很大</li>
+<li>线程间并发，如果是同一进程内的线程切换，则不需要切换进程环境，系统开销小</li>
+<li>引入线程后，并发所带来的系统开销减小</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>线程的属性</strong>：
+<ul>
+<li>线程是处理机调度的单位</li>
+<li>多 CPU 计算机中，各个线程可占用不同的 CPU</li>
+<li>每个线程都有一个线程 ID、线程控制块（TCB）</li>
+<li>线程也有就绪、阻塞、运行三种基本状态</li>
+<li>线程几乎不拥有系统资源，同一进程的不同线程间共享进程的资源</li>
+<li>由于共享内存地址空间，同一进程中的线程间通信无需系统干预</li>
+<li>同一进程中的线程切换，不会引起进程切换；不同进程中的线程切换，会引起进程切换</li>
+<li>切换同进程内的线程，系统开销很小；切换进程，系统开销较大</li>
+</ul>
+</li>
+<li><strong>线程的实现方式</strong>：
+<ul>
+<li><strong>用户级线程</strong>：从用户视角能看到的线程，由线程库实现</li>
+<li><strong>内核级线程</strong>：从操作系统视角看到的线程，由操作系统实现
+<ul>
+<li>内核级线程是处理机分配的单位</li>
+</ul>
+</li>
+<li><strong>组合方式</strong>：上述两种方式的组合</li>
+</ul>
+</li>
+<li><strong>多线程模型</strong>：
+<ul>
+<li><strong>一对一模型</strong>：一个用户级线程映射到一个内核级线程
+<ul>
+<li><strong>优点</strong>：各个线程可分配到多核处理机并行执行，并发度高</li>
+<li><strong>缺点</strong>：线程管理都需要操作系统支持，开销大</li>
+</ul>
+</li>
+<li><strong>多对一模型</strong>：多个用户级线程映射到一个内核级线程
+<ul>
+<li><strong>优点</strong>：线程管理开销小，效率高</li>
+<li><strong>缺点</strong>：一个线程阻塞会导致整个进程都被阻塞，并发度低</li>
+</ul>
+</li>
+<li><strong>多对多模型</strong>：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 个用户级线程映射到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span></span></span></span> 个内核级线程（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">n \ge m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span></span></span></span>）
+<ul>
+<li>融合了两者的优点</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>线程的状态与转换</strong>：与进程的就绪态、运行态、阻塞态的转换一致</li>
+<li><strong>线程的组织与控制</strong>：
+<ul>
+<li><strong>线程控制块（TCB）</strong>：每个线程对应一个 TCB
+<ul>
+<li><strong>线程标识符</strong>：TID，与 PID 类似</li>
+<li><strong>运行环境</strong>：程序计数器 PC、其他寄存器、堆栈指针</li>
+<li><strong>线程运行状态</strong>：运行态 / 就绪态 / 阻塞态</li>
+<li><strong>优先级</strong>：线程调度、资源分配的参考</li>
+</ul>
+</li>
+<li><strong>线程表</strong>：多个 TCB 可组织成一张线程表</li>
+</ul>
+</li>
+</ul>
 <h2 id="2-2-CPU-调度">2.2 CPU 调度</h2>
+<h3 id="2-2-1-调度的概念">2.2.1 调度的概念</h3>
+<h3 id="2-2-2-调度的实现">2.2.2 调度的实现</h3>
+<h3 id="2-2-3-调度的目标">2.2.3 调度的目标</h3>
+<h3 id="2-2-4-进程切换">2.2.4 进程切换</h3>
+<h3 id="2-2-5-CPU-调度算法">2.2.5 CPU 调度算法</h3>
+<h3 id="2-2-6-多处理机调度">2.2.6 多处理机调度</h3>
 <h2 id="2-3-同步与互斥">2.3 同步与互斥</h2>
+<h3 id="2-3-1-同步与互斥的基本概念">2.3.1 同步与互斥的基本概念</h3>
+<h3 id="2-3-2-实现临界区互斥的基本方法">2.3.2 实现临界区互斥的基本方法</h3>
+<h3 id="2-3-3-互斥锁">2.3.3 互斥锁</h3>
+<h3 id="2-3-4-信号量">2.3.4 信号量</h3>
+<h3 id="2-3-5-经典同步问题">2.3.5 经典同步问题</h3>
+<h3 id="2-3-6-管程">2.3.6 管程</h3>
 <h2 id="2-4-死锁">2.4 死锁</h2>
+<h3 id="2-4-1-死锁的概念">2.4.1 死锁的概念</h3>
+<h3 id="2-4-2-死锁预防">2.4.2 死锁预防</h3>
+<h3 id="2-4-3-死锁避免">2.4.3 死锁避免</h3>
+<h3 id="2-4-4-死锁检测和解除">2.4.4 死锁检测和解除</h3>
 
                 
               </div>
