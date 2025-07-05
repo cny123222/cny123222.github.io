@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/OS.png">
 <meta property="article:published_time" content="2025-06-18T07:29:35.000Z">
-<meta property="article:modified_time" content="2025-07-04T02:13:59.652Z">
+<meta property="article:modified_time" content="2025-07-05T14:27:49.733Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="课程笔记">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3k words
+          3.3k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          25 mins
+          28 mins
         
       </span>
     
@@ -375,7 +375,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on July 4, 2025 am
+                    Last updated on July 5, 2025 pm
                   
                 
               </p>
@@ -738,6 +738,65 @@ E -- 事件发生 --&gt; B;
 </ul>
 <h2 id="2-2-CPU-调度">2.2 CPU 调度</h2>
 <h3 id="2-2-1-调度的概念">2.2.1 调度的概念</h3>
+<ul>
+<li><strong>调度的概念</strong>：按某种算法选择一个进程将处理机分配给它</li>
+<li><strong>调度的层次</strong>：
+<ul>
+<li><strong>高级调度（作业调度）</strong>：按照某种规则，从后备队列中选择合适的作业将其调入内存，并为其创建进程</li>
+<li><strong>中级调度（内存调度）</strong>：按照某种规则，从挂起队列中选择合适的进程将其数据调回内存
+<ul>
+<li><strong>挂起状态</strong>：暂时调到外存等待的进程状态，分为就绪挂起和阻塞挂起</li>
+</ul>
+</li>
+<li><strong>低级调度（进程调度）</strong>：按照某种规则，从就绪队列中选择一个进程为其分配处理机</li>
+</ul>
+</li>
+</ul>
+<pre><code class=" mermaid">graph LR;
+A --&gt; F(就绪挂起);
+A(创建态) -- 创建 --&gt; B(就绪态);
+B -- 调度 --&gt; C(运行态);
+C -- 时间到 --&gt; B;
+C -- 退出 --&gt; D(终止态);
+C -- 事件等待 --&gt; E(阻塞态);
+E -- 事件发生 --&gt; B;
+B -- 挂起 --&gt; F;
+E -- 挂起 --&gt; G;
+G -- 激活 --&gt; E;
+G(阻塞挂起) -- 事件出现 --&gt; F;
+F -- 激活 --&gt; B;
+C --&gt; F;
+</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">调度发生的位置</th>
+<th style="text-align:center">发生频率</th>
+<th style="text-align:center">对进程状态的影响</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">高级调度</td>
+<td style="text-align:center">外存 --&gt; 内存 <br>（面向作业）</td>
+<td style="text-align:center">最低</td>
+<td style="text-align:center">无 --&gt; 创建态 --&gt; 就绪态</td>
+</tr>
+<tr>
+<td style="text-align:center">中级调度</td>
+<td style="text-align:center">外存 --&gt; 内存 <br>（面向进程）</td>
+<td style="text-align:center">中等</td>
+<td style="text-align:center">挂起态 --&gt; 就绪态</td>
+</tr>
+<tr>
+<td style="text-align:center">低级调度</td>
+<td style="text-align:center">内存 --&gt; CPU</td>
+<td style="text-align:center">最高</td>
+<td style="text-align:center">就绪态 --&gt; 运行态</td>
+</tr>
+</tbody>
+</table>
 <h3 id="2-2-2-调度的实现">2.2.2 调度的实现</h3>
 <h3 id="2-2-3-调度的目标">2.2.3 调度的目标</h3>
 <h3 id="2-2-4-进程切换">2.2.4 进程切换</h3>
