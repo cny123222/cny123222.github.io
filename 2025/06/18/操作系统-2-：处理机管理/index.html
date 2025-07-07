@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/OS.png">
 <meta property="article:published_time" content="2025-06-18T07:29:35.000Z">
-<meta property="article:modified_time" content="2025-07-07T01:56:13.250Z">
+<meta property="article:modified_time" content="2025-07-07T02:43:48.156Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="课程笔记">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          4.6k words
+          5.5k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          39 mins
+          46 mins
         
       </span>
     
@@ -914,6 +914,7 @@ C --&gt; F;
 </li>
 <li><strong>等待时间</strong>：进程或作业等待被 CPU 服务的时间之和
 <ul>
+<li>等待时间<strong>不包括</strong>等待 I/O 完成的时间</li>
 <li><strong>平均等待时间</strong>：各个进程或作业等待时间的平均值</li>
 </ul>
 </li>
@@ -939,6 +940,83 @@ C --&gt; F;
 </li>
 </ul>
 <h3 id="2-2-5-CPU-调度算法">2.2.5 CPU 调度算法</h3>
+<h4 id="1-先来先服务（FCFS-First-Come-First-Service）">1. 先来先服务（FCFS, First Come First Service）</h4>
+<ul>
+<li><strong>算法思想</strong>：从公平的角度考虑</li>
+<li><strong>算法规则</strong>：按作业或进程到达的先后顺序进行服务</li>
+<li><strong>调度层次</strong>：
+<ul>
+<li><strong>用于作业调度</strong>：考虑哪个作业先到达后备队列</li>
+<li><strong>用于进程调度</strong>：考虑哪个进程先到达就绪队列</li>
+</ul>
+</li>
+<li><strong>调度方式</strong>：非抢占式</li>
+<li><strong>优点</strong>：公平、算法实现简单</li>
+<li><strong>缺点</strong>：排在长作业后面的短作业等待时间长，带权周转时间大
+<ul>
+<li><strong>对长作业有利，对短作业不利</strong></li>
+</ul>
+</li>
+<li><strong>是否会导致饥饿</strong>：不会
+<ul>
+<li><strong>饥饿</strong>：进程或作业长期得不到服务</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-短作业优先（SJF-Shortest-Job-First）">2. 短作业优先（SJF, Shortest Job First）</h4>
+<ul>
+<li><strong>算法思想</strong>：追求最少的平均等待时间、平均周转时间、平均带权周转时间</li>
+<li><strong>算法规则</strong>：（服务时间）最短的作业或进程优先得到服务</li>
+<li><strong>调度层次</strong>：可用于作业调度及进程调度（短进程优先，SPF）</li>
+<li><strong>调度方式</strong>：非抢占式，但也有抢占式版本（最短剩余时间优先，SRTN）
+<ul>
+<li><strong>最短剩余时间优先</strong>：每当有进程加入<strong>就绪队列改变时就需要调度</strong>，如果新到达的进程<strong>剩余时间</strong>比当前运行的进程剩余时间<strong>更短</strong>，则由新进程<strong>抢占</strong>处理机，当前运行进程重新回到就绪队列</li>
+<li>最短剩余时间优先算法的平均等待时间、平均周转时间最少</li>
+</ul>
+</li>
+<li><strong>优点</strong>：最短的平均等待时间、平均周转时间（所有进程几乎同时到达时）</li>
+<li><strong>缺点</strong>：不公平
+<ul>
+<li>对短作业有利，对长作业不利，可能产生饥饿现象</li>
+<li>作业或进程的运行时间由用户提供，不一定真实</li>
+</ul>
+</li>
+<li><strong>是否会导致饥饿</strong>：会，如果源源不断地有短作业到来，可能使长作业长时间得不到服务</li>
+</ul>
+<h4 id="3-高响应比优先（HRRN-Highest-Response-Ratio-Next）">3. 高响应比优先（HRRN, Highest Response Ratio Next）</h4>
+<ul>
+<li><strong>算法思想</strong>：要综合考虑作业或进程的等待时间和要求服务的时间</li>
+<li><strong>算法规则</strong>：在每次调度时先计算各个作业或进程的响应比，选择响应比最高的作业或进程为其服务</li>
+</ul>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>响应比</mtext><mo>=</mo><mfrac><mrow><mtext>等待时间</mtext><mo>+</mo><mtext>要求服务时间</mtext></mrow><mtext>要求服务时间</mtext></mfrac></mrow><annotation encoding="application/x-tex">\text{响应比} = \frac{\text{等待时间} + \text{要求服务时间}}{\text{要求服务时间}}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord cjk_fallback">响应比</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0463em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord cjk_fallback">要求服务时间</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord cjk_fallback">等待时间</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord text"><span class="mord cjk_fallback">要求服务时间</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<ul>
+<li><strong>调度层次</strong>：可用于作业调度及进程调度</li>
+<li><strong>调度方式</strong>：非抢占式，只有当前运行的作业或进程主动放弃处理机时，才需要调度</li>
+<li><strong>优点</strong>：
+<ul>
+<li>综合考虑了等待时间和运行时间（要求服务时间）
+<ul>
+<li>等待时间相同时，要求服务时间短的优先（SJF 的优点）</li>
+<li>要求服务时间相同时，等待时间长的优先（FCFS 的优点〉</li>
+</ul>
+</li>
+<li>对于长作业，随着等待时间越来越久，其响应比也会越来越大，从而避免了长作业饥饿的问题</li>
+</ul>
+</li>
+<li><strong>缺点</strong>：不公平
+<ul>
+<li>对短作业有利，对长作业不利，可能产生饥饿现象</li>
+<li>作业或进程的运行时间由用户提供，不一定真实</li>
+</ul>
+</li>
+<li><strong>是否会导致饥饿</strong>：不会</li>
+</ul>
+<h4 id="4-优先级">4. 优先级</h4>
+<h4 id="5-时间片轮转（RR）">5. 时间片轮转（RR）</h4>
+<h4 id="6-多级队列">6. 多级队列</h4>
+<h4 id="7-多级反馈队列">7. 多级反馈队列</h4>
+<h4 id="8-基于公平原则">8. 基于公平原则</h4>
 <h3 id="2-2-6-多处理机调度">2.2.6 多处理机调度</h3>
 <h2 id="2-3-同步与互斥">2.3 同步与互斥</h2>
 <h3 id="2-3-1-同步与互斥的基本概念">2.3.1 同步与互斥的基本概念</h3>
