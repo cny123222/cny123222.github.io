@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/OS.png">
 <meta property="article:published_time" content="2025-06-18T07:29:35.000Z">
-<meta property="article:modified_time" content="2025-07-07T02:43:48.156Z">
+<meta property="article:modified_time" content="2025-07-08T08:54:39.995Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="课程笔记">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          5.5k words
+          7k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          46 mins
+          59 mins
         
       </span>
     
@@ -375,7 +375,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on July 7, 2025 am
+                    Last updated on July 8, 2025 pm
                   
                 
               </p>
@@ -991,7 +991,7 @@ C --&gt; F;
 <p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>响应比</mtext><mo>=</mo><mfrac><mrow><mtext>等待时间</mtext><mo>+</mo><mtext>要求服务时间</mtext></mrow><mtext>要求服务时间</mtext></mfrac></mrow><annotation encoding="application/x-tex">\text{响应比} = \frac{\text{等待时间} + \text{要求服务时间}}{\text{要求服务时间}}
 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord cjk_fallback">响应比</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0463em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord cjk_fallback">要求服务时间</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord cjk_fallback">等待时间</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord text"><span class="mord cjk_fallback">要求服务时间</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
 <ul>
-<li><strong>调度层次</strong>：可用于作业调度及进程调度</li>
+<li><strong>调度层次</strong>：既可用于作业调度，也可用于进程调度</li>
 <li><strong>调度方式</strong>：非抢占式，只有当前运行的作业或进程主动放弃处理机时，才需要调度</li>
 <li><strong>优点</strong>：
 <ul>
@@ -1004,20 +1004,159 @@ C --&gt; F;
 <li>对于长作业，随着等待时间越来越久，其响应比也会越来越大，从而避免了长作业饥饿的问题</li>
 </ul>
 </li>
-<li><strong>缺点</strong>：不公平
-<ul>
-<li>对短作业有利，对长作业不利，可能产生饥饿现象</li>
-<li>作业或进程的运行时间由用户提供，不一定真实</li>
-</ul>
-</li>
 <li><strong>是否会导致饥饿</strong>：不会</li>
 </ul>
 <h4 id="4-优先级">4. 优先级</h4>
-<h4 id="5-时间片轮转（RR）">5. 时间片轮转（RR）</h4>
+<ul>
+<li><strong>算法思想</strong>：随着实时操作系统的出现，越来越多的应用场景需要根据任务的紧急程度来决定处理顺序</li>
+<li><strong>算法规则</strong>：每个作业或进程有各自的优先级，调度时选择优先级最高的作业或进程</li>
+<li><strong>调度层次</strong>：既可用于作业调度，也可用于进程调度</li>
+<li><strong>调度方式</strong>：抢占式和非抢占式都有
+<ul>
+<li><strong>非抢占式</strong>：只在进程主动放弃处理机时进行调度</li>
+<li><strong>抢占式</strong>：还要在就绪队列变化时，检查是否会发生抢占</li>
+</ul>
+</li>
+<li><strong>优点</strong>：
+<ul>
+<li>用优先级区分紧急程度、重要程度，适用于实时操作系统</li>
+<li>可灵活地调整对各种作业或进程的偏好程度</li>
+</ul>
+</li>
+<li><strong>缺点</strong>：若源源不断地有高优先级进程到来，则可能导致饥饿</li>
+<li><strong>是否会导致饥饿</strong>：会</li>
+<li><strong>优先级的分类</strong>：
+<ul>
+<li><strong>静态优先级</strong>：创建进程时确定，之后一直不变</li>
+<li><strong>动态优先级</strong>：创建进程时有一个初始值，之后会根据情况动态地调整优先级
+<ul>
+<li><strong>优先级调整策略</strong>：可以从追求公平、提升资源利用率等角度考虑</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>优先级的设置</strong>：
+<ul>
+<li>系统进程优先级<strong>高于</strong>用户进程</li>
+<li>前台进程优先级<strong>高于</strong>后台进程</li>
+<li>I/O 型进程优先级<strong>高于</strong>计算型进程
+<ul>
+<li>I/O 设备和 CPU 可以并行工作</li>
+<li>可以使得 I/O 设备尽早投入工作</li>
+<li>资源利用率、系统吞吐量都会得到提升</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="5-时间片轮转（RR-Round-Robin）">5. 时间片轮转（RR, Round-Robin）</h4>
+<ul>
+<li><strong>算法思想</strong>：公平地、轮流地为各个进程服务，让每个进程在一定时间间隔内都可以得到响应</li>
+<li><strong>算法规则</strong>：
+<ul>
+<li>按照各进程到达就绪队列的顺序，轮流让各个进程执行一个时间片</li>
+<li>若进程未在一个时间片内执行完，则到夺处理机，将进程重新放到就绪队列队尾重新排队</li>
+</ul>
+</li>
+<li><strong>调度层次</strong>：用于进程调度
+<ul>
+<li>只有作业放入内存建立了相应的进程后，才能被分配处理机时间片</li>
+</ul>
+</li>
+<li><strong>调度方式</strong>：抢占式，由时钟装置发出时钟中断来通知 CPU 时间片已到</li>
+<li><strong>优点</strong>：公平；响应快，适用于分时操作系统</li>
+<li><strong>缺点</strong>：高频率的进程切换有一定开销：不区分任务的紧急程度</li>
+<li><strong>是否会导致饥饿</strong>：不会</li>
+<li><strong>时间片大小的影响</strong>：
+<ul>
+<li><strong>时间片太大</strong>：退化为先来先服务调度算法，并且会增大进程响应时间</li>
+<li><strong>时间片太小</strong>：导致进程切换过于频繁，实际用于进程执行的时间比例减少</li>
+</ul>
+</li>
+</ul>
 <h4 id="6-多级队列">6. 多级队列</h4>
+<ul>
+<li><strong>算法规则</strong>：
+<ul>
+<li>系统中按进程类型设置多个队列，进程创建成功后插入某个队列</li>
+<li>队列之间可采取固定优先级，或时间片划分
+<ul>
+<li><strong>固定优先级</strong>：高优先级空时，低优先级进程才能被调度</li>
+</ul>
+</li>
+<li>各队列可采用不同的调度策略</li>
+</ul>
+</li>
+</ul>
 <h4 id="7-多级反馈队列">7. 多级反馈队列</h4>
-<h4 id="8-基于公平原则">8. 基于公平原则</h4>
+<ul>
+<li><strong>算法思想</strong>：对其他调度算法的折中权衡</li>
+<li><strong>算法规则</strong>：
+<ol>
+<li>设置多级就绪队列，各级队列优先级从高到低，时间片从小到大</li>
+<li>新进程到达时先进入第 1 级队列，按 FCFS 原则排队等待被分配时片，若用完时间片进程还未结束，则进程进入下一级队列队尾；如果此时已经是在最下级的队列，则重新放回该队列队尾</li>
+<li>只有第 k 级队列为空时，才会为 k+1 级队头的进程分配时间片</li>
+</ol>
+</li>
+<li><strong>调度层次</strong>：用于进程调度</li>
+<li><strong>调度方式</strong>：抢占式
+<ul>
+<li>在 k 级队列的进程运行过程中，若更上级的队列中进入了一个新进程，则由于新进程处于优先级更高的队列中，因此新进程会抢占处理机，原来运行的进程放回k级队列队尾</li>
+</ul>
+</li>
+<li><strong>优点</strong>：
+<ul>
+<li>对各类型进程相对公平（FCFS 的优点）</li>
+<li>每个新到达的进程都可以很快就得到响应（RR 的优点）</li>
+<li>短进程只用较少的时间就可完成（SPF 的优点）</li>
+<li>不必实现估计进程的运行时间（避免用户作假）</li>
+<li>可灵活地调整对各类进程的偏好程度，比如 CPU 密集型进程、I/O 密集型进程
+<ul>
+<li>可以将因 I/O 而阻塞的进程重新放回原队列，这样 I/O 型进程就可以保持较高优先级</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>是否会导致饥饿</strong>：会</li>
+</ul>
 <h3 id="2-2-6-多处理机调度">2.2.6 多处理机调度</h3>
+<ul>
+<li><strong>调度目标</strong>：
+<ul>
+<li><strong>负载均衡</strong>：尽可能让每个 CPU 都同等忙碌</li>
+<li><strong>处理机亲和性</strong>：尽量让一个进程调度到同一个 CPU 上运行，以发挥 CPU 中 Cache 的作用</li>
+</ul>
+</li>
+<li><strong>公共就绪队列</strong>：
+<ul>
+<li><strong>调度规则</strong>：所有 CPU 共享同一个就绪进程队列，每个 CPU 运行调度程序，从公共就绪队列中选择一个进程运行
+<ul>
+<li>每个 CPU 访问公共就绪队列时需要上锁，确保互斥</li>
+</ul>
+</li>
+<li><strong>优点</strong>：可以天然地实现负载均衡</li>
+<li><strong>缺点</strong>：各个进程可能会频察地换 CPU 运行，亲和性不好</li>
+<li><strong>提升处理机亲和性</strong>：
+<ul>
+<li><strong>软亲和</strong>：由进程调度程序尽量保证亲和性</li>
+<li><strong>硬亲和</strong>：由用户进程通过系统调用，主动要求操作系统分配固定的 CPU，确保亲和性</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>私有就绪队列</strong>：
+<ul>
+<li><strong>调度规则</strong>：每个 CPU 有一个私有的就绪进程队列，每个 CPU 运行调度程序，从私有就绪队列中选择一个进程运行</li>
+<li><strong>优点</strong>：可以天然地实现处理机亲和性</li>
+<li><strong>实现负载均衡</strong>：
+<ul>
+<li><strong>推迁移</strong>：一个特定的系统程序周期性检查每个处理器的负载，如果负载不平衡，就从忙碌 CPU 的就绪队列中“推”一些就绪进程到空闲 CPU 的就绪队列</li>
+<li><strong>拉迁移</strong>：每个 CPU 运行调度程序时，周期性检查自身负载与其他 CPU 负载。如果一个 CPU 负载很低，就从其他高负载 CPU 的就绪队列中“拉”一些就绪进程到自己的就绪队列</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 <h2 id="2-3-同步与互斥">2.3 同步与互斥</h2>
 <h3 id="2-3-1-同步与互斥的基本概念">2.3.1 同步与互斥的基本概念</h3>
 <h3 id="2-3-2-实现临界区互斥的基本方法">2.3.2 实现临界区互斥的基本方法</h3>
