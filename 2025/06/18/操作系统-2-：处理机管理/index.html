@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/OS.png">
 <meta property="article:published_time" content="2025-06-18T07:29:35.000Z">
-<meta property="article:modified_time" content="2025-07-08T08:54:39.995Z">
+<meta property="article:modified_time" content="2025-07-08T09:09:43.799Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="课程笔记">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          7k words
+          7.2k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          59 mins
+          61 mins
         
       </span>
     
@@ -1159,6 +1159,35 @@ C --&gt; F;
 </ul>
 <h2 id="2-3-同步与互斥">2.3 同步与互斥</h2>
 <h3 id="2-3-1-同步与互斥的基本概念">2.3.1 同步与互斥的基本概念</h3>
+<ul>
+<li><strong>进程同步</strong>：直接制约关系
+<ul>
+<li>并发性带来了异步性，有时需要通过进程同步解决这种异步问题</li>
+<li>有的进程之间需要相互配合地完成工作，各进程的工作推进需要遵循一定的先后顺序</li>
+</ul>
+</li>
+<li><strong>进程互斥</strong>：间接制约关系
+<ul>
+<li>对临界资源的访问，需要互斥地进行，即同一时间段内只能允许一个进程访问该资源</li>
+<li><strong>临界资源访问的过程</strong>：
+<ul>
+<li><strong>进入区</strong>：检查是否可进入临界区，若可进入，需要上锁</li>
+<li><strong>临界区</strong>：访问临界资源的那段代码</li>
+<li><strong>退出区</strong>：负责解锁</li>
+<li><strong>剩余区</strong>：其余代码部分</li>
+</ul>
+</li>
+<li><strong>遵循的原则</strong>：
+<ul>
+<li><strong>空闲让进</strong>：临界区空闲时，应允许一个进程访问</li>
+<li><strong>忙则等待</strong>：临界区正在被访问时，其他试图访问的进程需要等待</li>
+<li><strong>有限等待</strong>：要在有限时间内进入临界区，保证不会饥饿</li>
+<li><strong>让权等待</strong>：进不了临界区的进程，要释放处理机，防止盲等</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 <h3 id="2-3-2-实现临界区互斥的基本方法">2.3.2 实现临界区互斥的基本方法</h3>
 <h3 id="2-3-3-互斥锁">2.3.3 互斥锁</h3>
 <h3 id="2-3-4-信号量">2.3.4 信号量</h3>
