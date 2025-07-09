@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/OS.png">
 <meta property="article:published_time" content="2025-06-18T07:29:35.000Z">
-<meta property="article:modified_time" content="2025-07-09T02:39:03.567Z">
+<meta property="article:modified_time" content="2025-07-09T03:13:19.176Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="课程笔记">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          8.9k words
+          9.4k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          74 mins
+          79 mins
         
       </span>
     
@@ -1348,7 +1348,48 @@ C --&gt; F;
 </li>
 </ul>
 <h3 id="2-3-4-信号量">2.3.4 信号量</h3>
+<ul>
+<li><strong>信号量</strong>：一个变量，用来表示系统中某种资源的数量
+<ul>
+<li>可以使用 <code>wait()</code> 和 <code>signal()</code> 这一对原语操作（可简写为 <code>P()</code> 和 <code>V()</code>）</li>
+<li>用于实现进程互斥与同步问题</li>
+</ul>
+</li>
+<li><strong>整型信号量</strong>：用一个整数型的变量作为信号量，用来表示系统中某种资源的数量
+<ul>
+<li><strong>对整型信号量的操作</strong>：初始化、P 操作、V 操作</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-type">int</span> S = <span class="hljs-number">1</span>; <span class="hljs-comment">// 初始化整型信号量 S，表示当前系统中可用的资源数</span><br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">wait</span> <span class="hljs-params">(<span class="hljs-type">int</span> S)</span> </span>&#123;    <span class="hljs-comment">// wait 原语，相当于进入区</span><br>  <span class="hljs-keyword">while</span> (S &lt;= <span class="hljs-number">0</span>);      <span class="hljs-comment">// 如果资源数不够，就一直循环等待</span><br>  S = S - <span class="hljs-number">1</span>;           <span class="hljs-comment">// 如果资源数够，则占用一个资源</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">signal</span> <span class="hljs-params">(<span class="hljs-type">int</span> S)</span> </span>&#123;  <span class="hljs-comment">// signal 原语，相当于退出区</span><br>  S = S + <span class="hljs-number">1</span>;           <span class="hljs-comment">// 使用完资源后，在退出区释放资源</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-comment">// 进程P0：</span><br><span class="hljs-built_in">wait</span>(S);       <span class="hljs-comment">// 进入区，申请资源</span><br>使用资源;       <span class="hljs-comment">// 临界区，访问资源</span><br><span class="hljs-built_in">signal</span>(S);     <span class="hljs-comment">// 退出区，释放资源</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>存在的问题</strong>：不满足“让权等待”原则</li>
+</ul>
+</li>
+<li><strong>记录型信号量</strong>：用记录型数据结构表示的信号量，可以解决“忙等”问题
+<ul>
+<li><code>S.value</code> 表示某种资源数，<code>S.L</code> 指向等待该资源的队列</li>
+<li><strong>P 操作</strong>：先 <code>S.value--</code>，之后可能需要执行 <code>block</code> 原语
+<ul>
+<li><strong>block 原语</strong>：使进程从运行态进入阻塞态，并把挂到信号量 S 的等待队列（即阻塞队列）中</li>
+</ul>
+</li>
+<li><strong>V 操作</strong>：先 <code>S.value++</code>，之后可能需要执行 <code>wakeup</code> 原语
+<ul>
+<li><strong>wakeup 原语</strong>：唤醒等待队列中的一个进程，该进程从阻塞态变为就绪态</li>
+</ul>
+</li>
+<li><strong>作用</strong>：实现系统资源的申请和释放；实现进程互斥、进程同步</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-comment">/*记录型信号量的定义*/</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> &#123;<br>  <span class="hljs-type">int</span> value;           <span class="hljs-comment">// 剩余资源数</span><br>  <span class="hljs-keyword">struct</span> <span class="hljs-title class_">process</span> *L;  <span class="hljs-comment">// 等待队列</span><br>&#125;<br><span class="hljs-comment">/*某进程需要使用资源时，通过 wait 原语申请*/</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">wait</span> <span class="hljs-params">(semaphore S)</span> </span>&#123;<br>  S.value--;<br>  <span class="hljs-keyword">if</span> (S.value &lt; <span class="hljs-number">0</span>) &#123;<br>    <span class="hljs-built_in">block</span>(S.L);<br>  &#125;<br>&#125;<br><span class="hljs-comment">/*进程使用完资源后，通过 signal 原语祥放*/</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">signal</span> <span class="hljs-params">(semaphore S)</span> </span>&#123;<br>  S.value++;<br>  <span class="hljs-keyword">if</span> (S.value &lt; <span class="hljs-number">0</span>) &#123;<br>    <span class="hljs-built_in">wakeup</span> (S.L);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>实现进程互斥</strong></li>
+<li><strong>实现进程同步</strong></li>
+<li><strong>实现进程前驱</strong></li>
+</ul>
 <h3 id="2-3-5-经典同步问题">2.3.5 经典同步问题</h3>
+<h4 id="1-生产者-消费者问题">1. 生产者-消费者问题</h4>
+<h4 id="2-读者-写者问题">2. 读者-写者问题</h4>
+<h4 id="3-哲学家进餐问题">3. 哲学家进餐问题</h4>
 <h3 id="2-3-6-管程">2.3.6 管程</h3>
 <h2 id="2-4-死锁">2.4 死锁</h2>
 <h3 id="2-4-1-死锁的概念">2.4.1 死锁的概念</h3>
