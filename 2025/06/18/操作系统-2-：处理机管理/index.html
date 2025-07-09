@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/OS.png">
 <meta property="article:published_time" content="2025-06-18T07:29:35.000Z">
-<meta property="article:modified_time" content="2025-07-08T09:09:43.799Z">
+<meta property="article:modified_time" content="2025-07-09T02:39:03.567Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="课程笔记">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          7.2k words
+          8.9k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          61 mins
+          74 mins
         
       </span>
     
@@ -375,7 +375,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on July 8, 2025 pm
+                    Last updated on July 9, 2025 am
                   
                 
               </p>
@@ -1189,7 +1189,164 @@ C --&gt; F;
 </li>
 </ul>
 <h3 id="2-3-2-实现临界区互斥的基本方法">2.3.2 实现临界区互斥的基本方法</h3>
+<h4 id="1-软件实现方法">1. 软件实现方法</h4>
+<ol>
+<li><strong>单标志法</strong></li>
+</ol>
+<ul>
+<li><strong>算法思想</strong>：两个进程在访问完临界区后会把使用临界区的权限转交给另一个进程
+<ul>
+<li>即每个进程进入临界区的权限只能被另一个进程赋予</li>
+<li><strong>总结</strong>：在进入区只做“检查”，不“上锁”</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-type">int</span> turn = <span class="hljs-number">0</span>； <span class="hljs-comment">// turn 表示当前允许进入临界区的进程号</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-comment">// P0 进程：</span><br><span class="hljs-keyword">while</span> (turn != <span class="hljs-number">0</span>);  <span class="hljs-comment">// 进入区</span><br>critical section;   <span class="hljs-comment">// 临界区</span><br>turn = <span class="hljs-number">1</span>;           <span class="hljs-comment">// 退出区</span><br>remainder section;  <span class="hljs-comment">// 剩余区</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-comment">// P1 进程：</span><br><span class="hljs-keyword">while</span> (turn != <span class="hljs-number">1</span>);  <span class="hljs-comment">// 进入区</span><br>critical section;   <span class="hljs-comment">// 临界区</span><br>turn = <span class="hljs-number">0</span>;           <span class="hljs-comment">// 退出区</span><br>remainder section;  <span class="hljs-comment">// 剩余区</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>主要问题</strong>：违背“空闲让进”原则</li>
+</ul>
+<ol start="2">
+<li><strong>双标志先检查法</strong></li>
+</ol>
+<ul>
+<li><strong>算法思想</strong>：
+<ul>
+<li>设置一个布尔型数组 <code>flag[]</code>，数组中各个元素用来标记各进程想进入临界区的意愿</li>
+<li>每个进程在进入临界区之前先检查当前有没有别的进程想进入临界区</li>
+<li>如果没有，则把自身对应的标志 <code>flag[i]</code> 设为 <code>true</code>，之后开始访向临区</li>
+<li><strong>总结</strong>：在进入区先“检查&quot;后“上锁”，退出区“解锁&quot;</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-type">bool</span> flag[<span class="hljs-number">2</span>];      <span class="hljs-comment">// 表示进入临界区意愿的数组</span><br>flag[<span class="hljs-number">0</span>] = <span class="hljs-literal">false</span>;<br>flag[<span class="hljs-number">1</span>] = <span class="hljs-literal">false</span>;   <span class="hljs-comment">// 刚开始设置为两个进程都不想进入临界区</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-comment">// P0 进程：</span><br><span class="hljs-keyword">while</span> (flag[<span class="hljs-number">1</span>]);    <span class="hljs-comment">// 进入区</span><br>flag[<span class="hljs-number">0</span>] = <span class="hljs-literal">true</span>;     <span class="hljs-comment">// 进入区</span><br>critical section;   <span class="hljs-comment">// 临界区</span><br>flag[<span class="hljs-number">0</span>] = <span class="hljs-literal">false</span>;    <span class="hljs-comment">// 退出区</span><br>remainder section;  <span class="hljs-comment">// 剩余区</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-comment">// P1 进程：</span><br><span class="hljs-keyword">while</span> (flag[<span class="hljs-number">0</span>]);    <span class="hljs-comment">// 如果此时 P0 想进入临界区，P1 就一直循环等待</span><br>flag[<span class="hljs-number">1</span>] = <span class="hljs-literal">true</span>;     <span class="hljs-comment">// 标记为 P1 进程想要进入临界区</span><br>critical section;   <span class="hljs-comment">// 访问临界区</span><br>flag[<span class="hljs-number">1</span>] = <span class="hljs-literal">false</span>;    <span class="hljs-comment">// 访问完临界区，修改标记为 P1 不想使用临界区</span><br>remainder section;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>主要问题</strong>：违背“忙则等待”原则
+<ul>
+<li><strong>原因</strong>：进入区的检查和上锁两个处理不是一气呵成的，中间可能发生进程切换</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li><strong>双标志后检查法</strong></li>
+</ol>
+<ul>
+<li><strong>算法思想</strong>：双标志先检查法的改版，先上锁后检查，避免两个进程同时进入临界区的问题
+<ul>
+<li><strong>总结</strong>：在进入区先“加锁“后“检查&quot;，退出区&quot;解锁&quot;</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-comment">// P0 进程：</span><br>flag[<span class="hljs-number">0</span>] = <span class="hljs-literal">true</span>;     <span class="hljs-comment">// 进入区</span><br><span class="hljs-keyword">while</span> (flag[<span class="hljs-number">1</span>]);    <span class="hljs-comment">// 进入区</span><br>critical section;   <span class="hljs-comment">// 临界区</span><br>flag[<span class="hljs-number">0</span>] = <span class="hljs-literal">false</span>;    <span class="hljs-comment">// 退出区</span><br>remainder section;  <span class="hljs-comment">// 剩余区</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-comment">// P1 进程：</span><br>flag[<span class="hljs-number">1</span>] = <span class="hljs-literal">true</span>;     <span class="hljs-comment">// 标记为 P1 进程想要进入临界区</span><br><span class="hljs-keyword">while</span> (flag[<span class="hljs-number">0</span>]);    <span class="hljs-comment">// 如果 P0 也想进入临界区，则 P1 循环等待</span><br>critical section;   <span class="hljs-comment">// 访问临界区</span><br>flag[<span class="hljs-number">1</span>] = <span class="hljs-literal">false</span>;    <span class="hljs-comment">// 访问完临界区，修改标记为 P1 不想使用临界区</span><br>remainder section;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>主要问题</strong>：违背了“空闲让进”和“有限等待”原则
+<ul>
+<li>会因各进程都长期无法访问临界资源而产生“饥饿”现象</li>
+</ul>
+</li>
+</ul>
+<ol start="4">
+<li><strong>Peterson 算法</strong></li>
+</ol>
+<ul>
+<li><strong>算法思想</strong>：结合双标志法、单标志法的思想
+<ul>
+<li><strong>总结</strong>：在进入区“主动争取一主动谦让一检查对方是否想进、己方是否谦让”</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-type">bool</span> flag[<span class="hljs-number">2</span>];  <span class="hljs-comment">// 表示进入临界区意愿的数组，初始值都是 false</span><br><span class="hljs-type">int</span> turn = <span class="hljs-number">0</span>;  <span class="hljs-comment">// 表示优先让哪个进程进入临界区</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-comment">// P0 进程：</span><br>flag[<span class="hljs-number">0</span>] = <span class="hljs-literal">true</span>;                 <span class="hljs-comment">// 进入区</span><br>turn = <span class="hljs-number">1</span>;                       <span class="hljs-comment">// 进入区</span><br><span class="hljs-keyword">while</span> (flag[<span class="hljs-number">1</span>] &amp;&amp; turn==<span class="hljs-number">1</span>);     <span class="hljs-comment">// 进入区</span><br>critical section;               <span class="hljs-comment">// 临界区</span><br>flag[<span class="hljs-number">0</span>] = <span class="hljs-literal">false</span>;                <span class="hljs-comment">// 退出区</span><br>remainder section;              <span class="hljs-comment">// 剩余区</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-comment">// P1 进程：</span><br>flag[<span class="hljs-number">0</span>] = <span class="hljs-literal">true</span>;                 <span class="hljs-comment">// 表示自己想进入临界区</span><br>turn = <span class="hljs-number">1</span>;                       <span class="hljs-comment">// 可以优先让对方进入临界区</span><br><span class="hljs-keyword">while</span> (flag[<span class="hljs-number">1</span>] &amp;&amp; turn==<span class="hljs-number">1</span>);     <span class="hljs-comment">// 对方想进，且最后一次是自己谦让，那自己就循环等待</span><br>critical section;<br>flag[<span class="hljs-number">0</span>] = <span class="hljs-literal">false</span>;                <span class="hljs-comment">// 访问完临界区，表示自己已经不想访问临界区了</span><br>remainder section;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>主要问题</strong>：未遵循“让权等待”原则，会发生“忙等”
+<ul>
+<li>遵循了空闲让进、忙则等待、有限等待三个原则</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-硬件实现方法">2. 硬件实现方法</h4>
+<ol>
+<li><strong>中断屏蔽方法</strong></li>
+</ol>
+<ul>
+<li><strong>实现方法</strong>：利用“开/关中断指令”实现（与原语的实现类似）
+<ul>
+<li>即在某进程开始访问临界区到结束访问为止都不允许被中断，也就不能发生进程切换</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">关中断;<br>临界区;<br>开中断;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>优点</strong>：简单、高效</li>
+<li><strong>缺点</strong>：
+<ul>
+<li>不适用于多处理机</li>
+<li>只适用于操作系统内核进程，不适用于用户进程</li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li><strong>TestAndSet 指令</strong></li>
+</ol>
+<ul>
+<li><strong>实现方法</strong>：TS 指令（TSL 指令）是用硬件实现的，执行的过程不允许被中断，只能一气呵成
+<ul>
+<li>TS 指令把“上锁”和“检查”操作用硬件的方式变成了一气呵成的原子操作</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-comment">// 布尔型共享变量 lock 表示当前临界区是否被加锁</span><br><span class="hljs-comment">// true 表示已加锁，false 表示未加锁</span><br><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">TestAndSet</span> <span class="hljs-params">(<span class="hljs-type">bool</span> *lock)</span> </span>&#123;<br>  <span class="hljs-type">bool</span> old;<br>  old = *lock;  <span class="hljs-comment">// old 用来存放 lock 原来的值</span><br>  *lock = <span class="hljs-literal">true</span>；<span class="hljs-comment">// 无论之前是否已加锁，都将 lock 设为 true </span><br>  <span class="hljs-keyword">return</span> old;   <span class="hljs-comment">// 返回 lock 原来的值</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-comment">// 以下是使用 TS 指令实现互斥的算法逻辑</span><br><span class="hljs-keyword">while</span> (<span class="hljs-built_in">TestAndSet</span> (&amp;lock)):  <span class="hljs-comment">// “上锁”并“检查”</span><br>临界区代码段;<br>lock = <span class="hljs-literal">false</span>;                <span class="hljs-comment">// “解锁”</span><br>剩余区代码段;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>优点</strong>：
+<ul>
+<li>实现简单，无需像软件实现方法那样严格检查是否会有逻辑漏洞</li>
+<li>适用于多处理机环境</li>
+</ul>
+</li>
+<li><strong>缺点</strong>：不满足“让权等待”原则
+<ul>
+<li>暂时无法进入临界区的进程会占用 CPU 并循环执行 TS 指令，从而导致“忙等”</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li><strong>Swap 指令</strong></li>
+</ol>
+<ul>
+<li><strong>实现方法</strong>：Swap 指令是用硬件实现的，执行的过程不允许被中断，只能一气呵成</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-comment">// Swap 指令的作用是交换两个变量的值</span><br><span class="hljs-built_in">Swap</span> (<span class="hljs-type">bool</span> *a, <span class="hljs-type">bool</span> *b) &#123;<br>  <span class="hljs-type">bool</span> temp;<br>  temp = *а;<br>  *а = *b;<br>  *b = temp;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-comment">// 以下是用 Swap 指令实现互斥的算法逻辑</span><br><span class="hljs-comment">// lock 表示当前临界区是否被加锁</span><br><span class="hljs-type">bool</span> old = <span class="hljs-literal">true</span>;<br><span class="hljs-keyword">while</span> (old == <span class="hljs-literal">true</span>)<br>  <span class="hljs-built_in">Swap</span> (&amp;lock, &amp;old);<br>临界区代码段;<br>lock = <span class="hljs-literal">false</span>;<br>剩余区代码段;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>优点</strong>：同 TS 指令</li>
+<li><strong>缺点</strong>：同 TS 指令</li>
+</ul>
 <h3 id="2-3-3-互斥锁">2.3.3 互斥锁</h3>
+<ul>
+<li><strong>互斥锁</strong>：解决临界区最简单的工具</li>
+<li><strong>获得锁</strong>：一个进程在进入临界区时调用 <code>acquire()</code> 函数，以获得锁</li>
+<li><strong>释放锁</strong>：一个进程在瑞出临界区时调用 <code>release()</code> 函数，以释放锁</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-built_in">acquire</span> () &#123;<br><span class="hljs-keyword">while</span> (!available);  <span class="hljs-comment">// 忙等待</span><br>available = <span class="hljs-literal">false</span>;   <span class="hljs-comment">// 获得锁</span><br>&#125;<br><span class="hljs-built_in">release</span> () &#123;<br>available = <span class="hljs-literal">true</span>;   <span class="hljs-comment">// 释放锁</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>实现方式</strong>：<code>acquire()</code> 和 <code>release()</code> 的执行必须是原子操作，因此互斥锁常采用硬件机制实现</li>
+<li><strong>自旋锁的缺点</strong>：忙等待（违背“让权等待”原则）
+<ul>
+<li>当有一个进程在临界区中，任何其他进程在进入临界区时必须连续循环调用  <code>acquire()</code></li>
+</ul>
+</li>
+<li><strong>适用场景</strong>：多处理器系统（一个核忙等，其他核照常工作，并快速释放临界区）
+<ul>
+<li>等待期间不用切换进程上下文，多处理机系统中，若上锁的时间短，则等待代价很低</li>
+</ul>
+</li>
+</ul>
 <h3 id="2-3-4-信号量">2.3.4 信号量</h3>
 <h3 id="2-3-5-经典同步问题">2.3.5 经典同步问题</h3>
 <h3 id="2-3-6-管程">2.3.6 管程</h3>
