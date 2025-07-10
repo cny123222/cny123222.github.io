@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/OS.png">
 <meta property="article:published_time" content="2025-06-18T07:29:35.000Z">
-<meta property="article:modified_time" content="2025-07-09T03:13:19.176Z">
+<meta property="article:modified_time" content="2025-07-10T05:42:15.948Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="课程笔记">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          9.4k words
+          11k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          79 mins
+          95 mins
         
       </span>
     
@@ -375,7 +375,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on July 9, 2025 am
+                    Last updated on July 10, 2025 pm
                   
                 
               </p>
@@ -1333,7 +1333,7 @@ C --&gt; F;
 <li><strong>获得锁</strong>：一个进程在进入临界区时调用 <code>acquire()</code> 函数，以获得锁</li>
 <li><strong>释放锁</strong>：一个进程在瑞出临界区时调用 <code>release()</code> 函数，以释放锁</li>
 </ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-built_in">acquire</span> () &#123;<br><span class="hljs-keyword">while</span> (!available);  <span class="hljs-comment">// 忙等待</span><br>available = <span class="hljs-literal">false</span>;   <span class="hljs-comment">// 获得锁</span><br>&#125;<br><span class="hljs-built_in">release</span> () &#123;<br>available = <span class="hljs-literal">true</span>;   <span class="hljs-comment">// 释放锁</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-built_in">acquire</span> () &#123;<br>  <span class="hljs-keyword">while</span> (!available);  <span class="hljs-comment">// 忙等待</span><br>  available = <span class="hljs-literal">false</span>;   <span class="hljs-comment">// 获得锁</span><br>&#125;<br><span class="hljs-built_in">release</span> () &#123;<br>  available = <span class="hljs-literal">true</span>;   <span class="hljs-comment">// 释放锁</span><br>&#125;<br></code></pre></td></tr></table></figure>
 <ul>
 <li><strong>实现方式</strong>：<code>acquire()</code> 和 <code>release()</code> 的执行必须是原子操作，因此互斥锁常采用硬件机制实现</li>
 <li><strong>自旋锁的缺点</strong>：忙等待（违背“让权等待”原则）
@@ -1368,28 +1368,148 @@ C --&gt; F;
 <li><strong>记录型信号量</strong>：用记录型数据结构表示的信号量，可以解决“忙等”问题
 <ul>
 <li><code>S.value</code> 表示某种资源数，<code>S.L</code> 指向等待该资源的队列</li>
-<li><strong>P 操作</strong>：先 <code>S.value--</code>，之后可能需要执行 <code>block</code> 原语
+<li><strong>P 操作</strong>：申请一个资源 S，如果资源不够就阻塞等待
 <ul>
+<li><strong>过程</strong>：先 <code>S.value--</code>，之后可能需要执行 <code>block</code> 原语</li>
 <li><strong>block 原语</strong>：使进程从运行态进入阻塞态，并把挂到信号量 S 的等待队列（即阻塞队列）中</li>
 </ul>
 </li>
-<li><strong>V 操作</strong>：先 <code>S.value++</code>，之后可能需要执行 <code>wakeup</code> 原语
+<li><strong>V 操作</strong>：释放一个资源 S，如果有进程在等待该资源，则唤醒一个进程
 <ul>
+<li><strong>过程</strong>：先 <code>S.value++</code>，之后可能需要执行 <code>wakeup</code> 原语</li>
 <li><strong>wakeup 原语</strong>：唤醒等待队列中的一个进程，该进程从阻塞态变为就绪态</li>
 </ul>
 </li>
 <li><strong>作用</strong>：实现系统资源的申请和释放；实现进程互斥、进程同步</li>
 </ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-comment">/*记录型信号量的定义*/</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> &#123;<br>  <span class="hljs-type">int</span> value;           <span class="hljs-comment">// 剩余资源数</span><br>  <span class="hljs-keyword">struct</span> <span class="hljs-title class_">process</span> *L;  <span class="hljs-comment">// 等待队列</span><br>&#125;<br><span class="hljs-comment">/*某进程需要使用资源时，通过 wait 原语申请*/</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">wait</span> <span class="hljs-params">(semaphore S)</span> </span>&#123;<br>  S.value--;<br>  <span class="hljs-keyword">if</span> (S.value &lt; <span class="hljs-number">0</span>) &#123;<br>    <span class="hljs-built_in">block</span>(S.L);<br>  &#125;<br>&#125;<br><span class="hljs-comment">/*进程使用完资源后，通过 signal 原语祥放*/</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">signal</span> <span class="hljs-params">(semaphore S)</span> </span>&#123;<br>  S.value++;<br>  <span class="hljs-keyword">if</span> (S.value &lt; <span class="hljs-number">0</span>) &#123;<br>    <span class="hljs-built_in">wakeup</span> (S.L);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-comment">/*记录型信号量的定义*/</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> &#123;<br>  <span class="hljs-type">int</span> value;           <span class="hljs-comment">// 剩余资源数</span><br>  <span class="hljs-keyword">struct</span> <span class="hljs-title class_">process</span> *L;   <span class="hljs-comment">// 等待队列</span><br>&#125;<br><span class="hljs-comment">/*某进程需要使用资源时，通过 wait 原语申请*/</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">wait</span> <span class="hljs-params">(semaphore S)</span> </span>&#123;<br>  S.value--;<br>  <span class="hljs-keyword">if</span> (S.value &lt; <span class="hljs-number">0</span>) &#123;<br>    <span class="hljs-built_in">block</span>(S.L);<br>  &#125;<br>&#125;<br><span class="hljs-comment">/*进程使用完资源后，通过 signal 原语祥放*/</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">signal</span> <span class="hljs-params">(semaphore S)</span> </span>&#123;<br>  S.value++;<br>  <span class="hljs-keyword">if</span> (S.value &lt; <span class="hljs-number">0</span>) &#123;<br>    <span class="hljs-built_in">wakeup</span> (S.L);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 </li>
-<li><strong>实现进程互斥</strong></li>
-<li><strong>实现进程同步</strong></li>
-<li><strong>实现进程前驱</strong></li>
+<li><strong>实现进程互斥</strong>：在临界区前后分别 PV
+<ol>
+<li>分析并发进程的关键活动，划定临界区</li>
+<li>设置互斥信号量 <code>mutex</code>，初值为 1</li>
+<li>在进入区 <code>P(mutex)</code> 申请资源</li>
+<li>在退出区 <code>V(mutex)</code> 释放资源</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-comment">/*信号量机制实现互斥*/</span><br>semaphore mutex = <span class="hljs-number">1</span>;  <span class="hljs-comment">// 初始化信号量</span><br><br><span class="hljs-built_in">P1</span>()&#123;<br>  ...<br>  <span class="hljs-built_in">P</span>(mutex);       <span class="hljs-comment">// 使用临界资源前需要加锁</span><br>  临界区代码段...<br>  <span class="hljs-built_in">V</span>(mutex);       <span class="hljs-comment">// 使用临界资源后需要解锁</span><br>  ...<br>&#125;<br><br><span class="hljs-built_in">P2</span>()&#123;<br>  ...<br>  <span class="hljs-built_in">P</span>(mutex);<br>  临界区代码段...<br>  <span class="hljs-built_in">V</span>(mutex);<br>  ...<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>实现进程同步</strong>：前 V 后 P
+<ol>
+<li>分析什么地方需要实现同步关系，即必须保证“一前一后”执行的两个操作</li>
+<li>设置同步信号量 <code>S</code>，初始为 0</li>
+<li>在“前操作”之后执行 <code>V(S)</code></li>
+<li>在“后操作”之前执行 <code>P(S)</code></li>
+</ol>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-comment">/*信号量机制实现同步*/</span><br>semaphore S = <span class="hljs-number">0</span>;  <span class="hljs-comment">// 初始化同步信号量</span><br><br><span class="hljs-comment">// 要保证语句 y 必须在语句 x 之后执行</span><br><span class="hljs-built_in">P1</span>()&#123;<br>  x;       <span class="hljs-comment">// 执行语句 x</span><br>  <span class="hljs-built_in">V</span>(S);    <span class="hljs-comment">// 告诉进程 P2，语句 x 已经完成</span><br>  ...<br>&#125;<br><br><span class="hljs-built_in">P2</span>()&#123;<br>  ...<br>  <span class="hljs-built_in">P</span>(S);   <span class="hljs-comment">// 检查语句 x 是否运行完成</span><br>  y;      <span class="hljs-comment">// 获得 x 的运行结果，执行语句 y</span><br>  ...<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>实现进程前驱</strong>：
+<ol>
+<li>分析问题，画出前驱图，把每一对前驱关系都看成一个同步问题</li>
+<li>为每一对前驱关系各设置一个同步信号量，初值为 0</li>
+<li>在“前操作”之后对相应的同步信号量执行 V 操作</li>
+<li>在“后操作”之前对相应的同步信号量执行 P 操作</li>
+</ol>
+</li>
 </ul>
 <h3 id="2-3-5-经典同步问题">2.3.5 经典同步问题</h3>
+<div class="note note-primary">
+            <p><strong>PV 操作题目的解题思路</strong>：</p><ol><li><strong>关系分析</strong>：找出题目中描述的各个进程，分析它们之间的同步、互斥关系</li><li><strong>整理思路</strong>：根据各进程的操作流程确定 P、V 操作的大致顺序</li><li><strong>设置信号量</strong>：设置需要的信号量，并根据题目条件确定信号量初值（互斥信号量初值一般为 1，同步信号量的初始值取决于对应资源的初始值）</li></ol>
+          </div>
 <h4 id="1-生产者-消费者问题">1. 生产者-消费者问题</h4>
-<h4 id="2-读者-写者问题">2. 读者-写者问题</h4>
-<h4 id="3-哲学家进餐问题">3. 哲学家进餐问题</h4>
+<ul>
+<li><strong>问题描述</strong>：
+<ul>
+<li>系统中有一组生产者进程和一组消费者进程，生产者进程每次生产一个产品放入缓冲区，消费者进程每次从缓冲区中取出一个产品并使用</li>
+<li>生产者、消费者共享一个初始为空、大小为 n 的缓冲区</li>
+<li>只有缓冲区没满时，生产者才能把产品放入缓冲区，否则必须等待</li>
+<li>只有缓冲区不空时，消费者才能从中取出产品，否则必须等待</li>
+<li>缓冲区是临界资源，各进程必须互斥地访问</li>
+</ul>
+</li>
+<li><strong>关系分析及信号量设置</strong>：
+<ul>
+<li><strong>同步关系 1</strong>：缓冲区没满 --&gt; 生产者生产，设置信号量 <code>empty</code></li>
+<li><strong>同步关系 2</strong>：缓冲区不空 --&gt; 消费者消费，设置信号量 <code>full</code></li>
+<li><strong>互斥关系</strong>：各进程必须互斥地访问缓冲区，设置信号量 <code>mutex</code></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs C++">semaphore mutex = <span class="hljs-number">1</span>;  <span class="hljs-comment">// 互斥信号量，实现对缓冲区的互斥访问</span><br>semaphore empty = n;  <span class="hljs-comment">// 同步信号量，表示空闲缓冲区的数量</span><br>semaphore full = <span class="hljs-number">0</span>;   <span class="hljs-comment">// 同步信号量，表示产品的数量，也即非空缓冲区的数量</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-built_in">producer</span> ()&#123;<br>  <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>)&#123;<br>    生产一个产品;<br>    <span class="hljs-built_in">P</span>(empty);        <span class="hljs-comment">// 消耗一个空闲缓冲区</span><br>    <span class="hljs-built_in">P</span>(mutex);<br>    把产品放入缓冲区;<br>    <span class="hljs-built_in">V</span>(mutex);<br>    <span class="hljs-built_in">V</span>(full);         <span class="hljs-comment">// 增加一个产品</span><br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-built_in">consumer</span> ()&#123;<br>  <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>)&#123;<br>    <span class="hljs-built_in">P</span>(full);            <span class="hljs-comment">// 消耗一个产品</span><br>    <span class="hljs-built_in">P</span>(mutex);<br>    从缓冲区取出一个产品;<br>    <span class="hljs-built_in">V</span>(mutex);<br>    <span class="hljs-built_in">V</span>(empty);           <span class="hljs-comment">// 增加一个空闲缓冲区</span><br>    使用产品;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>注意</strong>：
+<ul>
+<li>实现互斥是在同一进程中进行一对 PV 操作</li>
+<li>实现两进程的同步是在其中一个进程中执行 P，在另一进程中执行 V</li>
+<li><strong>实现互斥的 P 操作必须在实现同步的 P 操作之后</strong>，否则会发生死锁</li>
+<li>两个 V 操作的顺序可以交换，因为 V 操作不会导致进程阻塞</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-多生产者-多消费者问题">2. 多生产者-多消费者问题</h4>
+<ul>
+<li><strong>问题描述</strong>：
+<ul>
+<li>桌子上有一只盘子，每次只能向其中放入一个水果</li>
+<li>爸爸专向盘子中放苹果，妈妈专向盘子中放橘子，儿子专等着吃盘子中的橘子，女儿专等着吃盘子中的苹果</li>
+<li>只有盘子空时，爸爸或妈妈才可向盘子中放一个水果</li>
+<li>仅当盘子中有自己需要的水果时，儿子或女儿可以从盘子中取出水果</li>
+</ul>
+</li>
+<li><strong>关系分析</strong>：
+<ul>
+<li><strong>互斥关系</strong>：对盘子的访问要互斥地进行，设置信号量 <code>mutex</code></li>
+<li><strong>同步关系 1</strong>：盘中有苹果 --&gt; 取苹果，设置信号量 <code>apple</code></li>
+<li><strong>同步关系 2</strong>：盘中有橘子 --&gt; 取橘子，设置信号量 <code>orange</code></li>
+<li><strong>同步关系 3</strong>：盘子为空 --&gt; 放入水果，设置信号量 <code>plate</code></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs C++">semaphore mutex = <span class="hljs-number">1</span>;   <span class="hljs-comment">// 实现互斥访问盘子</span><br>semaphore apple = <span class="hljs-number">0</span>;   <span class="hljs-comment">// 盘子中有几个苹果</span><br>semaphore orange = <span class="hljs-number">0</span>;  <span class="hljs-comment">// 盘子中有几个橘子</span><br>semaphore plate = <span class="hljs-number">1</span>;   <span class="hljs-comment">// 盘子中还可以放多少个水果</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-built_in">dad</span> ()&#123;<br>  <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) &#123;<br>    准备一个苹果；<br>    <span class="hljs-built_in">P</span>(plate);<br>    <span class="hljs-built_in">P</span>(mutex);<br>    把苹果放入盘子；<br>    <span class="hljs-built_in">V</span>(mutex);<br>    <span class="hljs-built_in">V</span>(apple);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-built_in">mom</span> ()&#123;<br>  <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) &#123;<br>    准备一个橘子；<br>    <span class="hljs-built_in">P</span>(plate);<br>    <span class="hljs-built_in">P</span>(mutex);<br>    把橘子放入盘子；<br>    <span class="hljs-built_in">V</span>(mutex);<br>    <span class="hljs-built_in">V</span>(orange);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-built_in">daughter</span> ()&#123;<br>  <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) &#123;<br>    <span class="hljs-built_in">P</span>(apple);<br>    从盘中取出苹果;<br>    <span class="hljs-built_in">V</span>(plate);<br>    吃掉苹果;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-built_in">son</span> ()&#123;<br>  <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) &#123;<br>    <span class="hljs-built_in">P</span>(orange);<br>    从盘中取出橘子;<br>    <span class="hljs-built_in">V</span>(plate);<br>    吃掉橘子;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>注意</strong>：本题可以不用互斥信号量，原因是盘子容量为 1，任何时刻最多只有一个进程的 P 操作不会被阻塞并进入临界区</li>
+</ul>
+<h4 id="3-读者-写者问题">3. 读者-写者问题</h4>
+<ul>
+<li><strong>问题描述</strong>：
+<ul>
+<li>允许多个读者可以同时对文件执行读操作</li>
+<li>只允许一个写者往文件中写信息</li>
+<li>任一写者在完成写操作之前不允许其他读者或写者工作</li>
+<li>写者执行写操作前，应让已有的读者和写者全部退出</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs C++">semaphore rw = <span class="hljs-number">1</span>;       <span class="hljs-comment">// 用于实现对共享文件的互斥访问</span><br><span class="hljs-type">int</span> count = <span class="hljs-number">0</span>;          <span class="hljs-comment">// 记录当前有几个读进程在访问文件</span><br>semaphore mutex = <span class="hljs-number">1</span>;    <span class="hljs-comment">// 用于保证对 count 变量的互斥访问</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-built_in">writer</span> ()&#123;<br>  <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>)&#123;<br>    <span class="hljs-built_in">P</span>(rw);    <span class="hljs-comment">// 写之前加锁</span><br>    写文件...<br>    <span class="hljs-built_in">V</span>(rw);    <span class="hljs-comment">// 写完了解锁</span><br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-built_in">reader</span> ()&#123;<br>  <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>)&#123;<br>    <span class="hljs-built_in">P</span>(mutex);         <span class="hljs-comment">// 各读进程互斥访问 count</span><br>    <span class="hljs-keyword">if</span> (count == <span class="hljs-number">0</span>)   <span class="hljs-comment">// 由第一个读进程负责</span><br>      <span class="hljs-built_in">P</span>(rw);          <span class="hljs-comment">// 读之前加锁</span><br>    count++;          <span class="hljs-comment">// 访问文件的读进程数+1</span><br>    <span class="hljs-built_in">V</span>(mutex);<br>    读文件...<br>    <span class="hljs-built_in">P</span>(mutex);         <span class="hljs-comment">// 各读进程互斥访问 count</span><br>    count--;          <span class="hljs-comment">// 访问文件的读进程数-1</span><br>    <span class="hljs-keyword">if</span> (count == <span class="hljs-number">0</span>)   <span class="hljs-comment">// 由第一个读进程负责</span><br>      <span class="hljs-built_in">V</span>(rw);          <span class="hljs-comment">// 读完了解锁</span><br>    <span class="hljs-built_in">V</span>(mutex);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>注意</strong>：
+<ul>
+<li>设置 <code>count</code> 变量是为了允许多个读者同时读文件</li>
+<li>设置 <code>mutex</code> 互斥信号量的原因是对 <code>count</code> 变量的检查和赋值需要一气呵成</li>
+</ul>
+</li>
+<li><strong>存在的问题</strong>：这种算法中，读进程是优先的，写进程可能被“饿死”
+<ul>
+<li><strong>原因</strong>：只要有读进程还在读，写进程就一直要阻塞等待</li>
+<li><strong>解决方法</strong>：</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs C++">semaphore rw = <span class="hljs-number">1</span>;       <span class="hljs-comment">// 用于实现对共享文件的互斥访问</span><br><span class="hljs-type">int</span> count = <span class="hljs-number">0</span>;          <span class="hljs-comment">// 记录当前有几个读进程在访问文件</span><br>semaphore mutex = <span class="hljs-number">1</span>;    <span class="hljs-comment">// 用于保证对 count 变量的互斥访问</span><br>semaphore w = <span class="hljs-number">1</span>;        <span class="hljs-comment">// 用于实现“写优先”</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-built_in">writer</span> ()&#123;<br>  <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>)&#123;<br>    <span class="hljs-built_in">P</span>(w);      <span class="hljs-comment">// 增加</span><br>    <span class="hljs-built_in">P</span>(rw);<br>    写文件...<br>    <span class="hljs-built_in">V</span>(rw);     <span class="hljs-comment">// 增加</span><br>    <span class="hljs-built_in">V</span>(w);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-built_in">reader</span> ()&#123;<br>  <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>)&#123;<br>    <span class="hljs-built_in">P</span>(w);              <span class="hljs-comment">// 增加</span><br>    <span class="hljs-built_in">P</span>(mutex); <br>    <span class="hljs-keyword">if</span> (count == <span class="hljs-number">0</span>) <br>      <span class="hljs-built_in">P</span>(rw);<br>    count++;<br>    <span class="hljs-built_in">V</span>(mutex);<br>    <span class="hljs-built_in">V</span>(w);              <span class="hljs-comment">// 增加</span><br>    读文件...<br>    <span class="hljs-built_in">P</span>(mutex);<br>    count--; <br>    <span class="hljs-keyword">if</span> (count == <span class="hljs-number">0</span>)<br>      <span class="hljs-built_in">V</span>(rw); <br>    <span class="hljs-built_in">V</span>(mutex);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="4-哲学家进餐问题">4. 哲学家进餐问题</h4>
 <h3 id="2-3-6-管程">2.3.6 管程</h3>
 <h2 id="2-4-死锁">2.4 死锁</h2>
 <h3 id="2-4-1-死锁的概念">2.4.1 死锁的概念</h3>
