@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/OS.png">
 <meta property="article:published_time" content="2025-06-18T07:29:35.000Z">
-<meta property="article:modified_time" content="2025-07-10T05:42:15.948Z">
+<meta property="article:modified_time" content="2025-07-10T07:04:10.298Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="课程笔记">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          11k words
+          12k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          95 mins
+          101 mins
         
       </span>
     
@@ -1480,7 +1480,7 @@ C --&gt; F;
 </ul>
 <h4 id="3-读者-写者问题">3. 读者-写者问题</h4>
 <ul>
-<li><strong>问题描述</strong>：
+<li><strong>问题描述</strong>：复杂的互斥问题
 <ul>
 <li>允许多个读者可以同时对文件执行读操作</li>
 <li>只允许一个写者往文件中写信息</li>
@@ -1510,7 +1510,61 @@ C --&gt; F;
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-built_in">writer</span> ()&#123;<br>  <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>)&#123;<br>    <span class="hljs-built_in">P</span>(w);      <span class="hljs-comment">// 增加</span><br>    <span class="hljs-built_in">P</span>(rw);<br>    写文件...<br>    <span class="hljs-built_in">V</span>(rw);     <span class="hljs-comment">// 增加</span><br>    <span class="hljs-built_in">V</span>(w);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-built_in">reader</span> ()&#123;<br>  <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>)&#123;<br>    <span class="hljs-built_in">P</span>(w);              <span class="hljs-comment">// 增加</span><br>    <span class="hljs-built_in">P</span>(mutex); <br>    <span class="hljs-keyword">if</span> (count == <span class="hljs-number">0</span>) <br>      <span class="hljs-built_in">P</span>(rw);<br>    count++;<br>    <span class="hljs-built_in">V</span>(mutex);<br>    <span class="hljs-built_in">V</span>(w);              <span class="hljs-comment">// 增加</span><br>    读文件...<br>    <span class="hljs-built_in">P</span>(mutex);<br>    count--; <br>    <span class="hljs-keyword">if</span> (count == <span class="hljs-number">0</span>)<br>      <span class="hljs-built_in">V</span>(rw); <br>    <span class="hljs-built_in">V</span>(mutex);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 <h4 id="4-哲学家进餐问题">4. 哲学家进餐问题</h4>
+<ul>
+<li><strong>问题描述</strong>：
+<ul>
+<li>一张圆桌上坐着 5 名哲学家，每两个哲学象之间的桌上摆一根筷子，桌子的中间是一碗米饭</li>
+<li>哲学家们倾注毕生的精力用于思考和进餐，哲学家在思考时，并不影响他人</li>
+<li>只有当哲学家饥饿时，才试图拿起左、右两根筷子（一根一根地拿起）</li>
+<li>如果筷子已在他人手上，则需等待</li>
+<li>饥饿的哲学家只有同时拿起两根筷子才可以开始进餐，当进餐完毕后，放下筷子继续思考</li>
+</ul>
+</li>
+<li><strong>问题关键</strong>：解决进程死锁，原因是每个进程需要同时持有两个临界资源</li>
+<li><strong>关系分析</strong>：5 位哲学家与左右邻居对其中间筷子的访问是互斥问题</li>
+<li><strong>信号量设置</strong>：定义互斥信号量数组 <code>chopstick[5] = &#123;1, 1, 1, 1, 1&#125;</code>，并对哲学家按 0 到 4 编号
+<ul>
+<li>哲学家 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span> 左边的筷子编号为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span>，右边的筷子编号为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>i</mi><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo><mi mathvariant="normal">%</mi><mn>5</mn></mrow><annotation encoding="application/x-tex">(i + 1) \% 5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mord">%5</span></span></span></span></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs C++">semaphore chopstick[<span class="hljs-number">5</span>] = &#123;<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>&#125;;<br><span class="hljs-built_in">Pi</span> () &#123;   <span class="hljs-comment">// i 号哲学家的进程</span><br>  <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) &#123;<br>    <span class="hljs-built_in">P</span>(chopstick[i]);          <span class="hljs-comment">// 拿左 </span><br>    <span class="hljs-built_in">P</span>(chopstick[(i<span class="hljs-number">+1</span>)%<span class="hljs-number">5</span>]);    <span class="hljs-comment">// 拿右</span><br>    吃饭...<br>    <span class="hljs-built_in">V</span>(chopstick[i]);          <span class="hljs-comment">// 放左</span><br>    <span class="hljs-built_in">V</span>(chopstick[(i<span class="hljs-number">+1</span>)%<span class="hljs-number">5</span>]);    <span class="hljs-comment">// 放右</span><br>    思考...<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>存在的问题</strong>：如果 5 个哲学家并发地拿起自己左手边的筷子，会发生循环等待，导致死锁</li>
+<li><strong>解决方法</strong>：对哲学冢进程施加一些限制条件
+<ul>
+<li>最多允许四个哲学家同时进餐，这样保证至少有一个哲学家可以拿到左右两只筷子</li>
+<li>要求奇数号哲学家先拿左边的筷子，再拿右边的筷子，而偶数号哲学家相反</li>
+<li>仅当一个哲学家左右两只筷子都可用时才允许他拿起筷子</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs C++">semaphore chopstick[<span class="hljs-number">5</span>] = &#123;<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>&#125;;<br>semaphore mutex = <span class="hljs-number">1</span>;<br><span class="hljs-built_in">Pi</span> () &#123;   <span class="hljs-comment">// i 号哲学家的进程</span><br>  <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) &#123;<br>    <span class="hljs-built_in">P</span>(mutex);<br>    <span class="hljs-built_in">P</span>(chopstick[i]);          <span class="hljs-comment">// 拿左 </span><br>    <span class="hljs-built_in">P</span>(chopstick[(i<span class="hljs-number">+1</span>)%<span class="hljs-number">5</span>]);    <span class="hljs-comment">// 拿右</span><br>    <span class="hljs-built_in">V</span>(mutex);<br>    吃饭...<br>    <span class="hljs-built_in">V</span>(chopstick[i]);          <span class="hljs-comment">// 放左</span><br>    <span class="hljs-built_in">V</span>(chopstick[(i<span class="hljs-number">+1</span>)%<span class="hljs-number">5</span>]);    <span class="hljs-comment">// 放右</span><br>    思考...<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 <h3 id="2-3-6-管程">2.3.6 管程</h3>
+<ul>
+<li><strong>引入管程的原因</strong>：信号量机制编程麻烦、易出错</li>
+<li><strong>管程的组成部分</strong>：
+<ul>
+<li>管程的名称</li>
+<li>局部于管程内部的共享数据结构说明</li>
+<li>对该数据结构进行操作的一组过程（函数）</li>
+<li>对局部于管程内部的共享数据设置初始值的语句</li>
+</ul>
+</li>
+<li><strong>管程的基本特征</strong>：
+<ul>
+<li>局部于管程的数据只能被局部于管程的过程所访问</li>
+<li>一个进程只有通过管程内的过程才能进入管程访问共享数据</li>
+<li>每次仅允许一个进程在管程内执行某个内部过程</li>
+</ul>
+</li>
+<li><strong>互斥和同步的实现</strong>：
+<ul>
+<li>各进程必须互斥访问管程的特性是由编译器实现的</li>
+<li>可在管程中设置条件变量及等待/唤醒操作以解决同步问题</li>
+</ul>
+</li>
+</ul>
 <h2 id="2-4-死锁">2.4 死锁</h2>
 <h3 id="2-4-1-死锁的概念">2.4.1 死锁的概念</h3>
 <h3 id="2-4-2-死锁预防">2.4.2 死锁预防</h3>
