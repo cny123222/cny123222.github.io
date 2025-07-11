@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/OS.png">
 <meta property="article:published_time" content="2025-06-18T07:29:35.000Z">
-<meta property="article:modified_time" content="2025-07-10T07:04:10.298Z">
+<meta property="article:modified_time" content="2025-07-11T02:12:00.092Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="课程笔记">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          12k words
+          13k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          101 mins
+          112 mins
         
       </span>
     
@@ -375,7 +375,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on July 10, 2025 pm
+                    Last updated on July 11, 2025 am
                   
                 
               </p>
@@ -1567,9 +1567,141 @@ C --&gt; F;
 </ul>
 <h2 id="2-4-死锁">2.4 死锁</h2>
 <h3 id="2-4-1-死锁的概念">2.4.1 死锁的概念</h3>
+<ul>
+<li><strong>死锁的定义</strong>：各进程互相等待对方手里的资源，导致各进程都阻塞，无法向前推进</li>
+<li><strong>死锁、饥饿、死循环的区别</strong>：
+<ul>
+<li><strong>死锁</strong>：至少是两个进程一起死锁，死锁进程处于阻塞态</li>
+<li><strong>饥饿</strong>：可以只有一个进程饥饿，饥饿进程可能阻塞也可能就绪</li>
+<li><strong>死循环</strong>：可能只有一个进程发生死循环，死罐环的进程可上处理机</li>
+<li>死锁和饥饿是操作系统要解决的问题，死循环是应用程序员要解决的</li>
+</ul>
+</li>
+<li><strong>死锁产生的必要条件</strong>：
+<ul>
+<li><strong>互斥条件</strong>：对必须互斥使用的资源的争抢才会导致死锁</li>
+<li><strong>不剥夺条件</strong>：进程保持的资源只能主动释放，不可强行剥夺</li>
+<li><strong>请求和保持条件</strong>：保持着某些资源不放的同时，请求别的资源</li>
+<li><strong>循环等待条件</strong>：存在一种进程资源的循环等待链
+<ul>
+<li>循环等待未必死锁，死锁一定有循环等待</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>死锁发生的原因</strong>：对不可剥夺资源的不合理分配
+<ul>
+<li><strong>具体原因</strong>：对系统资源的竞争、进程推进顺序非法、信号量使用不当</li>
+</ul>
+</li>
+<li><strong>死锁的处理策略</strong>：
+<ul>
+<li><strong>预防死锁</strong>：破坏死锁产生的四个必要条件</li>
+<li><strong>避免死锁</strong>：避免系统进入不安全状态（银行家算法）</li>
+<li><strong>死锁检测和解除</strong>：允许死锁发生，系统负责检测出死锁并解除</li>
+</ul>
+</li>
+</ul>
 <h3 id="2-4-2-死锁预防">2.4.2 死锁预防</h3>
+<ul>
+<li><strong>破坏互斥条件</strong>：
+<ul>
+<li><strong>方案</strong>：将临界资源改造为可共享使用的资源（如 SPOOLing 技术）</li>
+<li><strong>缺点</strong>：可行性不高，很多时候无法破坏互斥条件</li>
+</ul>
+</li>
+<li><strong>破坏不剥夺条件</strong>：
+<ul>
+<li><strong>方案一</strong>：申请的资源得不到满足时，立即释放拥有的所有资源</li>
+<li><strong>方案二</strong>：申请的资源被其他进程占用时，由操作系统协助剥夺（考虑优先级）</li>
+<li><strong>缺点</strong>：实现复杂；剥夺资源可能导致部分工作失效；反复申请和释放导致系统开销大；可能导致饥饿</li>
+</ul>
+</li>
+<li><strong>破坏请求和保持条件</strong>：
+<ul>
+<li><strong>方案</strong>：运行前分配好所有需要的资源，之后一直保持</li>
+<li><strong>缺点</strong>：资源利用率低；可能导致饥饿</li>
+</ul>
+</li>
+<li><strong>破坏循环等待条件</strong>：
+<ul>
+<li><strong>方案</strong>：给资源编号，必须按编号从小到大的顺序申请资源</li>
+<li><strong>缺点</strong>：不方便增加新设备；会导致资源浪费；用户编程麻烦</li>
+</ul>
+</li>
+</ul>
 <h3 id="2-4-3-死锁避免">2.4.3 死锁避免</h3>
+<ul>
+<li><strong>安全序列</strong>：指如果系统按照这种序列分配资源，则每个进程都能顺利完成</li>
+<li><strong>安全状态</strong>：只要能找出一个安全序列，系统处于安全状态</li>
+<li><strong>系统状态与死锁</strong>：
+<ul>
+<li>如果系统处于安全状态，就一定不会发生死锁</li>
+<li>如果系统进入不安全状态，就可能发生死锁</li>
+</ul>
+</li>
+</ul>
+<h4 id="银行家算法">银行家算法</h4>
+<ul>
+<li><strong>核心思想</strong>：在进程提出资源申请时，先预判此次分配是否会导致系统进入不安全状态
+<ul>
+<li>如果会进入不安全状态，就暂时不答应这次请求，让该进程先阻塞等待</li>
+</ul>
+</li>
+<li><strong>数据结构</strong>：假设系统中有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 个进程，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span></span></span></span> 种资源
+<ul>
+<li>长度为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span></span></span></span> 的一维数组 <code>Available</code> 表示还有多少可用资源</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>×</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">n \times m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span></span></span></span> 矩阵 <code>Max</code> 表示各进程对资源的最大需求数</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>×</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">n \times m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span></span></span></span> 矩阵 <code>Allocation</code> 表示已经给各进程分配了多少资源</li>
+<li><code>Max</code> <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo></mrow><annotation encoding="application/x-tex">-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">−</span></span></span></span> <code>Allocation</code> <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>=</mo></mrow><annotation encoding="application/x-tex">=</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">=</span></span></span></span> <code>Need</code> 矩阵表示各进程最多还需要多少资源</li>
+<li>长度为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span></span></span></span> 的一维数组 <code>Request</code> 表示进程此次申请的各种资源数</li>
+</ul>
+</li>
+<li><strong>银行家算法步骤</strong>：
+<ol>
+<li>检查此次申请是否超过了之前声明的最大需求数</li>
+<li>检查此时系统剩余的可用资源是否还能满足这次请求</li>
+<li>试探着分配，更改各数据结构</li>
+<li>用安全性算法检查此次分配是否会导致系统进入不安全状态</li>
+</ol>
+</li>
+<li><strong>安全性算法步骤</strong>：
+<ol>
+<li>检查当前的剩余可用资源是否能满足某个进程的最大需求，如果可以，就把该进程加入安全序列，并把该进程持有的资源全部回收</li>
+<li>不断重复上述过程，看最终是否能让所有进程都加入安全序列</li>
+</ol>
+</li>
+</ul>
 <h3 id="2-4-4-死锁检测和解除">2.4.4 死锁检测和解除</h3>
+<ul>
+<li><strong>资源分配图</strong>：
+<ul>
+<li><strong>两种结点</strong>：
+<ul>
+<li><strong>进程结点</strong>：对应一个进程</li>
+<li><strong>资源结点</strong>：对应一类资源，一类资源可能有多个</li>
+</ul>
+</li>
+<li><strong>两种边</strong>：
+<ul>
+<li><strong>进程结点 --&gt; 资源结点（请求边）</strong>：表示进程想申请几个资源（每条边代表一个）</li>
+<li><strong>资源节点 --&gt; 进程结点（分配边）</strong>：表示已经为进程分配了几个资源（每条边代表一个）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>死锁检测算法</strong>：
+<ul>
+<li><strong>步骤</strong>：依次消除与不阻塞进程相连的边，直到无边可消
+<ul>
+<li><strong>不阻塞进程</strong>：其申请的资源数还足够的进程</li>
+</ul>
+</li>
+<li><strong>死锁定理</strong>：若资源分配图是不可完全简化的，说明发生了死锁</li>
+</ul>
+</li>
+<li><strong>解除方法</strong>：资源剥夺法、撤销进程法（终止进程法）、进程回退法</li>
+</ul>
 
                 
               </div>
