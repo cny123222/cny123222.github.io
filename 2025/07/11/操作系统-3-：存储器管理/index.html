@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/OS.png">
 <meta property="article:published_time" content="2025-07-11T02:13:45.000Z">
-<meta property="article:modified_time" content="2025-07-13T04:50:03.828Z">
+<meta property="article:modified_time" content="2025-07-15T04:12:13.264Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="课程笔记">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          755 words
+          1.9k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          7 mins
+          16 mins
         
       </span>
     
@@ -384,7 +384,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on July 13, 2025 pm
+                    Last updated on July 15, 2025 pm
                   
                 
               </p>
@@ -454,7 +454,118 @@
 </ul>
 <p><img src="%E5%86%85%E5%AD%98%E6%98%A0%E5%83%8F.png" srcset="/img/loading.gif" lazyload alt="进程的内存映像"></p>
 <h3 id="3-1-2-连续分配管理方式">3.1.2 连续分配管理方式</h3>
+<ul>
+<li><strong>内部碎片</strong>：分配给某些进程的内存区域中，如果有些部分没有用上</li>
+<li><strong>外部碎片</strong>：指内存中某些空闲分区由于太小而难以利用</li>
+</ul>
+<h4 id="1-单一连续分配">1. 单一连续分配</h4>
+<ul>
+<li><strong>特点</strong>：只支持单道程序，内存分为系统区和用户区，用户程序放在用户区</li>
+<li><strong>优点</strong>：实现简单；<strong>无外部碎片</strong>；可采用覆盖技术扩充内存；不一定需要采取内存保护</li>
+<li><strong>缺点</strong>：只能用于单用户、单任务的操作系统中；<strong>有内部碎片</strong>；存储器利用率极低</li>
+</ul>
+<h4 id="2-固定分区分配">2. 固定分区分配</h4>
+<ul>
+<li><strong>特点</strong>：支持多道程序，内存用户空间分为若干个固定大小的分区，每个分区只能装一道作业</li>
+<li><strong>两种分区方式</strong>：分区大小相等、分区大小不等</li>
+<li><strong>记录方式</strong>：分区说明表，每个表项包括对应分区的大小、起始地址、状态（是否已分配）</li>
+<li><strong>优点</strong>：实现简单；<strong>无外部碎片</strong></li>
+<li><strong>缺点</strong>：用户程序太大时需要覆盖技术；<strong>有内部碎片</strong>，内存利用率低</li>
+</ul>
+<h4 id="3-动态分区分配">3. 动态分区分配</h4>
+<ul>
+<li><strong>特点</strong>：支持多道程序，在进程装入内存时，根据进程的大小动态地建立分区</li>
+<li><strong>记录方式</strong>：
+<ul>
+<li><strong>空闲分区表</strong>：
+<ul>
+<li>每个空闲分区对应一个表项</li>
+<li>表项包含分区号、分区大小、分区起始地址等</li>
+</ul>
+</li>
+<li><strong>空闲分区链</strong>：
+<ul>
+<li>每个分区的起始部分和末尾部分分别设置前向指针和后向指针</li>
+<li>起始部分处还可记录分区大小等</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>碎片情况</strong>：无内部碎片，有外部碎片（外部碎片可通过紧凑技术解决）</li>
+<li><strong>分区回收</strong>：回收后要合并前后相邻的空闲分区</li>
+<li><strong>动态分区分配算法</strong>：当多个空闲分区都能满足需求时，应该选择哪个分区进行分配</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">算法</th>
+<th style="text-align:center">算法思想</th>
+<th style="text-align:center">分区排列顺序</th>
+<th style="text-align:center">优点</th>
+<th style="text-align:center">缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">首次适应（First Fit）</td>
+<td style="text-align:center">从低地址到高地址找适合的分区</td>
+<td style="text-align:center">空闲分区以地址递增次序排列</td>
+<td style="text-align:center">综合性能最好；算法开销小，回收分区后一般不需要重新排序</td>
+<td style="text-align:center">低地址部分出现很多小的空闲分区，增加了查找开销</td>
+</tr>
+<tr>
+<td style="text-align:center">最佳适应（Best Fit）</td>
+<td style="text-align:center">优先使用更小的分区，以保留更多大分区</td>
+<td style="text-align:center">空闲分区以容量递增次序排列</td>
+<td style="text-align:center">会有更多的大分区被保留，更能满足大进程需求</td>
+<td style="text-align:center">会产生很多太小的难以利用的碎片；算法开销大，回收分区后可能要对空闲分区重新排序</td>
+</tr>
+<tr>
+<td style="text-align:center">最坏适应（Worst Fit）</td>
+<td style="text-align:center">优先使用更大的分区，以防止产生太小的不可用的碎片</td>
+<td style="text-align:center">空闲分区以容量递减次序排列</td>
+<td style="text-align:center">可以减少难以利用的小碎片</td>
+<td style="text-align:center">大分区容易被用完，不利于大进程；算法开销大（同最佳适应）</td>
+</tr>
+<tr>
+<td style="text-align:center">邻近适应（Next Fit）</td>
+<td style="text-align:center">由首次适应演变而来，每次从上次查找结束位置开始查找</td>
+<td style="text-align:center">空闲分区以地址递增次序排列（循环链表）</td>
+<td style="text-align:center">不用每次都从低地址的小分区开始检索；算法开销小（同首次适应）</td>
+<td style="text-align:center">会使高地址的大分区也被用完</td>
+</tr>
+</tbody>
+</table>
 <h3 id="3-1-3-基本分页存储管理">3.1.3 基本分页存储管理</h3>
+<ul>
+<li><strong>基本思想</strong>：把进程分页，各个页面可离散地放到各个的内存块中</li>
+<li><strong>概念辨析</strong>：
+<ul>
+<li>“页框、页帧、内存块、物理块、物理页”与“页、页面”</li>
+<li>“页框号、页帧号、内存块号、物理块号、物理页号”与“页号、页面号”</li>
+</ul>
+</li>
+<li><strong>页表</strong>：记录了页面和实际存放的内存块之间的映射关系
+<ul>
+<li>一个进程对应一张页表，进程的每一页对应一个页表项，每个页表项由“页号”和“块号”组成</li>
+<li>每个页表项的大小是相同的；页号是隐含的，不占存储空间</li>
+<li>i 号页表项存放地址 = 页表始址 + i * 页表项大小</li>
+</ul>
+</li>
+<li><strong>逻辑地址结构</strong>：可分解为【页号，页内偏移量】
+<ul>
+<li>页号 = 逻辑地址 / 页面大小</li>
+<li>页内偏移量 = 逻辑地址 % 页面大小</li>
+</ul>
+</li>
+<li><strong>地址转换的步骤</strong>：
+<ol>
+<li>计算出逻辑地址对应的【页号，页内偏移量】</li>
+<li>查页表，找到对应页面在内存中的存放位置</li>
+<li>计算物理地址 = 页面地址 + 页内偏移量</li>
+</ol>
+</li>
+</ul>
 <h3 id="3-1-4-基本分段存储管理">3.1.4 基本分段存储管理</h3>
 <h3 id="3-1-5-段页式存储管理">3.1.5 段页式存储管理</h3>
 <h2 id="3-2-虚拟内存管理">3.2 虚拟内存管理</h2>
