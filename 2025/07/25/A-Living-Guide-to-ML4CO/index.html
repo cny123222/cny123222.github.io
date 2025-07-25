@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/ml4co.png">
 <meta property="article:published_time" content="2025-07-25T06:54:13.000Z">
-<meta property="article:modified_time" content="2025-07-25T07:16:01.629Z">
+<meta property="article:modified_time" content="2025-07-25T08:57:15.360Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="ML4CO">
@@ -247,7 +247,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          142 words
+          1.2k words
         
       </span>
     
@@ -258,7 +258,7 @@
         
         
         
-          2 mins
+          11 mins
         
       </span>
     
@@ -393,8 +393,73 @@
                 
                 <p>希望能成为一本给 Machine Learning for Combinatorial Optimazation (ML4CO) 初学者的入门指南～（不断更新中…）</p>
 <span id="more"></span>
-<p>笔者正在做 ML4CO 方面的工作，但也刚刚入门。这个领域并不算热门，学习资料也不算多。我想能把我学习的过程、对论文的理解都记录下来，整理得清晰一些，提升一下自己的水平，也希望给同样想做这个方向的同学们一些参考。笔者水平非常有限，如果写的内容有误，欢迎交流指正！</p>
-<h2 id="为什么要做-ML4CO">为什么要做 ML4CO</h2>
+<p>笔者正在做 ML4CO 方面的工作，但也刚刚入门。这个领域并不算热门，学习资料也不算多。我想能把我学习的过程、对论文的理解都记录下来，结合一些代码，整理得清晰一些，提升一下自己的水平，也希望给同样想做这个方向的同学们一些参考。</p>
+<p>笔者水平非常有限，如果内容有误，欢迎交流指正！</p>
+<h2 id="1-ML4CO-的目标">1. ML4CO 的目标</h2>
+<p>组合优化问题（CO）主要分为两类，<strong>选边</strong>的问题（如旅行商问题 TSP）和<strong>选点</strong>的问题（如最大独立集 MIS），它们大多是 NP-hard 问题。因此，当问题的规模增大，传统求解器的求解时间急剧上升，变得不可接受。</p>
+<p>我们考虑，是否能用机器学习（ML）来求解组合优化问题？机器学习也许可以学习解的结构，从而学会生成较为优秀的解，大幅降低求解时间。事实上，在实际应用中，我们并不需要得到最优解，一个与最优解较为接近的解也是可以接受的。</p>
+<p>因此，ML4CO 的目标就是，在<strong>尽可能短的时间</strong>内，得到<strong>尽可能高质量的解</strong>。</p>
+<h2 id="2-实验的一般步骤">2. 实验的一般步骤</h2>
+<p>ML4CO 实验的一般步骤包括：初始化求解器、读入数据集、求解、结果评估。</p>
+<p>在这里，我们推荐使用 <a target="_blank" rel="noopener" href="https://github.com/Thinklab-SJTU/ML4CO-Kit"><strong>SJTU-Rethinklab 出品的 ML4CO-Kit 框架</strong></a>进行实验。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">pip install ml4co_kit<br></code></pre></td></tr></table></figure>
+<p>以 TSP 问题为例，假设你已经写好了你的 TSP 求解器：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> ml4co_kit <span class="hljs-keyword">import</span> TSPSolver<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">MyTSPSolver</span>(<span class="hljs-params">TSPSolver</span>):<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, **kwargs</span>):<br>        <span class="hljs-comment"># some code</span><br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">solve</span>(<span class="hljs-params">self, **kwargs</span>):<br>        <span class="hljs-comment"># some code</span><br></code></pre></td></tr></table></figure>
+<p>第一步，初始化求解器：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">solver = MyTSPSolver()<br></code></pre></td></tr></table></figure>
+<p>第二步，读入数据集：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">solver.from_txt(<span class="hljs-string">&quot;example/tsp50_guassian.txt&quot;</span>, ref=<span class="hljs-literal">True</span>)<br></code></pre></td></tr></table></figure>
+<ul>
+<li><code>ref=True</code> 表示同时读入作为参考答案的路径（ref_tour）</li>
+</ul>
+<p>第三步，求解：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">solver.solve()<br></code></pre></td></tr></table></figure>
+<p>第四步，结果评估：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">costs_avg, ref_costs_avg, gap_avg, gap_std = solver.evaluate(calculate_gap=<span class="hljs-literal">True</span>)<br></code></pre></td></tr></table></figure>
+<ul>
+<li><code>costs_avg</code> 表示求解路径的平均长度</li>
+<li><code>ref_costs_avg</code> 表示参考路径的平均长度</li>
+<li><code>gap_avg</code> 和 <code>gap_std</code> 是与参考路径长度偏差的平均值和标准差（均为百分比）</li>
+</ul>
+<h2 id="3-常见的组合优化问题">3. 常见的组合优化问题</h2>
+<p>如前文所述，组合优化问题主要分为两类，分别是选边的（以 TSP 为代表）和选点的（以 MIS 为代表）。接下来，我们介绍几个常见问题的优化目标。</p>
+<h3 id="选边——旅行商问题（TSP）">选边——旅行商问题（TSP）</h3>
+<p>旅行商问题（TSP）是在给定一系列点和它们之间的距离后，寻找一条访问每个点恰好一次并最终返回起点的最短可能路线。</p>
+<p>在 ML4CO 中，我们一般研究在二维平面上研究，两点间的距离使用几何距离。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">solve_tsp</span>(<span class="hljs-params"></span><br><span class="hljs-params">    points: Tensor,  <span class="hljs-comment"># (batch, node, 2)</span></span><br><span class="hljs-params"></span>):<br>    ...<br>    <span class="hljs-keyword">return</span> tours  <span class="hljs-comment"># (batch, node)</span><br></code></pre></td></tr></table></figure>
+<h3 id="其他组合优化问题">其他组合优化问题</h3>
+<p>（待更新…）</p>
+<h2 id="4-常见数据集及-baseline-求解器">4. 常见数据集及 baseline 求解器</h2>
+<p>（待更新…）</p>
+<h2 id="5-两种常见范式">5. 两种常见范式</h2>
+<h3 id="5-1-GNN-监督学习-解码">5.1 GNN 监督学习 + 解码</h3>
+<p>第一种范式使用监督学习，基本的想法是：<strong>学习问题和解的结构</strong>，从而预测最优解。其中骨干模型（backbone）一般采用图神经网络（<strong>GNN</strong>）。</p>
+<p>我们以 TSP 为例，简单介绍这种方法：</p>
+<ul>
+<li><strong>数据准备</strong>：既然是监督学习，我们需要给每个问题实例<strong>准备已知最优解</strong>。这些最优解来自我们之前说到的传统求解器。</li>
+<li><strong>图的构建</strong>：将每个问题实例构建成一张图，确定顶点和边的特征。</li>
+<li><strong>模型的输入输出</strong>：GNN 输入顶点和边的特征，输出一张<strong>热力图（heatmap）</strong>，每个元素 <code>P(i, j)</code> 代表边 <code>(i, j)</code> 属于最优解的概率。</li>
+<li><strong>训练过程</strong>：GNN 读入问题实例，输出热力图，<strong>与真实标签比较</strong>，计算损失并更新。</li>
+<li><strong>解码过程</strong>：以热力图为指导构建最终解，一般采用贪心搜索或束搜索。</li>
+</ul>
+<h3 id="Transformer-强化学习-自回归">Transformer 强化学习 + 自回归</h3>
+<p>第二种范式使用强化学习，基本的想法是：像人一样<strong>一步步构建解</strong>，并从最终结果的好坏中学习。其中策略网络一般采用 <strong>Transformer</strong>，训练方法一般采用 <strong>REINFORCE</strong>。</p>
+<p>我们仍以 TSP 为例，简单介绍这种方法：</p>
+<ul>
+<li><strong>数据准备</strong>：强化学习的好处在于<strong>不需要准备已知的最优解</strong>。</li>
+<li><strong>模型的输入输出</strong>：策略网络一个节点一个节点地构建出最终的路径，在第 <code>t</code> 步时，
+<ul>
+<li><strong>输入</strong>：Transformer 会接收<strong>当前已经构建的部分路径以及所有城市的全局信息</strong>作为输入</li>
+<li><strong>输出</strong>：模型输出是在所有尚未访问的城市中，<strong>选择下一个要访问的城市的概率分布</strong></li>
+</ul>
+</li>
+<li><strong>训练过程</strong>：Transformer 构建出一条完整路径后，计算总长度，用<strong>总长度作为奖励信号</strong>，使用 REINFORCE 进行更新</li>
+</ul>
+<h2 id="六、经典论文及方法分析">六、经典论文及方法分析</h2>
+<h2 id="参考资料">参考资料</h2>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/Thinklab-SJTU/ML4CO-Kit">https://github.com/Thinklab-SJTU/ML4CO-Kit</a></li>
+</ol>
 
                 
               </div>
