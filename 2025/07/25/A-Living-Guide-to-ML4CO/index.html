@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/ml4co.png">
 <meta property="article:published_time" content="2025-07-25T06:54:13.000Z">
-<meta property="article:modified_time" content="2025-07-27T09:32:49.881Z">
+<meta property="article:modified_time" content="2025-07-27T09:36:05.835Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="ML4CO">
@@ -441,7 +441,7 @@
 <li><strong>训练过程</strong>：GNN 读入问题实例，输出热力图，<strong>与真实标签比较</strong>，计算损失并更新。</li>
 <li><strong>解码过程</strong>：以热力图为指导构建最终解，一般采用贪心搜索或束搜索。</li>
 </ul>
-<p>这种范式具体的<strong>代码实现</strong>见我的另一篇博客 [Paradigm 1: Supervised GNN + Decoding](<a href="https://cny123222.github.io/2025/07/27/Paradigm-1-">https://cny123222.github.io/2025/07/27/Paradigm-1-</a> Supervised-GNN-Decoding/)。</p>
+<p>这种范式具体的<strong>代码实现</strong>见我的另一篇博客 <a href="https://cny123222.github.io/2025/07/27/Paradigm-1-Supervised-GNN-Decoding/">Paradigm 1: Supervised GNN + Decoding</a>。</p>
 <h2 id="6-范式二：Transformer-强化学习-自回归">6. 范式二：Transformer 强化学习 + 自回归</h2>
 <p>第二种范式使用强化学习，基本的想法是：像人一样<strong>一步步构建解</strong>，并从最终结果的好坏中学习。其中策略网络一般采用 <strong>Transformer</strong>，训练方法一般采用 <strong>REINFORCE</strong>。</p>
 <p>我们仍以 TSP 为例，简单介绍这种方法：</p>
