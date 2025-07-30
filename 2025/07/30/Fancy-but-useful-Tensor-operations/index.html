@@ -19,19 +19,18 @@
   <meta name="author" content="Nuoyan Chen">
   <meta name="keywords" content="">
   
-    <meta name="description" content="本文将介绍 ML4CO 中常见的 baseline 求解器，如 Gurobi 和 Concorde 等。">
+    <meta name="description" content="本文将介绍和解读一些进阶但常用的 Tensor 操作。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Traditional Solver Baselines in ML4CO">
-<meta property="og:url" content="https://cny123222.github.io/2025/07/28/Traditional-Solver-Baselines-in-ML4CO/index.html">
+<meta property="og:title" content="Fancy but useful Tensor operations">
+<meta property="og:url" content="https://cny123222.github.io/2025/07/30/Fancy-but-useful-Tensor-operations/index.html">
 <meta property="og:site_name" content="Nuoyan Chen&#39;s Blog">
-<meta property="og:description" content="本文将介绍 ML4CO 中常见的 baseline 求解器，如 Gurobi 和 Concorde 等。">
+<meta property="og:description" content="本文将介绍和解读一些进阶但常用的 Tensor 操作。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/ml4co.png">
-<meta property="article:published_time" content="2025-07-28T02:44:58.000Z">
-<meta property="article:modified_time" content="2025-07-28T02:46:42.601Z">
+<meta property="article:published_time" content="2025-07-30T04:23:52.000Z">
+<meta property="article:modified_time" content="2025-07-30T04:29:43.349Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
-<meta property="article:tag" content="ML4CO">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://cny123222.github.io/img/ml4co.png">
   
@@ -39,7 +38,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>Traditional Solver Baselines in ML4CO - Nuoyan Chen&#39;s Blog</title>
+  <title>Fancy but useful Tensor operations - Nuoyan Chen&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -219,7 +218,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Traditional Solver Baselines in ML4CO"></span>
+            <span id="subtitle" data-typed-text="Fancy but useful Tensor operations"></span>
           
         </div>
 
@@ -235,8 +234,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-07-28 10:44" pubdate>
-          July 28, 2025 am
+        <time datetime="2025-07-30 12:23" pubdate>
+          July 30, 2025 pm
         </time>
       </span>
     
@@ -247,7 +246,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          17 words
+          22 words
         
       </span>
     
@@ -316,17 +315,17 @@
     
     <div class="category row nomargin-x">
       <a class="category-item 
-          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="ML4CO"
-        id="heading-f96b490a324eb7ddf9240b3448b5a7a7" role="tab" data-toggle="collapse" href="#collapse-f96b490a324eb7ddf9240b3448b5a7a7"
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="AI"
+        id="heading-0a40e3c91a3a55c9a37428c6d194d0e5" role="tab" data-toggle="collapse" href="#collapse-0a40e3c91a3a55c9a37428c6d194d0e5"
         aria-expanded="true"
       >
-        ML4CO
-        <span class="list-group-count">(5)</span>
+        AI
+        <span class="list-group-count">(3)</span>
         <i class="iconfont icon-arrowright"></i>
       </a>
       
-      <div class="category-collapse collapse show" id="collapse-f96b490a324eb7ddf9240b3448b5a7a7"
-           role="tabpanel" aria-labelledby="heading-f96b490a324eb7ddf9240b3448b5a7a7">
+      <div class="category-collapse collapse show" id="collapse-0a40e3c91a3a55c9a37428c6d194d0e5"
+           role="tabpanel" aria-labelledby="heading-0a40e3c91a3a55c9a37428c6d194d0e5">
         
         
           
@@ -335,46 +334,28 @@
     
       
       
-        <a href="/2025/07/25/A-Living-Guide-to-ML4CO/" title="A Living Guide to ML4CO"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">A Living Guide to ML4CO</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2025/07/28/Common-CO-Problems-in-ML4CO/" title="Common CO Problems in ML4CO"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">Common CO Problems in ML4CO</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2025/07/27/Paradigm-1-Supervised-GNN-Decoding/" title="Paradigm 1: Supervised GNN + Decoding"
-           class="list-group-item list-group-item-action
-           ">
-          <span class="category-post">Paradigm 1: Supervised GNN + Decoding</span>
-        </a>
-      
-    
-      
-      
-        <a href="/2025/07/28/Traditional-Solver-Baselines-in-ML4CO/" title="Traditional Solver Baselines in ML4CO"
+        <a href="/2025/07/30/Fancy-but-useful-Tensor-operations/" title="Fancy but useful Tensor operations"
            class="list-group-item list-group-item-action
            active">
-          <span class="category-post">Traditional Solver Baselines in ML4CO</span>
+          <span class="category-post">Fancy but useful Tensor operations</span>
         </a>
       
     
       
       
-        <a href="/2025/07/26/Understading-GNN-An-ML4CO-perspective/" title="Understading GNN - An ML4CO perspective"
+        <a href="/2025/07/11/Reinforcement-Learning-Memo/" title="Reinforcement Learning Memo"
            class="list-group-item list-group-item-action
            ">
-          <span class="category-post">Understading GNN - An ML4CO perspective</span>
+          <span class="category-post">Reinforcement Learning Memo</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/11/%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B-1-%EF%BC%9A%E4%BB%8E%E7%90%86%E8%AE%BA%E5%87%BA%E5%8F%91/" title="扩散模型(1)：从理论出发"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">扩散模型(1)：从理论出发</span>
         </a>
       
     
@@ -396,12 +377,12 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Traditional Solver Baselines in ML4CO</h1>
+            <h1 id="seo-header">Fancy but useful Tensor operations</h1>
             
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on July 28, 2025 am
+                    Last updated on July 30, 2025 pm
                   
                 
               </p>
@@ -409,8 +390,10 @@
             
               <div class="markdown-body">
                 
-                <p>本文将介绍 ML4CO 中常见的 baseline 求解器，如 Gurobi 和 Concorde 等。</p>
+                <p>本文将介绍和解读一些进阶但常用的 Tensor 操作。</p>
 <span id="more"></span>
+<p>（待更新…）</p>
+
                 
               </div>
             
@@ -428,7 +411,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/ML4CO/" class="category-chain-item">ML4CO</a>
+  <a href="/categories/AI/" class="category-chain-item">AI</a>
   
   
 
@@ -445,8 +428,6 @@
       
         <a href="/tags/AI/" class="print-no-link">#AI</a>
       
-        <a href="/tags/ML4CO/" class="print-no-link">#ML4CO</a>
-      
     </div>
   
 </div>
@@ -457,8 +438,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Traditional Solver Baselines in ML4CO</div>
-      <div>https://cny123222.github.io/2025/07/28/Traditional-Solver-Baselines-in-ML4CO/</div>
+      <div>Fancy but useful Tensor operations</div>
+      <div>https://cny123222.github.io/2025/07/30/Fancy-but-useful-Tensor-operations/</div>
     </div>
     <div class="license-meta">
       
@@ -470,7 +451,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>July 28, 2025</div>
+          <div>July 30, 2025</div>
         </div>
       
       
@@ -502,18 +483,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/07/30/Fancy-but-useful-Tensor-operations/" title="Fancy but useful Tensor operations">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Fancy but useful Tensor operations</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/07/28/Common-CO-Problems-in-ML4CO/" title="Common CO Problems in ML4CO">
-                        <span class="hidden-mobile">Common CO Problems in ML4CO</span>
+                      <a href="/2025/07/28/Traditional-Solver-Baselines-in-ML4CO/" title="Traditional Solver Baselines in ML4CO">
+                        <span class="hidden-mobile">Traditional Solver Baselines in ML4CO</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
