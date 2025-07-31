@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/ml4co.png">
 <meta property="article:published_time" content="2025-07-28T01:46:55.000Z">
-<meta property="article:modified_time" content="2025-07-31T07:13:59.414Z">
+<meta property="article:modified_time" content="2025-07-31T14:59:37.921Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="ML4CO">
@@ -247,7 +247,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2k words
+          4k words
         
       </span>
     
@@ -258,7 +258,7 @@
         
         
         
-          17 mins
+          34 mins
         
       </span>
     
@@ -524,15 +524,97 @@
 <h3 id="生成方式">生成方式</h3>
 <p>MIS、MCl、MCut、MVC 等选边问题的数据生成方式是一致的，常见的有如下几种。</p>
 <h4 id="RB">RB</h4>
-<h4 id="BA">BA</h4>
-<h4 id="HK">HK</h4>
-<h4 id="WS">WS</h4>
+<p>RB 图是由 RB 模型[3]生成的，常用作模拟社交网络中不同社群之间的互动。其特点是：<strong>存在多个内部紧密的社群（即图论中的团，任意两个节点之间都存在边），在这些群体之间有稀疏的连接</strong>。</p>
+<p>RB 图的生成有三个<strong>核心参数</strong>：</p>
+<ul>
+<li><code>n</code>: 图中“团”（社群）的数量</li>
+<li><code>k</code>: 每个“团”内部节点的数量</li>
+<li><code>p</code>: 用于控制不同“团”之间的连接密度（<code>p</code> 越大，社群间的连接越紧密）</li>
+</ul>
+<p>RB 图的<strong>生成过程</strong>是：先创建多个独立的团，再在团之间建立连接，连接的密度由参数 <code>p</code> 控制。</p>
+<p><img src="mis_rb.png" srcset="/img/loading.gif" lazyload alt="RB 示意图"></p>
+<h4 id="BA-Barabasi-Albert">BA (Barabási-Albert)</h4>
+<p>你是否注意到，在社交网络上，少数名人拥有数千万粉丝，而大多数普通人的关注者寥寥无几；在航空网络中，少数几个枢纽机场连接着成百上千条航线，而绝大多数地方机场只有几条航线。这种<strong>高度不均匀的连接分布</strong>就是<strong>无标度（scale-free）网络</strong>的标志。</p>
+<p>BA 图[4]最核心的特征是<strong>无标度性</strong>。节点的度遵循幂律分布，即图中存在少量拥有极高连接数的中心节点，以及大量只有很少连接的末端节点。</p>
+<p>BA 图的<strong>生成过程</strong>是：网络从一个很小的初始核心开始，节点一个接一个地加入。当一个新节点加入网络时，它不会随机地选择旧节点进行连接。相反，它<strong>更倾向于连接那些已经拥有很多连接的节点</strong>。这样，就形成了 BA 图的无标度特征。</p>
+<p><img src="mis_ba.png" srcset="/img/loading.gif" lazyload alt="BA 示意图"></p>
+<h4 id="HK-Holme-Kim">HK (Holme-Kim)</h4>
+<p>HK 图[5]在保留 BA 图无标度特性的基础上，显著<strong>提高网络的聚集系数</strong>。与 BA 图一样，HK 图中节点的度仍遵循幂律分布。但节点的邻居之间也倾向于相互连接，使得网络中存在大量<strong>三角形结构</strong>。这与真实社交网络中紧密的“小圈子”或社群现象类似。</p>
+<p>HK 图的<strong>生成过程</strong>与 BA 图相似。不同之处在于，当新节点选择连接到某一旧节点时，会以概率 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span> <strong>额外连接到其该旧节点的一个随机邻居</strong>。这个步骤极大地促进了三角形的形成，从而提高了网络的聚集系数。</p>
+<p><img src="mis_hk.png" srcset="/img/loading.gif" lazyload alt="HK 示意图"></p>
+<p>HK 图能较好<strong>模拟现实生活中的复杂系统</strong>，如社交网络、生态系统等。</p>
+<h4 id="WS-Watts-Strogatz">WS (Watts-Strogatz)</h4>
+<p>为什么在这个拥有数十亿人口的星球上，你与任何一个陌生人之间，平均只隔着几个人？这被称为<strong>小世界（Small-world）效应</strong>，也是 WS 图的特点之一。</p>
+<p>与 HK 图类似，WS 图[6]中的节点也具有<strong>高度聚集性</strong>。但同时，WS 图具有小世界效应，即<strong>节点间的平均路径长度很短</strong>。这种特性来自于模型中引入的少量随机“捷径”。</p>
+<p>WS 图的<strong>生成过程</strong>可以概括为，先创建一个规则的环形网络，再引入随机的捷径。首先，想象所有节点排列在一个圆环上，并与圆环上最近的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span> 个邻居相连，构建了一个高度有序且局部连接紧密（高聚集性）的网络。接着，对每一条边以一定概率 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span> 进行重连操作，即断开该边的一端，并将其随机连接到任意一个其他节点上。这一操作创造了随机的“长程连接”，急剧地缩短了整个网络的平均路径长度。</p>
+<p><img src="mis_ws.png" srcset="/img/loading.gif" lazyload alt="WS 示意图"></p>
+<h4 id="ER-Erdos-Renyi">ER (Erdős-Rényi)</h4>
+<p>ER 模型是<strong>随机图理论的开山之作</strong>，它不试图模仿任何特定的现实世界结构，而是提出了一个最纯粹、最简单的问题：如果我们在一些节点之间完全随机地连边，会得到一个什么样的网络？</p>
+<p>与之前的所有图都不同，ER 图[7]的特点在于<strong>完全没有特点</strong>，或者说，它的特点就是<strong>均匀的随机性</strong>。任意两节点之间都以一定概率 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span> 连接，与网络中任何其他地方的结构都毫无关系。由于其纯粹的随机性，<strong>ER 图在结构上是同质的</strong>，即图中几乎没有特殊的节点。节点的度分布近似于泊松分布，度极高或度极低的节点都非常罕见，绝大多数节点的度都非常接近整个网络的平均值。</p>
+<p><img src="mis_er.png" srcset="/img/loading.gif" lazyload alt="ER 示意图"></p>
 <h4 id="TWITTER">TWITTER</h4>
-<h4 id="ER">ER</h4>
+<p>TWITTER [8]是一个<strong>真实数据集</strong>，来自斯坦福网络分析项目（Stanford Network Analysis Project）。它是对一个<strong>真实世界社交网络的快照</strong>，直接反映了数百万用户之间复杂的关注关系。TWITTER 常被用于<strong>评估泛化能力</strong>。</p>
 <h4 id="SATLIB">SATLIB</h4>
+<p>SATLIB 是一个<strong>经典的 SAT 数据集</strong>，通过<strong>将 SAT 问题转化为 MIS 问题</strong>（这在 AI2615 的 NP-complete 部分中有类似方法），我们可以获得用于 MIS 的图。SATLIB 图的特点是<strong>非常稠密</strong>。</p>
 <h2 id="MCl-Maximum-Clique">MCl (Maximum Clique)</h2>
+<p>最大团问题（MCl）是最大独立集问题（MIS）的<strong>对偶问题</strong>，它们之间的关系通过补图建立。</p>
+<h3 id="问题描述-4">问题描述</h3>
+<p>MCl 问题可以描述为：给定一个无向图 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>=</mo><mo stretchy="false">(</mo><mi>V</mi><mo separator="true">,</mo><mi>E</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">G=(V,E)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">G</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mclose">)</span></span></span></span>，找一个最大顶点子集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mo>⊂</mo><mi>V</mi></mrow><annotation encoding="application/x-tex">C \subset V</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⊂</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span></span></span></span>，使得 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span></span></span> 中任意两个顶点之间都有一条边直接相连。</p>
+<p>MCl 问题的输入输出如下：</p>
+<ul>
+<li><strong>输入</strong>：
+<ul>
+<li><code>edge_index</code>：每条边连接的顶点索引，形状为 <code>(2, E)</code></li>
+</ul>
+</li>
+<li><strong>输出</strong>：
+<ul>
+<li><code>nodes_label</code>：每个节点在解中是否被选中，选中为 1，未选中为 0，形状为 <code>(V,)</code></li>
+</ul>
+</li>
+<li><strong>目标值</strong>：团中顶点的个数，越大越好</li>
+</ul>
+<h3 id="生成方法-3">生成方法</h3>
+<p>和 MIS 一致。</p>
 <h2 id="MCut-Maximum-Cut">MCut (Maximum Cut)</h2>
+<h3 id="问题描述-5">问题描述</h3>
+<p>最小割问题（MCut）可以描述为：给定一个无向图 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>=</mo><mo stretchy="false">(</mo><mi>V</mi><mo separator="true">,</mo><mi>E</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">G=(V,E)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">G</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mclose">)</span></span></span></span>，将图中的所有顶点 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi></mrow><annotation encoding="application/x-tex">V</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span></span></span></span> 划分成两个互不相交的非空子集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi></mrow><annotation encoding="application/x-tex">T</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span></span></span></span>，要找到一种划分方式，使得横跨这两个子集（即一个端点在 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 中，另一个端点在 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi></mrow><annotation encoding="application/x-tex">T</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span></span></span></span> 中）的边的数量最少。</p>
+<p>最小割问题的输入输出如下：</p>
+<ul>
+<li><strong>输入</strong>：
+<ul>
+<li><code>edge_index</code>：每条边连接的顶点索引，形状为 <code>(2, E)</code></li>
+</ul>
+</li>
+<li><strong>输出</strong>：
+<ul>
+<li><code>nodes_label</code>：每个节点所属的分割子集标签，如属于子集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 的为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>，属于子集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi></mrow><annotation encoding="application/x-tex">T</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span></span></span></span> 的为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>，形状为 <code>(V,)</code></li>
+</ul>
+</li>
+<li><strong>目标值</strong>：割的大小（即横跨两个子集的边的数量），越小越好</li>
+</ul>
+<h3 id="生成方法-4">生成方法</h3>
+<p>和 MIS 一致。</p>
 <h2 id="MVC-Minimum-Vertex-Cover">MVC (Minimum Vertex Cover)</h2>
+<h3 id="问题描述-6">问题描述</h3>
+<p>最小顶点覆盖问题（MVC）可以描述为：给定一个无向图 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>=</mo><mo stretchy="false">(</mo><mi>V</mi><mo separator="true">,</mo><mi>E</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">G=(V,E)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">G</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mclose">)</span></span></span></span>，找一个最小的顶点子集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>⊂</mo><mi>V</mi></mrow><annotation encoding="application/x-tex">S \subset V</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⊂</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span></span></span></span>，使得图中的每一条边都至少有一个端点在这个子集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 中。</p>
+<p>MVC 问题的输入输出如下：</p>
+<ul>
+<li><strong>输入</strong>：
+<ul>
+<li><code>edge_index</code>：每条边连接的顶点索引，形状为 <code>(2, E)</code></li>
+</ul>
+</li>
+<li><strong>输出</strong>：
+<ul>
+<li><code>nodes_label</code>：每个节点在解中是否被选中，选中为 1，未选中为 0，形状为 <code>(V,)</code></li>
+</ul>
+</li>
+<li><strong>目标值</strong>：覆盖集中顶点的个数，越小越好</li>
+</ul>
+<p>事实上，一个顶点集合 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 是图 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi></mrow><annotation encoding="application/x-tex">G</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">G</span></span></span></span> 的一个顶点覆盖，当且仅当它的补集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo>∖</mo><mi>S</mi></mrow><annotation encoding="application/x-tex">V \setminus S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∖</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 是图 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi></mrow><annotation encoding="application/x-tex">G</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">G</span></span></span></span> 的一个独立集。因此，求解一个图的最小顶点覆盖问题，等价于求解它的最大独立集问题。</p>
+<h3 id="生成方法-5">生成方法</h3>
+<p>和 MIS 一致。</p>
 <h2 id="CVRP-Capacitated-Vehicle-Routing-Problem">CVRP (Capacitated Vehicle Routing Problem)</h2>
 <h2 id="OP-Orienteering-Problem">OP (Orienteering Problem)</h2>
 <h2 id="KP-Knapsack-Problem">KP (Knapsack Problem)</h2>
@@ -541,7 +623,12 @@
 <h2 id="参考资料">参考资料</h2>
 <p>[1] <a target="_blank" rel="noopener" href="https://github.com/Thinklab-SJTU/ML4CO-Kit">https://github.com/Thinklab-SJTU/ML4CO-Kit</a><br>
 [2] W. Kool, H. Van Hoof, and M. Welling, “Attention, learn to solve routing problems!” <em>arXiv preprint arXiv:1803.08475</em>,2018.<br>
-[3] K. Xu, F. Boussemart, F. Hemery, and C. Lecoutre, “A simple model to generate hard satisfiable instances,” <em>arXiv preprint cs/0509032</em>, 2005.</p>
+[3] K. Xu, F. Boussemart, F. Hemery, and C. Lecoutre, “A simple model to generate hard satisfiable instances,” <em>arXiv preprint cs/0509032</em>, 2005.<br>
+[4] A.-L. Barabási and R. Albert, “Emergence of scaling in random networks,” <em>science</em>, vol. 286, no. 5439, pp. 509–512, 1999.<br>
+[5] P. Holme and B. J. Kim, “Growing scale-free networks with tunable clustering,” <em>Physical review E</em>, vol. 65, no. 2, p. 026107, 2002.<br>
+[6] D. J. Watts and S. H. Strogatz, “Collective dynamics of ‘small-world’networks,” <em>nature</em>, vol. 393, no. 6684, pp. 440–442, 1998.<br>
+[7] P. Erd6s and A. Rényi, “On the evolution of random graphs,” <em>Publ. Math. Inst. Hungar. Acad. Sci</em>, vol. 5, pp. 17–61, 1960.<br>
+[8] L. Jure, “Snap datasets: Stanford large network dataset collection,” <em>Retrieved December 2021 from <a target="_blank" rel="noopener" href="http://snap.stanford.edu/data">http://snap.stanford.edu/data</a></em>, 2014.</p>
 
                 
               </div>
