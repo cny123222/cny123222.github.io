@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/ml4co.png">
 <meta property="article:published_time" content="2025-07-28T01:46:55.000Z">
-<meta property="article:modified_time" content="2025-07-30T14:44:11.977Z">
+<meta property="article:modified_time" content="2025-07-31T07:13:59.414Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="ML4CO">
@@ -247,7 +247,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          822 words
+          2k words
         
       </span>
     
@@ -258,7 +258,7 @@
         
         
         
-          7 mins
+          17 mins
         
       </span>
     
@@ -419,7 +419,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on July 30, 2025 pm
+                    Last updated on July 31, 2025 pm
                   
                 
               </p>
@@ -429,7 +429,7 @@
                 
                 <p>本文介绍了 ML4CO 中经常被研究的组合优化问题（如 TSP 等选边问题和 MIS 等选点问题）及相应的数据集生成算法。</p>
 <span id="more"></span>
-<h2 id="Traveling-Salesman-Problem-TSP">Traveling Salesman Problem (TSP)</h2>
+<h2 id="TSP-Traveling-Salesman-Problem">TSP (Traveling Salesman Problem)</h2>
 <p>旅行商问题（TSP）是组合优化领域中<strong>最经典、最具代表性的问题</strong>之一，属于<strong>选边</strong>的问题。</p>
 <h3 id="问题描述">问题描述</h3>
 <p>这边引用 [2] 中的一段非常有趣的描述：</p>
@@ -437,8 +437,8 @@
             <p>Imagine yourself travelling to a scientific conference. The field is popular, and surely you do not want to miss out on anything. You have selected several posters you want to visit, and naturally you must return to the place where you are now: the coffee corner. In which order should you visit the posters, to minimize your time walking around? This is the Travelling Scientist Problem (TSP).</p><p>You realize that your problem is equivalent to the Travelling Salesman Problem (conveniently also TSP). This seems discouraging as you know the problem is (NP-)hard.</p>
           </div>
 <p>旅行商问题一般描述为：给定一组城市及它们之间的距离（或代价），一名旅行商需要从其中一个城市出发，访问每个城市恰好一次，最终返回出发城市。目标是找到一条总行程距离最短的路径。</p>
-<p>或者更 formal 的表述：<strong>TSP 问题要求在一个图中找到一条最短的回路，使得每个顶点恰好被访问一次，最终回到起始顶点</strong>。</p>
-<p>在 ML4CO 中，我们一般研究<strong>二维欧几里得情形</strong>的 TSP 问题，即</p>
+<p>或者更 formal 的表述：<strong>给定一个加权无向完全图，找出一条通过图中每一个节点一次且仅一次，并最终返回起始节点的回路，使得该回路上所有边的权重之和最小</strong>。</p>
+<p>在 ML4CO 中，我们一般研究<strong>二维欧几里得情形</strong>的 TSP 问题，并<strong>将距离视为权重</strong>，即</p>
 <ul>
 <li><strong>输入</strong>：
 <ul>
@@ -447,7 +447,7 @@
 </li>
 <li><strong>输出</strong>：
 <ul>
-<li><code>tour</code>：访问每个顶点的顺序（含返回起点），形状为 <code>(B, N+1)</code></li>
+<li><code>tours</code>：访问每个顶点的顺序（含返回起点），形状为 <code>(B, N+1)</code></li>
 </ul>
 </li>
 <li><strong>目标值</strong>：回路总长度，越小越好</li>
@@ -457,19 +457,91 @@
 <h4 id="Uniform（均匀分布）">Uniform（均匀分布）</h4>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">_generate_uniform</span>(<span class="hljs-params">self</span>) -&gt; np.ndarray:<br>    <span class="hljs-keyword">return</span> np.random.random([<span class="hljs-variable language_">self</span>.num_threads, <span class="hljs-variable language_">self</span>.nodes_num, <span class="hljs-number">2</span>])<br></code></pre></td></tr></table></figure>
 <p>即<strong>在单位正方形内完全随机地撒点</strong>。生成的节点会非常均匀地、无规律地散布在 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>0</mn><mo separator="true">,</mo><mn>1</mn><msup><mo stretchy="false">]</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">[0, 1]^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">1</span><span class="mclose"><span class="mclose">]</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span> 范围内的正方形区域里。这种数据是TSP问题中最基础、最通用的基准测试类型。</p>
-<p><img src="tsp_uniform.png" srcset="/img/loading.gif" lazyload alt="TSP500-uniform 示意图"></p>
+<p><img src="tsp_uniform.png" srcset="/img/loading.gif" lazyload alt="TSP200-uniform 示意图"></p>
 <h4 id="Gaussian（高斯分布）">Gaussian（高斯分布）</h4>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">_generate_gaussian</span>(<span class="hljs-params">self</span>) -&gt; np.ndarray:<br>    <span class="hljs-keyword">return</span> np.random.normal(<br>        loc=[<span class="hljs-variable language_">self</span>.gaussian_mean_x, <span class="hljs-variable language_">self</span>.gaussian_mean_y],<br>        scale=<span class="hljs-variable language_">self</span>.gaussian_std,<br>        size=(<span class="hljs-variable language_">self</span>.num_threads, <span class="hljs-variable language_">self</span>.nodes_num, <span class="hljs-number">2</span>),<br>    )<br></code></pre></td></tr></table></figure>
 <p>节点从高斯分布中采样，即让所有节点都围绕着一个中心点密集分布，越靠近中心越密集，越远离中心越稀疏。这种分布模式在现实世界中也很常见，比如模拟一个城市群，其中有一个中心大城市和周围的卫星城。</p>
-<p><img src="tsp_gaussian.png" srcset="/img/loading.gif" lazyload alt="TSP500-gaussian 示意图"></p>
+<p><img src="tsp_gaussian.png" srcset="/img/loading.gif" lazyload alt="TSP200-gaussian 示意图"></p>
 <h4 id="Cluster（簇状分布）">Cluster（簇状分布）</h4>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">_generate_cluster</span>(<span class="hljs-params">self</span>) -&gt; np.ndarray:<br>    nodes_coords = np.zeros([<span class="hljs-variable language_">self</span>.num_threads, <span class="hljs-variable language_">self</span>.nodes_num, <span class="hljs-number">2</span>])<br>    <span class="hljs-comment"># 确定簇中心</span><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-variable language_">self</span>.num_threads):<br>        cluster_centers = np.random.random([<span class="hljs-variable language_">self</span>.cluster_nums, <span class="hljs-number">2</span>])<br>        cluster_points = []<br>        <span class="hljs-comment"># 在每个簇内生成节点</span><br>        <span class="hljs-keyword">for</span> center <span class="hljs-keyword">in</span> cluster_centers:<br>            points = np.random.normal(<br>                loc=center,<br>                scale=<span class="hljs-variable language_">self</span>.cluster_std,<br>                size=(<span class="hljs-variable language_">self</span>.nodes_num // <span class="hljs-variable language_">self</span>.cluster_nums, <span class="hljs-number">2</span>),<br>            )<br>            cluster_points.append(points)<br>        <span class="hljs-comment"># 合并所有节点</span><br>        nodes_coords[i] = np.concatenate(cluster_points, axis=<span class="hljs-number">0</span>)<br>    <span class="hljs-keyword">return</span> nodes_coords<br></code></pre></td></tr></table></figure>
 <p>Cluster 的生成过程是：先随机确定几个聚集中心，然后让节点分别围绕着这几个中心形成多个小团体（簇）。因此，<strong>生成的节点呈现出明显的簇结构</strong>，簇内节点距离近，簇间节点距离远。这种数据分布非常贴近许多现实世界的物流问题，例如需要去几个不同的城市群送货，每个城市群内部又有多个配送点。</p>
 <p>对于 TSP 求解器来说，这种结构通常更具挑战性，因为它需要在“先跑完一个簇再到下一个”和“在不同簇之间来回穿梭以寻找更优路径”之间做出权衡。</p>
-<p><img src="tsp_cluster.png" srcset="/img/loading.gif" lazyload alt="TSP500-cluster 示意图"></p>
+<p><img src="tsp_cluster.png" srcset="/img/loading.gif" lazyload alt="TSP200-cluster 示意图"></p>
+<h2 id="ATSP-Asymmetric-Traveling-Salesman-Problem">ATSP (Asymmetric Traveling Salesman Problem)</h2>
+<p>非对称旅行商问题（ATSP）是 TSP 问题的一个重要变种。其核心区别在于，<strong>从城市 A 到城市 B 的距离（或代价）不一定等于从城市 B 到城市 A 的距离（或代价）</strong>。这非常贴近现实场景，例如考虑城市中的单行道、不同的去程与返程机票价格、因上下坡导致的油耗或时间差异等情况。</p>
+<h3 id="问题描述-2">问题描述</h3>
+<p>ATSP 问题可以描述为：<strong>给定一个加权有向完全图，找出一条通过图中每一个节点一次且仅一次，并最终返回起始节点的回路，使得该回路上所有边的权重之和最小</strong>。</p>
+<p>ATSP 与 TSP 的核心差异在于<strong>有向图</strong>，即边的权重是非对称的。其输入输出如下：</p>
+<ul>
+<li><strong>输入</strong>：
+<ul>
+<li><code>dists</code>：<code>N</code> 个顶点之间的距离（即权重）矩阵，形状为 <code>(B, N, N)</code></li>
+</ul>
+</li>
+<li><strong>输出</strong>：
+<ul>
+<li><code>tours</code>：访问每个顶点的顺序（含返回起点），形状为 <code>(B, N+1)</code></li>
+</ul>
+</li>
+<li><strong>目标值</strong>：回路上所有边的距离（即权重）之和，越小越好</li>
+</ul>
+<h3 id="生成方法-2">生成方法</h3>
+<h3 id="Uniform">Uniform</h3>
+<p>这种方法生成的是最经典的 ATSP 实例，其核心特点是<strong>距离矩阵中的值是连续的，并且满足三角不等式</strong>。</p>
+<p>生成步骤是：</p>
+<ul>
+<li>初始化一个距离矩阵 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">D</mi></mrow><annotation encoding="application/x-tex">\mathcal{D}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal" style="margin-right:0.02778em;">D</span></span></span></span>，其中的值从一个很大的范围 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>1</mn><mo separator="true">,</mo><mi>M</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[1, M]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mclose">]</span></span></span></span> 内（如 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><msup><mn>10</mn><mn>6</mn></msup></mrow><annotation encoding="application/x-tex">M = 10^6</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">6</span></span></span></span></span></span></span></span></span></span></span>）均匀随机抽取。</li>
+<li>通过迭代来强制<strong>满足三角不等式</strong>：不断检查是否存在 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="script">D</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>&gt;</mo><msub><mi mathvariant="script">D</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo>+</mo><msub><mi mathvariant="script">D</mi><mrow><mi>k</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\mathcal{D}_{ij} &gt; \mathcal{D}_{ik} + \mathcal{D}_{kj}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">ij</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">ik</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">kj</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span> 的情况。如果存在，就用更短的路径 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="script">D</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo>+</mo><msub><mi mathvariant="script">D</mi><mrow><mi>k</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\mathcal{D}_{ik} + \mathcal{D}_{kj}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">ik</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">kj</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span> 来更新 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="script">D</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\mathcal{D}_{ij}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">ij</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span> 的值。这个过程重复进行，直到矩阵中不再有任何可以更新的值。（本质上是 Floyd-Warshall 算法的应用，用来寻找所有节点对之间的最短路径。）</li>
+<li>最后，将矩阵的对角线元素 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="script">D</mi><mrow><mi>i</mi><mi>i</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\mathcal{D}_{ii}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">ii</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 设置为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>，并将整个矩阵通过除以 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi></mrow><annotation encoding="application/x-tex">M</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span></span></span></span> 来归一化到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>0</mn><mo separator="true">,</mo><mn>1</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[0, 1]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">1</span><span class="mclose">]</span></span></span></span> 区间。</li>
+</ul>
+<p>这种方法生成的实例<strong>没有已知的最优解</strong>。</p>
+<h3 id="HCP">HCP</h3>
+<p>这是一种将哈密顿回路问题（HCP）转化为 ATSP 问题的方法，其特点是<strong>距离矩阵是二元的（只有 0 和 1）</strong>。</p>
+<p>生成方式是：先构建一条哈密顿回路，在距离矩阵中将该回路中边的权重设置为 0，其余边的权重设置为 1。再加入一定的噪声，即随机选择一些原本权重为 1 的路径，并将它们的权重也设置为 0。</p>
+<p>不难发现，这样构造出的 ATSP 实例<strong>具有已知最优解，并且其成本为 0</strong>。</p>
+<h3 id="SAT">SAT</h3>
+<p>这是一种将 3-SAT 问题转化为 ATSP 问题的方法。其特点与 HCP 分布类似，即<strong>距离矩阵是二元的（只有 0 和 1），具有已知且成本为 0 的最优解</strong>。</p>
+<p>生成方式是：先为所有变量预设一组满足解，再根据这个满足解构造出一个保证可满足的 3-SAT 实例，最后由这个 3-SAT 实例按照某种方法生成对应的一张有向图，该有向图的邻接矩阵（有连接为 1，无连接为 0）即为生成 ATSP 实例的距离矩阵。</p>
+<p>这种从 3-SAT 实例到有向图的方法，能够满足：当且仅当原始的 3-SAT 问题有解时，图中才存在有向哈密顿回路。（事实上，AI2615 中就讲过这个将 3-SAT 问题归约到有向哈密顿回路的方法。）因此，这样构造出的 ATSP 实例能够<strong>保证具有已知且成本为 0 的最优解</strong>。</p>
+<h2 id="MIS-Maximum-Independent-Set">MIS (Maximum Independent Set)</h2>
+<p>我们进入<strong>选点</strong>的组合优化问题，首先是最经典的最大独立集问题（MIS）。</p>
+<h3 id="问题描述-3">问题描述</h3>
+<p>MIS 问题可以描述为：给定一个无向图 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>=</mo><mo stretchy="false">(</mo><mi>V</mi><mo separator="true">,</mo><mi>E</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">G=(V,E)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">G</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mclose">)</span></span></span></span>，找一个最大的顶点子集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>⊂</mo><mi>V</mi></mrow><annotation encoding="application/x-tex">S \subset V</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⊂</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span></span></span></span>，使得 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 中任意两个顶点之间都没有边直接相连。</p>
+<p>MIS 问题的输入输出如下：</p>
+<ul>
+<li><strong>输入</strong>：
+<ul>
+<li><code>edge_index</code>：每条边连接的顶点索引，形状为 <code>(2, E)</code></li>
+</ul>
+</li>
+<li><strong>输出</strong>：
+<ul>
+<li><code>nodes_label</code>：每个节点在解中是否被选中，选中为 1，未选中为 0，形状为 <code>(V,)</code></li>
+</ul>
+</li>
+<li><strong>目标值</strong>：独立集中顶点的个数，越大越好</li>
+</ul>
+<h3 id="生成方式">生成方式</h3>
+<p>MIS、MCl、MCut、MVC 等选边问题的数据生成方式是一致的，常见的有如下几种。</p>
+<h4 id="RB">RB</h4>
+<h4 id="BA">BA</h4>
+<h4 id="HK">HK</h4>
+<h4 id="WS">WS</h4>
+<h4 id="TWITTER">TWITTER</h4>
+<h4 id="ER">ER</h4>
+<h4 id="SATLIB">SATLIB</h4>
+<h2 id="MCl-Maximum-Clique">MCl (Maximum Clique)</h2>
+<h2 id="MCut-Maximum-Cut">MCut (Maximum Cut)</h2>
+<h2 id="MVC-Minimum-Vertex-Cover">MVC (Minimum Vertex Cover)</h2>
+<h2 id="CVRP-Capacitated-Vehicle-Routing-Problem">CVRP (Capacitated Vehicle Routing Problem)</h2>
+<h2 id="OP-Orienteering-Problem">OP (Orienteering Problem)</h2>
+<h2 id="KP-Knapsack-Problem">KP (Knapsack Problem)</h2>
+<h2 id="PCTSP-Prize-Collection-Traveling-Salesman-Problem">PCTSP (Prize Collection Traveling Salesman Problem)</h2>
+<h2 id="LP-Linear-Program">LP (Linear Program)</h2>
 <h2 id="参考资料">参考资料</h2>
 <p>[1] <a target="_blank" rel="noopener" href="https://github.com/Thinklab-SJTU/ML4CO-Kit">https://github.com/Thinklab-SJTU/ML4CO-Kit</a><br>
-[2] W. Kool, H. Van Hoof, and M. Welling, “Attention, learn to solve routing problems!” <em>arXiv preprint arXiv:1803.08475</em>, 2018.</p>
+[2] W. Kool, H. Van Hoof, and M. Welling, “Attention, learn to solve routing problems!” <em>arXiv preprint arXiv:1803.08475</em>,2018.<br>
+[3] K. Xu, F. Boussemart, F. Hemery, and C. Lecoutre, “A simple model to generate hard satisfiable instances,” <em>arXiv preprint cs/0509032</em>, 2005.</p>
 
                 
               </div>
