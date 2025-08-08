@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/ml4co.png">
 <meta property="article:published_time" content="2025-07-28T01:46:55.000Z">
-<meta property="article:modified_time" content="2025-08-08T15:28:13.081Z">
+<meta property="article:modified_time" content="2025-08-08T15:30:22.278Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="ML4CO">
@@ -504,7 +504,7 @@
 <li><strong>目标值</strong>：回路上所有边的距离（即权重）之和，越小越好</li>
 </ul>
 <h3 id="生成方法-2">生成方法</h3>
-<h3 id="Uniform">Uniform</h3>
+<h4 id="Uniform">Uniform</h4>
 <p>这种方法生成的是最经典的 ATSP 实例，其核心特点是<strong>距离矩阵中的值是连续的，并且满足三角不等式</strong>。</p>
 <p>生成步骤是：</p>
 <ul>
@@ -513,11 +513,11 @@
 <li>最后，将矩阵的对角线元素 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="script">D</mi><mrow><mi>i</mi><mi>i</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\mathcal{D}_{ii}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">ii</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 设置为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>，并将整个矩阵通过除以 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi></mrow><annotation encoding="application/x-tex">M</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span></span></span></span> 来归一化到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>0</mn><mo separator="true">,</mo><mn>1</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[0, 1]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">1</span><span class="mclose">]</span></span></span></span> 区间。</li>
 </ul>
 <p>这种方法生成的实例<strong>没有已知的最优解</strong>。</p>
-<h3 id="HCP">HCP</h3>
+<h4 id="HCP">HCP</h4>
 <p>这是一种将哈密顿回路问题（HCP）转化为 ATSP 问题的方法，其特点是<strong>距离矩阵是二元的（只有 0 和 1）</strong>。</p>
 <p>生成方式是：先构建一条哈密顿回路，在距离矩阵中将该回路中边的权重设置为 0，其余边的权重设置为 1。再加入一定的噪声，即随机选择一些原本权重为 1 的路径，并将它们的权重也设置为 0。</p>
 <p>不难发现，这样构造出的 ATSP 实例<strong>具有已知最优解，并且其成本为 0</strong>。</p>
-<h3 id="SAT">SAT</h3>
+<h4 id="SAT">SAT</h4>
 <p>这是一种将 3-SAT 问题转化为 ATSP 问题的方法。其特点与 HCP 分布类似，即<strong>距离矩阵是二元的（只有 0 和 1），具有已知且成本为 0 的最优解</strong>。</p>
 <p>生成方式是：先为所有变量预设一组满足解，再根据这个满足解构造出一个保证可满足的 3-SAT 实例，最后由这个 3-SAT 实例按照某种方法生成对应的一张有向图，该有向图的邻接矩阵（有连接为 1，无连接为 0）即为生成 ATSP 实例的距离矩阵。</p>
 <p>这种从 3-SAT 实例到有向图的方法，能够满足：当且仅当原始的 3-SAT 问题有解时，图中才存在有向哈密顿回路。（事实上，AI2615 中就讲过这个将 3-SAT 问题归约到有向哈密顿回路的方法。）因此，这样构造出的 ATSP 实例能够<strong>保证具有已知且成本为 0 的最优解</strong>。</p>
