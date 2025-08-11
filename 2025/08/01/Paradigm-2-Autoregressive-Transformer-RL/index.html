@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/ml4co.png">
 <meta property="article:published_time" content="2025-08-01T01:42:56.000Z">
-<meta property="article:modified_time" content="2025-08-11T07:04:35.391Z">
+<meta property="article:modified_time" content="2025-08-11T07:31:07.118Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="ML4CO">
@@ -247,7 +247,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          44 words
+          264 words
         
       </span>
     
@@ -258,7 +258,7 @@
         
         
         
-          1 mins
+          3 mins
         
       </span>
     
@@ -506,6 +506,20 @@
                 
                 <p>本文将介绍 ML4CO 的第二种范式（Transformer 自回归 + 强化学习）的代码实现。代码文件可以在 <a target="_blank" rel="noopener" href="https://github.com/cny123222/A-Living-Guide-to-ML4CO">https://github.com/cny123222/A-Living-Guide-to-ML4CO</a> 中找到。</p>
 <span id="more"></span>
+<h2 id="方法概述">方法概述</h2>
+<p>在 <a href="https://cny123222.github.io/2025/07/25/A-Living-Guide-to-ML4CO">A Living Guide to ML4CO</a> 中，我们提到过 ML4CO 的第二种常见范式：<strong>Transformer 自回归 + 强化学习</strong>。它一步步构建问题的解，并从解的好坏中进行学习。</p>
+<p>我们还是以 TSP 为例，这种方法的大致过程是：</p>
+<ul>
+<li><strong>数据准备</strong>：强化学习<strong>不需要准备已知的最优解</strong></li>
+<li><strong>模型构建</strong>：策略网络一个节点一个节点地构建出最终的路径，在第 <code>t</code> 步时，
+<ul>
+<li><strong>输入</strong>：Transformer 会接收<strong>当前已经构建的部分路径以及所有节点的全局信息</strong>作为输入</li>
+<li><strong>输出</strong>：模型输出是在所有尚未访问的节点中，<strong>选择下一个要访问的节点的概率分布</strong></li>
+</ul>
+</li>
+<li><strong>训练过程</strong>：Transformer 构建出一条完整路径后，计算总长度，用<strong>总长度作为奖励信号</strong>，使用 REINFORCE 进行更新</li>
+</ul>
+
                 
               </div>
             
