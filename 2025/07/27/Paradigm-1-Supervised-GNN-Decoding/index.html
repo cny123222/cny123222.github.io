@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/ml4co.png">
 <meta property="article:published_time" content="2025-07-27T09:31:37.000Z">
-<meta property="article:modified_time" content="2025-08-11T07:29:00.269Z">
+<meta property="article:modified_time" content="2025-08-11T07:59:49.023Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="ML4CO">
@@ -516,7 +516,7 @@
 <li><strong>训练过程</strong>：GNN 读入问题实例，输出热力图，<strong>与真实标签比较</strong>，计算损失并更新。</li>
 <li><strong>解码过程</strong>：以热力图为指导构建最终解，一般采用贪心搜索或束搜索。</li>
 </ul>
-<p>其中，“<strong>模型构建</strong>”部分由于涉及 GNN 的知识，我们将其放在了 <a href="https://cny123222.github.io/2025/07/26/Understading-GNN-An-ML4CO-perspective/">Understading GNN: An ML4CO perspective</a> 这篇博客中。我们用 Pytorch 搭建了一个包含 Embedding 层、图卷积层和输出层的简单 <strong>Encoder 网络</strong>。</p>
+<p>其中，“<strong>模型构建</strong>”部分由于涉及 GNN 的知识，我们将其放在了 <a href="https://cny123222.github.io/2025/07/26/Understading-GNN-An-ML4CO-perspective/">Understading GNN - An ML4CO perspective</a> 这篇博客中。我们用 Pytorch 搭建了一个包含 Embedding 层、图卷积层和输出层的简单 <strong>Encoder 网络</strong>。</p>
 <p>这篇博客中，我们将直接使用上述 Encoder 网络，并逐一实现<strong>数据准备、图的构建、训练过程、解码过程</strong>这几部分。</p>
 <div class="note note-warning">
             <p>注意，这里只使用<strong>最简单的模型和最一般的方法</strong>进行演示。效果更好的经典模型及方法见 ML4CO Paper Reading 系列，如 <a href="https://cny123222.github.io/2025/07/30/Paper-Reading-1-GCN4TSP/">Paper Reading #1: GCN4TSP</a>。</p>
