@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/ml4co.png">
 <meta property="article:published_time" content="2025-07-28T02:44:58.000Z">
-<meta property="article:modified_time" content="2025-08-13T09:54:34.903Z">
+<meta property="article:modified_time" content="2025-08-13T12:58:28.477Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="ML4CO">
@@ -247,7 +247,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          681 words
+          977 words
         
       </span>
     
@@ -258,7 +258,7 @@
         
         
         
-          6 mins
+          9 mins
         
       </span>
     
@@ -516,11 +516,21 @@
           </div>
 <p>为了使用这类求解器，我们需要将一个具体的组合优化问题，通过定义变量、约束和目标函数，<strong>建模成 MILP 的形式</strong>。一旦建模完成，这些通用求解器就能接手，并运用其强大的内部算法（如分支定界、割平面等），<strong>在有限时间内给出保证最优的解</strong>。</p>
 <h3 id="Gurobi">Gurobi</h3>
-<p>Gurobi 是当今最强大、最受欢迎的商业数学优化求解器之一，能够高效求解<strong>各类标准化的优化问题</strong>，如：混合整数线性规划（MILP）、混合整数二次规划（MIQP）及线性规划（LP）、二次规划（QP）等。在 ML4CO 中，它常被用作 <strong>TSP、MIS</strong>、MCl、MCut、MVC、OP 等问题的求解器。</p>
+<p>Gurobi[1] 是当今最强大、最受欢迎的商业数学优化求解器之一，能够高效求解<strong>各类标准化的优化问题</strong>，如：混合整数线性规划（MILP）、混合整数二次规划（MIQP）及线性规划（LP）、二次规划（QP）等。在 ML4CO 中，它常被用作 <strong>TSP、MIS</strong>、MCl、MCut、MVC、OP 等问题的求解器。</p>
 <p><strong>使用方法</strong>：使用 Gurobi 求解器时，需要先将问题建模成 MILP 模型，再通过 Gurobi 提供的 Python API（<code>gurobipy</code>）将定义好的变量、目标函数和约束条件输入到模型对象中，调用 <code>model.optimize()</code> 进行求解，最后从 Gurobi 返回的结果中读取解的内容。</p>
 <p>需要注意，Gurobi 求解的<strong>问题规模应在中小型范围内</strong>（如 TSP 节点数不超过 500），大规模问题的求解速度会急剧下降。</p>
 <h2 id="特定问题精确求解器">特定问题精确求解器</h2>
+<p>对于一些极其著名和被广泛研究的问题，社区已经开发出了专门针对它们的、性能远超通用求解器的<strong>专用求解器</strong>。</p>
+<h3 id="Concorde">Concorde</h3>
+<p>Concorde[2] 是一个<strong>专门用于求解旅行商问题 (TSP)</strong> 的求解器，其内部算法都针对 TSP 问题的组合结构进行了高度优化。</p>
+<p><strong>使用方法</strong>：Concorde 有自己标准的输入格式，即著名的 TSPLIB 格式。我们需要将 TSP 实例转换成这种 <code>.tsp</code> 文件格式，然后将其作为输入传给 Concorde 的可执行文件。当然，ML4CO-Kit 已经将调用过程进行了封装，我们可以直接使用。</p>
+<p>Concorde 在求解 TSP 问题上，<strong>其速度和能处理的问题规模远超 Gurobi 等通用求解器</strong>。然而，Concorde <strong>只能求解纯粹的 TSP 问题</strong>，而无法求解 TSP 的诸多变体。</p>
 <h2 id="启发式求解器">启发式求解器</h2>
+<p>在很多场景下，我们并不强求最优解，而是希望快速得到一个高质量的近似解。这时，使用启发式求解器将是不错的选择。</p>
+<h3 id="LKH-3">LKH-3</h3>
+<h2 id="参考资料">参考资料</h2>
+<p>[1] L. Gurobi Optimization, “Gurobi optimizer reference manual (2020),” 2023.<br>
+[2] D. Applegate, R. Bixby, V. Chvatal, and W. Cook, “Concorde tsp solver,” 2006.</p>
 
                 
               </div>
