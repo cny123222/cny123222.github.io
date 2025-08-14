@@ -19,16 +19,16 @@
   <meta name="author" content="Nuoyan Chen">
   <meta name="keywords" content="">
   
-    <meta name="description" content="本文将介绍 ML4CO 中常见的 baseline 求解器，如 Gurobi 和 Concorde 等。">
+    <meta name="description" content="本文将介绍 ML4CO 中常见的 baseline 求解器，如 Gurobi、Concorde、LKH-3、OR-Tools 等。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Traditional Solver Baselines in ML4CO">
 <meta property="og:url" content="https://cny123222.github.io/2025/07/28/Traditional-Solver-Baselines-in-ML4CO/index.html">
 <meta property="og:site_name" content="Nuoyan Chen&#39;s Blog">
-<meta property="og:description" content="本文将介绍 ML4CO 中常见的 baseline 求解器，如 Gurobi 和 Concorde 等。">
+<meta property="og:description" content="本文将介绍 ML4CO 中常见的 baseline 求解器，如 Gurobi、Concorde、LKH-3、OR-Tools 等。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/ml4co.png">
 <meta property="article:published_time" content="2025-07-28T02:44:58.000Z">
-<meta property="article:modified_time" content="2025-08-14T13:11:30.993Z">
+<meta property="article:modified_time" content="2025-08-14T13:23:48.210Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="ML4CO">
@@ -258,7 +258,7 @@
         
         
         
-          15 mins
+          16 mins
         
       </span>
     
@@ -504,7 +504,7 @@
             
               <div class="markdown-body">
                 
-                <p>本文将介绍 ML4CO 中常见的 baseline 求解器，如 Gurobi 和 Concorde 等。</p>
+                <p>本文将介绍 ML4CO 中常见的 baseline 求解器，如 Gurobi、Concorde、LKH-3、OR-Tools 等。</p>
 <span id="more"></span>
 <h2 id="引言">引言</h2>
 <p>在 ML4CO 实验中，我们经常需要 Baseline 求解器求解出问题的（也许是近似）精确解。这些求解器一般是传统求解器，运行速度慢但求解的效果较好。一方面，可以计算我们模型的求解质量与精确解之间的 gap，以评估我们模型的表现（这也是我们在论文的表格中经常看到的）；另一方面，基于监督学习的模型需要事先准备好问题的精确解，才能进行训练。</p>
@@ -533,6 +533,8 @@
 <p>LKH-3 <strong>求解速度极快</strong>（和精确求解器相比），解的质量较高，可用于求解大规模问题，但不保证解的最优性。</p>
 <h3 id="KaMIS">KaMIS</h3>
 <p>KaMIS (Karlsruhe Maximum Independent Set Solver)[4] 源自德国卡尔斯鲁厄理工学院，是一个<strong>专门用于求解 MIS 问题</strong>的顶级求解器。KaMIS 并非依赖单一算法，而是巧妙地组合了图规约与核化、高级局部搜索等<strong>多种技巧来高效地探索解空间</strong>，能够在大规模的图上快速收敛到高质量的解。</p>
+<h3 id="经典启发式算法（Classic-Heuristics）">经典启发式算法（Classic Heuristics）</h3>
+<p>一些更简单、更基础的启发式方法，如<strong>最近邻算法 (Nearest Neighbour)</strong>, <strong>插入法 (Insertion Heuristics)</strong>, 以及 <strong>2-Opt</strong> 等局部搜索算法，也常被作为比较模型性能的对象。</p>
 <h2 id="求解器套件">求解器套件</h2>
 <p>之前所说的都是单一求解器，那么能不能建造一个工具箱，为组合优化问题提供一站式解决方案呢？</p>
 <h3 id="OR-Tools">OR-Tools</h3>
