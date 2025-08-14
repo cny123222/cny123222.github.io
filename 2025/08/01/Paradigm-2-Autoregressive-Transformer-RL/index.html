@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/ml4co.png">
 <meta property="article:published_time" content="2025-08-01T01:42:56.000Z">
-<meta property="article:modified_time" content="2025-08-13T06:30:55.714Z">
+<meta property="article:modified_time" content="2025-08-14T13:50:14.249Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="ML4CO">
@@ -496,7 +496,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on August 13, 2025 pm
+                    Last updated on August 14, 2025 pm
                   
                 
               </p>
@@ -537,7 +537,7 @@
 <p><code>StepState</code> 表示 environment 的 <strong>state</strong>，包装成了 data class，相当于 C++ 中的<strong>结构体</strong>。其中包含 <code>current_node</code> 当前选中的节点、<code>tours</code> 当前构建的部分路径、<code>mask</code> 当前掩码（已经访问过的节点为 0，其余节点为 1）。</p>
 <p><code>reset()</code> 方法在 rollout 开始前对 state 进行重置。<code>step()</code> 方法接收 agent 节点选择的 action，并更新 state，返回 reward。<code>done</code> 为 <code>True</code> 表示一次路径构建完成，此时返回 <code>reward</code> 为回路长度的相反数。<code>evaluate()</code> 方法用于计算回路的长度。</p>
 <div class="note note-info">
-            <p>这里代码还是涉及到一些 Tensor 的操作，可以参考另一篇博客 <a href="https://cny123222.github.io/2025/07/30/Fancy-but-useful-Tensor-operations/">Fancy but useful Tensor operations</a>。</p>
+            <p>这里代码还是涉及到一些 Tensor 的操作，可以参考另一篇博客 <a href="https://cny123222.github.io/2025/07/30/Fancy-but-Useful-Tensor-Operations/">Fancy but Useful Tensor Operations</a>。</p>
           </div>
 <h2 id="Policy-网络搭建">Policy 网络搭建</h2>
 <p>Policy 网络的作用是作为 agent，和 environment 进行交互，利用得到的结果更新网络参数。具体来说，Policy 网络从 environment 获取当前的 state，根据 decoder 网络作出下一个节点的选择并告诉 environment，再从 environment 获得 reward 和新的 state。注意，TSP 的 reward 只有在 tour 构建完成的时候，即一轮 rollout 结束的时候，才会获得。</p>
