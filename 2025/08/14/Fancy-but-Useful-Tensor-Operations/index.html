@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/ml4co.png">
 <meta property="article:published_time" content="2025-08-14T15:38:14.000Z">
-<meta property="article:modified_time" content="2025-08-15T02:37:22.870Z">
+<meta property="article:modified_time" content="2025-08-15T02:54:39.502Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta name="twitter:card" content="summary_large_image">
@@ -246,7 +246,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.2k words
+          1.3k words
         
       </span>
     
@@ -257,7 +257,7 @@
         
         
         
-          10 mins
+          12 mins
         
       </span>
     
@@ -431,6 +431,12 @@
 <p>当然，还可以<strong>由现有的 Tensor 进行类似构造</strong>，如 <code>torch.zeros_like()</code> 可以创建和原 Tensor 形状相同的全 0 Tensor。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python">a = torch.rand(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Random tensor a:&quot;</span>)<br><span class="hljs-built_in">print</span>(a)<br><br>b = torch.zeros_like(a)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\nTensor b with same shape as a:&quot;</span>)<br><span class="hljs-built_in">print</span>(b)<br></code></pre></td></tr></table></figure>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Random tensor a:<br>tensor([[0.8838, 0.2225, 0.5416],<br>        [0.0396, 0.2708, 0.4012]])<br><br>Tensor b with same shape as a:<br>tensor([[0., 0., 0.],<br>        [0., 0., 0.]])<br></code></pre></td></tr></table></figure>
+<p>还有一些常用的构造函数。</p>
+<ul>
+<li><code>torch.arange()</code>：类似 Python 的 <code>range</code>，返回一个 <code>[start, end)</code>，从 <code>start</code> 开始，步长为 <code>step</code> 的一维 Tensor。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python">a = torch.arange(<span class="hljs-number">1</span>, <span class="hljs-number">6</span>, <span class="hljs-number">2</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Tensor a:&quot;</span>, a)<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Tensor a: tensor([1, 3, 5])<br></code></pre></td></tr></table></figure>
 <h3 id="基本属性">基本属性</h3>
 <ul>
 <li><code>.dim()</code>：返回 Tensor 的维度</li>
@@ -451,10 +457,17 @@
 <li><code>torch.float16</code>：用于混合精度训练。</li>
 </ul>
 <p>当然，通用的转化方式是 <code>.to()</code>，可以指定任意的数据类型或设备。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs python">x0 = torch.zeros(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, dtype=torch.float16, device=<span class="hljs-string">&#x27;cpu&#x27;</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Datatype of x0:&quot;</span>, x0.dtype)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Device of x0:&quot;</span>, x0.device)<br>x1 = x0.<span class="hljs-built_in">float</span>()<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Datatype of x1:&quot;</span>, x1.dtype)<br>x2 = x0.long()<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Datatype of x2:&quot;</span>, x2.dtype)<br>x3 = x0.to(torch.int32)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Datatype of x3:&quot;</span>, x3.dtype)<br>x4 = x0.to(<span class="hljs-string">&quot;cuda&quot;</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Device of x4:&quot;</span>, x4.device)<br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs python">x0 = torch.zeros(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, dtype=torch.float16, device=<span class="hljs-string">&#x27;cpu&#x27;</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;x0.dtype:&quot;</span>, x0.dtype)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;x0.device:&quot;</span>, x0.device)<br>x1 = x0.<span class="hljs-built_in">float</span>()<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;x1.dtype:&quot;</span>, x1.dtype)<br>x2 = x0.long()<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;x2.dtype:&quot;</span>, x2.dtype)<br>x3 = x0.to(torch.int32)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;x3.dtype:&quot;</span>, x3.dtype)<br>x4 = x0.to(<span class="hljs-string">&quot;cuda&quot;</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;x4.device:&quot;</span>, x4.device)<br></code></pre></td></tr></table></figure>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Datatype of x0: torch.float16<br>Device of x0: cpu<br>Datatype of x1: torch.float32<br>Datatype of x2: torch.int64<br>Datatype of x3: torch.int32<br>Device of x4: cuda:0<br></code></pre></td></tr></table></figure>
 <p>注意，Pytorch 中的创建和计算操作（如使用 <code>torch.zeros_like()</code>、<code>.add()</code> 等），得到的新 Tensor 都会<strong>默认继承原有 Tensor 的数据类型和设备</strong>。</p>
 <h2 id="索引操作">索引操作</h2>
+<h3 id="单元素索引">单元素索引</h3>
+<p>最简单的单元素索引大家都会，但注意直接索引返回的是 Pytorch 标量，要<strong>调用 <code>.item()</code> 方法转换到 Python 标量</strong>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python">a = torch.tensor([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>]])<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;a[0, 1]:&quot;</span>, a[<span class="hljs-number">0</span>, <span class="hljs-number">1</span>])<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;a[0, 1].item():&quot;</span>, a[<span class="hljs-number">0</span>, <span class="hljs-number">1</span>].item())<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">a[0, 1]: tensor(2)<br>a[0, 1].item(): 2<br></code></pre></td></tr></table></figure>
+<h3 id="切片索引">切片索引</h3>
+<h3 id="整型-Tensor-索引">整型 Tensor 索引</h3>
+<h3 id="布尔-Tensor-索引">布尔 Tensor 索引</h3>
 <h2 id="变形操作">变形操作</h2>
 <h2 id="计算操作">计算操作</h2>
 <h2 id="广播操作">广播操作</h2>
