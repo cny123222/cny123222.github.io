@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/ml4co.png">
 <meta property="article:published_time" content="2025-08-14T15:38:14.000Z">
-<meta property="article:modified_time" content="2025-08-16T06:09:54.120Z">
+<meta property="article:modified_time" content="2025-08-16T06:25:04.538Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta name="twitter:card" content="summary_large_image">
@@ -246,7 +246,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          180 words
+          343 words
         
       </span>
     
@@ -257,7 +257,7 @@
         
         
         
-          2 mins
+          3 mins
         
       </span>
     
@@ -399,24 +399,19 @@
             
               <div class="markdown-body">
                 
-                <p>代码中看似花哨的 Tensor 操作常常让人摸不着头脑，但是恰恰是理解深度学习代码的关键。本文将详细介绍一些<strong>常见、有趣且实用的 Tensor 操作</strong>，项目代码（Jupyter Notebook）在<a target="_blank" rel="noopener" href="https://github.com/cny123222/A-Living-Guide-to-ML4CO/blob/main/tensor.ipynb">这里</a>。</p>
+                <p>代码中看似花哨的 Tensor 操作常常让人摸不着头脑，但是恰恰是理解深度学习代码的关键。本文将详细介绍一些<strong>常见、有趣且实用的 Tensor 操作</strong>，项目代码（Jupyter Notebook）在<a target="_blank" rel="noopener" href="https://github.com/cny123222/A-Living-Guide-to-ML4CO/blob/main/tensor2.ipynb">这里</a>。</p>
 <span id="more"></span>
 <h2 id="引言">引言</h2>
-<p>笔者之前写过一稿这篇博客，但逐渐写成了 Pytorch Tensor 教程，于是将其放在了 <a href="https://cny123222.github.io/2025/08/16/Pytorch-Tensors-A-Beginner-s-Guide/">Pytorch Tensors: A Beginner’s Guide</a> 这里，其中<strong>系统介绍了 Tensor 的基础操作</strong>，包括高级索引、变形等比较重点的操作。<strong>这篇博客是收集向的</strong>，将会逐步收集我看代码的时候碰到的有趣且有用的 Tensor 操作，还有一些之前的博客没放进去的常用操作。</p>
-<h2 id=""></h2>
-<!--  
-TODO:
-1. cat stack
-2. detach
-3. gather
-4. #### squeeze 和 unsqueeze
+<p>笔者之前写过一稿这篇博客，但逐渐写成了 Pytorch Tensor 教程，于是将其放在了 <a href="https://cny123222.github.io/2025/08/16/Pytorch-Tensors-A-Beginner-s-Guide/">Pytorch Tensors: A Beginner’s Guide</a> 这里，其中<strong>系统介绍了 Tensor 的基础操作</strong>，包括高级索引、变形等比较重点的操作。<strong>这篇博客是收集向的</strong>，将会逐步收集我看代码（特别是 ML4CO 代码）的时候碰到的有趣且有用的 Tensor 操作，还有一些之前的博客没放进去的常用操作。</p>
+<h2 id="squeeze-unsqueeze">squeeze &amp; unsqueeze</h2>
+<p><code>.squeeze()</code> 和 <code>.unsqueeze()</code> 是用于<strong>增减维度</strong>的常用操作。</p>
+<p><code>.squeeze()</code> 用于<strong>移除 Tensor 中大小为 1 的维度</strong>。若不提供 <code>dim</code> 参数，会移除所有大小为 1 的维度；若提供 <code>dim</code> 参数，它只会检查并移除指定的维度（如果大小为 1 的话）。该操作返回一个视图 (View)，共享内存。</p>
+<p><code>.unsqueeze()</code> 用于<strong>在指定的维度上增加一个大小为 1 的新维度</strong>。参数 <code>dim</code> 指定了新维度的插入位置。该操作返回一个视图 (View)，共享内存。</p>
+<h2 id="cat-stack">cat &amp; stack</h2>
+<h2 id="gather">gather</h2>
+<h2 id="参考资料">参考资料</h2>
+<p>[1] <a target="_blank" rel="noopener" href="https://docs.pytorch.org/docs/stable/index.html">https://docs.pytorch.org/docs/stable/index.html</a></p>
 
-还有两个用于**增减维度**的常用操作：`.squeeze()` 和 `.unsqueeze()`。
-
-`.squeeze()` 用于**移除 Tensor 中大小为 1 的维度**。若不提供 `dim` 参数，会移除所有大小为 1 的维度；若提供 `dim` 参数，它只会检查并移除指定的维度（如果大小为 1 的话）。该操作返回一个视图 (View)，共享内存。
-
-`.unsqueeze()` 用于**在指定的维度上增加一个大小为 1 的新维度**。参数 `dim` 指定了新维度的插入位置。该操作返回一个视图 (View)，共享内存。
--->
                 
               </div>
             
