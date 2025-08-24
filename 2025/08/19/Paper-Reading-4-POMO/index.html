@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/ml4co.png">
 <meta property="article:published_time" content="2025-08-19T13:41:32.000Z">
-<meta property="article:modified_time" content="2025-08-24T10:29:01.746Z">
+<meta property="article:modified_time" content="2025-08-24T13:42:44.318Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="ML4CO">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.9k words
+          3.2k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          25 mins
+          27 mins
         
       </span>
     
@@ -594,7 +594,18 @@ p_\theta(a_t | s, a_{1:t-1}) &amp; \text{for } t \in \{2, 3, \dots, M\}
 <p>然而，节点数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span> 会限制候选解的数量。作者又采用了实例增强技术：如对 TSP 问题而言，<strong>对问题实例进行旋转或翻转，其最优解不变</strong>。因此，只要对原始问题的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span> 个节点运用 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>8</mn></mrow><annotation encoding="application/x-tex">8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">8</span></span></span></span> 种变换，就会得到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>8</mn></mrow><annotation encoding="application/x-tex">8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">8</span></span></span></span> 个看起来不同的问题实例。对每一个实例，POMO 都从 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span> 个节点出发，生成 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span> 个候选解，一共就有了 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>8</mn><mo>×</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">8 \times N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">8</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span> 个候选解。最终可以从这 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>8</mn><mo>×</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">8 \times N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">8</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span> 个候选解中，选择最好的解。</p>
 <p><img src="pomo_infer.png" srcset="/img/loading.gif" lazyload alt="POMO 的推理过程"></p>
 <h2 id="实验及结果">实验及结果</h2>
-<p>POMO 是一种训练和推理技巧，<strong>需要用在具体的策略网络上</strong>。作者选择的是 AM（Attention Model），这个模型我们在 <a href="https://cny123222.github.io/2025/07/30/Paper-Reading-2-AM/">Paper Reading #2: AM</a> 中介绍过。</p>
+<p><strong>POMO 是一种通用的强化学习方法，需要用在具体的策略网络上</strong>。作者选择的是 <strong>AM（Attention Model）</strong>，这个模型我们在 <a href="https://cny123222.github.io/2025/07/30/Paper-Reading-2-AM/">Paper Reading #2: AM</a> 中介绍过。将 POMO 应用到 AM 上比较直接：Encoder 的工作过程不变，Decoder 每次并行处理 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span> 个 query，从而并行生成 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span> 条轨迹。</p>
+<p>作者在 <strong>TSP、CVRP 和 KP</strong> 问题上进行了测试。</p>
+<h3 id="TSP">TSP</h3>
+<p><img src="tsp.png" srcset="/img/loading.gif" lazyload alt="TSP 上的实验结果"></p>
+<p>其中 “single trajec.” 表示不使用 multiple greedy trajectories for inference（多路贪婪推理），即只从一个随机节点开始生成一条 greedy 轨迹。目的是和 AM (greedy) 进行公平的对比。</p>
+<p><img src="tsp_curve.png" srcset="/img/loading.gif" lazyload alt="TSP 上的学习曲线"></p>
+<h3 id="CVRP">CVRP</h3>
+<p>CVRP 问题有一个固定的起点（仓库），这与 TSP 所有节点平等的特性不同。作者采取了一种朴素的处理方式：将所有客户节点作为离开仓库后的第一个访问节点来并行探索。作者承认这不是最好的处理方式，但这证明了 POMO 方法的鲁棒性。</p>
+<p><img src="cvrp.png" srcset="/img/loading.gif" lazyload alt="CVRP 上的实验结果"></p>
+<h3 id="0-1-KP">0-1 KP</h3>
+<p>这个实验的目的是展示 POMO 的通用性，证明它不仅能解决 routing 问题。作者再次重用了为 TSP 设计的网络，<strong>将每个物品的重量和价值当作节点的二维坐标</strong>输入模型。</p>
+<p><img src="kp.png" srcset="/img/loading.gif" lazyload alt="KP 上的实验结果"></p>
 
                 
               </div>
