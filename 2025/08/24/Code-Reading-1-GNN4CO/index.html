@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/ml4co.png">
 <meta property="article:published_time" content="2025-08-24T14:29:10.000Z">
-<meta property="article:modified_time" content="2025-08-24T15:11:18.845Z">
+<meta property="article:modified_time" content="2025-08-25T04:52:49.014Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="ML4CO">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          317 words
+          850 words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          3 mins
+          8 mins
         
       </span>
     
@@ -561,7 +561,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on August 24, 2025 pm
+                    Last updated on August 25, 2025 pm
                   
                 
               </p>
@@ -576,6 +576,42 @@
 <p>一般来说，一个大项目的代码都会比较庞大，一句句理解非常困难。我们将<strong>遵循从宏观到微观的阅读方法</strong>，先了解每块代码的作用，再针对性分析重点的语句。</p>
 <h2 id="整体框架">整体框架</h2>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">.<br>├── __init__.py<br>├── env<br>│   ├── __init__.py<br>│   ├── dense<br>│   │   ├── __init__.py<br>│   │   ├── atsp.py<br>│   │   ├── cvrp.py<br>│   │   └── tsp.py<br>│   ├── denser.py<br>│   ├── env.py<br>│   ├── sparse<br>│   │   ├── __init__.py<br>│   │   ├── atsp.py<br>│   │   ├── cvrp.py<br>│   │   ├── mcl.py<br>│   │   ├── mcut.py<br>│   │   ├── mis.py<br>│   │   ├── mvc.py<br>│   │   └── tsp.py<br>│   └── sparser.py<br>├── model<br>│   ├── __init__.py<br>│   ├── decoder<br>│   │   ├── __init__.py<br>│   │   ├── atsp.py<br>│   │   ├── base.py<br>│   │   ├── mcl.py<br>│   │   ├── mcut.py<br>│   │   ├── mis.py<br>│   │   ├── mvc.py<br>│   │   └── tsp.py<br>│   ├── embedder<br>│   │   ├── __init__.py<br>│   │   ├── atsp.py<br>│   │   ├── base.py<br>│   │   ├── cvrp.py<br>│   │   ├── mcl.py<br>│   │   ├── mcut.py<br>│   │   ├── mis.py<br>│   │   ├── mvc.py<br>│   │   ├── tsp.py<br>│   │   └── utils.py<br>│   ├── encoder<br>│   │   ├── __init__.py<br>│   │   ├── gnn_encoder.py<br>│   │   ├── gnn_encoder_tsp.py<br>│   │   ├── gnn_layer.py<br>│   │   └── gnn_layer_tsp.py<br>│   ├── model.py<br>│   └── out_layer<br>│       ├── __init__.py<br>│       ├── base.py<br>│       ├── edge.py<br>│       ├── node.py<br>│       └── utils.py<br>└── solver<br>    ├── __init__.py<br>    ├── atsp.py<br>    ├── mcl.py<br>    ├── mcut.py<br>    ├── mis.py<br>    ├── mvc.py<br>    └── tsp.py<br></code></pre></td></tr></table></figure>
+<p>可以看到，GNN4CO 的代码整体分为 <code>env</code>、<code>model</code> 和 <code>solver</code> 三部分。这三部分各自的功能是：</p>
+<ul>
+<li><code>env</code>：负责数据集的生成和加载。</li>
+<li><code>model</code>：核心模型，包含 <code>Encoder</code> 和 <code>Decoder</code>，并需要 <code>Env</code> 来生成训练和验证数据。</li>
+<li><code>solver</code>：求解器，用于 test 阶段，会调用训练好的 <code>Model</code> 进行测试。</li>
+</ul>
+<pre><code class=" mermaid">graph TD;
+  subgraph &quot;train&quot;
+    A[Trainer] --&gt; B[Model];
+    B --&gt; C[Env];
+    B --&gt; D[Encoder];
+    B --&gt; E[Decoder];
+    C --&gt; G[Denser];
+    C --&gt; H[Sparser];
+    D --&gt; I[Embedder];
+    D --&gt; K[DenseBlock];
+    D --&gt; L[SparseBlock];
+    K --&gt; M[DenseLayer];
+    L --&gt; N[SparseLayer];
+    D --&gt; J[OutLayer];
+  end
+  subgraph &quot;test&quot;
+    F[Solver] --&gt; B;
+  end
+</code></pre>
+<p>这是代码中关键的 class 之间的调用关系。<strong>训练时</strong>，我们调用 Pytorch Lightning 库中的 <code>Trainer</code> 来训练 <code>Model</code>；<strong>测试时</strong>，我们调用 <code>Solver</code> 来对 <code>Model</code> 进行测试。</p>
+<p>需要说明的是，<strong>sparse 和 dense 分别表示图的稀疏表示和稠密表示</strong>。在稀疏表示中，我们保存每条边连接的两个顶点编号；在稠密表示中，我们记录每一对顶点之间是否有边，即图的邻接矩阵表示。</p>
+<h2 id="Env">Env</h2>
+<p><code>Env</code> 为训练、验证和测试提供数据，主要包括了<strong>数据的读取与解析、数据的格式转换、数据的批供给</strong>等功能。核心的类是 <code>GNN4COEnv</code>，它从文件中读取各种 CO 问题的原始数据，将其转换为适应 GNN 的格式（支持稠密图和稀疏图），为模型的训练、验证和测试提供一批批处理好的数据。</p>
+<h3 id="env-py"><code>env.py</code></h3>
+<p><code>env.py</code> 中首先定义了一个 <code>FakeDataset</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">FakeDataset</span>(<span class="hljs-title class_ inherited__">Dataset</span>):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, data_size: <span class="hljs-built_in">int</span></span>):<br>        <span class="hljs-variable language_">self</span>.data_size = data_size<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__len__</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.data_size<br>    <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__getitem__</span>(<span class="hljs-params">self, idx: <span class="hljs-built_in">int</span></span>):<br>        <span class="hljs-keyword">return</span> torch.tensor([idx])<br></code></pre></td></tr></table></figure>
+<p>这是一个辅助性的<strong>伪数据集</strong>，本身不包含任何真实数据，只实现了最基本的方法。这里定义的 <code>FakeDataset</code> 会被放入 <code>train_dataloader</code>、<code>val_dataloader</code> 和 <code>test_dataloader</code>。Pytorch Lightning 框架会自动将数据做成 batch，传递给 <code>Model</code> 的训练、验证和测试函数。但这里，我们并不实际用这个数据的传递路径，而是直接在 <code>Model</code> 中通过调用 <code>Env</code> 提供的方法来加载数据。原因可能是数据生成逻辑比较复杂，不适合放在 <code>__getitem__</code> 中。</p>
+<h2 id="Solver">Solver</h2>
+<h2 id="Model">Model</h2>
+
                 
               </div>
             
