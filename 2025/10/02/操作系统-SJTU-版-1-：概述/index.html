@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-10-02T05:34:54.000Z">
-<meta property="article:modified_time" content="2025-10-04T09:37:48.770Z">
+<meta property="article:modified_time" content="2025-10-04T11:47:02.976Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="课程笔记">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3k words
+          4.6k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          26 mins
+          39 mins
         
       </span>
     
@@ -798,6 +798,216 @@
 </ul>
 </li>
 <li>将 gettimeofday 的代码加载到一块与应用共享的内存页，Time 的值同样映射到用户态空间（只读）</li>
+</ul>
+<h2 id="Lecture-4-从应用视角看操作系统抽象">Lecture 4: 从应用视角看操作系统抽象</h2>
+<p><img src="overview.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h3 id="进程">进程</h3>
+<ul>
+<li><strong>分时复用有限的 CPU 资源</strong>
+<ul>
+<li>让多个应用程序轮流使用处理器核心</li>
+<li>何时切换：操作系统决定（运行时间片）</li>
+<li>高频切换：看起来是多个应用“同时”执行</li>
+</ul>
+</li>
+<li><strong>应用程序与进程</strong>：
+<ul>
+<li>通常一个应用程序对应一个进程：</li>
+<li>多进程程序：应用程序亦可自行创建新进程</li>
+</ul>
+</li>
+<li><strong>进程的状态数据</strong>：
+<ul>
+<li>进程标识号（Process ID， PID）</li>
+<li>运行状态：处理器上下文（CPU Context）</li>
+<li>地址空间</li>
+<li>打开的文件</li>
+</ul>
+</li>
+</ul>
+<h4 id="进程切换">进程切换</h4>
+<ul>
+<li><strong>处理器上下文</strong>：操作系统为每个进程维护处理器上下文
+<ul>
+<li>具体包括：PC 寄存器值，栈寄存器值，通用寄存器值，状态寄存器值</li>
+</ul>
+</li>
+<li><strong>进程切换的时机</strong>：异常导致的上下文切换、用户执行系统调用并进入内核</li>
+</ul>
+<h4 id="常见的进程相关的接口">常见的进程相关的接口</h4>
+<ul>
+<li><strong><code>getpid()</code></strong>：返回调用进程的 PID</li>
+<li><strong><code>getppid()</code></strong>：返回调用进程父进程（创建该进程的进程）的 PID</li>
+<li><strong><code>exit()</code></strong>：终止进程并带上一个 status 状态，无返回值</li>
+<li><strong><code>fork()</code></strong>：父进程创建新的子进程，调用一次返回两次
+<ul>
+<li>返回值：子进程为 0，父进程为子进程 PID，出错为 -1</li>
+</ul>
+</li>
+<li><strong><code>execve()</code></strong>：加载和运行，只调用一次，且永远不会返回
+<ul>
+<li>filename:可执行文件名，argv:参数列表，envp:环境变量列表</li>
+<li>仅仅在运行报错的时候，返回调用程序</li>
+</ul>
+</li>
+<li><strong><code>waitpid()</code></strong>：等待子进程终止后，内核回收子进程</li>
+<li><strong>进程的终止</strong>：进程终止后，内核不会立刻销毁该进程
+<ul>
+<li>进程以终止态存在，等待父进程回收</li>
+<li>当父进程回收终止的子进程：
+<ul>
+<li>内核把子进程的 exit 状态传递给父进程</li>
+<li>内核移除子进程，此时子进程才被真正回收</li>
+</ul>
+</li>
+<li>终止状态下还未被回收的进程就是僵尸进程</li>
+<li>如果父进程在自己终止前没有回收僵尸子进程：
+<ul>
+<li>内核会安排 init 进程回收这些子进程</li>
+<li>init 进程：PID 为 1，在系统初始化时由内核创建</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="内存">内存</h3>
+<p><img src="mem_config.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>虚拟地址空间</strong>：
+<ul>
+<li>应用进程使用虚拟地址访问内存</li>
+<li>所有应用进程的虚拟地址空间都是统一的（方便开发）</li>
+</ul>
+</li>
+<li><strong>地址翻译</strong>：
+<ul>
+<li>CPU 按照 OS 配置的规则把虚拟地址翻译成物理地址</li>
+<li>翻译对于应用进程是不可见的（无需关心）</li>
+</ul>
+</li>
+<li><strong>虚拟内存的优势</strong>：
+<ul>
+<li>独立而统一的地址空间</li>
+<li>提高内存资源利用率、突破物理内存容量限制</li>
+</ul>
+</li>
+</ul>
+<h4 id="ELF-文件格式">ELF 文件格式</h4>
+<ul>
+<li><strong>目标文件</strong>：可执行目标文件、可重定位目标文件（.o）、共享目标文件（.so）</li>
+<li><strong>ELF</strong>：可执行可链接格式，目标文件的标准二进制格式</li>
+</ul>
+<p><img src="elf.png" srcset="/img/loading.gif" lazyload alt="ELF 格式"></p>
+<ul>
+<li><strong>ELF 头部</strong>：通常用于存元数据，包括 Magic number、类型（.o, .so, 可执行）、机器架构、字节顺序（大小端）、节头部表的位置（文件内偏移）等</li>
+<li><strong>节头部表</strong>：每一个节都有一个节头部（节头部表的一项）描述
+<ul>
+<li><strong>节</strong>：ELF 文件中除了头部和头部表划分为若干区域，每一个节在文件中是一块连续的字节（可能为空），互不重叠</li>
+</ul>
+</li>
+<li><strong>用以调试的节</strong>：
+<ul>
+<li><strong>ELF 字符串表（.strtab）</strong>：记录一系列 C 风格字符串，表示符号名或节名</li>
+<li><strong>.debug</strong>：调试符号表，包括变量（全局、局部）、typedef、C 源文件</li>
+<li><strong>.line</strong>：C 源文件的行数与 .text 节中指令的映射</li>
+</ul>
+</li>
+<li><strong>代码和数据节</strong>：
+<ul>
+<li><strong>.text</strong>：代码</li>
+<li><strong>.rodata</strong>：只读数据</li>
+<li><strong>.data</strong>：初始化的全局变量和静态变量</li>
+<li><strong>.bss</strong>：未初始化的全局变量和静态变量（不占文件空间，运行时分配内存）</li>
+</ul>
+</li>
+</ul>
+<p><img src="exe.png" srcset="/img/loading.gif" lazyload alt="可执行目标文件"></p>
+<ul>
+<li><strong>可执行目标文件的 ELF 头部</strong>：包含整体信息、程序入口 (e_entry)、程序头部表信息</li>
+</ul>
+<h3 id="文件">文件</h3>
+<ul>
+<li>
+<p><strong>Unix 文件</strong>：是一串字节序列</p>
+<ul>
+<li>所有 IO 设备都被抽象成文件</li>
+<li>Unix 提供一个基于文件的底层应用接口，即 Unix IO</li>
+<li>所有输入/输出都是通过读/写文件完成，让所有输入输出都有统一的表现方式</li>
+</ul>
+</li>
+<li>
+<p><strong>普通文件（文件类型1）</strong>：包含任意数据</p>
+<ul>
+<li>从应用程序的角度来看，有文本文件和二进制文件</li>
+<li>从内核的角度来看，没有区别</li>
+</ul>
+</li>
+<li>
+<p><strong>目录（文件类型2）</strong>：由一组链接构成，每个链接将一个文件名映射到一个文件(或目录)</p>
+<ul>
+<li>每个目录至少有两个链接：
+<ul>
+<li>. (dot)：到文件夹本身的链接</li>
+<li>… (dot-dot)：到上一层文件夹的链接</li>
+</ul>
+</li>
+<li>目录相关指令：mkdir、ls、rmdir等</li>
+</ul>
+</li>
+<li>
+<p><strong>目录层级</strong>：Linux 内核使用层次化目录来组织所有文件</p>
+<ul>
+<li>/：代表根目录</li>
+<li>每个文件都是根目录直接或间接的后代</li>
+</ul>
+</li>
+<li>
+<p><strong>其他文件类型</strong>：套接字、命名管道、符号连接、字符/块设备</p>
+</li>
+<li>
+<p><strong>打开文件</strong>：应用准备访问一个 IO 设备</p>
+<ul>
+<li>内核打开相关文件，并返回一个非负整数，作为文件标识符(fd)
+<ul>
+<li>fd 代表该文件，用于之后对文件进行操作</li>
+</ul>
+</li>
+<li>内核跟踪记录每个进程的所有打开文件的信息
+<ul>
+<li>对于每个打开文件，维护一个文件内偏移 k</li>
+<li>应用可以通过seek函数，显式改变当前文件内偏移 k</li>
+</ul>
+</li>
+<li>应用只需要记录内核返回的文件标识符</li>
+</ul>
+</li>
+<li>
+<p><strong>关闭文件</strong>：不再需要访问文件</p>
+<ul>
+<li>内核操作如下
+<ul>
+<li>释放在文件打开时创建的数据结构</li>
+<li>把文件标识符返回到可用标识符池</li>
+</ul>
+</li>
+<li>进程终止时，内核会关闭所有打开的文件、释放内存资源</li>
+</ul>
+</li>
+<li>
+<p><strong>读写文件</strong>：读操作</p>
+<ul>
+<li>从文件中复制 m&gt;0 个字节到内存中<br>
+-从当前文件的位置 k 开始, 并更新 k+=m</li>
+<li>如果从 k 开始到文件末尾的长度小于 m，触发一个条件 end-of-file(EOF)
+<ul>
+<li>EOF 可以被应用检测，但文件末尾实际上不存在 EOF 字符</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>文件</strong>：对所有设备的抽象（存储设备、网络设备、其他设备）</p>
+</li>
 </ul>
 <h2 id="参考资料">参考资料</h2>
 <p>本文参考上海交通大学并行与分布式系统研究所（IPADS）操作系统课程 CS3601 华志超老师的 PPT 课件整理。</p>
