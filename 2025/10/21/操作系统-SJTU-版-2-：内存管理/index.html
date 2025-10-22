@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-10-21T15:48:21.000Z">
-<meta property="article:modified_time" content="2025-10-22T12:02:55.292Z">
+<meta property="article:modified_time" content="2025-10-22T16:12:50.370Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="课程笔记">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.6k words
+          2k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          14 mins
+          17 mins
         
       </span>
     
@@ -420,7 +420,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on October 22, 2025 pm
+                    Last updated on October 23, 2025 am
                   
                 
               </p>
@@ -636,13 +636,62 @@
 </li>
 <li><strong>内核启动的 3 个主要任务</strong>：
 <ul>
-<li>设置 CPU 异常级别（特权级别）</li>
+<li>设置 CPU 异常级别（特权级别）为 EL1</li>
 <li>设置页表并开启虚拟内存机制</li>
-<li>设置异常向量表并打开中断</li>
+<li>设置异常向量表</li>
 </ul>
 </li>
 </ul>
 <h3 id="物理地址空间">物理地址空间</h3>
+<ul>
+<li><strong>物理地址空间</strong>：系统总线地址空间
+<ul>
+<li>系统总线连接内存，也连接其他设备，每个设备都占一块地址空间</li>
+</ul>
+</li>
+</ul>
+<h3 id="课程实验内核启动">课程实验内核启动</h3>
+<ul>
+<li>
+<p><strong>内核的加载</strong>：bootloader 将内核代码放在某一低地址处，该地址由内核在编译时显式给出</p>
+</li>
+<li>
+<p><strong>内核运行的初始代码</strong>：</p>
+<ul>
+<li>设置当前 EL 为 EL1</li>
+<li>设置启动时用的栈，跳转到 C 代码</li>
+<li>初始化页表…</li>
+</ul>
+</li>
+</ul>
+<p><img src="init_code.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>由 EL3 进入 EL1</strong>：由 <code>eret</code> 返回，同时写入 ELR 及 SPSR 中准备好的 PC 及特权级</li>
+</ul>
+<p><img src="el1.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h3 id="页表初始化">页表初始化</h3>
+<ul>
+<li><strong>页表初始化的过程</strong>：
+<ul>
+<li>设置 TTBR0 页表：将低地址虚拟内存映射到物理内存，使当前低地址代码能正常运行</li>
+<li>设置 TTBR1 页表：将高地址虚拟内存映射到物理内存，使得内核能切换到高地址运行</li>
+<li>将页表的物理地址写入 TTBR0 和 TTBR1
+<ul>
+<li>TTBR0_EL1：虚拟地址 = 物理地址</li>
+<li>TTBR1_EL1：虚拟地址 = 物理地址 + OFFSET</li>
+</ul>
+</li>
+<li>将 SCTLR_EL1 的某些位置 1，开启页表</li>
+</ul>
+</li>
+</ul>
+<p><img src="memory.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h3 id="异常向量表初始化">异常向量表初始化</h3>
+<ul>
+<li><strong>异常向量表初始化的过程</strong>：将异常向量表基地址写入 VBAR_EL1</li>
+<li><strong>异常向量表</strong>：每个异常向量表项跳转到对应的异常处理函数</li>
+<li><strong>异常处理函数</strong>：处理异常前保存进程上下文、返回进程前恢复其上下文</li>
+</ul>
 <h2 id="参考资料">参考资料</h2>
 <p>本文参考上海交通大学并行与分布式系统研究所（IPADS）操作系统课程 CS3601 华志超老师的 PPT 课件整理。</p>
 
