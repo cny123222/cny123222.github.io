@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-10-21T15:48:21.000Z">
-<meta property="article:modified_time" content="2025-10-21T15:56:32.786Z">
+<meta property="article:modified_time" content="2025-10-22T12:02:55.292Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="课程笔记">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          82 words
+          1.6k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          1 mins
+          14 mins
         
       </span>
     
@@ -420,7 +420,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on October 21, 2025 pm
+                    Last updated on October 22, 2025 pm
                   
                 
               </p>
@@ -431,6 +431,218 @@
                 <p>这是《操作系统》SJTU-CS3601 课程的课程笔记系列。本文整理部分为“第 2 部分：内存管理”。</p>
 <span id="more"></span>
 <h2 id="Lecture-5-内存地址翻译">Lecture 5: 内存地址翻译</h2>
+<h3 id="内存管理">内存管理</h3>
+<ul>
+<li><strong>地址映射</strong>：由 CPU 中的 <strong>MMU</strong>（Memory Management Unit）将虚拟地址翻译为物理地址，由操作系统配置如何翻译</li>
+<li><strong>分页机制</strong>：虚拟页和物理页的页长相等
+<ul>
+<li><strong>虚拟地址（VA）</strong>：虚拟页偏移（VPO）+ 虚拟页号（VPN）</li>
+<li><strong>物理地址（PA）</strong>：物理页偏移（PPO）+ 物理页号（PPN）</li>
+</ul>
+</li>
+<li><strong>页表</strong>：记录虚拟页号到物理页号的映射
+<ul>
+<li>每个进程一张页表，操作系统也有一张页表</li>
+<li>包含多个页表项，存储物理页的页号（虚拟页号为索引）</li>
+<li>存储在物理内存中，由 OS 负责维护</li>
+<li>其起始地址存放在页表基地址寄存器中</li>
+</ul>
+</li>
+<li><strong>分页机制的特点</strong>：
+<ul>
+<li>物理内存离散分配
+<ul>
+<li>任意虚拟页可以映射到任意物理页</li>
+<li>大大降低对物理内存连续性的要求</li>
+</ul>
+</li>
+<li>主存资源易于管理，利用率更高
+<ul>
+<li>按照固定页大小分配物理内存</li>
+<li>能大大降低外部碎片和内部碎片</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="多级页表">多级页表</h3>
+<ul>
+<li><strong>多级页表的优点</strong>：能有效压缩页表的大小
+<ul>
+<li><strong>原因</strong>：允许页表中出现空洞
+<ul>
+<li>若某个页表页中的某个页表项为空，那么其对应的下一级页表页便无需存在</li>
+<li>应用程序的虚拟地址空间大部分都未分配</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>页表格式</strong>：AARCH64 体系结构下 4 级页表
+<ul>
+<li>每个页表页占用一个 4K 物理页</li>
+<li>每个页表项占用 8 个字节，每个页表页有 512 个页表项</li>
+</ul>
+</li>
+</ul>
+<p><img src="multi_page_table.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>64 位虚拟地址解析</strong>:
+<ul>
+<li>[63:48] 16-bit：必须全 0 或全 1
+<ul>
+<li>一般应用程序地址是 0，内核地址是 1</li>
+<li>意味着虚拟地址空间大小最大是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>48</mn></msup></mrow><annotation encoding="application/x-tex">2^{48}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">48</span></span></span></span></span></span></span></span></span></span></span></span> Byte，即 256 TB</li>
+</ul>
+</li>
+<li>[47:39] 9-bit：0 级页表索引</li>
+<li>[38:30] 9-bit：1 级页表索引</li>
+<li>[29:21] 9-bit：2 级页表索引</li>
+<li>[20:12] 9-bit：3 级页表索引</li>
+<li>[11:0] 12-bit：页内偏移</li>
+</ul>
+</li>
+<li><strong>页表基地址寄存器</strong>：AARCH64 有两个页表基地址寄存器：TTBR0_EL1 和 TTBR1_EL1
+<ul>
+<li>MMU 根据虚拟地址第 63 位选择使用哪一个</li>
+<li>以 Linux 为例，应用程序（地址首位为 0）使用 TTBR0_EL1，操作系统（地址首位为 1）使用 TTBR1_EL1</li>
+</ul>
+</li>
+<li><strong>页表使能</strong>：
+<ul>
+<li>机器上电会先进入物理寻址模式，系统软件需配置控制寄存器使能页表从而进入虚拟寻址模式</li>
+<li>AARCH64 在 SCTLR_EL1 第 0 位（M 位）置 1，即在 EL0 和 EL1 权限级使能页表</li>
+</ul>
+</li>
+</ul>
+<h3 id="页表项">页表项</h3>
+<ul>
+<li><strong>页表页</strong>：
+<ul>
+<li>每级页表有若干离散的页表页，每个页表页占用一个物理页</li>
+<li>第 0 级页表有且仅有一个页表页，页表基地址寄存器存储的就是该页的物理地址</li>
+<li>每个页表页中有 512 个页表项，每项为 8 个字节，用于存储物理地址和权限</li>
+</ul>
+</li>
+<li><strong>页表项中的属性位</strong>：
+<ul>
+<li><strong>页描述符 / 表描述符</strong>：PFN，即物理页号
+<ul>
+<li>页描述符指向 4K 页，表描述符指向下一级页表</li>
+</ul>
+</li>
+<li><strong>有效位(V)</strong>：有效位，当访问时 V=0，则触发缺页异常</li>
+<li>对于 3 级页表项，还有各种权限位、访问位、脏位等</li>
+</ul>
+</li>
+<li><strong>大页</strong>：中间级的页表项也能够直接指向物理页
+<ul>
+<li><strong>块描述符</strong>：指向大页</li>
+<li>有效的 0-2 级页表项，第 1 位为 0 表示 PFN 指向大页，第 1 位为 1 表示 PFN 指向下一级页表</li>
+</ul>
+</li>
+</ul>
+<p><img src="big_page.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h3 id="TLB：缓存页表项">TLB：缓存页表项</h3>
+<ul>
+<li><strong>多级页表的优缺点</strong>：用时间换空间
+<ul>
+<li><strong>优点</strong>：压缩页表大小</li>
+<li><strong>缺点</strong>：增加了访存次数（逐级查询）</li>
+</ul>
+</li>
+<li><strong>TLB</strong>：Translation Lookaside Buffer
+<ul>
+<li>位于 CPU 内部，是页表的缓存</li>
+<li>缓存了虚拟页号到物理页号的映射关系</li>
+<li>在地址翻译过程中，MMU 首先查询 TLB</li>
+</ul>
+</li>
+<li><strong>TLB 命中</strong>：不再查询页表，可以减少查询页表带来的访存次数</li>
+<li><strong>TLB 不命中</strong>：再查询页表，会导致额外的访存</li>
+<li><strong>TLB 查询</strong>：
+<ul>
+<li>虚拟页号分为 TLBI（TLB index）+ TLBT（TLB tag）</li>
+<li>先用 index 找到一个 set，再对比其中 entry 的 tag</li>
+</ul>
+</li>
+<li><strong>TLB 刷新</strong>：当 OS 切换进程页表时，TLB 需要全部刷新
+<ul>
+<li>在用户和内核之间切换时，不需要刷新 TLB</li>
+</ul>
+</li>
+<li><strong>降低 TLB 刷新的开销</strong>：ASID（Address Space ID）
+<ul>
+<li>OS 为不同进程分配 8 位或 16 位 ASID
+<ul>
+<li>OS 负责将 ASID 填写在 TTBR0_EL1 的高 8 位或高 16 位</li>
+</ul>
+</li>
+<li>TLB 的每一项也会缓存 ASID
+<ul>
+<li>地址翻译时，硬件会将 TLB 项的 ASID 与 TTBR0_EL1 的 ASID 对比</li>
+<li>使用了 ASID 之后，切换页表（即切换进程）后，不再需要刷新 TLB，提高性能</li>
+<li>修改页表映射后，仍需刷新 TLB</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>TLB 与多核</strong>：OS 修改页表后，需要根据进程调度信息，刷新其它核的 TLB</li>
+</ul>
+<h3 id="小结：虚拟内存机制的优势">小结：虚拟内存机制的优势</h3>
+<ul>
+<li><strong>高效使用物理内存</strong>：使用 DRAM 作为虚拟地址空间的缓存</li>
+<li><strong>简化内存管理</strong>：每个进程看到的是统一的线性地址空间</li>
+<li><strong>更强的隔离与更细的权限控制</strong>：
+<ul>
+<li>一个进程不能访问属于其他进程的内存</li>
+<li>用户程序不能够访问特权更高的内核信息</li>
+<li>不同内存页的读、写、执行权限可以不同</li>
+<li>可在不同进程之间共享内存（不同虚拟地址空间的虚拟内存页映射到相同的物理页）</li>
+</ul>
+</li>
+</ul>
+<h2 id="Lecture-6-系统初始化">Lecture 6: 系统初始化</h2>
+<h3 id="启动过程与系统初始化">启动过程与系统初始化</h3>
+<p><img src="init.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>从计算机上电到内核开始运行</strong>：
+<ul>
+<li>
+<ol>
+<li>上电后，开始执行 BIOS ROM 中的代码（早期设备）</li>
+</ol>
+<ul>
+<li>自检，然后找到第一个可启动设备（如第一块磁盘）</li>
+<li>将可启动设备的第一个块加载到内存固定地址中</li>
+<li>跳转到 bootloader 的内存地址并继续执行</li>
+</ul>
+</li>
+<li>
+<ol start="2">
+<li>bootloader 开始执行</li>
+</ol>
+<ul>
+<li>将内核的二进制文件从启动设备加载到内存中</li>
+<li>若内核文件是压缩包，则对其进行解压</li>
+<li>跳转到（解压后的）内核加载地址（物理地址）并继续执行</li>
+</ul>
+</li>
+<li>
+<ol start="3">
+<li>内核代码开始执行</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><strong>内核启动的 3 个主要任务</strong>：
+<ul>
+<li>设置 CPU 异常级别（特权级别）</li>
+<li>设置页表并开启虚拟内存机制</li>
+<li>设置异常向量表并打开中断</li>
+</ul>
+</li>
+</ul>
+<h3 id="物理地址空间">物理地址空间</h3>
 <h2 id="参考资料">参考资料</h2>
 <p>本文参考上海交通大学并行与分布式系统研究所（IPADS）操作系统课程 CS3601 华志超老师的 PPT 课件整理。</p>
 
