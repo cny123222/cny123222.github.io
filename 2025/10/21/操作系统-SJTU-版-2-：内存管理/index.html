@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-10-21T15:48:21.000Z">
-<meta property="article:modified_time" content="2025-10-22T16:12:50.370Z">
+<meta property="article:modified_time" content="2025-10-22T16:27:03.782Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="课程笔记">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2k words
+          2.1k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          17 mins
+          18 mins
         
       </span>
     
@@ -690,7 +690,32 @@
 <ul>
 <li><strong>异常向量表初始化的过程</strong>：将异常向量表基地址写入 VBAR_EL1</li>
 <li><strong>异常向量表</strong>：每个异常向量表项跳转到对应的异常处理函数</li>
-<li><strong>异常处理函数</strong>：处理异常前保存进程上下文、返回进程前恢复其上下文</li>
+<li><strong>异常处理函数</strong>：处理异常前保存进程上下文，返回进程前恢复其上下文</li>
+</ul>
+<h2 id="Lecture-7-操作系统管理页表映射">Lecture 7: 操作系统管理页表映射</h2>
+<ul>
+<li><strong>设置页表映射的时机</strong>：
+<ul>
+<li><strong>操作系统自己使用的页表</strong>：在启动时填写，映射全部物理内存
+<ul>
+<li><strong>直接映射</strong>：虚拟地址 = 物理地址 + 固定偏移</li>
+</ul>
+</li>
+<li><strong>应用进程的页表</strong>：
+<ul>
+<li><strong>立即映射</strong>：创建进程时，OS 按照虚拟内存区域填写进程页表
+<ul>
+<li>步骤1：分配物理页</li>
+<li>步骤2：把应用代码/数据从磁盘加载到物理页中</li>
+<li>步骤3：添加虚拟页到物理页的映射</li>
+<li>步骤4：未加载完毕，回到步骤1</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>分配物理页的简单实现</strong>：操作系统用位图（Bitmap）记录物理页是否空闲</li>
 </ul>
 <h2 id="参考资料">参考资料</h2>
 <p>本文参考上海交通大学并行与分布式系统研究所（IPADS）操作系统课程 CS3601 华志超老师的 PPT 课件整理。</p>
