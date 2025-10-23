@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-10-21T15:48:21.000Z">
-<meta property="article:modified_time" content="2025-10-22T16:27:03.782Z">
+<meta property="article:modified_time" content="2025-10-23T06:52:54.770Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="课程笔记">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.1k words
+          2.9k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          18 mins
+          25 mins
         
       </span>
     
@@ -420,7 +420,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on October 23, 2025 am
+                    Last updated on October 23, 2025 pm
                   
                 
               </p>
@@ -701,13 +701,13 @@
 <li><strong>直接映射</strong>：虚拟地址 = 物理地址 + 固定偏移</li>
 </ul>
 </li>
-<li><strong>应用进程的页表</strong>：
+<li><strong>应用进程的页表</strong>：操作系统填写进程页表的一种策略
 <ul>
 <li><strong>立即映射</strong>：创建进程时，OS 按照虚拟内存区域填写进程页表
 <ul>
-<li>步骤1：分配物理页</li>
+<li>步骤1：分配物理页（alloc_page）</li>
 <li>步骤2：把应用代码/数据从磁盘加载到物理页中</li>
-<li>步骤3：添加虚拟页到物理页的映射</li>
+<li>步骤3：添加虚拟页到物理页的映射（add_mapping）</li>
 <li>步骤4：未加载完毕，回到步骤1</li>
 </ul>
 </li>
@@ -715,8 +715,113 @@
 </li>
 </ul>
 </li>
-<li><strong>分配物理页的简单实现</strong>：操作系统用位图（Bitmap）记录物理页是否空闲</li>
+<li><strong>分配物理页的简单实现</strong>：操作系统用位图（Bitmap）记录物理页是否空闲
+<ul>
+<li>0：空闲；1：已分配</li>
 </ul>
+</li>
+<li><strong>操作系统填写进程页表</strong>：在进程结构体中保存页表基地址</li>
+</ul>
+<p><img src="add_mapping.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="get_next_pt.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>立即映射的弊端</strong>：物理内存资源浪费、非必要时延</li>
+</ul>
+<h3 id="延迟映射">延迟映射</h3>
+<ul>
+<li><strong>解决立即映射弊端的思路</strong>：操作系统<strong>按进程实际需要</strong>分配物理页和填写页表，避免分配的物理页实际不被用到的情况</li>
+<li><strong>延迟映射的主要思路</strong>：解耦虚拟内存分配与物理内存分配
+<ul>
+<li>先记录下为进程分配的虚拟内存区域</li>
+<li>当进程实际访问某个虚拟页时，CPU 会触发缺页异常</li>
+<li>操作系统在缺页异常处理函数中添加映射</li>
+</ul>
+</li>
+<li><strong>OS 区分合法/非法缺页异常</strong>：操作系统记录为进程分配的虚拟内存区域
+<ul>
+<li>访问非法虚拟地址，会触发 CPU 异常；操作系统处理该异常时，选择报错：segfault</li>
+<li><strong>合法虚拟地址信息的记录方式</strong>：Linux 中对应 vm_area_struct（VMA）结构体</li>
+</ul>
+</li>
+</ul>
+<p><img src="vma.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>VMA 的添加方式</strong>：
+<ul>
+<li><strong>途径1</strong>：OS 在创建进程时分配
+<ul>
+<li>数据（对应 ELF 文件的数据段）</li>
+<li>代码（对应 ELF 文件的代码段）</li>
+<li>栈（初始无内容）</li>
+</ul>
+</li>
+<li><strong>途径2</strong>：进程运行时添加 / 应用程序主动向 OS 发起系统调用
+<ul>
+<li>堆、栈</li>
+<li><strong><code>mmap</code></strong>：
+<ul>
+<li>申请空的虚拟内存区域</li>
+<li>申请映射文件数据的虚拟内存区域</li>
+</ul>
+</li>
+<li><strong><code>brk()</code></strong>：扩大、缩小堆区域</li>
+<li><strong>栈 VMA 的可选策略</strong>：OS 为进程初始分配固定大小的栈 VMA，在发现 stackoverflow 之后自动扩大栈 VMA</li>
+<li><strong>用户态的 <code>malloc</code>（API）也可能改变 VMA</strong>：
+<ul>
+<li>调用 <code>brk</code> 在堆中分配新的内存</li>
+<li>调用 <code>mmap</code> 分配较大区域</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong><code>mmap</code></strong>：分配一段虚拟内存区域
+<ul>
+<li>通常用于把一个文件（或一部分）映射到内存</li>
+<li>也可以不映射任何文件，仅仅新建虚拟内存区域（匿名映射）</li>
+</ul>
+</li>
+<li><strong>根据 VMA 判断缺页异常的合法性</strong>:
+<ul>
+<li><strong>缺页异常</strong>：触发同步异常
+<ul>
+<li>根据 ESR 信息判断是否为缺页异常</li>
+<li>访问的虚拟地址存放在 FAR_EL1</li>
+</ul>
+</li>
+<li><strong>操作系统的缺页处理函数</strong>：
+<ul>
+<li>FAR_EL1 中的值不落在 VMA 区域内，则为非法</li>
+<li>反之，则分配物理页，并在页表中添加映射</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>延迟映射的优缺点</strong>：
+<ul>
+<li><strong>优势</strong>：节约内存资源</li>
+<li><strong>劣势</strong>：缺页异常导致访问延迟增加</li>
+<li><strong>取得平衡的方式</strong>：
+<ul>
+<li>应用程序访存具有时空局部性（Locality）</li>
+<li>在缺页异常处理函数中采用<strong>预先映射</strong>的策略，即节约内存又能减少缺页异常次数</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>OS 可向应用提供灵活的内存管理系统调用</strong>：
+<ul>
+<li><strong><code>madvise</code></strong>：将用户态的一些语义信息发给内核以便于优化
+<ul>
+<li>将 <code>madvise</code> 和 <code>mmap</code> 搭配，在使用数据前告诉内核这一段数据需要使用，建议 OS 提前分配物理页，减少缺页异常开销</li>
+</ul>
+</li>
+<li><strong><code>mprotect</code></strong>：改变一段内存的权限</li>
+</ul>
+</li>
+</ul>
+<h3 id="虚拟内存的扩展功能">虚拟内存的扩展功能</h3>
 <h2 id="参考资料">参考资料</h2>
 <p>本文参考上海交通大学并行与分布式系统研究所（IPADS）操作系统课程 CS3601 华志超老师的 PPT 课件整理。</p>
 
