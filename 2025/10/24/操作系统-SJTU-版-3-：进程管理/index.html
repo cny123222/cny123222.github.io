@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-10-24T09:27:09.000Z">
-<meta property="article:modified_time" content="2025-10-28T01:03:35.400Z">
+<meta property="article:modified_time" content="2025-10-28T01:34:08.533Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="课程笔记">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.1k words
+          1.9k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          10 mins
+          17 mins
         
       </span>
     
@@ -590,6 +590,146 @@
 </li>
 </ul>
 <h3 id="案例分析：LINUX-进程创建">案例分析：LINUX 进程创建</h3>
+<ul>
+<li>
+<p><strong><code>fork()</code> 创建进程</strong>：为调用进程创建一个一模一样的新进程</p>
+<ul>
+<li>调用进程为父进程，新进程为子进程</li>
+<li>接口简单，无需任何参数</li>
+<li>fork 后的两个进程均为独立进程
+<ul>
+<li>拥有不同的进程id</li>
+<li>可以并行执行，互不干扰（除非使用特定的接口）</li>
+<li>父进程和子进程会共享部分数据结构（内存、文件等）</li>
+<li>fork 后父子进程顺序不确定，视调度策略而定</li>
+</ul>
+</li>
+<li>使用 fork 的返回值来分辨父/子进程：
+<ul>
+<li>0: 子进程</li>
+<li>非 0（子进程id）：父进程</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>fork()</code> 的实现</strong>：将父进程的 PCB 拷贝一份</p>
+<ul>
+<li>包括 PCB、内核栈、处理器上下文等，实现比较简单</li>
+</ul>
+</li>
+<li>
+<p><strong><code>fork</code> 的优点</strong>：</p>
+<ul>
+<li>接口非常简洁，（过去）实现简单</li>
+<li>将进程创建和执行（<code>exec</code>）解耦，提高了灵活度</li>
+</ul>
+</li>
+<li>
+<p><strong><code>fork</code> 的缺点</strong>：</p>
+<ul>
+<li>创建拷贝的复杂度与 PCB 复杂度相关（如今越来越复杂）</li>
+<li>完全拷贝过于粗暴（不如 <code>clone</code>）</li>
+<li>性能差、可扩展性差（不如 <code>vfork</code> 和 <code>spawn</code>）</li>
+<li>不可组合性 (如 <code>fork()</code> + <code>pthread()</code>)</li>
+</ul>
+</li>
+<li>
+<p><strong><code>fork</code> 的替代接口</strong>：</p>
+<ul>
+<li><strong><code>vfork</code></strong>： 类似于 <code>fork</code>，但让父子进程共享同一地址空间
+<ul>
+<li><strong>优点</strong>：连映射都不需要拷贝，性能更好</li>
+<li><strong>缺点</strong>：只能用在“<code>fork</code> + <code>exec</code>”的场景中；共享地址空间存在安全问题</li>
+</ul>
+</li>
+<li><strong><code>posix_spawn</code></strong>: 相当于 <code>fork</code> + <code>exec</code>
+<ul>
+<li><strong>优点</strong>：可扩展性、性能较好</li>
+<li><strong>缺点</strong>：不如 <code>fork</code> 灵活</li>
+</ul>
+</li>
+<li><strong><code>clone</code></strong>: <code>fork</code> 的进阶版，可以选择性地不拷贝内存
+<ul>
+<li><strong>优点</strong>：高度可控，可依照需求调整</li>
+<li><strong>缺点</strong>：接口比 <code>fork</code> 复杂，选择性拷贝容易出错</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="进程切换">进程切换</h3>
+<ul>
+<li>
+<p><strong>进程切换的基本步骤</strong>：</p>
+<ol>
+<li>进程1进入内核态</li>
+<li>进程1处理器上下文保存</li>
+<li>进程上下文切换</li>
+<li>进程2处理器上下文恢复</li>
+<li>进程2返回用户态</li>
+</ol>
+</li>
+<li>
+<p><strong>处理器上下文与进程上下文</strong>：</p>
+<ul>
+<li><strong>处理器上下文</strong>：用于保存切换时的寄存器状态（<strong>硬件</strong>）
+<ul>
+<li>在每个 PCB 中均有保存</li>
+</ul>
+</li>
+<li><strong>进程上下文</strong>：表示目前操作系统正以哪个进程的身份运行（<strong>软件</strong>）
+<ul>
+<li>通常使用一个指向 PCB 的全局指针表示</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>进程切换的节点</strong>：所有调用 <code>schedule()</code> 的地方</p>
+<ul>
+<li>告知内核选择下一个执行的进程，也就涉及到了进程的切换</li>
+</ul>
+</li>
+<li>
+<p><strong>一、p0 进入内核态</strong>：由硬件完成部分寄存器保存</p>
+<ul>
+<li>PC 和 PSTATE 分别自动保存到 ELR_EL1 和 SPSR_EL1</li>
+</ul>
+</li>
+<li>
+<p><strong>二、p0 处理器上下文保存</strong>：将处理器中的寄存器值保存到处理器上下文对应的位置</p>
+</li>
+<li>
+<p><strong>三、由 p0 切换到 p1</strong>：</p>
+<ul>
+<li><strong>1. 虚拟地址空间切换</strong>：设置页表相关寄存器（TTBR0_EL1）
+<ul>
+<li>使用 PCB 中保存的页表基地址赋值给 TTBR0_EL1</li>
+</ul>
+</li>
+<li><strong>2. 内核栈切换</strong>：设置内核中的栈寄存器 SP_EL1
+<ul>
+<li>使用 PCB 中保存的内核栈顶地址赋值给 SP_EL1</li>
+</ul>
+</li>
+<li><strong>3. 进程上下文切换</strong>：设置 <code>cur_proc</code> 为之后要执行的进程（p1）
+<ul>
+<li>表明之后操作系统将以 p1 的身份运行</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>四、p1 处理器上下文恢复</strong>：从处理器上下文中加载各寄存器的值，放入对应寄存器中</p>
+</li>
+<li>
+<p><strong>五、p1 回到用户态</strong>：由硬件自动恢复部分寄存器</p>
+<ul>
+<li>将 ELR_EL1 和 SPSR_EL1 中的值自动保存到 PC 和 PSTATE 中</li>
+</ul>
+</li>
+</ul>
 <h2 id="Lecture-10-线程">Lecture 10: 线程</h2>
 <h2 id="参考资料">参考资料</h2>
 <p>本文参考上海交通大学并行与分布式系统研究所（IPADS）操作系统课程 CS3601 华志超老师的 PPT 课件整理。</p>
