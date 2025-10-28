@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/ml4co.png">
 <meta property="article:published_time" content="2025-10-28T05:12:59.000Z">
-<meta property="article:modified_time" content="2025-10-28T08:08:49.836Z">
+<meta property="article:modified_time" content="2025-10-28T08:41:13.310Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="ML4CO">
@@ -599,7 +599,7 @@
                 <p>本文将精读论文 “DIMES: A Differentiable Meta Solver for Combinatorial Optimization Problems”，作者 Qiu et al.，时间 2022 年，链接 <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2210.04123">arXiv:2210.04123</a>。</p>
 <span id="more"></span>
 <h2 id="论文概述">论文概述</h2>
-<p>这篇论文发表在 NeurIPS 2022 上，提出了 DIfferentiable MEta Solver（DIMES） 这一模型，旨在解决 ML4CO 的<strong>可扩展性问题</strong>。很多 RL4CO 方法在节点数较少（例如几百个节点）的问题上表现出色，但一旦问题规模扩大到<strong>数千甚至数万个节点</strong>，这些方法要么效果急剧下降，要么计算时间变得无法接受。DIMES 提出了一种全新的思路来应对这个挑战，并且取得了非常号的效果。文章在大规模的 TSP 和 MIS 问题上进行了实验。</p>
+<p>这篇论文发表在 NeurIPS 2022 上，提出了 DIfferentiable MEta Solver（DIMES）这一模型，旨在解决 ML4CO 的<strong>可扩展性问题</strong>。很多 RL4CO 方法在节点数较少（例如几百个节点）的问题上表现出色，但一旦问题规模扩大到<strong>数千甚至数万个节点</strong>，这些方法要么效果急剧下降，要么计算时间变得无法接受。DIMES 提出了一种全新的思路来应对这个挑战，并且取得了非常号的效果。文章在大规模的 TSP 和 MIS 问题上进行了实验。</p>
 <h3 id="Abstract">Abstract</h3>
 <div class="note note-secondary">
             <p>Recently, deep reinforcement learning (DRL) models have shown promising results in solving NP-hard Combinatorial Optimization (CO) problems. However, most DRL solvers can only scale to a few hundreds of nodes for combinatorial optimization problems on graphs, such as the Traveling Salesman Problem (TSP). This paper addresses the scalability challenge in large-scale combinatorial optimization by proposing a novel approach, namely, DIMES. Unlike previous DRL methods which suffer from costly autoregressive decoding or iterative refinements of discrete solutions, DIMES introduces a compact continuous space for parameterizing the underlying distribution of candidate solutions. Such a continuous space allows stable REINFORCE-based training and fine-tuning via massively parallel sampling. We further propose a meta-learning framework to enable effective initialization of model parameters in the fine-tuning stage. Extensive experiments show that DIMES outperforms recent DRL-based methods on large benchmark datasets for Traveling Salesman Problems and Maximal Independent Set problems.</p>
