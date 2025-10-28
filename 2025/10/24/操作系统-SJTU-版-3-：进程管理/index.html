@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-10-24T09:27:09.000Z">
-<meta property="article:modified_time" content="2025-10-24T09:37:28.488Z">
+<meta property="article:modified_time" content="2025-10-28T01:03:35.400Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="课程笔记">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          332 words
+          1.1k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          3 mins
+          10 mins
         
       </span>
     
@@ -429,7 +429,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on October 24, 2025 pm
+                    Last updated on October 28, 2025 am
                   
                 
               </p>
@@ -443,7 +443,7 @@
 <ul>
 <li><strong>进程的状态数据</strong>：
 <ul>
-<li>进程标识号（Process ID， PID）</li>
+<li>进程标识号（PID）</li>
 <li>运行状态：处理器上下文（CPU Context）</li>
 <li>地址空间</li>
 <li>打开的文件</li>
@@ -463,7 +463,7 @@
 <li><strong>动态部分</strong>：程序运行期间的状态（程序计数器、堆、栈等）</li>
 </ul>
 </li>
-<li><strong>进程控制块（PCB）</strong>：每个进程都对应一个元数据，称为“进程控制块” PCB
+<li><strong>进程控制块（PCB）</strong>：每个进程都对应一个元数据，称为“进程控制块” （PCB）
 <ul>
 <li>进程控制块存储在内核态</li>
 <li>进程控制块中包括：独立的虚拟地址空间、独立的处理器上下文、内核栈</li>
@@ -486,6 +486,113 @@
 </li>
 </ul>
 <p><img src="process_init.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>
+<p><strong>一、PCB 相关初始化</strong>：PCB 及其包含的内容都需要创建及初始化</p>
+<ul>
+<li>分配 PCB 本身的数据结构</li>
+<li>初始化 PCB：虚拟内存
+<ul>
+<li>创建及初始化 vmspace 数据结构</li>
+<li>分配一个物理页，作为顶级页表</li>
+</ul>
+</li>
+<li>内核栈：分配物理页，作为进程内核栈</li>
+</ul>
+</li>
+<li>
+<p><strong>二、可执行文件加载</strong>：可执行文件通常有固定的存储格式，以 ELF（Executable and Linkable Format）为例</p>
+<ul>
+<li>从程序头部表可以获取需要的段所在位置</li>
+<li>通常只有代码段和数据段需要被加载（loadable）</li>
+<li>加载即从 ELF 文件中映射到虚拟地址空间的过程</li>
+</ul>
+</li>
+<li>
+<p><strong>三、准备运行环境</strong>：在返回用户态运行前，还需为进程准备运行所需的环境</p>
+<ul>
+<li>分配用户栈：分配物理内存并映射到虚拟地址空间</li>
+<li>准备程序运行时的环境：将参数和环境变量放到栈上</li>
+</ul>
+</li>
+<li>
+<p><strong>四、处理器上下文初始化</strong>：最后才初始化处理器上下文，因为其包含的内容直到前序操作完成才确定</p>
+<ul>
+<li>SP：用户栈分配后才确定地址</li>
+<li>PC（保存在 ELR_EL1）：加载 ELF 后才知道入口所在地址</li>
+<li>大部分寄存器初始值可直接赋为 0</li>
+</ul>
+</li>
+</ul>
+<h3 id="进程的退出与等待">进程的退出与等待</h3>
+<ul>
+<li><strong>进程退出的实现</strong>：
+<ul>
+<li>销毁 PCB 及其中保存的所有内容</li>
+<li>告知内核，选择其他进程执行</li>
+</ul>
+</li>
+</ul>
+<p><img src="process_exit.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>进程等待（<code>process_waitpid</code>）的实现</strong>：
+<ul>
+<li>为每个进程引入进程标识符（pid），记录在 PCB 中</li>
+<li>仍然调用 <code>schedule</code>，让其他进程执行，自己在while循环中等待</li>
+<li><strong>改进1</strong>：为进程添加退出状态支持
+<ul>
+<li>PCB：增加退出状态</li>
+<li>process_exit：退出前设置退出状态</li>
+</ul>
+</li>
+<li><strong>改进2</strong>：修改 <code>process_waitpid</code>
+<ul>
+<li>如果进程已设置为退出，则记录其退出状态并回收</li>
+<li>将进程资源的回收操作从 exit 移到了 waitpid</li>
+</ul>
+</li>
+<li><strong>改进3</strong>：限制进程等待的范围（安全性）
+<ul>
+<li><strong>目标</strong>：只有创建某进程的程序才能监控它</li>
+<li><strong>实现</strong>：引入父（创建者）子（被创建者）进程概念
+<ul>
+<li>进程之间的创建关系构建了一棵进程树，第一个进程（树根）通常由内核主动创建</li>
+<li>PCB：维护子进程列表</li>
+<li>waitpid：扫描子进程列表而不是所有进程</li>
+</ul>
+</li>
+<li>若父进程不调用 waitpid，则在父进程退出后，由 init 进程代管并回收</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="进程的状态">进程的状态</h3>
+<ul>
+<li><strong>进程睡眠</strong>：不断查看时间，如果未到规定时间则继续等待</li>
+<li><strong>进程的五种典型执行状态</strong>：
+<ul>
+<li><strong>新生（new）</strong>：刚调用 <code>process_create</code></li>
+<li><strong>就绪（ready）</strong>：随时准备执行（但暂时没有执行）</li>
+<li><strong>运行（running）</strong>：正在执行</li>
+<li><strong>僵尸（zombie）</strong>：退出但未回收</li>
+<li><strong>终止（terminated）</strong>：退出且被回收</li>
+</ul>
+</li>
+</ul>
+<p><img src="process_states.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>调度</strong>：目的是选出下一个可以执行（就绪）的进程
+<ul>
+<li>PCB 结构：增加执行状态</li>
+<li>调度逻辑片段：只选择状态为 READY 的进程</li>
+</ul>
+</li>
+</ul>
+<h3 id="案例分析：LINUX-进程创建">案例分析：LINUX 进程创建</h3>
+<h2 id="Lecture-10-线程">Lecture 10: 线程</h2>
+<h2 id="参考资料">参考资料</h2>
+<p>本文参考上海交通大学并行与分布式系统研究所（IPADS）操作系统课程 CS3601 华志超老师的 PPT 课件整理。</p>
 
                 
               </div>
