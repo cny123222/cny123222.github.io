@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/dip.jpg">
 <meta property="article:published_time" content="2025-10-29T05:36:56.000Z">
-<meta property="article:modified_time" content="2025-10-29T06:16:17.752Z">
+<meta property="article:modified_time" content="2025-10-29T06:52:17.885Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="知识点整理">
 <meta property="article:tag" content="数字图像处理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          982 words
+          2k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          9 mins
+          18 mins
         
       </span>
     
@@ -386,18 +386,6 @@
                 <p>这是SJTU-CS3324《数字图像处理》课程的知识点整理系列。本文整理部分为“第 3 章：图像的二维变换”。</p>
 <span id="more"></span>
 <h2 id="介绍">介绍</h2>
-<ul>
-<li><strong>图像变换的应用</strong>：
-<ul>
-<li><strong>二维离散傅立叶变换</strong>（2D Discrete Fourier Transform）：</li>
-<li><strong>二维离散余弦变换</strong>（2D Discrete Cosine Transform）：图像压缩</li>
-<li><strong>沃尔什-哈达玛变换</strong>（Walsh Hadamard Transform）：图像压缩</li>
-<li><strong>K-L变换</strong>（Karhunen Loeve Transform）：理论最好表现</li>
-<li><strong>哈尔变换</strong>（Haar Transform）：图像增强、压缩（是一种特殊的小波变换）</li>
-<li><strong>小波变换</strong>（Wavelet Transform）：图像增强、压缩、多分辨处理（multiresolution processing）、分割、描述</li>
-</ul>
-</li>
-</ul>
 <h2 id="二维离散傅立叶变换-2D-Discrete-Fourier-Transform-DFT">二维离散傅立叶变换 (2D Discrete Fourier Transform - DFT)</h2>
 <ul>
 <li><strong>思想</strong>: 任何图像都可以被表示为一系列不同频率、振幅和方向的<strong>正弦波</strong>的叠加
@@ -454,7 +442,7 @@
 <li>这种构造方式<strong>避免了信号两端的边界不连续性</strong></li>
 </ul>
 </li>
-<li><strong>功能</strong>: 具有<strong>较强的能量聚集 (Energy Packing)能力</strong>
+<li><strong>功能</strong>: 具有<strong>较强的能量聚集 (Better Energy Packing)能力</strong>
 <ul>
 <li>对于自然图像，DCT 能将信号的大部分能量集中到少数几个低频系数中</li>
 </ul>
@@ -478,6 +466,111 @@
 </li>
 </ul>
 <h2 id="沃尔什-哈达玛变换-Walsh-Hadamard-Transform-WHT">沃尔什-哈达玛变换 (Walsh-Hadamard Transform - WHT)</h2>
+<ul>
+<li><strong>思想</strong>: 使用<strong>哈达玛矩阵</strong>作为变换核
+<ul>
+<li>该矩阵的基函数是一系列由 +1 和 -1 构成的正交矩形波（沃尔什函数），而不是平滑的正弦或余弦波</li>
+</ul>
+</li>
+<li><strong>功能</strong>: 分解图像信号，实现能量聚集
+<ul>
+<li>其变换矩阵可以通过递归方式生成，也可以通过重新排列行，使其基函数的变换频率按升序排列</li>
+</ul>
+</li>
+<li><strong>特点</strong>:
+<ul>
+<li><strong>无乘法运算</strong>: 其变换矩阵仅包含 +1 和 -1 ，因此整个变换过程只需要加减法，计算极其高效，非常适合硬件实现</li>
+</ul>
+</li>
+<li><strong>用途</strong>: 图像压缩
+<ul>
+<li>特别是在计算能力受限的系统中</li>
+</ul>
+</li>
+</ul>
+<h2 id="K-L变换-Karhunen-Loeve-Transform-KLT-PCA">K-L变换 (Karhunen-Loeve Transform - KLT / PCA)</h2>
+<ul>
+<li><strong>思想</strong>: 一种<strong>基于数据统计特性</strong>的自适应变换，也称为主成分分析（PCA）或 Hotelling 变换
+<ul>
+<li>它不使用固定的基函数，而是根据输入的一组图像样本，计算其协方差矩阵，并使用该矩阵的特征向量作为最优的变换基</li>
+</ul>
+</li>
+<li><strong>功能</strong>:
+<ul>
+<li><strong>数据去相关</strong>: KLT 能完全消除变换后各分量之间的相关性</li>
+<li><strong>降维</strong>: 通过选取与较大特征值对应的少数几个特征向量构成新的变换矩阵，可以在**最小均方误差（MSE）**的意义下，将高维数据投影到低维空间，同时最大程度地保留原始信息</li>
+</ul>
+</li>
+<li><strong>特点</strong>:
+<ul>
+<li><strong>理论上最佳</strong>: 在所有线性变换中，KLT 在能量聚集和去相关方面具有理论上最优的性能</li>
+<li><strong>数据依赖性</strong>: 变换核（基函数）是为特定数据集量身定做的，不具有普适性</li>
+<li><strong>计算复杂</strong>: 需要计算协方差矩阵和特征向量，没有通用的快速算法，且<strong>变换核通常是不可分离的</strong></li>
+</ul>
+</li>
+<li><strong>用途</strong>: 图像压缩（理论上）和降维
+<ul>
+<li>在实践中，由于其复杂性，主要用于模式识别和特征分析，如人脸识别</li>
+</ul>
+</li>
+</ul>
+<h2 id="哈尔变换-Haar-Transform">哈尔变换 (Haar Transform)</h2>
+<ul>
+<li><strong>思想</strong>: 使用最简单、最古老的<strong>正交小波</strong>作为基函数
+<ul>
+<li>这些基函数是一系列具有不同尺度、位置和幅度的矩形脉冲对</li>
+</ul>
+</li>
+<li><strong>功能</strong>: 将图像分解为不同尺度和位置的成分
+<ul>
+<li>变换矩阵 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi></mrow><annotation encoding="application/x-tex">H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span></span></span></span> 包含了 Haar 基函数在离散点上的采样值</li>
+</ul>
+</li>
+<li><strong>特点</strong>:
+<ul>
+<li><strong>小波变换的特例</strong>: Haar 变换是一种特殊的小波变换</li>
+<li><strong>可分离性</strong>: 其变换核是可分离的</li>
+<li><strong>计算简单</strong>: 是实现最简单的小波变换</li>
+</ul>
+</li>
+<li><strong>用途</strong>: 图像增强、压缩</li>
+</ul>
+<h2 id="小波变换-Wavelet-Transform-WT">小波变换 (Wavelet Transform - WT)</h2>
+<ul>
+<li><strong>思想</strong>: 使用具有**有限宽度和振荡特性的小波（Wavelet）**作为基函数来分解信号
+<ul>
+<li>与 DFT/DCT 使用无限长的三角函数基不同，小波基在空间上是<strong>局部化的</strong>，这使得它能同时捕捉信号的频率信息和空间位置信息</li>
+</ul>
+</li>
+<li><strong>功能</strong>:
+<ul>
+<li><strong>多分辨率分析 (Multi-resolution Analysis)</strong>: 小波变换能将图像分解为不同层次的近似（低频）和细节（高频）<strong>子带(Subbands)</strong>，每个子带都同时包含了特定频率（尺度）和特定空间位置的信息</li>
+<li><strong>子带编码 (Subband Coding)</strong>: Mallat 提出的快速小波变换（FWT）算法，通过一系列高通和低通滤波器组来实现<strong>子带分解和重构</strong>，能够得到一个金字塔式的分解结构
+<ul>
+<li>若子带的带宽小于原图像，则无信息损失</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>特点</strong>:
+<ul>
+<li><strong>时频局部化</strong>: 能有效地表示图像中的非平稳信号，如边缘、尖峰和纹理等局部特征</li>
+<li><strong>无冗余性</strong>: 与图像金字塔相比，标准的子带分解没有数据冗余</li>
+<li><strong>方向性</strong>: 2D 小波变换能将图像分解为水平、垂直和对角线三个方向的细节</li>
+</ul>
+</li>
+<li><strong>用途</strong>: 图像增强、压缩、多分辨率处理、分割、描述
+<ul>
+<li><strong>图像压缩</strong>: 由于自然图像的能量主要集中在低频的近似分量中，而大量的细节分量系数都接近于零，因此非常适合量化和编码</li>
+<li><strong>图像增强与去噪</strong>: 噪声通常表现为高频信息，会被分离到细节分量中
+<ul>
+<li>通过对细节分量的系数进行处理，可以在有效去除噪声的同时，比传统频域滤波更好地保留图像的边缘信息</li>
+</ul>
+</li>
+<li><strong>图像分割与描述</strong>: 多尺度和多方向的细节信息对于分析图像纹理、检测边缘，以及为图像内容提供描述符都至关重要</li>
+</ul>
+</li>
+</ul>
 <h2 id="参考资料">参考资料</h2>
 <p>本文参考上海交通大学电子工程系《数字图像处理》课程 CS3324 闵雄阔老师的 PPT 课件整理。</p>
 
