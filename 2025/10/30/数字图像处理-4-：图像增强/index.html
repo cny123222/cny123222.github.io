@@ -19,28 +19,28 @@
   <meta name="author" content="Nuoyan Chen">
   <meta name="keywords" content="">
   
-    <meta name="description" content="本文是具身智能系列的第 1 篇博客，将介绍具身智能的基础技术路线。">
+    <meta name="description" content="这是SJTU-CS3324《数字图像处理》课程的知识点整理系列。本文整理部分为“第 4 章：图像增强”。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Embodied AI Overview">
-<meta property="og:url" content="https://cny123222.github.io/2025/09/19/Embodied-AI-Overview/index.html">
+<meta property="og:title" content="数字图像处理(4)：图像增强">
+<meta property="og:url" content="https://cny123222.github.io/2025/10/30/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86-4-%EF%BC%9A%E5%9B%BE%E5%83%8F%E5%A2%9E%E5%BC%BA/index.html">
 <meta property="og:site_name" content="Nuoyan Chen&#39;s Blog">
-<meta property="og:description" content="本文是具身智能系列的第 1 篇博客，将介绍具身智能的基础技术路线。">
+<meta property="og:description" content="这是SJTU-CS3324《数字图像处理》课程的知识点整理系列。本文整理部分为“第 4 章：图像增强”。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://cny123222.github.io/img/robotics.png">
-<meta property="article:published_time" content="2025-09-19T11:49:52.000Z">
-<meta property="article:modified_time" content="2025-10-28T01:04:44.890Z">
+<meta property="og:image" content="https://cny123222.github.io/img/dip.jpg">
+<meta property="article:published_time" content="2025-10-30T02:04:58.000Z">
+<meta property="article:modified_time" content="2025-10-30T02:05:39.991Z">
 <meta property="article:author" content="Nuoyan Chen">
-<meta property="article:tag" content="具身智能">
-<meta property="article:tag" content="AI">
-<meta property="article:tag" content="Robotics">
+<meta property="article:tag" content="知识点整理">
+<meta property="article:tag" content="数字图像处理">
+<meta property="article:tag" content="期末复习">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://cny123222.github.io/img/robotics.png">
+<meta name="twitter:image" content="https://cny123222.github.io/img/dip.jpg">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>Embodied AI Overview - Nuoyan Chen&#39;s Blog</title>
+  <title>数字图像处理(4)：图像增强 - Nuoyan Chen&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -220,7 +220,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Embodied AI Overview"></span>
+            <span id="subtitle" data-typed-text="数字图像处理(4)：图像增强"></span>
           
         </div>
 
@@ -236,8 +236,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-09-19 19:49" pubdate>
-          September 19, 2025 pm
+        <time datetime="2025-10-30 10:04" pubdate>
+          October 30, 2025 am
         </time>
       </span>
     
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2k words
+          34 words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          17 mins
+          1 mins
         
       </span>
     
@@ -317,53 +317,17 @@
     
     <div class="category row nomargin-x">
       <a class="category-item 
-          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="具身智能"
-        id="heading-e6b0709ebf3fc8cdb0a36d1e10bdbb0e" role="tab" data-toggle="collapse" href="#collapse-e6b0709ebf3fc8cdb0a36d1e10bdbb0e"
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="数字图像处理"
+        id="heading-8c78d02948dee87f1a391a4cd6b902a6" role="tab" data-toggle="collapse" href="#collapse-8c78d02948dee87f1a391a4cd6b902a6"
         aria-expanded="true"
       >
-        具身智能
-        <span class="list-group-count">(2)</span>
+        数字图像处理
+        <span class="list-group-count">(3)</span>
         <i class="iconfont icon-arrowright"></i>
       </a>
       
-      <div class="category-collapse collapse show" id="collapse-e6b0709ebf3fc8cdb0a36d1e10bdbb0e"
-           role="tabpanel" aria-labelledby="heading-e6b0709ebf3fc8cdb0a36d1e10bdbb0e">
-        
-        
-          
-          
-  <div class="category-post-list">
-    
-    
-      
-      
-        <a href="/2025/09/19/Embodied-AI-Overview/" title="Embodied AI Overview"
-           class="list-group-item list-group-item-action
-           active">
-          <span class="category-post">Embodied AI Overview</span>
-        </a>
-      
-    
-  </div>
-
-          
-  
-    
-    
-    
-    <div class="category-sub row nomargin-x">
-      <a class="category-subitem collapsed
-          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="Robotics"
-        id="heading-c98c19727b6a8b8fcf6b4bf5ded39488" role="tab" data-toggle="collapse" href="#collapse-c98c19727b6a8b8fcf6b4bf5ded39488"
-        aria-expanded="false"
-      >
-        Robotics
-        <span class="list-group-count">(1)</span>
-        <i class="iconfont icon-arrowright"></i>
-      </a>
-      
-      <div class="category-collapse collapse " id="collapse-c98c19727b6a8b8fcf6b4bf5ded39488"
-           role="tabpanel" aria-labelledby="heading-c98c19727b6a8b8fcf6b4bf5ded39488">
+      <div class="category-collapse collapse show" id="collapse-8c78d02948dee87f1a391a4cd6b902a6"
+           role="tabpanel" aria-labelledby="heading-8c78d02948dee87f1a391a4cd6b902a6">
         
         
           
@@ -372,19 +336,33 @@
     
       
       
-        <a href="/2025/09/20/Modern-Robotics-Course-Notes/" title="Modern Robotics - Course Notes"
+        <a href="/2025/10/28/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86-2-%EF%BC%9A%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/" title="数字图像处理(2)：数字图像基础"
            class="list-group-item list-group-item-action
            ">
-          <span class="category-post">Modern Robotics - Course Notes</span>
+          <span class="category-post">数字图像处理(2)：数字图像基础</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/10/29/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86-3-%EF%BC%9A%E5%9B%BE%E5%83%8F%E7%9A%84%E4%BA%8C%E7%BB%B4%E5%8F%98%E6%8D%A2/" title="数字图像处理(3)：图像的二维变换"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">数字图像处理(3)：图像的二维变换</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/10/30/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86-4-%EF%BC%9A%E5%9B%BE%E5%83%8F%E5%A2%9E%E5%BC%BA/" title="数字图像处理(4)：图像增强"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">数字图像处理(4)：图像增强</span>
         </a>
       
     
   </div>
 
-        
-      </div>
-    </div>
-  
         
       </div>
     </div>
@@ -401,12 +379,12 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Embodied AI Overview</h1>
+            <h1 id="seo-header">数字图像处理(4)：图像增强</h1>
             
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on October 28, 2025 am
+                    Last updated on October 30, 2025 am
                   
                 
               </p>
@@ -414,48 +392,8 @@
             
               <div class="markdown-body">
                 
-                <p>本文是具身智能系列的第 1 篇博客，将介绍具身智能的基础技术路线。</p>
+                <p>这是SJTU-CS3324《数字图像处理》课程的知识点整理系列。本文整理部分为“第 4 章：图像增强”。</p>
 <span id="more"></span>
-<p>笔者刚开始接触具身智能。由于这个领域较为宏大，新手比较难搞清整体的结构。</p>
-<p>本文旨在<strong>面向新手</strong>，提供一个<strong>具身智能的整体概况</strong>，介绍一些<strong>基础的技术路线</strong>。本文主要参考了 B 站视频 <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1d5ukedEsi/">https://www.bilibili.com/video/BV1d5ukedEsi/</a>，作者董云龙。</p>
-<h2 id="具身智能概况">具身智能概况</h2>
-<p>具身智能是一个完整的系统，需要包括<strong>环境理解、智能交互、认知推理、规划执行</strong>这几个基本的功能。机器人通过视觉或触觉理解环境，可以与人类进行语音交互，其“大脑”能够进行认知和推理，进而规划并执行其动作。</p>
-<p>这是一个系统化的工程，多种不同的模型会参与到这个过程中。例如，大语言模型（LLM）具有出色的推理和逻辑能力，常被用于动作的规划，能够将人类指令意图转换到具体规划代码的生成。</p>
-<p>具身智能的基础技术路线，主要包含了四大技术：<strong>场景理解、数据引导、动作执行和世界模型</strong>。</p>
-<h2 id="场景理解">场景理解</h2>
-<p>想象机器人走进一个房间，它不仅要能看到物体，还要能理解它们是什么、在哪里、有什么用。这就是场景理解，它是机器人与环境交互的基础。</p>
-<h3 id="检测与分割-Detection-and-Segmentation">检测与分割 (Detection and Segmentation)</h3>
-<p>机器人想要理解环境，首先要学会识别不同的物体，并将它们从环境中分离出。检测，就像给物体画上一个方框，机器人需要知道“这里有个杯子”。分割则需要能精确地勾勒出物体的轮廓。只有学会从环境中进行检测和分割，机器人才有可能进行下一步的操作，比如抓取一个特定的苹果，而不是它旁边的香蕉。</p>
-<h3 id="多模态-Grounding-Multimodal-Grounding">多模态 Grounding (Multimodal Grounding)</h3>
-<p>Grounding 指将自然语言文本与视觉场景之间进行对齐或连接。多模态大模型具有对文本和图像的良好理解能力，能够实现像素级别的细粒度 Grounding，能极大提高目标检测和场景理解的能力。</p>
-<h2 id="数据引导">数据引导</h2>
-<p>机器人需要数据进行学习，数据引导是为机器人提供数据的方法。与大模型不同，机器人的训练数据规模较小，因此需要数据引导技术。</p>
-<h3 id="视频学习-From-Video">视频学习 (From Video)</h3>
-<p>视频学习，就是让机器人观看大量的视频（比如人类做饭、打扫的视频），并从中学习完成任务的步骤和技巧。由于互联网上有海量的视频数据，这为机器人提供了成本低廉且体量很大的学习材料。</p>
-<h3 id="硬件在环-Hardware-in-the-Loop">硬件在环 (Hardware-in-the-Loop)</h3>
-<p>使用硬件采集数据，这可能是最直观的“手把手”教学。为了让机器人学会复杂、灵巧的操作，一个高效的方法就是让人类专家亲自上阵，通过佩戴一系列硬件设备来直接演示。机器人会记录下人类专家的每一个动作、每一个决策，形成高质量的训练数据。</p>
-<p>这类硬件主要分为<strong>轻量级硬件</strong> (Light-weight Hardware)和<strong>重量级硬件</strong> (Heavy-weight Hardware)。轻量级硬件不是完整的机器人，其设备相对便携，如能捕捉精细手部姿态的数据手套。重量级硬件，主要是 VR 头显及 VR 手套。专家佩戴 VR 头显，操控 VR 手套进行操作。这个过程中所有的传感器数据和动作指令都会被完整记录下来，成为机器人的训练数据。</p>
-<h3 id="生成式仿真-Generative-Simulation">生成式仿真 (Generative Simulation)</h3>
-<p>生成式仿真技术可以基于少量真实数据，借助 AI 创造出海量、多样化的虚拟训练场景和任务。它解决了机器人训练数据稀缺和多样性不足的难题，让机器人能在虚拟世界中进行无限的练习，从而更好地应对真实世界的复杂情况。</p>
-<h2 id="动作执行">动作执行</h2>
-<p>动作执行模块负责将任务规划转化为机器人具体的、精准的物理动作。</p>
-<h3 id="生成式模仿学习-Generative-Imitation-Learning">生成式模仿学习 (Generative Imitation Learning)</h3>
-<p>机器人观看任务的完整演示，通过模仿学习，能生成一系列连贯的动作序列来完成同样的任务。常见的模型有 ACT (Action Transformer) 和 Diffusion Policy。它们不像传统方法只决策当前一步，而是能一次输出一个动作序列。生成式模仿学习赋予了机器人深谋远虑的能力，让它们的动作更加流畅、高效，能够完成更复杂的、需要长序列动作的任务。</p>
-<h3 id="Affordance-功能可见性">Affordance (功能可见性)</h3>
-<p>Affordance，指一个物体显露出来的、可被交互的属性。简单说，就是让机器人看一眼就知道某件东西的作用，如识别出“门把手是用来拉的”、“开关是用来按的”、“杯子把手是用来握的”。理解了 Affordance，机器人就获得了举一反三的能力。即使它从未见过某个特定样式的椅子，但只要识别出它有“平面可供坐下”的 Affordance，它就知道可以执行“坐”这个动作。这让机器人能够泛化到全新的物体和环境中。</p>
-<h3 id="大模型问答（Q-A-from-LLM）">大模型问答（Q&amp;A from LLM）</h3>
-<p>大模型（LLM）问答可以用于指导机器人的动作。机器人可以针对眼前的物体，向大模型提出非常具体的问题，以获得用于操作的精确信息。例如，机器人可以问：“操作这个物体的接触点、抓取器朝向应该是什么？”模型会直接回答出精确的坐标及方向。</p>
-<h3 id="大模型-Prompt-规划-Prompt-Planning-from-LLM">大模型 Prompt 规划 (Prompt Planning from LLM)</h3>
-<p>大模型可以对机器人的动作进行规划，例如，我们只需要给出一个简单的指令“请把那个蓝色的空盘子递给我”，大模型就能利用其强大的多模态理解和推理能力，将这个复杂任务自动分解成一系列机器人可以理解和执行的简单步骤。</p>
-<p>这极大地降低了人类使用机器人的门槛。我们不再需要编写复杂的程序，只需像和人交流一样，用一句话下达一个高级指令，机器人就能自己想出一个完整的行动计划。这是实现机器人自主性的核心能力。</p>
-<h3 id="语言矫正-Language-Corrections">语言矫正 (Language Corrections)</h3>
-<p>语言矫正可以在机器人执行任务的过程中，直接用口头语言进行实时纠正。例如，当机器人动作有偏差时，人类操作员可以说“你应该往左边一点”，机器人就能理解这个指令，并修正自己的行为。这种技术让机器人具备了在线学习和即时纠错的能力。</p>
-<h2 id="世界模型">世界模型</h2>
-<p>世界模型，可以理解为机器人在脑中构建的一个<strong>关于物理世界的模拟器</strong>。它不仅理解世界当前的状态，还能预测“如果我这样做，世界会变成什么样”。 比如，它能预测如果一个球从桌上滚落，它会掉在地上，而不是飞向天花板。拥有了世界模型，机器人就能在行动前进行思考和预演，从而选择最优的行动方案，避免潜在的危险。</p>
-<h2 id="参考资料">参考资料</h2>
-<p>[1] <a target="_blank" rel="noopener" href="https://github.com/TianxingChen/Embodied-AI-Guide">https://github.com/TianxingChen/Embodied-AI-Guide</a><br>
-[2] <a target="_blank" rel="noopener" href="https://github.com/TianxingChen/Embodied-AI-Guide/blob/main/files/%E5%85%B7%E8%BA%AB%E6%99%BA%E8%83%BD%E5%9F%BA%E7%A1%80%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF-YunlongDong.pdf">https://github.com/TianxingChen/Embodied-AI-Guide/blob/main/files/具身智能基础技术路线-YunlongDong.pdf</a><br>
-[3] <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1d5ukedEsi/">https://www.bilibili.com/video/BV1d5ukedEsi/</a></p>
 
                 
               </div>
@@ -474,7 +412,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E5%85%B7%E8%BA%AB%E6%99%BA%E8%83%BD/" class="category-chain-item">具身智能</a>
+  <a href="/categories/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/" class="category-chain-item">数字图像处理</a>
   
   
 
@@ -489,11 +427,11 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E5%85%B7%E8%BA%AB%E6%99%BA%E8%83%BD/" class="print-no-link">#具身智能</a>
+        <a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86/" class="print-no-link">#知识点整理</a>
       
-        <a href="/tags/AI/" class="print-no-link">#AI</a>
+        <a href="/tags/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/" class="print-no-link">#数字图像处理</a>
       
-        <a href="/tags/Robotics/" class="print-no-link">#Robotics</a>
+        <a href="/tags/%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0/" class="print-no-link">#期末复习</a>
       
     </div>
   
@@ -505,8 +443,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Embodied AI Overview</div>
-      <div>https://cny123222.github.io/2025/09/19/Embodied-AI-Overview/</div>
+      <div>数字图像处理(4)：图像增强</div>
+      <div>https://cny123222.github.io/2025/10/30/数字图像处理-4-：图像增强/</div>
     </div>
     <div class="license-meta">
       
@@ -518,7 +456,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>September 19, 2025</div>
+          <div>October 30, 2025</div>
         </div>
       
       
@@ -550,18 +488,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/09/20/Modern-Robotics-Course-Notes/" title="Modern Robotics - Course Notes">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Modern Robotics - Course Notes</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/08/28/Paper-Reading-6-SymNCO/" title="Paper Reading #6: SymNCO">
-                        <span class="hidden-mobile">Paper Reading #6: SymNCO</span>
+                      <a href="/2025/10/29/Paper-Reading-9-T2T/" title="Paper Reading #9: T2T">
+                        <span class="hidden-mobile">Paper Reading #9: T2T</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
