@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-11-05T07:44:44.000Z">
-<meta property="article:modified_time" content="2025-11-05T08:46:43.169Z">
+<meta property="article:modified_time" content="2025-11-05T11:29:17.208Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          311 words
+          1.3k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          3 mins
+          11 mins
         
       </span>
     
@@ -537,6 +537,142 @@
 <p><img src="do-while.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <p><img src="do-while-ex.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <h3 id="函数调用">函数调用</h3>
+<ul>
+<li><strong>函数调用指令</strong>：
+<ul>
+<li><code>bl  label</code> (直接调用，调用函数)</li>
+<li><code>blr  Rn</code>   (间接调用，调用函数指针)</li>
+<li><strong>功能</strong>：将返回地址存储在链接寄存器 LR (即 <code>x30</code> 寄存器)，并跳转到被调用者的入口地址</li>
+</ul>
+</li>
+<li><strong>函数返回指令</strong>：
+<ul>
+<li><code>ret</code> (不区分直接调用与间接调用)</li>
+<li><strong>功能</strong>：跳转到链接寄存器 LR 中的返回地址</li>
+</ul>
+</li>
+<li><strong>SP（Stack Pointer）寄存器</strong>：栈指针，指向栈顶（低地址）</li>
+<li><strong>FP (Frame Pointer) 寄存器</strong>：帧指针，即 <code>x29</code> 寄存器</li>
+<li><strong>标准的函数首尾操作</strong>：</li>
+</ul>
+<figure class="highlight arm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs ARM"><span class="hljs-symbol">stp</span> <span class="hljs-built_in">x29</span>, <span class="hljs-built_in">x30</span>, [<span class="hljs-built_in">sp</span>, #-<span class="hljs-number">32</span>]!<br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">x29</span>, <span class="hljs-built_in">sp</span><br><span class="hljs-symbol">...</span><br><span class="hljs-symbol">ldp</span> <span class="hljs-built_in">x29</span>, <span class="hljs-built_in">x30</span>, [<span class="hljs-built_in">sp</span>], <span class="hljs-number">#32</span><br><span class="hljs-symbol">ret</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>参数传递</strong>：
+<ul>
+<li>调用者使用 <code>x0</code> - <code>x7</code> 寄存器传递<strong>前 8 个参数</strong></li>
+<li><strong>第 8 个之后的参数</strong>，按声明顺序从右到左压到栈上，被调用者通过 SP + 偏移量访问</li>
+<li>被调用者<strong>使用 <code>x0</code> 寄存器传递返回值</strong></li>
+</ul>
+</li>
+</ul>
+<p><img src="param.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>寄存器保存</strong>：
+<ul>
+<li>调用者保存：<code>x9</code> - <code>x15</code>
+<ul>
+<li>调用者：在调用前按需进行保存，在返回后进行恢复</li>
+<li>被调用者：可以随意使用</li>
+</ul>
+</li>
+<li>被调用者保存：<code>x19</code> - <code>x28</code>
+<ul>
+<li>被调用者：在使用前进行保存，在返回前进行恢复</li>
+<li>调用者：这些寄存器的值在函数调用前后不会改变</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="reg.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>函数调用实例</strong>：</li>
+</ul>
+<p><img src="func.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h2 id="特权级">特权级</h2>
+<ul>
+<li><strong>常见寄存器</strong>：</li>
+</ul>
+<p><img src="el_reg.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>特权级切换的时机</strong>：
+<ul>
+<li><strong>同步异常</strong>：执行当前指令触发异常
+<ul>
+<li>第一类：用户程序主动发起，<code>svc</code> 指令</li>
+<li>第二类：非主动，如用户程序意外访问空指针</li>
+</ul>
+</li>
+<li><strong>异步异常</strong>：CPU 收到中断信号
+<ul>
+<li>从外设发来的中断，如屏幕点击、鼠标、收到网络包</li>
+<li>CPU 时钟中断，如定时器超时</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="特权级切换过程">特权级切换过程</h3>
+<p><img src="switch.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>处理器在切换过程中的任务</strong>：
+<ol>
+<li>将发生异常事件的指令地址保存在 ELR_EL1 中</li>
+<li>将异常事件的原因保存在 ESR_EL1</li>
+<li>将处理器的当前状态（即 PSTATE）保存在 SPSR_EL1</li>
+<li>栈寄存器不再使用 SP_EL0（用户态栈寄存器），开始使用 SP_EL1</li>
+<li>修改 PSTATE 寄存器中的特权级标志位，设置为内核态</li>
+<li>找到异常处理函数的入口地址，并将该地址写入 PC，开始运行操作系统</li>
+</ol>
+</li>
+<li><strong>操作系统在切换过程中的任务</strong>：将属于应用程序的 CPU 状态保存到内存中，用于之后恢复应用程序继续运行，包括：
+<ul>
+<li>通用寄存器 <code>x0</code> - <code>x30</code></li>
+<li>特殊寄存器，主要包括 PC、SP 和 PSTATE</li>
+<li>系统寄存器，包括页表基地址寄存器等</li>
+</ul>
+</li>
+</ul>
+<h2 id="常见的进程接口">常见的进程接口</h2>
+<ul>
+<li><strong><code>fork()</code></strong>：父进程创建新的子进程，调用一次返回两次
+<ul>
+<li>返回值：子进程为 0，父进程为子进程 PID</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;csapp.h&quot;</span></span><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-type">pid_t</span> pid;<br> 	<span class="hljs-type">int</span> x = <span class="hljs-number">1</span>;<br> 	pid = Fork();<br> 	<span class="hljs-keyword">if</span> (pid == <span class="hljs-number">0</span>) &#123; <span class="hljs-comment">/* child */</span><br> 	    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;child : x=%d\n&quot;</span>, ++x);<br> 		<span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br> 	&#125;<br> 	<span class="hljs-comment">/* parent */</span><br> 	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;parent: x=%d\n&quot;</span>, --x);<br> 	<span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong><code>waitpid()</code></strong>：等待子进程终止后，内核回收子进程
+<ul>
+<li>返回值：成功返回子进程 PID</li>
+</ul>
+</li>
+</ul>
+<h2 id="ELF-文件格式">ELF 文件格式</h2>
+<p><img src="elf.png" srcset="/img/loading.gif" lazyload alt="ELF 格式"></p>
+<ul>
+<li><strong>ELF 头部</strong>：通常用于存元数据，包括 Magic number、类型、机器架构、字节顺序、节头部表的位置等</li>
+<li><strong>节头部表</strong>：每一个节都有一个节头部（节头部表的一项）描述</li>
+<li><strong>ELF 字符串表（.strtab）</strong>：记录一系列 C 风格字符串，表示符号名或节名</li>
+<li><strong>用以调试的节</strong>：
+<ul>
+<li><strong>.debug</strong>：调试符号表，包括变量、typedef、C 源文件</li>
+<li><strong>.line</strong>：C 源文件的行数与 .text 节中指令的映射</li>
+</ul>
+</li>
+<li><strong>代码和数据节</strong>：
+<ul>
+<li><strong>.text</strong>：代码</li>
+<li><strong>.rodata</strong>：只读数据</li>
+<li><strong>.data</strong>：初始化的全局变量和静态变量</li>
+<li><strong>.bss</strong>：未初始化的全局变量和静态变量（不占文件空间，运行时分配内存）</li>
+</ul>
+</li>
+</ul>
+<h2 id="参考资料">参考资料</h2>
+<p>本文参考上海交通大学并行与分布式系统研究所（IPADS）操作系统课程 CS3601 华志超老师的 PPT 课件整理。</p>
+<p>部分图片来源于上海交通大学程序语言与编译原理课程 CS2612 曹钦翔老师的讲义。</p>
 
                 
               </div>
