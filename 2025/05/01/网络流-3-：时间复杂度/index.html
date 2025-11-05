@@ -1,0 +1,1438 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Nuoyan Chen">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="本文为SJTU-AI2615算法课程的知识点复习，主要复习内容为Edmonds-Karp算法、Dinic算法和Hopcroft–Karp–Karzanov算法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络流(3)：时间复杂度">
+<meta property="og:url" content="https://cny123222.github.io/2025/05/01/%E7%BD%91%E7%BB%9C%E6%B5%81-3-%EF%BC%9A%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/index.html">
+<meta property="og:site_name" content="Nuoyan Chen&#39;s Blog">
+<meta property="og:description" content="本文为SJTU-AI2615算法课程的知识点复习，主要复习内容为Edmonds-Karp算法、Dinic算法和Hopcroft–Karp–Karzanov算法。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cny123222.github.io/img/%E7%AE%97%E6%B3%95.png">
+<meta property="article:published_time" content="2025-05-01T13:32:05.000Z">
+<meta property="article:modified_time" content="2025-06-13T07:17:34.750Z">
+<meta property="article:author" content="Nuoyan Chen">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="网络流">
+<meta property="article:tag" content="二分图最大匹配">
+<meta property="article:tag" content="Edmonds-Karp算法">
+<meta property="article:tag" content="Dinic算法">
+<meta property="article:tag" content="Hopcroft–Karp–Karzanov算法">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cny123222.github.io/img/%E7%AE%97%E6%B3%95.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>网络流(3)：时间复杂度 - Nuoyan Chen&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"cny123222.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 80vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Nuoyan Chen&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/nanjing.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.4)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="网络流(3)：时间复杂度"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Nuoyan Chen
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-01 21:32" pubdate>
+          May 1, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          870 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          8 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="算法"
+        id="heading-046a899ee7a6ec88d370211a518c9e80" role="tab" data-toggle="collapse" href="#collapse-046a899ee7a6ec88d370211a518c9e80"
+        aria-expanded="true"
+      >
+        算法
+        <span class="list-group-count">(24)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-046a899ee7a6ec88d370211a518c9e80"
+           role="tabpanel" aria-labelledby="heading-046a899ee7a6ec88d370211a518c9e80">
+        
+        
+          
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/04/23/%E7%AE%97%E6%B3%95%EF%BC%9A%E6%9C%9F%E4%B8%AD%E5%A4%8D%E4%B9%A0/" title="算法：期中复习"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">算法：期中复习</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/04/24/%E7%AE%97%E6%B3%95%EF%BC%9A%E6%9C%9F%E4%B8%AD%E7%9C%9F%E9%A2%98%EF%BC%882024%E6%98%A5%EF%BC%89/" title="算法：期中真题（2024春）"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">算法：期中真题（2024春）</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/06/12/%E7%AE%97%E6%B3%95%EF%BC%9A%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0/" title="算法：期末复习"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">算法：期末复习</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/11/%E7%AE%97%E6%B3%95%EF%BC%9A%E8%81%AA%E6%98%8E%E4%BA%BA%E7%9A%84%E8%AE%A1%E7%AE%97%E8%89%BA%E6%9C%AF/" title="算法：聪明人的计算艺术"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">算法：聪明人的计算艺术</span>
+        </a>
+      
+    
+  </div>
+
+          
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="NP完全"
+        id="heading-2dcc1c7b0e24462144b81fcfb7044f11" role="tab" data-toggle="collapse" href="#collapse-2dcc1c7b0e24462144b81fcfb7044f11"
+        aria-expanded="false"
+      >
+        NP完全
+        <span class="list-group-count">(2)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse " id="collapse-2dcc1c7b0e24462144b81fcfb7044f11"
+           role="tabpanel" aria-labelledby="heading-2dcc1c7b0e24462144b81fcfb7044f11">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/05/13/NP-%E5%AE%8C%E5%85%A8-1-%EF%BC%9AP,%20NP%20%E4%B8%8E%20NP%20%E5%AE%8C%E5%85%A8/" title="NP 完全(1)：P, NP 与 NP 完全"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">NP 完全(1)：P, NP 与 NP 完全</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/06/12/NP-%E5%AE%8C%E5%85%A8-2-%EF%BC%9A%E5%BD%92%E7%BA%A6%E4%B8%8E%E4%BC%98%E5%8C%96/" title="NP 完全(2)：归约与优化"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">NP 完全(2)：归约与优化</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="分治法"
+        id="heading-7fa9794c55018bb18faae2d7c5fa3216" role="tab" data-toggle="collapse" href="#collapse-7fa9794c55018bb18faae2d7c5fa3216"
+        aria-expanded="false"
+      >
+        分治法
+        <span class="list-group-count">(5)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse " id="collapse-7fa9794c55018bb18faae2d7c5fa3216"
+           role="tabpanel" aria-labelledby="heading-7fa9794c55018bb18faae2d7c5fa3216">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/03/11/%E5%88%86%E6%B2%BB%E6%B3%95-1-%EF%BC%9AKaratsuba%E7%AE%97%E6%B3%95%E4%B8%8E%E5%A4%A7O%E8%A1%A8%E7%A4%BA%E6%B3%95/" title="分治法(1)：Karatsuba算法与大O表示法"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">分治法(1)：Karatsuba算法与大O表示法</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/11/%E5%88%86%E6%B2%BB%E6%B3%95-2-%EF%BC%9A%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E4%B8%8E%E6%B1%82%E9%80%86%E5%BA%8F%E6%95%B0/" title="分治法(2)：归并排序与求逆序数"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">分治法(2)：归并排序与求逆序数</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/11/%E5%88%86%E6%B2%BB%E6%B3%95-3-%EF%BC%9A%E5%BF%AB%E9%80%9F%E9%80%89%E6%8B%A9%E7%AE%97%E6%B3%95/" title="分治法(3)：快速选择算法"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">分治法(3)：快速选择算法</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/11/%E5%88%86%E6%B2%BB%E6%B3%95-4-%EF%BC%9A%E6%B1%82%E6%9C%80%E8%BF%91%E7%82%B9%E5%AF%B9/" title="分治法(4)：求最近点对"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">分治法(4)：求最近点对</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/11/%E5%88%86%E6%B2%BB%E6%B3%95-5-%EF%BC%9A%E5%BF%AB%E9%80%9F%E5%82%85%E7%AB%8B%E5%8F%B6%E5%8F%98%E6%8D%A2-FFT/" title="分治法(5)：快速傅立叶变换(FFT)"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">分治法(5)：快速傅立叶变换(FFT)</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="动态规划"
+        id="heading-8c05890ac8f93d0195f884f1ff4656ec" role="tab" data-toggle="collapse" href="#collapse-8c05890ac8f93d0195f884f1ff4656ec"
+        aria-expanded="false"
+      >
+        动态规划
+        <span class="list-group-count">(3)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse " id="collapse-8c05890ac8f93d0195f884f1ff4656ec"
+           role="tabpanel" aria-labelledby="heading-8c05890ac8f93d0195f884f1ff4656ec">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/04/03/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-1-%EF%BC%9ADP%E5%9F%BA%E7%A1%80/" title="动态规划(1)：DP基础"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">动态规划(1)：DP基础</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/04/10/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-2-%EF%BC%9A%E4%BC%98%E5%85%88%E7%BA%A7%E9%98%9F%E5%88%97%E4%BC%98%E5%8C%96/" title="动态规划(2)：优先级队列优化"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">动态规划(2)：优先级队列优化</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/04/22/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-3-%EF%BC%9A%E5%9B%BE%E4%B8%ADDP/" title="动态规划(3)：图中DP"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">动态规划(3)：图中DP</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="图"
+        id="heading-63db5605ac2d3a21f0abd506c9531209" role="tab" data-toggle="collapse" href="#collapse-63db5605ac2d3a21f0abd506c9531209"
+        aria-expanded="false"
+      >
+        图
+        <span class="list-group-count">(3)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse " id="collapse-63db5605ac2d3a21f0abd506c9531209"
+           role="tabpanel" aria-labelledby="heading-63db5605ac2d3a21f0abd506c9531209">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/03/11/%E5%9B%BE-1-%EF%BC%9ADFS%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8/" title="图(1)：DFS及其应用"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">图(1)：DFS及其应用</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/11/%E5%9B%BE-2-%EF%BC%9A%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E7%AE%97%E6%B3%95-BFS%E4%B8%8EDijkstra/" title="图(2)：最短路径算法(BFS与Dijkstra)"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">图(2)：最短路径算法(BFS与Dijkstra)</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/27/%E5%9B%BE-3-%EF%BC%9A%E5%90%AB%E8%B4%9F%E8%BE%B9%E7%9A%84%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E7%AE%97%E6%B3%95/" title="图(3)：含负边的最短路径算法"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">图(3)：含负边的最短路径算法</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="线性规划"
+        id="heading-99b79a2373aa97a6cd92cd2d605e3016" role="tab" data-toggle="collapse" href="#collapse-99b79a2373aa97a6cd92cd2d605e3016"
+        aria-expanded="false"
+      >
+        线性规划
+        <span class="list-group-count">(2)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse " id="collapse-99b79a2373aa97a6cd92cd2d605e3016"
+           role="tabpanel" aria-labelledby="heading-99b79a2373aa97a6cd92cd2d605e3016">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/05/13/%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92-1-%EF%BC%9A%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92%E5%9F%BA%E7%A1%80/" title="线性规划(1)：线性规划基础"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">线性规划(1)：线性规划基础</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/05/13/%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92-2-%EF%BC%9ALP%E5%AF%B9%E5%81%B6%E7%9A%84%E5%BA%94%E7%94%A8/" title="线性规划(2)：LP对偶的应用"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">线性规划(2)：LP对偶的应用</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="网络流"
+        id="heading-37d59bb9956a274e74173c7babe61ec7" role="tab" data-toggle="collapse" href="#collapse-37d59bb9956a274e74173c7babe61ec7"
+        aria-expanded="true"
+      >
+        网络流
+        <span class="list-group-count">(3)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-37d59bb9956a274e74173c7babe61ec7"
+           role="tabpanel" aria-labelledby="heading-37d59bb9956a274e74173c7babe61ec7">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/04/22/%E7%BD%91%E7%BB%9C%E6%B5%81-1-%EF%BC%9A%E7%AE%97%E6%B3%95%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8/" title="网络流(1)：算法及其应用"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">网络流(1)：算法及其应用</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/04/25/%E7%BD%91%E7%BB%9C%E6%B5%81-2-%EF%BC%9A%E6%AD%A3%E7%A1%AE%E6%80%A7%E8%AF%81%E6%98%8E/" title="网络流(2)：正确性证明"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">网络流(2)：正确性证明</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/05/01/%E7%BD%91%E7%BB%9C%E6%B5%81-3-%EF%BC%9A%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/" title="网络流(3)：时间复杂度"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">网络流(3)：时间复杂度</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="贪心算法"
+        id="heading-f609d9e1619f07d45b7d493b39e44c77" role="tab" data-toggle="collapse" href="#collapse-f609d9e1619f07d45b7d493b39e44c77"
+        aria-expanded="false"
+      >
+        贪心算法
+        <span class="list-group-count">(2)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse " id="collapse-f609d9e1619f07d45b7d493b39e44c77"
+           role="tabpanel" aria-labelledby="heading-f609d9e1619f07d45b7d493b39e44c77">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/03/27/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95-1-%EF%BC%9A%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/" title="贪心算法(1)：最小生成树"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">贪心算法(1)：最小生成树</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/28/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95-2-%EF%BC%9A%E7%BC%96%E7%A0%81%E4%B8%8E%E8%B0%83%E5%BA%A6/" title="贪心算法(2)：编码与调度"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">贪心算法(2)：编码与调度</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">网络流(3)：时间复杂度</h1>
+            
+              <p id="updated-time" class="note note-default" style="">
+                
+                  
+                    Last updated on June 13, 2025 pm
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>本文为SJTU-AI2615算法课程的<strong>知识点复习</strong>，主要复习内容为<strong>Edmonds-Karp算法、Dinic算法和Hopcroft–Karp–Karzanov算法</strong>。</p>
+<span id="more"></span>
+<h2 id="Edmonds-Karp-算法">Edmonds-Karp 算法</h2>
+<h3 id="算法设计">算法设计</h3>
+<ul>
+<li><strong>改进点</strong>：用 BFS 选择增广路径</li>
+</ul>
+<p><img src="img1.png" srcset="/img/loading.gif" lazyload alt="Edmonds-Karp 算法设计"></p>
+<h3 id="关键性质">关键性质</h3>
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>G</mi><mi>f</mi></msup></mrow><annotation encoding="application/x-tex">G^f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8491em;"></span><span class="mord"><span class="mord mathnormal">G</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span></span></span></span></span></span></span></span></span></span></span> 中任意顶点 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi></mrow><annotation encoding="application/x-tex">u</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">u</span></span></span></span> 到源点的距离 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mi>i</mi><mi>s</mi><mi>t</mi><mo stretchy="false">(</mo><mi>u</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">dist(u)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">d</span><span class="mord mathnormal">i</span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mopen">(</span><span class="mord mathnormal">u</span><span class="mclose">)</span></span></span></span> 单调不减</li>
+<li>每次增广导致 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>G</mi><mi>f</mi></msup></mrow><annotation encoding="application/x-tex">G^f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8491em;"></span><span class="mord"><span class="mord mathnormal">G</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span></span></span></span></span></span></span></span></span></span></span> 中至少一条边被饱和（称为关键边）</li>
+<li>原边 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>u</mi><mo separator="true">,</mo><mi>v</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(u, v)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mclose">)</span></span></span></span> 两次成为关键边后 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi></mrow><annotation encoding="application/x-tex">u</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">u</span></span></span></span> 到源点的距离至少增加 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span></span></span></span>
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow><mi mathvariant="normal">d</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">s</mi><mi mathvariant="normal">t</mi></mrow><mrow><mi>i</mi><mo>+</mo><mi>j</mi></mrow></msup><mo stretchy="false">(</mo><mi>u</mi><mo stretchy="false">)</mo><mo>=</mo><msup><mrow><mi mathvariant="normal">d</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">s</mi><mi mathvariant="normal">t</mi></mrow><mrow><mi>i</mi><mo>+</mo><mi>j</mi></mrow></msup><mo stretchy="false">(</mo><mi>v</mi><mo stretchy="false">)</mo><mo>+</mo><mn>1</mn><mo>≥</mo><msup><mrow><mi mathvariant="normal">d</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">s</mi><mi mathvariant="normal">t</mi></mrow><mi>i</mi></msup><mo stretchy="false">(</mo><mi>v</mi><mo stretchy="false">)</mo><mo>+</mo><mn>1</mn><mo>=</mo><msup><mrow><mi mathvariant="normal">d</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">s</mi><mi mathvariant="normal">t</mi></mrow><mi>i</mi></msup><mo stretchy="false">(</mo><mi>u</mi><mo stretchy="false">)</mo><mo>+</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">\mathrm{dist}^{i + j}(u) = \mathrm{dist}^{i + j}(v) + 1 \ge \mathrm{dist}^i(v) + 1 = \mathrm{dist}^i(u) + 2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.159em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">dist</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.909em;"><span style="top:-3.1473em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mbin mtight">+</span><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">u</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.159em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">dist</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.909em;"><span style="top:-3.1473em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mbin mtight">+</span><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7804em;vertical-align:-0.136em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.159em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">dist</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.909em;"><span style="top:-3.1473em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.159em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">dist</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.909em;"><span style="top:-3.1473em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">u</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span></span></span></span></li>
+</ul>
+</li>
+</ul>
+<p><img src="img2.png" srcset="/img/loading.gif" lazyload alt="Edmonds-Karp 关键性质分析示意图"></p>
+<h3 id="时间复杂度">时间复杂度</h3>
+<ul>
+<li>每条边成为关键边的次数：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi mathvariant="normal">∣</mi><mi>V</mi><mi mathvariant="normal">∣</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(|V|)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mord">∣</span><span class="mclose">)</span></span></span></span></li>
+<li>总迭代次数：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi mathvariant="normal">∣</mi><mi>V</mi><mi mathvariant="normal">∣</mi><mo>⋅</mo><mi mathvariant="normal">∣</mi><mi>E</mi><mi mathvariant="normal">∣</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(|V| \cdot |E|)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mord">∣</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord">∣</span><span class="mclose">)</span></span></span></span></li>
+<li>每次迭代的时间：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi mathvariant="normal">∣</mi><mi>E</mi><mi mathvariant="normal">∣</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(|E|)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord">∣</span><span class="mclose">)</span></span></span></span></li>
+<li><strong>总时间复杂度</strong>：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi mathvariant="normal">∣</mi><mi>V</mi><mi mathvariant="normal">∣</mi><mo>⋅</mo><mi mathvariant="normal">∣</mi><mi>E</mi><msup><mi mathvariant="normal">∣</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(|V| \cdot |E|^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mord">∣</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord"><span class="mord">∣</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></li>
+</ul>
+<div class="note note-info">
+            <p>Edmonds-Karp 算法可以处理<strong>容量是无理数</strong>的情况。</p>
+          </div>
+<h2 id="Dinic-算法">Dinic 算法</h2>
+<h3 id="关键思想">关键思想</h3>
+<ul>
+<li><strong>核心思路</strong>：每一轮将 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6151em;"></span><span class="mord mathnormal">t</span></span></span></span> 到源点的距离 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mi>i</mi><mi>s</mi><mi>t</mi><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">dist(t)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">d</span><span class="mord mathnormal">i</span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mopen">(</span><span class="mord mathnormal">t</span><span class="mclose">)</span></span></span></span> 增大 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span></li>
+<li><strong>分层图 (Level Graph)</strong>：仅保留从源点出发按 BFS 层数递增的边</li>
+<li><strong>阻塞流 (Blocking Flow)</strong>：分层图中无法再找到增广路径的流</li>
+</ul>
+<h3 id="算法步骤">算法步骤</h3>
+<ul>
+<li>初始化流 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 为空，残差网络 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>G</mi><mi>f</mi></msup></mrow><annotation encoding="application/x-tex">G^f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8491em;"></span><span class="mord"><span class="mord mathnormal">G</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span></span></span></span></span></span></span></span></span></span></span> 为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi></mrow><annotation encoding="application/x-tex">G</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">G</span></span></span></span></li>
+<li>重复以下步骤，直到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mi>i</mi><mi>s</mi><mi>t</mi><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo><mo>=</mo><mi mathvariant="normal">∞</mi></mrow><annotation encoding="application/x-tex">dist(t) = \infty</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">d</span><span class="mord mathnormal">i</span><span class="mord mathnormal">s</span><span class="mord mathnormal">t</span><span class="mopen">(</span><span class="mord mathnormal">t</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord">∞</span></span></span></span>
+<ul>
+<li>从 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>G</mi><mi>f</mi></msup></mrow><annotation encoding="application/x-tex">G^f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8491em;"></span><span class="mord"><span class="mord mathnormal">G</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span></span></span></span></span></span></span></span></span></span></span> 构建分层图 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>G</mi><mi>L</mi><mi>f</mi></msubsup></mrow><annotation encoding="application/x-tex">G_L^f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.2605em;vertical-align:-0.2935em;"></span><span class="mord"><span class="mord mathnormal">G</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.967em;"><span style="top:-2.4065em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">L</span></span></span><span style="top:-3.1809em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2935em;"><span></span></span></span></span></span></span></span></span></span></li>
+<li>用 DFS 在分层图中寻找阻塞流</li>
+<li>更新流 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span></span></span> 和残差网络 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>G</mi><mi>f</mi></msup></mrow><annotation encoding="application/x-tex">G^f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8491em;"></span><span class="mord"><span class="mord mathnormal">G</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span></span></span></span></span></span></span></span></span></span></span></li>
+</ul>
+</li>
+</ul>
+<h3 id="关键性质-2">关键性质</h3>
+<ul>
+<li>每次 DFS 搜索后至少一条边被移除（关键边或回溯边）</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>G</mi><mi>L</mi><mi>f</mi></msubsup></mrow><annotation encoding="application/x-tex">G_L^f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.2605em;vertical-align:-0.2935em;"></span><span class="mord"><span class="mord mathnormal">G</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.967em;"><span style="top:-2.4065em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">L</span></span></span><span style="top:-3.1809em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2935em;"><span></span></span></span></span></span></span></span></span></span> 中所有长度为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow><mi mathvariant="normal">d</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">s</mi><mi mathvariant="normal">t</mi></mrow><mi>i</mi></msup><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathrm{dist}^i(t)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.159em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">dist</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.909em;"><span style="top:-3.1473em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">t</span><span class="mclose">)</span></span></span></span> 的路均被阻塞，从而 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow><mi mathvariant="normal">d</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">s</mi><mi mathvariant="normal">t</mi></mrow><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow></msup><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo><mo>&gt;</mo><msup><mrow><mi mathvariant="normal">d</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">s</mi><mi mathvariant="normal">t</mi></mrow><mi>i</mi></msup><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathrm{dist}^{i + 1}(t) &gt; \mathrm{dist}^i(t)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.159em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">dist</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.909em;"><span style="top:-3.1473em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">t</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.159em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">dist</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.909em;"><span style="top:-3.1473em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">t</span><span class="mclose">)</span></span></span></span></li>
+</ul>
+<p><img src="img3.png" srcset="/img/loading.gif" lazyload alt="Dinic 算法的分层图和阻塞流示意图"></p>
+<h3 id="时间复杂度-2">时间复杂度</h3>
+<ul>
+<li>每次搜索最多步数：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi mathvariant="normal">∣</mi><mi>V</mi><mi mathvariant="normal">∣</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(|V|)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mord">∣</span><span class="mclose">)</span></span></span></span></li>
+<li>每次迭代中搜索次数：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi mathvariant="normal">∣</mi><mi>E</mi><mi mathvariant="normal">∣</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(|E|)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord">∣</span><span class="mclose">)</span></span></span></span></li>
+<li>每次迭代的时间：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi mathvariant="normal">∣</mi><mi>V</mi><mi mathvariant="normal">∣</mi><mo>⋅</mo><mi mathvariant="normal">∣</mi><mi>E</mi><mi mathvariant="normal">∣</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(|V| \cdot |E|)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mord">∣</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord">∣</span><span class="mclose">)</span></span></span></span></li>
+<li>迭代次数：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi mathvariant="normal">∣</mi><mi>V</mi><mi mathvariant="normal">∣</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(|V|)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mord">∣</span><span class="mclose">)</span></span></span></span></li>
+<li><strong>总时间复杂度</strong>：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi mathvariant="normal">∣</mi><mi>V</mi><msup><mi mathvariant="normal">∣</mi><mn>2</mn></msup><mo>⋅</mo><mi mathvariant="normal">∣</mi><mi>E</mi><mi mathvariant="normal">∣</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(|V|^2 \cdot |E|)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mord"><span class="mord">∣</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord">∣</span><span class="mclose">)</span></span></span></span></li>
+</ul>
+<h2 id="Hopcroft-Karp-Karzanov-算法">Hopcroft-Karp-Karzanov 算法</h2>
+<h3 id="算法思想">算法思想</h3>
+<ul>
+<li>将二分图最大匹配转化为最大流问题（所有边容量为1），应用 Dinic 算法</li>
+<li>时间复杂度为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi mathvariant="normal">∣</mi><mi>E</mi><mi mathvariant="normal">∣</mi><mo>⋅</mo><msqrt><mrow><mi mathvariant="normal">∣</mi><mi>V</mi><mi mathvariant="normal">∣</mi></mrow></msqrt><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(|E| \cdot \sqrt{|V|})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord">∣</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.24em;vertical-align:-0.305em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.935em;"><span class="svg-align" style="top:-3.2em;"><span class="pstrut" style="height:3.2em;"></span><span class="mord" style="padding-left:1em;"><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mord">∣</span></span></span><span style="top:-2.895em;"><span class="pstrut" style="height:3.2em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.28em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.28em" viewBox="0 0 400000 1296" preserveAspectRatio="xMinYMin slice"><path d="M263,681c0.7,0,18,39.7,52,119
+c34,79.3,68.167,158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120
+c340,-704.7,510.7,-1060.3,512,-1067
+l0 -0
+c4.7,-7.3,11,-11,19,-11
+H40000v40H1012.3
+s-271.3,567,-271.3,567c-38.7,80.7,-84,175,-136,283c-52,108,-89.167,185.3,-111.5,232
+c-22.3,46.7,-33.8,70.3,-34.5,71c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1
+s-109,-253,-109,-253c-72.7,-168,-109.3,-252,-110,-252c-10.7,8,-22,16.7,-34,26
+c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z
+M1001 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.305em;"><span></span></span></span></span></span><span class="mclose">)</span></span></span></span></li>
+</ul>
+<p><img src="img4.png" srcset="/img/loading.gif" lazyload alt="二分图最大匹配问题示意图"></p>
+<h3 id="寻找阻塞流">寻找阻塞流</h3>
+<ul>
+<li>由于每条边容量为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>，找阻塞流只需要一次 DFS</li>
+<li>每次寻找阻塞流的时间复杂度为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi mathvariant="normal">∣</mi><mi>E</mi><mi mathvariant="normal">∣</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(|E|)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord">∣</span><span class="mclose">)</span></span></span></span></li>
+</ul>
+<h3 id="迭代轮数">迭代轮数</h3>
+<ul>
+<li>对每个非 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">s</span></span></span></span> 或 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6151em;"></span><span class="mord mathnormal">t</span></span></span></span> 的点，其入度或出度始终为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span></li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>G</mi><mi>f</mi></msup></mrow><annotation encoding="application/x-tex">G^f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8491em;"></span><span class="mord"><span class="mord mathnormal">G</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span></span></span></span></span></span></span></span></span></span></span> 中的最大流等于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>G</mi><mi>f</mi></msup></mrow><annotation encoding="application/x-tex">G^f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8491em;"></span><span class="mord"><span class="mord mathnormal">G</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span></span></span></span></span></span></span></span></span></span></span> 中点不相交（vertex-disjoint）路的数量</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msqrt><mrow><mi mathvariant="normal">∣</mi><mi>V</mi><mi mathvariant="normal">∣</mi></mrow></msqrt></mrow><annotation encoding="application/x-tex">\sqrt{|V|}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.24em;vertical-align:-0.305em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.935em;"><span class="svg-align" style="top:-3.2em;"><span class="pstrut" style="height:3.2em;"></span><span class="mord" style="padding-left:1em;"><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mord">∣</span></span></span><span style="top:-2.895em;"><span class="pstrut" style="height:3.2em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.28em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.28em" viewBox="0 0 400000 1296" preserveAspectRatio="xMinYMin slice"><path d="M263,681c0.7,0,18,39.7,52,119
+c34,79.3,68.167,158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120
+c340,-704.7,510.7,-1060.3,512,-1067
+l0 -0
+c4.7,-7.3,11,-11,19,-11
+H40000v40H1012.3
+s-271.3,567,-271.3,567c-38.7,80.7,-84,175,-136,283c-52,108,-89.167,185.3,-111.5,232
+c-22.3,46.7,-33.8,70.3,-34.5,71c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1
+s-109,-253,-109,-253c-72.7,-168,-109.3,-252,-110,-252c-10.7,8,-22,16.7,-34,26
+c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z
+M1001 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.305em;"><span></span></span></span></span></span></span></span></span> 轮后，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>G</mi><mi>f</mi></msup></mrow><annotation encoding="application/x-tex">G^f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8491em;"></span><span class="mord"><span class="mord mathnormal">G</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span></span></span></span></span></span></span></span></span></span></span> 中的最大流最多是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msqrt><mrow><mi mathvariant="normal">∣</mi><mi>V</mi><mi mathvariant="normal">∣</mi></mrow></msqrt></mrow><annotation encoding="application/x-tex">\sqrt{|V|}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.24em;vertical-align:-0.305em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.935em;"><span class="svg-align" style="top:-3.2em;"><span class="pstrut" style="height:3.2em;"></span><span class="mord" style="padding-left:1em;"><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mord">∣</span></span></span><span style="top:-2.895em;"><span class="pstrut" style="height:3.2em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.28em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.28em" viewBox="0 0 400000 1296" preserveAspectRatio="xMinYMin slice"><path d="M263,681c0.7,0,18,39.7,52,119
+c34,79.3,68.167,158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120
+c340,-704.7,510.7,-1060.3,512,-1067
+l0 -0
+c4.7,-7.3,11,-11,19,-11
+H40000v40H1012.3
+s-271.3,567,-271.3,567c-38.7,80.7,-84,175,-136,283c-52,108,-89.167,185.3,-111.5,232
+c-22.3,46.7,-33.8,70.3,-34.5,71c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1
+s-109,-253,-109,-253c-72.7,-168,-109.3,-252,-110,-252c-10.7,8,-22,16.7,-34,26
+c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z
+M1001 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.305em;"><span></span></span></span></span></span></span></span></span></li>
+<li>从而再过 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msqrt><mrow><mi mathvariant="normal">∣</mi><mi>V</mi><mi mathvariant="normal">∣</mi></mrow></msqrt></mrow><annotation encoding="application/x-tex">\sqrt{|V|}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.24em;vertical-align:-0.305em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.935em;"><span class="svg-align" style="top:-3.2em;"><span class="pstrut" style="height:3.2em;"></span><span class="mord" style="padding-left:1em;"><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mord">∣</span></span></span><span style="top:-2.895em;"><span class="pstrut" style="height:3.2em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.28em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.28em" viewBox="0 0 400000 1296" preserveAspectRatio="xMinYMin slice"><path d="M263,681c0.7,0,18,39.7,52,119
+c34,79.3,68.167,158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120
+c340,-704.7,510.7,-1060.3,512,-1067
+l0 -0
+c4.7,-7.3,11,-11,19,-11
+H40000v40H1012.3
+s-271.3,567,-271.3,567c-38.7,80.7,-84,175,-136,283c-52,108,-89.167,185.3,-111.5,232
+c-22.3,46.7,-33.8,70.3,-34.5,71c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1
+s-109,-253,-109,-253c-72.7,-168,-109.3,-252,-110,-252c-10.7,8,-22,16.7,-34,26
+c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z
+M1001 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.305em;"><span></span></span></span></span></span></span></span></span> 轮后，算法终止，即总迭代轮数最多 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><msqrt><mrow><mi mathvariant="normal">∣</mi><mi>V</mi><mi mathvariant="normal">∣</mi></mrow></msqrt></mrow><annotation encoding="application/x-tex">2 \sqrt{|V|}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.24em;vertical-align:-0.305em;"></span><span class="mord">2</span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.935em;"><span class="svg-align" style="top:-3.2em;"><span class="pstrut" style="height:3.2em;"></span><span class="mord" style="padding-left:1em;"><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mord">∣</span></span></span><span style="top:-2.895em;"><span class="pstrut" style="height:3.2em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.28em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.28em" viewBox="0 0 400000 1296" preserveAspectRatio="xMinYMin slice"><path d="M263,681c0.7,0,18,39.7,52,119
+c34,79.3,68.167,158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120
+c340,-704.7,510.7,-1060.3,512,-1067
+l0 -0
+c4.7,-7.3,11,-11,19,-11
+H40000v40H1012.3
+s-271.3,567,-271.3,567c-38.7,80.7,-84,175,-136,283c-52,108,-89.167,185.3,-111.5,232
+c-22.3,46.7,-33.8,70.3,-34.5,71c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1
+s-109,-253,-109,-253c-72.7,-168,-109.3,-252,-110,-252c-10.7,8,-22,16.7,-34,26
+c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z
+M1001 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.305em;"><span></span></span></span></span></span></span></span></span></li>
+</ul>
+<h2 id="网络流算法总结">网络流算法总结</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">算法</th>
+<th style="text-align:center">时间复杂度</th>
+<th style="text-align:center">核心思想</th>
+<th style="text-align:center">适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Ford-Fulkerson</td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi mathvariant="normal">∣</mi><mi>E</mi><mi mathvariant="normal">∣</mi><mo>⋅</mo><msub><mi>f</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(\vert E \vert \cdot f_{max})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord">∣</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.1076em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">ma</span><span class="mord mathnormal mtight">x</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></td>
+<td style="text-align:center">任意增广路径</td>
+<td style="text-align:center">理论分析</td>
+</tr>
+<tr>
+<td style="text-align:center">Edmonds-Karp</td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi mathvariant="normal">∣</mi><mi>V</mi><mi mathvariant="normal">∣</mi><mo>⋅</mo><mi mathvariant="normal">∣</mi><mi>E</mi><msup><mi mathvariant="normal">∣</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(\vert V \vert \cdot \vert E \vert ^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mord">∣</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord"><span class="mord">∣</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></td>
+<td style="text-align:center">BFS 选择增广路径</td>
+<td style="text-align:center">稀疏图</td>
+</tr>
+<tr>
+<td style="text-align:center">Dinic</td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi mathvariant="normal">∣</mi><mi>V</mi><msup><mi mathvariant="normal">∣</mi><mn>2</mn></msup><mo>⋅</mo><mi mathvariant="normal">∣</mi><mi>E</mi><mi mathvariant="normal">∣</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(\vert V \vert ^2 \cdot \vert E \vert)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mord"><span class="mord">∣</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord">∣</span><span class="mclose">)</span></span></span></span></td>
+<td style="text-align:center">分层图 + 阻塞流</td>
+<td style="text-align:center">稠密图</td>
+</tr>
+<tr>
+<td style="text-align:center">Hopcroft-Karp-Karzanov</td>
+<td style="text-align:center"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi mathvariant="normal">∣</mi><mi>E</mi><mi mathvariant="normal">∣</mi><mo>⋅</mo><msqrt><mrow><mi mathvariant="normal">∣</mi><mi>V</mi><mi mathvariant="normal">∣</mi></mrow></msqrt><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(\vert E \vert \cdot \sqrt{\vert V \vert})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord">∣</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.24em;vertical-align:-0.305em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.935em;"><span class="svg-align" style="top:-3.2em;"><span class="pstrut" style="height:3.2em;"></span><span class="mord" style="padding-left:1em;"><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mord">∣</span></span></span><span style="top:-2.895em;"><span class="pstrut" style="height:3.2em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.28em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.28em" viewBox="0 0 400000 1296" preserveAspectRatio="xMinYMin slice"><path d="M263,681c0.7,0,18,39.7,52,119
+c34,79.3,68.167,158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120
+c340,-704.7,510.7,-1060.3,512,-1067
+l0 -0
+c4.7,-7.3,11,-11,19,-11
+H40000v40H1012.3
+s-271.3,567,-271.3,567c-38.7,80.7,-84,175,-136,283c-52,108,-89.167,185.3,-111.5,232
+c-22.3,46.7,-33.8,70.3,-34.5,71c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1
+s-109,-253,-109,-253c-72.7,-168,-109.3,-252,-110,-252c-10.7,8,-22,16.7,-34,26
+c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z
+M1001 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.305em;"><span></span></span></span></span></span><span class="mclose">)</span></span></span></span></td>
+<td style="text-align:center">Dinic 在二分图中应用</td>
+<td style="text-align:center">二分图最大匹配</td>
+</tr>
+</tbody>
+</table>
+<div class="note note-secondary">
+            <p>注：本文中所有图片均来自张宇昊老师的课程PPT。</p>
+          </div>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AE%97%E6%B3%95/" class="category-chain-item">算法</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%AE%97%E6%B3%95/%E7%BD%91%E7%BB%9C%E6%B5%81/" class="category-chain-item">网络流</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E7%AE%97%E6%B3%95/" class="print-no-link">#算法</a>
+      
+        <a href="/tags/%E7%BD%91%E7%BB%9C%E6%B5%81/" class="print-no-link">#网络流</a>
+      
+        <a href="/tags/%E4%BA%8C%E5%88%86%E5%9B%BE%E6%9C%80%E5%A4%A7%E5%8C%B9%E9%85%8D/" class="print-no-link">#二分图最大匹配</a>
+      
+        <a href="/tags/Edmonds-Karp%E7%AE%97%E6%B3%95/" class="print-no-link">#Edmonds-Karp算法</a>
+      
+        <a href="/tags/Dinic%E7%AE%97%E6%B3%95/" class="print-no-link">#Dinic算法</a>
+      
+        <a href="/tags/Hopcroft%E2%80%93Karp%E2%80%93Karzanov%E7%AE%97%E6%B3%95/" class="print-no-link">#Hopcroft–Karp–Karzanov算法</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>网络流(3)：时间复杂度</div>
+      <div>https://cny123222.github.io/2025/05/01/网络流-3-：时间复杂度/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Nuoyan Chen</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>May 1, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/05/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-5-%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%B1%82%E4%B9%8B%E6%8E%A7%E5%88%B6%E5%B9%B3%E9%9D%A2/" title="计算机网络知识点整理(5)：网络层之控制平面">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">计算机网络知识点整理(5)：网络层之控制平面</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/04/25/%E7%BD%91%E7%BB%9C%E6%B5%81-2-%EF%BC%9A%E6%AD%A3%E7%A1%AE%E6%80%A7%E8%AF%81%E6%98%8E/" title="网络流(2)：正确性证明">
+                        <span class="hidden-mobile">网络流(2)：正确性证明</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"cny123222/cny123222.github.io","repo-id":"R_kgDOOFgnVw","category":"Announcements","category-id":"DIC_kwDOOFgnV84CnwXM","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"en"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
