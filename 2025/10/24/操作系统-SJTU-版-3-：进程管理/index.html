@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-10-24T09:27:09.000Z">
-<meta property="article:modified_time" content="2025-11-06T02:38:25.260Z">
+<meta property="article:modified_time" content="2025-11-07T09:38:43.417Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="课程笔记">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          6k words
+          8.3k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          51 mins
+          69 mins
         
       </span>
     
@@ -438,7 +438,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on November 6, 2025 am
+                    Last updated on November 7, 2025 pm
                   
                 
               </p>
@@ -1334,7 +1334,349 @@
 </tbody>
 </table>
 <ul>
-<li><strong>Linux Complete Fair Scheduler</strong>：通过调整任务每次执行的时间，达成公平共享的方式</li>
+<li>
+<p><strong>Linux Complete Fair Scheduler</strong>：通过调整任务每次执行的时间，达成公平共享的方式</p>
+</li>
+<li>
+<p><strong>虚拟时间对调度行为的影响</strong>：</p>
+<ul>
+<li><strong>虚拟时间的意义</strong>：
+<ul>
+<li>相对大小：对应了任务的优先级</li>
+<li>绝对值：对应了任务预期占用 CPU 的时间长度</li>
+</ul>
+</li>
+<li><strong>问题</strong>：如果新创建/刚被唤醒的任务 vruntime 很小，会立即长时间占用 CPU</li>
+<li><strong>解决方案</strong>
+<ul>
+<li>维护所有任务虚拟时间的最小值 min_vruntime</li>
+<li>当任务被创建、唤醒时，保证任务的 vruntime 不小于 min_vruntime</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="多核调度策略-Multicore-Scheduling-Policy">多核调度策略 (Multicore Scheduling Policy)</h3>
+<ul>
+<li>
+<p><strong>需要考虑的额外因素</strong>：一个进程的不同线程可以在不同 CPU 上同时运行</p>
+</li>
+<li>
+<p><strong>全局运行队列</strong>：</p>
+<ul>
+<li><strong>规则</strong>：所有 CPU 共享同一个全局运行队列</li>
+<li><strong>问题</strong>：
+<ul>
+<li>所有 CPU 竞争全局调度器</li>
+<li>同一个线程可能在不同 CPU 上切换
+<ul>
+<li>切换开销大：Cache、TLB、…</li>
+<li>缓存局部性差</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>本地运行队列</strong>：每个 CPU 核心维护本地运行队列</p>
+<ul>
+<li>现被应用于 Linux、ChCore 等操作系统中</li>
+<li><strong>问题</strong>：负载不均衡</li>
+</ul>
+</li>
+<li>
+<p><strong>负载均衡</strong>：尽可能让每个 CPU 都同等忙碌</p>
+<ul>
+<li>需要追踪 CPU 的负载情况</li>
+<li>将任务从负载高的 CPU 迁移到负载低的 CPU</li>
+</ul>
+</li>
+<li>
+<p><strong>亲和性</strong>：尽量让一个进程调度到同一个 CPU 上运行，以发挥 CPU 中 Cache 的作用</p>
+<ul>
+<li>通过操作系统暴露的任务亲和性接口，可以指定任务能够使用的 CPU 核心</li>
+</ul>
+</li>
+</ul>
+<h2 id="Lecture-12-进程间通信">Lecture 12: 进程间通信</h2>
+<ul>
+<li>
+<p><strong>IPC (Inter-Process Communication)</strong>：进程与进程间的通信方式</p>
+<ul>
+<li><strong>必要性</strong>：不同进程拥有不同的内存地址空间，进程与进程之间无法直接进行通信和交互</li>
+</ul>
+</li>
+<li>
+<p><strong>常见 IPC 的类型</strong></p>
+</li>
+</ul>
+<p><img src="ipc.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h3 id="简单-IPC-的设计与实现">简单 IPC 的设计与实现</h3>
+<ul>
+<li><strong>简单 IPC 的消息接口</strong>：
+<ul>
+<li>发送消息：<code>Send(message)</code></li>
+<li>接收消息：<code>Recv(message)</code></li>
+<li>远程方法调用：<code>RPC(req_message, resp_message)</code></li>
+<li>远程方法调用的回复：<code>Reply(resp_message)</code></li>
+</ul>
+</li>
+<li><strong>简单 IPC 的两个阶段</strong>：
+<ul>
+<li><strong>阶段1</strong>：准备阶段
+<ul>
+<li>建立通信连接，即进程间的信道
+<ul>
+<li>假设内核已经为两个进程映射了一段共享内存</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>阶段2</strong>：通信阶段
+<ul>
+<li>数据传递
+<ul>
+<li>“消息”抽象：通常包含头部和数据内容（不能传指针）</li>
+</ul>
+</li>
+<li>通信机制
+<ul>
+<li>两个消息保存在共享内存中：发送者消息、接收者消息</li>
+<li>发送者和接收者通过轮询消息的状态作为通知机制</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>简单 IPC 数据传递的两种方法</strong>：
+<ul>
+<li><strong>方法1</strong>：基于共享内存的数据传递
+<ul>
+<li>操作系统在通信过程中不干预数据传输</li>
+<li>操作系统仅负责准备阶段的映射</li>
+<li><strong>优势</strong>：
+<ul>
+<li>无需切换到内核态即可完成 IPC（多核场景下）</li>
+<li>完全由用户态控制，定制能力更强</li>
+<li>可实现零内存拷贝（无需内核介入）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>方法2</strong>：基于操作系统辅助的数据传递
+<ul>
+<li>操作系统提供接口（系统调用）：Send、Recv</li>
+<li>通过内核态内存来传递数据，无需在用户态建立共享内存</li>
+<li><strong>优势</strong>：
+<ul>
+<li>抽象更简单，用户态直接调用接口，使用更方便</li>
+<li>安全性保证更强，发送者在消息被接收时通常无法修改消息</li>
+<li>多方（多进程）通信时更灵活、更安全</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>简单 IPC 的通知机制</strong>：
+<ul>
+<li><strong>方法1</strong>：基于轮询（消息头部的状态信息）
+<ul>
+<li><strong>缺点</strong>：大量 CPU 计算资源的浪费</li>
+</ul>
+</li>
+<li><strong>方法2</strong>：基于控制流转移
+<ul>
+<li>由内核控制进程的运行状态</li>
+<li><strong>优点</strong>：进程只有在条件满足的情况下才运行，避免 CPU 浪费</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>IPC 控制流</strong>：同步和异步
+<ul>
+<li><strong>同步 IPC</strong>：IPC 操作会阻塞进程直到操作完成
+<ul>
+<li>线性的控制流</li>
+<li>调用者继续运行时，返回结果已经 ready</li>
+</ul>
+</li>
+<li><strong>异步 IPC</strong>：进程发起 IPC 操作后即可返回而不需要等待其完成
+<ul>
+<li>通过轮询或回调函数（需内核支持）来获取返回结果</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>IPC 的超时机制</strong>：
+<ul>
+<li><strong>超时可能的原因</strong>：
+<ul>
+<li>被调用者是恶意的：故意不返回</li>
+<li>被调用者不是恶意的：运行时间过长、调度时间过长、请求丢失等</li>
+</ul>
+</li>
+<li><strong>超时机制</strong>：
+<ul>
+<li>应用可自行设置超时的阈值，但如何选择合适的阈值却很难</li>
+<li>特殊的超时机制：阻塞、立即返回（要求被调用者处于可立即响应的状态）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>IPC 的权限检查</strong>：
+<ul>
+<li><strong>宏内核</strong>：通常基于权限检查的机制实现
+<ul>
+<li>如 Linux 中与文件的权限检查结合在一起</li>
+</ul>
+</li>
+<li><strong>微内核</strong>：通常基于 Capability 安全检查机制实现
+<ul>
+<li>Capability 保存在内核中，与进程绑定</li>
+<li>进程发起 IPC 时，内核检查其是否拥有对应的 Capability</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="ipc2.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h3 id="共享内存-内存接口的-IPC">共享内存 (内存接口的 IPC)</h3>
+<ul>
+<li><strong>基础实现</strong>：
+<ul>
+<li><strong>共享区域</strong>：共享区域容量、共享状态</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> BUFFER_SIZE 10</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> &#123;</span><br>  . . .<br>&#125; item;<br>item buffer[BUFFER_SIZE];<br><span class="hljs-keyword">volatile</span> <span class="hljs-type">int</span> buffer_write_cnt = <span class="hljs-number">0</span>;<br><span class="hljs-keyword">volatile</span> <span class="hljs-type">int</span> buffer_read_cnt = <span class="hljs-number">0</span>;<br><span class="hljs-keyword">volatile</span> <span class="hljs-type">int</span> empty_slot = BUFFER_SIZE;<br><span class="hljs-keyword">volatile</span> <span class="hljs-type">int</span> filled_slot = <span class="hljs-number">0</span>;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>发送者(生产者)</strong>：当没有新消息时，接收者盲目等待</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">while</span> (new_package) &#123;<br>  <span class="hljs-comment">/* Produce an item/msg */</span><br>  <span class="hljs-keyword">while</span> (empty_slot == <span class="hljs-number">0</span>)<br>    ;   <span class="hljs-comment">/* do nothing -- no free buffers */</span><br>  empty_slot --;<br>  buffer[buffer_write_cnt] = msg;<br>  buffer_write_cnt = (buffer_write_cnt + <span class="hljs-number">1</span>) % BUFFER_SIZE;<br>  filled_slot ++; <br>  …<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>接收者</strong>：当没有新消息时，接收者盲目等待</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">while</span> (wait_package) &#123;<br>  <span class="hljs-keyword">while</span> (filled_slot == <span class="hljs-number">0</span>)<br>    ; <span class="hljs-comment">// do nothing -- nothing to consume</span><br>  filled_slot--; <span class="hljs-comment">// remove an item from the buffer</span><br>  item = buffer[buffer_read_cnt];<br>  buffer_read_cnt = (buffer_read_cnt + <span class="hljs-number">1</span>) % BUFFER SIZE;<br>  empty_slot++;<br>  <span class="hljs-keyword">return</span> item;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>共享内存的问题</strong>：
+<ul>
+<li><strong>缺少通知机制</strong>：
+<ul>
+<li>若轮询检查，则导致 CPU 资源浪费</li>
+<li>若周期性检查，则可能导致较长的等待时延</li>
+<li><strong>根本原因</strong>：共享内存的抽象过于底层；缺少 OS 更多支持</li>
+</ul>
+</li>
+<li><strong>TOCTTOU （Time-of-check to Time-of-use）问题</strong>：
+<ul>
+<li>当接收者直接用共享内存上的数据时，可能存在被发送者恶意篡改的情况（发生在接收者检查完数据之后，使用数据之前）</li>
+<li>这可能导致 buffer overflow 等问题</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="消息传递（Message-Passing）">消息传递（Message Passing）</h3>
+<ul>
+<li><strong>消息队列</strong>：消息队列是间接消息传递方式，通过共享一个队列来建立连接
+<ul>
+<li>以链表的方式组织消息</li>
+<li>任何有权限的进程都可以访问队列，写入或者读取</li>
+<li>支持异步通信 (非阻塞)</li>
+</ul>
+</li>
+<li><strong>消息的格式</strong>：类型 + 数据</li>
+<li><strong>消息队列的组织</strong>：
+<ul>
+<li>基本遵循 FIFO 先进先出原则</li>
+<li><strong>消息队列的写入</strong>：增加在队列尾部</li>
+<li><strong>消息队列的读取</strong>：默认从队首获取消息</li>
+</ul>
+</li>
+<li>允许按照类型查询: <code>Recv(A, type, message)</code>
+<ul>
+<li>如 <code>type</code> 为正数，则返回第一个类型为 <code>type</code> 的消息</li>
+</ul>
+</li>
+</ul>
+<h3 id="轻量级远程方法调用-LRPC">轻量级远程方法调用 (LRPC)</h3>
+<ul>
+<li><strong>LRPC 解决的问题</strong>：
+<ul>
+<li><strong>控制流转换</strong>：Client 进程快速通知 Server 进程</li>
+<li><strong>数据传输</strong>：将栈和寄存器参数传递给 Server 进程</li>
+</ul>
+</li>
+<li><strong>控制流转换</strong>：调度导致不确定时延
+<ul>
+<li>控制流转换需要下陷到内核</li>
+<li>内核系统为了保证公平等，会在内核中根据情况进行调度
+<ul>
+<li>Client 和 Server 之间可能会执行多个不相关进程</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>迁移线程</strong>：将 Client 运行在 Server 的上下文
+<ul>
+<li>使用 Server 的代码和数据，使用 Server 的权限 (如访问某些系统资源)</li>
+<li>只切换地址空间、权限表等状态，不做调度和线程切换</li>
+</ul>
+</li>
+<li><strong>数据传输</strong>：数据拷贝的性能损失
+<ul>
+<li>大部分 Unix 类系统，经过内核的传输有(至少)两次拷贝 (Client -&gt; 内核 -&gt; Server)</li>
+<li>数据拷贝：慢（拷贝本身的性能就不快）；不可扩展（数据量增大，时延增大）</li>
+</ul>
+</li>
+<li><strong>共享参数栈和寄存器</strong>：
+<ul>
+<li><strong>参数栈 (A-stack)</strong>：
+<ul>
+<li>系统内核为每一对 LRPC 连接预先分配好一个 A-stack</li>
+<li>A-stack 被同时映射在 Client 进程和 Server 进程地址空间</li>
+<li>Client 进程只需要将参数准备到 A-stack 即可，不需要内核额外拷贝</li>
+</ul>
+</li>
+<li><strong>执行栈 (E-stack)</strong></li>
+<li><strong>共享寄存器</strong>：
+<ul>
+<li><strong>普通的上下文切换</strong>：保存当前寄存器状态 -&gt; 恢复切换到的进程寄存器状态</li>
+<li><strong>LRPC 迁移进程</strong>：直接使用当前的通用寄存器，类似函数调用中用寄存器传递参数</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>通信连接建立</strong>：
+<ul>
+<li>Server 进程通过内核注册一个服务描述符
+<ul>
+<li>对应 Server 进程内部的一个处理函数</li>
+</ul>
+</li>
+<li>内核为服务描述符预先分配好参数栈</li>
+<li>内核为服务描述符分配好调用记录，用于从 Server 进程处返回（类似栈）</li>
+<li>内核将参数栈交给 Client 进程，作为一个绑定成功的标志
+<ul>
+<li>在通信过程中，通过检查 A-stack 来判断 Client 是否正确发起通信</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>一次调用过程</strong>：
+<ol>
+<li>内核验证绑定对象的正确性，并找到正确的服务描述符</li>
+<li>内核验证参数栈和连接记录</li>
+<li>检查是否有并发调用 (可能导致 A-stack 等异常)</li>
+<li>将 Client 的返回地址和栈指针放到连接记录中</li>
+<li>将连接记录放到线程控制结构体中的栈上 (支持嵌套 LRPC 调用)</li>
+<li>找到 Server 进程的 E-stack (执行代码所使用的栈)</li>
+<li>将当前线程的栈指针设置为 Server 进程的运行栈地址</li>
+<li>将地址空间切换到 Server 进程中</li>
+<li>执行 Server 地址空间中的处理函数</li>
+</ol>
+</li>
 </ul>
 <h2 id="参考资料">参考资料</h2>
 <p>本文参考上海交通大学并行与分布式系统研究所（IPADS）操作系统课程 CS3601 华志超老师的 PPT 课件整理。</p>
