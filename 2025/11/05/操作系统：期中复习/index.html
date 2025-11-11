@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-11-05T07:44:44.000Z">
-<meta property="article:modified_time" content="2025-11-10T15:56:11.799Z">
+<meta property="article:modified_time" content="2025-11-11T08:20:28.994Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.6k words
+          3.9k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          30 mins
+          33 mins
         
       </span>
     
@@ -438,7 +438,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on November 10, 2025 pm
+                    Last updated on November 11, 2025 pm
                   
                 
               </p>
@@ -459,19 +459,26 @@
 </ul>
 <h3 id="操作系统内核架构">操作系统内核架构</h3>
 <ul>
-<li><strong>宏内核</strong>：内核所有模块运行在内核态，具备直接操作硬件的能力
+<li>
+<p><strong>宏内核</strong>：内核所有模块运行在内核态，具备直接操作硬件的能力</p>
 <ul>
 <li><strong>优点</strong>：拥有丰富的沉淀和积累</li>
-<li><strong>缺点</strong>：具有结构性缺陷
+<li><strong>缺点</strong>：
 <ul>
-<li>安全性与可靠性问题：模块之间没有很强的隔离机制，单点错误可能导致整个系统崩溃</li>
+<li>安全性与可靠性问题：模块之间没有很强的隔离机制</li>
 <li>实时性支持：系统太复杂导致无法做最坏情况时延分析</li>
 <li>系统过于庞大而阻碍创新</li>
+<li>向上向下的扩展：很难去剪裁/扩展一个宏内核系统支持从 KB 级别到 TB 级别的场景</li>
+<li>硬件异构性：很难长期支持一些定制化的方式去解决一些特定问题</li>
+<li>功能安全：无法通过汽车安全完整性认证</li>
+<li>信息安全：单点错误会导致整个系统出错</li>
+<li>确定性时延：目前依然不确定是否能支持确定性时延</li>
 </ul>
 </li>
 </ul>
 </li>
-<li><strong>微内核</strong>：
+<li>
+<p><strong>微内核</strong>：</p>
 <ul>
 <li><strong>设计原则</strong>：最小化内核功能
 <ul>
@@ -493,6 +500,45 @@
 <li>性能较差：内核中的模块交互由函数调用变成了进程间通信</li>
 <li>生态欠缺：尚未形成像 Linux 一样具有广泛开发者的社区</li>
 <li>重用问题：重用宏内核操作系统提供兼容性，带来新问题</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>外核</strong>：不提供硬件抽象；不管理资源，只管理应用</p>
+<ul>
+<li>应当由应用来尽可能地控制对硬件资源的抽象</li>
+<li>将对硬件的抽象以库（LibOS）的形式提供，不同应用可使用不同的 LibOS</li>
+<li><strong>优点</strong>：
+<ul>
+<li>OS 无抽象，能在理论上提供最优性能</li>
+<li>应用对计算有更精确的实时等控制</li>
+<li>LibOS 在用户态更易调试，调试周期更短</li>
+</ul>
+</li>
+<li><strong>缺点</strong>：
+<ul>
+<li>对计算资源的利用效率主要由应用决定</li>
+<li>定制化过多，导致维护难度增加</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>多内核</strong>：通过多内核来管理异构多核设备</p>
+<ul>
+<li><strong>思路</strong>：
+<ul>
+<li>默认的状态是划分而不是共享</li>
+<li>维持多份状态的 copy 而不是共享一份状态</li>
+<li>显式的核间通信机制</li>
+</ul>
+</li>
+<li><strong>设计</strong>：
+<ul>
+<li>在每个 core 上运行一个小内核</li>
+<li>OS 整体是一个分布式系统</li>
+<li>应用程序依然运行在 OS 之上</li>
 </ul>
 </li>
 </ul>
