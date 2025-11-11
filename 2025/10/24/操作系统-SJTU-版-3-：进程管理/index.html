@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-10-24T09:27:09.000Z">
-<meta property="article:modified_time" content="2025-11-11T00:56:11.225Z">
+<meta property="article:modified_time" content="2025-11-11T01:39:41.275Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="课程笔记">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          8.6k words
+          9.3k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          72 mins
+          78 mins
         
       </span>
     
@@ -1729,6 +1729,101 @@
 </ul>
 <h2 id="Lecture-13-同步原语">Lecture 13: 同步原语</h2>
 <h3 id="并发带来的同步问题：竞争条件">并发带来的同步问题：竞争条件</h3>
+<ul>
+<li><strong>竞争条件</strong>：
+<ul>
+<li>当 2 个或以上线程同时对共享的数据进行操作，其中至少有一个写操作</li>
+<li>该共享数据最后的结果依赖于这些线程特定的执行顺序</li>
+</ul>
+</li>
+</ul>
+<h3 id="生产者消费者与多生产者消费者">生产者消费者与多生产者消费者</h3>
+<ul>
+<li><strong>临界区（Critical Section）</strong>：任意时刻，有且只有一个线程可以进入临界区执行</li>
+<li><strong>实现临界区抽象的三个要求</strong>：
+<ul>
+<li><strong>互斥访问</strong>：在同一时刻，有且仅有一个线程可以进入临界区</li>
+<li><strong>有限等待</strong>：当一个线程申请进入临界区之后，必须在有限的时间内获得许可进入临界区而不能无限等待</li>
+<li><strong>空闲让进</strong>：当没有线程在临界区中时，必须在申请进入临界区的线程中选择一个进入临界区，保证执行临界区的进展</li>
+</ul>
+</li>
+<li><strong>同步原语（Synchronization Primitives）</strong>：一个平台（如操作系统）提供的用于帮助开发者实现线程之间同步的软件工具
+<ul>
+<li>在有限的共享资源上正确的协同工作</li>
+</ul>
+</li>
+</ul>
+<h3 id="互斥锁">互斥锁</h3>
+<ul>
+<li><strong>互斥锁（Mutual Exclusive Lock）接口</strong>：保证同时只有一个线程能够拿到锁
+<ul>
+<li><code>Lock(lock)</code>：尝试拿到锁“lock”
+<ul>
+<li>若当前没有其他线程拿着 lock，则拿到 lock，并继续往下执行</li>
+<li>若 lock 被其他线程拿着，则不断循环等待放锁（busy loop）</li>
+</ul>
+</li>
+<li><code>Unlock(lock)</code>：释放锁</li>
+</ul>
+</li>
+</ul>
+<h3 id="条件变量">条件变量</h3>
+<ul>
+<li><strong>条件变量</strong>：利用睡眠/唤醒机制，避免无意义的等待
+<ul>
+<li>让操作系统的调度器调度其他进程/线程执行</li>
+</ul>
+</li>
+<li><strong>等待的接口</strong>：<code>void cond_wait(struct cond *cond, struct lock *mutex);</code>
+<ol>
+<li>放入条件变量的等待队列</li>
+<li>阻塞自己同时释放锁：即调度器可以调度到其他线程</li>
+<li>被唤醒后重新获取锁</li>
+</ol>
+</li>
+<li><strong>唤醒的接口</strong>：<code>void cond_signal(struct cond *cond);</code>
+<ol>
+<li>检查等待队列</li>
+<li>如果有等待者则移出等待队列并唤醒</li>
+</ol>
+</li>
+</ul>
+<h3 id="信号量（Semaphore）">信号量（Semaphore）</h3>
+<ul>
+<li><strong>信号量 （PV 原语）</strong>：协调（阻塞/放行）多个线程共享有限数量的资源
+<ul>
+<li>语义上：信号量的值 cnt 记录了当前可用资源的数量</li>
+<li>提供了两个原语 P 和 V 用于等待/消耗资源</li>
+<li>P 操作：消耗资源</li>
+<li>V 操作：增加资源</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">producer</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> &#123;<br>	new_msg = produce_new(); 	<br>  sem_wait(&amp;empty_slot_sem);<br>	buffer_add(new_msg); 	<br>  sem_signal(&amp;filled_slot_sem);<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">consumer</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> &#123;<br>	sem_wait(&amp;filled_slot_sem);<br>	cur_msg = buffer_remove(); 	<br>  sem_signal(&amp;empty_slot_sem); 	<br>  handle_msg(cur_msg);<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>二元信号量</strong>：初始化的资源数量为 1
+<ul>
+<li>其计数器（counter）只有可能为 0、1 两个值</li>
+<li>同一时刻只有一个线程能够拿到资源</li>
+</ul>
+</li>
+<li><strong>计数信号量</strong>：初始化的资源数量大于 1
+<ul>
+<li>同一时刻可能有多个线程能够拿到资源</li>
+</ul>
+</li>
+</ul>
+<h3 id="读写锁">读写锁</h3>
+<ul>
+<li><strong>互斥锁</strong>：所有的线程均互斥，同一时刻只能有一个线程进入临界区
+<ul>
+<li>对于部分只读取共享数据的线程过于严厉</li>
+</ul>
+</li>
+<li><strong>读写锁</strong>：区分读者与写者，允许读者之间并行，读者与写者之间互斥</li>
+<li></li>
+</ul>
 <h2 id="参考资料">参考资料</h2>
 <p>本文参考上海交通大学并行与分布式系统研究所（IPADS）操作系统课程 CS3601 华志超老师的 PPT 课件整理。</p>
 
