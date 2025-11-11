@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-10-24T09:27:09.000Z">
-<meta property="article:modified_time" content="2025-11-07T09:38:43.417Z">
+<meta property="article:modified_time" content="2025-11-11T00:56:11.225Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="课程笔记">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          8.3k words
+          8.6k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          69 mins
+          72 mins
         
       </span>
     
@@ -438,7 +438,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on November 7, 2025 pm
+                    Last updated on November 11, 2025 am
                   
                 
               </p>
@@ -1678,6 +1678,57 @@
 </ol>
 </li>
 </ul>
+<h3 id="Binder-IPC">Binder IPC</h3>
+<ul>
+<li><strong>Binder IPC</strong>：兼具IPC数据传输的高性能与高安全
+<ul>
+<li>框架层 Binder 服务框架：发现服务，接口封装</li>
+<li>内核层 Binder 驱动：提供内核层 IPC 能力</li>
+</ul>
+</li>
+<li><strong>Binder IPC 数据传输</strong>：通过内存映射减少 IPC数据拷贝
+<ul>
+<li>发送端一次数据拷贝，接受端零次数据拷贝</li>
+</ul>
+</li>
+<li><strong>数据序列化</strong>：
+<ul>
+<li><strong>问题</strong>：复杂数据结构无法直接跨进程传输
+<ul>
+<li>数据结构嵌套</li>
+<li>指针、文件描述符等接收端无法访问</li>
+</ul>
+</li>
+<li><strong>方案</strong>：序列化与反序列化
+<ul>
+<li>序列化：将数据结构展开为一个字节串</li>
+<li>反序列化：将字节串转换为原有数据结构</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Binder IPC 数据序列化</strong>：内核辅助完成特殊对象传输
+<ul>
+<li>文件描述符、句柄等</li>
+<li>定位特殊对象位置 + 帮助接收端进程重构特殊对象</li>
+</ul>
+</li>
+<li><strong>服务端线程数量</strong>：
+<ul>
+<li>IPC 请求需要服务端线程的处理：一个 IPC Server 可能处理大量 Client 请求</li>
+<li>少量服务线程 -&gt; 无法应对高负载任务</li>
+<li>大量服务线程 -&gt; 低负载时浪费资源</li>
+</ul>
+</li>
+<li><strong>Binder IPC 线程池模型</strong>：
+<ul>
+<li>服务端设置最大线程数量</li>
+<li>内核动态创建服务线程：默认从服务线程池挑选处理线程，服务线程不足自动创建</li>
+</ul>
+</li>
+</ul>
+<h2 id="Lecture-13-同步原语">Lecture 13: 同步原语</h2>
+<h3 id="并发带来的同步问题：竞争条件">并发带来的同步问题：竞争条件</h3>
 <h2 id="参考资料">参考资料</h2>
 <p>本文参考上海交通大学并行与分布式系统研究所（IPADS）操作系统课程 CS3601 华志超老师的 PPT 课件整理。</p>
 
