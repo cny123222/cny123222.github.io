@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-11-05T07:44:44.000Z">
-<meta property="article:modified_time" content="2025-11-11T08:20:28.994Z">
+<meta property="article:modified_time" content="2025-11-12T12:37:04.844Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.9k words
+          4.3k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          33 mins
+          36 mins
         
       </span>
     
@@ -438,7 +438,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on November 11, 2025 pm
+                    Last updated on November 12, 2025 pm
                   
                 
               </p>
@@ -695,11 +695,19 @@
 </ul>
 <p><img src="el_reg.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <ul>
-<li><strong>特权级切换的时机</strong>：
+<li>
+<p><strong>系统指令</strong>：</p>
+<ul>
+<li><strong><code>mrs</code>/<code>msr</code></strong>：从系统寄存器读取值/向系统寄存器写入值</li>
+<li><strong><code>svc</code>/<code>eret</code></strong>：特权级切换和返回</li>
+</ul>
+</li>
+<li>
+<p><strong>特权级切换的时机</strong>：</p>
 <ul>
 <li><strong>同步异常</strong>：执行当前指令触发异常
 <ul>
-<li>第一类：用户程序主动发起，<code>svc</code> 指令</li>
+<li>第一类：用户程序主动发起系统调用（<code>svc</code> 指令）</li>
 <li>第二类：非主动，如用户程序意外访问空指针</li>
 </ul>
 </li>
@@ -727,9 +735,18 @@
 </li>
 <li><strong>操作系统在切换过程中的任务</strong>：将属于应用程序的 CPU 状态保存到内存中，用于之后恢复应用程序继续运行，包括：
 <ul>
-<li>通用寄存器 <code>x0</code> - <code>x30</code></li>
+<li>通用寄存器 <code>x0</code> - <code>x30</code>（只需要保存这个）</li>
 <li>特殊寄存器，主要包括 PC、SP 和 PSTATE</li>
 <li>系统寄存器，包括页表基地址寄存器等</li>
+</ul>
+</li>
+</ul>
+<h3 id="系统调用的优化">系统调用的优化</h3>
+<ul>
+<li><strong>vDSO</strong>：内核将一部分数据通过只读的形式共享给应用，允许应用直接读取</li>
+<li><strong>Flex-SC</strong>：允许应用以“向某一块内存页写入请求”的方式发起系统调用，并通过轮询来等待系统调用完成
+<ul>
+<li>内核独占一个 CPU 核心，通过轮询来等待用户的请求，然后执行系统调用，并将返回值写入同一块内存页</li>
 </ul>
 </li>
 </ul>
@@ -853,21 +870,29 @@
 </ol>
 <h2 id="页表管理">页表管理</h2>
 <ul>
-<li><strong>VMA (vm_area_struct) 结构体</strong>：记录进程已分配的虚拟内存区域</li>
-</ul>
-<p><img src="vma.png" srcset="/img/loading.gif" lazyload alt=""></p>
-<ul>
 <li>
-<p><strong>VMA 的添加方式</strong>：</p>
+<p><strong>直接映射</strong>：虚拟地址 = 物理地址 + 固定偏移</p>
 <ul>
-<li><strong>途径1</strong>：OS 在创建进程时分配，如数据、代码、栈</li>
-<li><strong>途径2</strong>：进程运行时添加 / 应用程序主动向 OS 发起系统调用，如堆、栈</li>
-<li><strong><code>mmap</code></strong>：分配一段虚拟内存区域</li>
-<li><strong>栈 VMA 的可选策略</strong>：OS 为进程初始分配固定大小的栈 VMA，在发现 stackoverflow 之后自动扩大栈 VMA</li>
+<li>操作系统使用，映射全部物理内存，在启动时填写</li>
+<li><strong>好处</strong>：能在内核地址空间中很方便地在物理地址和虚拟地址之间进行转换</li>
 </ul>
 </li>
 <li>
-<p><strong>根据 VMA 判断缺页异常的合法性</strong>:</p>
+<p><strong>立即映射</strong>：在初始化虚拟地址空间时，直接在进程页表中添加各虚拟内存区域的映射</p>
+<ul>
+<li>在进程运行期间，OS 接收到创建虚拟内存区域的请求后，立刻在页表中为该区域中添加映射</li>
+<li><strong>问题</strong>：物理内存资源浪费、非必要时延</li>
+</ul>
+</li>
+<li>
+<p><strong>延迟映射</strong>：先记录为进程分配的虚拟内存区域，但不分配物理内存</p>
+<ul>
+<li>当进程实际访问某个虚拟页时，CPU 触发缺页异常，OS 在缺页异常处理函数中添加映射</li>
+<li><strong>VMA (vm_area_struct) 结构体</strong>：Linux 中记录进程已分配的虚拟内存区域，通过平衡树数据结构组织</li>
+</ul>
+<p><img src="vma.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>根据 VMA 判断缺页异常的合法性</strong>:
 <ul>
 <li>根据 ESR 信息判断是否为缺页异常</li>
 <li>访问的虚拟地址存放在 FAR_EL1</li>
@@ -875,11 +900,23 @@
 <li>反之，则分配物理页，并在页表中添加映射</li>
 </ul>
 </li>
+<li><strong>优势</strong>：节约内存资源</li>
+<li><strong>劣势</strong>：缺页异常导致访问延迟增加</li>
+<li><strong>取得平衡的方式</strong>：采用预先映射策略、主动告知 OS 提前填写映射</li>
+</ul>
+</li>
+<li>
+<p><strong>改变虚拟内存区域的接口</strong>：</p>
+<ul>
+<li><strong><code>mmap</code></strong>：新增一段虚拟内存区域</li>
+<li><strong><code>brk</code></strong>：扩大或缩小堆区域</li>
+</ul>
+</li>
 <li>
 <p><strong>写时拷贝（copy-on-write）</strong>：</p>
 <ul>
-<li><strong>实现</strong>：修改页表项权限，在缺页时拷贝、恢复</li>
-<li><strong>典型场景 fork</strong>：节约物理内存、性能加速</li>
+<li><strong>实现</strong>：以只读的方式共享一段物理内存，在修改并触发访问权限异常时拷贝</li>
+<li><strong>优点</strong>：节约物理内存、性能加速（<code>fork</code>）</li>
 </ul>
 </li>
 </ul>
