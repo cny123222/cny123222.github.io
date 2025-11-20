@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/dip.jpg">
 <meta property="article:published_time" content="2025-10-30T02:04:58.000Z">
-<meta property="article:modified_time" content="2025-11-13T03:31:01.817Z">
+<meta property="article:modified_time" content="2025-11-20T02:28:01.461Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="知识点整理">
 <meta property="article:tag" content="数字图像处理">
@@ -322,7 +322,7 @@
         aria-expanded="true"
       >
         数字图像处理
-        <span class="list-group-count">(3)</span>
+        <span class="list-group-count">(4)</span>
         <i class="iconfont icon-arrowright"></i>
       </a>
       
@@ -361,6 +361,15 @@
         </a>
       
     
+      
+      
+        <a href="/2025/11/20/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86-5-%EF%BC%9A%E5%9B%BE%E5%83%8F%E5%A4%8D%E5%8E%9F/" title="数字图像处理(5)：图像复原"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">数字图像处理(5)：图像复原</span>
+        </a>
+      
+    
   </div>
 
         
@@ -384,7 +393,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on November 13, 2025 am
+                    Last updated on November 20, 2025 am
                   
                 
               </p>
@@ -827,7 +836,7 @@ M347 1759 V0 H263 V1759 v0 v1759 h84z"/></svg></span></span></span><span class="
 <li><strong>思想</strong>：为了解决边缘模糊问题，双边滤波在加权过程中增加了一个条件
 <ul>
 <li>一个邻域像素 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>q</mi></mrow><annotation encoding="application/x-tex">q</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span></span></span></span> 要想对中心像素 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span> 的最终值有显著贡献，必须同时满足两个条件：<strong>空间上足够近，并且像素值足够相似</strong></li>
-<li>这个原理也体现在其名称 Bilateral上，即同时考量空间域和值域</li>
+<li>这个原理也体现在其名称 Bilateral 上，即同时考量空间域和值域</li>
 <li>其关键洞见是“不跨越边缘进行平均” (No Averaging across Edges)</li>
 </ul>
 </li>
