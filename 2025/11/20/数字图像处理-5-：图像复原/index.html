@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/dip.jpg">
 <meta property="article:published_time" content="2025-11-20T02:28:41.000Z">
-<meta property="article:modified_time" content="2025-11-20T02:32:43.888Z">
+<meta property="article:modified_time" content="2025-11-20T03:07:53.071Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="知识点整理">
 <meta property="article:tag" content="数字图像处理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          72 words
+          1.4k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          1 mins
+          12 mins
         
       </span>
     
@@ -403,6 +403,143 @@
                 
                 <p>这是SJTU-CS3324《数字图像处理》课程的知识点整理系列。本文整理部分为“第 5 章：图像复原”。</p>
 <span id="more"></span>
+<h2 id="图像复原的目标与基本概念">图像复原的目标与基本概念</h2>
+<ul>
+<li><strong>图像复原的目标</strong>: 提升图像质量（可以是主观的或客观的）</li>
+<li><strong>图像增强与图像复原的区别</strong>:
+<ul>
+<li><strong>图像增强 (Image Enhancement)</strong>:
+<ul>
+<li><strong>主观性 (Subjective)</strong>: 这是一个主观的过程，目的是让处理后的图像在视觉上更适合于某个特定应用</li>
+<li><strong>无先验模型</strong>: 通常不考虑图像是如何“变坏”的，没有一个具体的退化模型</li>
+</ul>
+</li>
+<li><strong>图像复原 (Image Restoration)</strong>:
+<ul>
+<li><strong>客观性 (Objective)</strong>: 这是一个客观的过程，试图将退化（degraded）的图像恢复到其原始状态</li>
+<li><strong>基于先验模型</strong>: 图像复原试图对退化过程进行建模，需要事先知道（或估计出）图像退化的原因，例如模糊的类型、噪声的统计特性等</li>
+<li><strong>逆过程</strong>: 复原可以看作是退化过程的逆向操作 (reverse of the degradation)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="图像退化-复原过程的模型-Model-of-the-Image-Degradation-Restoration-Process">图像退化/复原过程的模型 (Model of the Image Degradation/Restoration Process)</h2>
+<p><img src="model.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h3 id="模型结构">模型结构</h3>
+<ul>
+<li><strong>退化过程 (DEGRADATION)</strong>:
+<ol>
+<li>原始的、清晰的图像 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f(x,y)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span> 首先经过一个退化函数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi></mrow><annotation encoding="application/x-tex">H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span></span></span></span>（Degradation function）的处理</li>
+</ol>
+<ul>
+<li>这个函数 H 模拟了造成图像质量下降的各种因素，最典型的是模糊</li>
+</ul>
+<ol start="2">
+<li>然后，一个与图像内容无关的噪声项 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>η</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\eta(x,y)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">η</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span>（Noise）以加性的方式被引入</li>
+<li>最终得到我们观察到的、质量下降的图像 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">g(x,y)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span></li>
+</ol>
+</li>
+<li><strong>复原过程 (RESTORATION)</strong>:
+<ul>
+<li>将退化图像 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">g(x,y)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span> 输入到一个或多个复原滤波器（Restoration filter(s)）中</li>
+<li>滤波器的目标是产生一个对原始图像的最佳估计 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>f</mi><mo>^</mo></mover><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\hat{f}(x,y)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.2079em;vertical-align:-0.25em;"></span><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9579em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span><span style="top:-3.2634em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.0833em;"><span class="mord">^</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1944em;"><span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span></li>
+<li>理想情况下，我们希望 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>f</mi><mo>^</mo></mover><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\hat{f}(x,y)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.2079em;vertical-align:-0.25em;"></span><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9579em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span></span><span style="top:-3.2634em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.0833em;"><span class="mord">^</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1944em;"><span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span> 尽可能地接近 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f(x,y)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span></li>
+</ul>
+</li>
+</ul>
+<h3 id="模型的数学表示">模型的数学表示</h3>
+<ul>
+<li><strong>通用形式</strong>:</li>
+</ul>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>g</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo><mo>=</mo><mi>H</mi><mo stretchy="false">[</mo><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo><mo stretchy="false">]</mo><mo>+</mo><mi>η</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">g(x,y) = H[f(x,y)] + \eta(x,y)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)]</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">η</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span></span></p>
+<ul>
+<li><strong>线性、位置不变 (LPI) 系统下的简化</strong>: 如果退化函数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi></mrow><annotation encoding="application/x-tex">H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span></span></span></span> 是一个线性、位置不变 (Linear, Position-Invariant, LPI) 的系统，模型可以被大大简化
+<ul>
+<li><strong>空间域 (Spatial Domain)</strong>: 当 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi></mrow><annotation encoding="application/x-tex">H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span></span></span></span> 是 LPI 系统时，退化过程在空间域表现为卷积<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>g</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo><mo>=</mo><mi>h</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo><mo>∗</mo><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo><mo>+</mo><mi>η</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">g(x,y) = h(x,y) * f(x,y) + \eta(x,y)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">h</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">η</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span></span></p>
+</li>
+<li><strong>频率域 (Frequency Domain)</strong>: 根据卷积定理，空间域的卷积等价于频率域的乘法<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>G</mi><mo stretchy="false">(</mo><mi>u</mi><mo separator="true">,</mo><mi>v</mi><mo stretchy="false">)</mo><mo>=</mo><mi>H</mi><mo stretchy="false">(</mo><mi>u</mi><mo separator="true">,</mo><mi>v</mi><mo stretchy="false">)</mo><mi>F</mi><mo stretchy="false">(</mo><mi>u</mi><mo separator="true">,</mo><mi>v</mi><mo stretchy="false">)</mo><mo>+</mo><mi>N</mi><mo stretchy="false">(</mo><mi>u</mi><mo separator="true">,</mo><mi>v</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">G(u,v) = H(u,v)F(u,v) + N(u,v)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">G</span><span class="mopen">(</span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="mopen">(</span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mclose">)</span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mopen">(</span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mopen">(</span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mclose">)</span></span></span></span></span></p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="噪声模型与噪声去除-Noise-Model-Noise-Reduction">噪声模型与噪声去除 (Noise Model &amp; Noise Reduction)</h2>
+<p>这一部分聚焦于退化模型中的噪声项 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>η</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\eta(x,y)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">η</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span>，探讨它的来源、数学模型以及如何去除它。</p>
+<h3 id="噪声的来源与分类">噪声的来源与分类</h3>
+<ul>
+<li><strong>主要来源</strong>:
+<ul>
+<li><strong>图像采集 (Image Acquisition)</strong>: 图像传感器的性能和工作环境是噪声的主要来源，例如电路噪声、传感器因光照不足或温度过高产生的噪声</li>
+<li><strong>图像传输 (Image Transmission)</strong>: 图像在信道中传输时，可能会受到电磁干扰等，从而引入噪声</li>
+</ul>
+</li>
+<li><strong>处理方法的分类</strong>:
+<ul>
+<li><strong>仅有加性噪声</strong>: 当退化只有噪声时（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi></mrow><annotation encoding="application/x-tex">H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span></span></span></span> 为单位算子），主要使用<strong>空间滤波 (Spatial Filtering)</strong> 来处理</li>
+<li><strong>周期噪声</strong>: 主要使用<strong>频率域滤波 (Frequency Domain Filtering)</strong> 来处理</li>
+</ul>
+</li>
+</ul>
+<h3 id="随机噪声的数学模型-Noise-Models-for-Random-Noise">随机噪声的数学模型 (Noise Models for Random Noise)</h3>
+<ul>
+<li><strong>基本假设</strong>:
+<ul>
+<li>噪声在空间上是独立的（周期噪声除外），并且与图像内容本身也无关</li>
+<li>噪声被看作是随机变量，其特性可以通过其概率密度函数 (Probability Density Function, PDF) 来描述</li>
+</ul>
+</li>
+</ul>
+<p><img src="pdf.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>常见的噪声 PDF 模型</strong>:
+<ul>
+<li><strong>高斯噪声 (Gaussian Noise)</strong>:
+<ul>
+<li><strong>成因</strong>:来源于电子电路噪声、传感器在光照不足或高温下的噪声</li>
+<li><strong>PDF</strong>: 呈经典的钟形曲线</li>
+</ul>
+</li>
+<li><strong>瑞利噪声 (Rayleigh Noise)</strong>:
+<ul>
+<li><strong>成因</strong>: 主要用于描述距离图像 (range imaging) 中的噪声</li>
+<li><strong>PDF</strong>: 是向右偏斜的</li>
+</ul>
+</li>
+<li><strong>爱尔兰(伽马)噪声 (Erlang (Gamma) Noise) &amp; 指数噪声 (Exponential Noise)</strong>:
+<ul>
+<li><strong>成因</strong>: 常用于描述激光成像中的噪声</li>
+<li><strong>PDF</strong>: 都是向右偏斜的，指数噪声是伽马噪声的一个特例</li>
+</ul>
+</li>
+<li><strong>均匀噪声 (Uniform Noise)</strong>:
+<ul>
+<li><strong>成因</strong>: 来源于量化过程中的误差。</li>
+<li><strong>PDF</strong>: 在某个范围内，每个灰度值出现的概率是均等的</li>
+</ul>
+</li>
+<li><strong>脉冲噪声(椒盐噪声) (Impulse (Salt-and-Pepper) Noise)</strong>:
+<ul>
+<li><strong>成因</strong>: 由快速的瞬时干扰引起</li>
+<li><strong>PDF</strong>: 只有两个值（通常是 0 和 255），表现为图像中的纯黑点（“胡椒”）和纯白点（“盐”）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="周期噪声-Periodic-Noise">周期噪声 (Periodic Noise)</h3>
+<ul>
+<li><strong>成因</strong>: 主要来源于图像采集过程中电力或机电设备的干扰</li>
+<li><strong>特性</strong>:
+<ul>
+<li><strong>空间依赖性 (Spatial Dependence)</strong>: 与随机噪声不同，周期噪声在空间上不是独立的，而是呈现周期性重复的模式</li>
+<li><strong>频域表现</strong>: 周期噪声在频率域表现得非常明显，通常是在频谱图上出现成对的、孤立的亮点（脉冲）</li>
+</ul>
+</li>
+</ul>
+<h3 id="噪声参数的估计-Estimation-of-Noise-Parameters">噪声参数的估计 (Estimation of Noise Parameters)</h3>
 <h2 id="参考资料">参考资料</h2>
 <p>本文参考上海交通大学电子工程系《数字图像处理》课程 CS3324 闵雄阔老师的 PPT 课件整理。</p>
 
