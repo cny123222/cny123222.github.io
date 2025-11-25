@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-10-24T09:27:09.000Z">
-<meta property="article:modified_time" content="2025-11-20T02:30:11.316Z">
+<meta property="article:modified_time" content="2025-11-25T00:21:21.745Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="课程笔记">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          9.3k words
+          9.6k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          78 mins
+          80 mins
         
       </span>
     
@@ -447,7 +447,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on November 20, 2025 am
+                    Last updated on November 25, 2025 am
                   
                 
               </p>
@@ -1808,8 +1808,8 @@
 </ul>
 </li>
 </ul>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">producer</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> &#123;<br>	new_msg = produce_new(); 	<br>  sem_wait(&amp;empty_slot_sem);<br>	buffer_add(new_msg); 	<br>  sem_signal(&amp;filled_slot_sem);<br>&#125;<br></code></pre></td></tr></table></figure>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">consumer</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> &#123;<br>	sem_wait(&amp;filled_slot_sem);<br>	cur_msg = buffer_remove(); 	<br>  sem_signal(&amp;empty_slot_sem); 	<br>  handle_msg(cur_msg);<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">producer</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> &#123;<br>	new_msg = produce_new(); 	<br>  sem_wait(&amp;empty_slot_sem);  <span class="hljs-comment">// 消耗empty_slot</span><br>	buffer_add(new_msg); 	<br>  sem_signal(&amp;filled_slot_sem);  <span class="hljs-comment">// 增加filled_slot</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">consumer</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> &#123;<br>	sem_wait(&amp;filled_slot_sem);  <span class="hljs-comment">// 消耗filled_slot</span><br>	cur_msg = buffer_remove(); 	<br>  sem_signal(&amp;empty_slot_sem);  <span class="hljs-comment">// 增加empty_slot</span><br>  handle_msg(cur_msg);<br>&#125;<br><br></code></pre></td></tr></table></figure>
 <ul>
 <li><strong>二元信号量</strong>：初始化的资源数量为 1
 <ul>
@@ -1831,7 +1831,33 @@
 </ul>
 </li>
 <li><strong>读写锁</strong>：区分读者与写者，允许读者之间并行，读者与写者之间互斥</li>
-<li></li>
+</ul>
+<p><img src="read_write.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h3 id="不同同步原语之间的比较">不同同步原语之间的比较</h3>
+<ul>
+<li><strong>互斥锁/条件变量/信号量</strong>：
+<ul>
+<li><strong>互斥锁</strong>与<strong>二元信号量</strong>功能类似，但抽象不同：
+<ul>
+<li>互斥锁有拥有者的概念，一般同一个线程拿锁/放锁</li>
+<li>信号量为资源协调，一般一个线程 signal，另一个线程 wait</li>
+</ul>
+</li>
+<li><strong>条件变量</strong>用于解决不同问题（睡眠/唤醒），需要搭配<strong>互斥锁</strong>使用
+<ul>
+<li>搭配<strong>互斥锁+计数器</strong>可以实现与<strong>信号量</strong>相同的功能</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>互斥锁 vs 读写锁</strong>：
+<ul>
+<li>接口不同：读写锁区分读者与写者</li>
+<li>针对场景不同：获取更多程序语义，标明只读代码段，达到更好性能</li>
+<li>读写锁在读多写少场景中可以显著提升读者并行度，即允许多个读者同时执行读临界区</li>
+<li>只用写者锁，则与互斥锁的语义基本相同</li>
+</ul>
+</li>
 </ul>
 <h2 id="参考资料">参考资料</h2>
 <p>本文参考上海交通大学并行与分布式系统研究所（IPADS）操作系统课程 CS3601 华志超老师的 PPT 课件整理。</p>
