@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/dip.jpg">
 <meta property="article:published_time" content="2025-11-20T02:28:41.000Z">
-<meta property="article:modified_time" content="2025-11-20T06:31:54.862Z">
+<meta property="article:modified_time" content="2025-11-27T03:03:55.542Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="知识点整理">
 <meta property="article:tag" content="数字图像处理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          4.8k words
+          6.4k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          41 mins
+          54 mins
         
       </span>
     
@@ -393,7 +393,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on November 20, 2025 pm
+                    Last updated on November 27, 2025 am
                   
                 
               </p>
@@ -745,11 +745,59 @@ c-10,0,-16.667,5,-20,15z M410 15 H367 v585 v600 v585 h43z"/></svg></span></span>
 其中 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span> 是拉格朗日乘子，需要迭代调整以满足约束条件，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mo stretchy="false">(</mo><mi>u</mi><mo separator="true">,</mo><mi>v</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">Q(u,v)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">Q</span><span class="mopen">(</span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mclose">)</span></span></span></span> 是拉普拉斯算子的傅里叶变换</li>
 </ul>
 <h2 id="图像重建-Image-Reconstruction">图像重建 (Image Reconstruction)</h2>
-<h3 id="基本概念">基本概念</h3>
+<h3 id="基本概念与方法">基本概念与方法</h3>
 <ul>
-<li><strong>核心问题</strong>: 图像重建的目标是从物体的“投影” (Projections) 数据来重建物体内部的“切片” (Slice) 图像</li>
-<li><strong>CT 简介</strong>: CT是一种革命性的医学成像技术，它从多个不同角度发射 X 射线穿过身体，并测量穿透后的射线强度，然后通过计算机算法来重建身体内部的横截面图像</li>
-<li><strong>CT 工作流程</strong>:
+<li>
+<p><strong>核心问题</strong>: 图像重建的目标是从物体的“投影” (Projections) 数据来重建物体内部的切片 (Slice) 图像</p>
+</li>
+<li>
+<p><strong>基本方法</strong>: 反投影 (Back-Projection)</p>
+<ul>
+<li><strong>获取投影</strong>: 在一个特定角度，用一束平行的射线穿过物体，探测器在另一侧测量每条射线的衰减，形成一个一维的吸收剖面</li>
+<li><strong>反投影操作</strong>: 将这个一维的吸收剖面数据“涂抹”回一个二维的图像空间
+<ul>
+<li>具体来说，将探测器上某个点的值，赋给穿过该点的整条射线路径上的所有像素</li>
+</ul>
+</li>
+<li><strong>多角度累加</strong>: 旋转射线源和探测器，获取一个新的投影，并将其反投影结果与之前的图像进行累加</li>
+<li><strong>结果演进</strong>: 随着投影角度的增加，重建图像中物体的位置和形状会越来越清晰</li>
+</ul>
+</li>
+<li>
+<p><strong>物理与数学原理</strong>:</p>
+<ul>
+<li><strong>X 射线衰减</strong>: X 射线的能量在穿过物体时会呈指数级衰减</li>
+<li><strong>密度定义</strong>: 为了将乘性的衰减关系转换为更易于处理的加性关系，定义密度 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>θ</mi></msub><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">P_\theta(t)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">θ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">t</span><span class="mclose">)</span></span></span></span> 为初始射线强度与透射后强度之比的对数</li>
+</ul>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>P</mi><mi>θ</mi></msub><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo><mo>=</mo><mi>log</mi><mo>⁡</mo><mfrac><msub><mi>I</mi><mn>0</mn></msub><mrow><mi>I</mi><mo stretchy="false">(</mo><mi>t</mi><mo separator="true">,</mo><mi>θ</mi><mo stretchy="false">)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">P_\theta(t) = \log \frac{I_0}{I(t, \theta)}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">θ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">t</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.2963em;vertical-align:-0.936em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mopen">(</span><span class="mord mathnormal">t</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span><span class="mclose">)</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<ul>
+<li><strong>线积分</strong>: 经过对数变换后，沿一条射线路径的总密度（即总衰减），等于该路径上每一点衰减系数的线积分</li>
+<li><strong>重建目标</strong>: 图像重建就是利用从不同角度 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span></span></span></span> 和位置 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6151em;"></span><span class="mord mathnormal">t</span></span></span></span> 测量到的投影数据，来反向求解出代表组织内部衰减系数分布的切片图像 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f(x, y)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span></li>
+<li><strong>Radon 变换</strong>: 一个函数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f(x,y)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span> 在不同角度下的线积分的集合，在数学上被称为 Radon 变换，CT 重建的本质就是求解 Radon 变换的逆变换</li>
+</ul>
+</li>
+<li>
+<p><strong>病态问题 (Ill-conditioned Problem)</strong>: 图像重建是一个数学上的病态问题</p>
+<ul>
+<li>仅有有限的投影数据，可能无法唯一确定原始的图像 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f(x,y)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span></li>
+<li>需要引入更多的扫描线或其他先验约束（如平滑性）来获得一个稳定、合理的解</li>
+</ul>
+</li>
+<li>
+<p><strong>主要重建方法</strong>:</p>
+<ul>
+<li><strong>代数重建技术 (Algebra Reconstruction Techniques)</strong>: 第一代 CT 使用的方法</li>
+<li><strong>傅里叶变换技术 (Fourier Transform Techniques)</strong>: 在理论上很直观，但在实践中不可行</li>
+<li><strong>滤波反投影 (Filtered Back-Projection)</strong>: 当前的技术标准，通过在反投影之前，先对每一组一维投影数据进行一次一维滤波，有效地消除了简单反投影带来的模糊和伪影，能够重建出高质量的图像</li>
+</ul>
+</li>
+</ul>
+<h3 id="医学成像技术简介-Medical-Imaging-Techniques">医学成像技术简介 (Medical Imaging Techniques)</h3>
+<h4 id="CT-电子计算机断层扫描-Computerized-Tomography">CT (电子计算机断层扫描 - Computerized Tomography)</h4>
+<ul>
+<li><strong>基本原理</strong>: 通过从多个角度发射 X 射线穿过身体，并测量穿透后的射线强度，然后通过计算机算法来重建身体内部的横截面图像</li>
+<li><strong>工作流程</strong>:
 <ol>
 <li>一个 X 射线源和一个探测器阵列环绕着被检测物体（病人）</li>
 <li>X 射线源发射一束窄射线，穿过物体，被另一端的探测器接收</li>
@@ -758,6 +806,100 @@ c-10,0,-16.667,5,-20,15z M410 15 H367 v585 v600 v585 h43z"/></svg></span></span>
 <li>使用断层扫描算法（Tomography algorithms）处理这些投影数据，重建出代表物体内部一个“切片”的图像</li>
 <li>通过在垂直于扫描环的方向上移动物体，可以获得一系列的切片图像，最终构成三维的内部结构</li>
 </ol>
+</li>
+<li><strong>功能</strong>:
+<ul>
+<li>可以精确显示肿瘤的位置、形状，以及它是实性的还是囊性的</li>
+<li>能为判断肿瘤是否为恶性提供线索，但最终确诊仍需活检（biopsy）</li>
+</ul>
+</li>
+<li><strong>扫描流程</strong>:
+<ul>
+<li>通常在扫描前需要服用或注射造影剂 (contrast medium)</li>
+<li>病人躺在可移动的扫描床上，扫描床穿过一个环形的扫描仪，扫描仪会围绕病人旋转</li>
+<li>一次扫描通常耗时 15-20 分钟</li>
+</ul>
+</li>
+<li><strong>缺点</strong>:
+<ul>
+<li>对于尺寸小于 2 厘米的肿瘤，CT 的检测并不可靠</li>
+<li>部分病人可能会觉得造影剂口感不佳</li>
+</ul>
+</li>
+</ul>
+<h4 id="MRI-核磁共振成像-Magnetic-Resonance-Imaging">MRI (核磁共振成像 - Magnetic Resonance Imaging)</h4>
+<ul>
+<li><strong>基本原理</strong>: MRI 不使用 X 射线，而是利用强大的磁场
+<ul>
+<li>强磁场使体内的原子（主要是氢原子）发生响应，设备检测这些原子发出的射频信号，并经过计算机分析处理后生成图像</li>
+</ul>
+</li>
+<li><strong>功能与优势</strong>:
+<ul>
+<li>不使用 X 射线，避免了辐射暴露问题</li>
+<li>在许多组织中，MRI 生成的图像和细节比 CT 更清晰，尤其是在软组织结构的成像方面</li>
+<li>可以通过调整射频波和磁场来高亮显示不同类型的组织</li>
+<li>可以在不移动病人的情况下，改变成像的平面（如横断面、矢状面、冠状面）</li>
+<li>MRI 使用的造影剂不含碘</li>
+</ul>
+</li>
+<li><strong>扫描流程</strong>:
+<ul>
+<li>病人躺在扫描床上，滑入一个狭窄的圆筒状设备中</li>
+<li>扫描过程中会听到巨大的噪声</li>
+<li>扫描通常持续约 30 分钟</li>
+</ul>
+</li>
+<li><strong>缺点</strong>:
+<ul>
+<li>在某些组织（如骨骼）的成像上，清晰度不如 CT</li>
+<li>难以区分炎症、疤痕组织和肿瘤</li>
+<li>体内有金属植入物（如心脏起搏器）的病人不能使用</li>
+<li>对有幽闭恐惧症的病人来说体验不佳</li>
+<li>比 CT 更昂贵</li>
+</ul>
+</li>
+</ul>
+<h3 id="PET-正电子发射断层扫描-Positron-Emission-Tomography">PET (正电子发射断层扫描 - Positron Emission Tomography)</h3>
+<ul>
+<li><strong>基本原理</strong>: PET 是一种功能成像技术，它使用放射性的正电子示踪剂来检测身体内不同区域的<strong>代谢和化学活动</strong>的差异
+<ul>
+<li>代谢活动增强的区域会在彩色的PET图像上显示为“热点”</li>
+</ul>
+</li>
+<li><strong>与 CT/MRI 的区别</strong>:
+<ul>
+<li>CT 和 MRI 关注的是身体的结构 (structures)</li>
+<li>PET 关注的是身体的功能 (function)</li>
+</ul>
+</li>
+<li><strong>功能与优势</strong>:
+<ul>
+<li>由于癌细胞通常比正常细胞分裂和代谢更快，它们在 PET 扫描上会表现为高代谢活性区域</li>
+<li>能够探测到非常微小的活性区域，远小于 CT 和 MRI 的探测极限。</li>
+<li>非常擅长区分几乎没有代谢活动的疤痕组织和高代谢的肿瘤组织</li>
+</ul>
+</li>
+<li><strong>扫描流程</strong>:
+<ul>
+<li>病人躺在环形的扫描仪上。</li>
+<li>通过吸入或静脉注射的方式，将具有短暂半衰期的放射性示踪剂注入体内</li>
+<li>整个过程可能需要 30 分钟到两小时</li>
+</ul>
+</li>
+<li><strong>缺点</strong>:
+<ul>
+<li>图像清晰度不如 CT 和 MRI，有时难以精确定位高活性区域。</li>
+<li>由于炎症区域在 PET 上也会显示为“热点”，大量的炎症可能会掩盖其他的异常活动</li>
+<li>对于分化程度较高的肿瘤，由于其代谢活性较低，PET 的检测效果会变差</li>
+<li>非常昂贵，直到最近主要还被用作研究工具</li>
+</ul>
+</li>
+<li><strong>CT-PET</strong>: 一种结合了 CT 和 PET 技术的新型扫描方式，将反映功能的PET图像和反映解剖结构的CT图像叠加在一起
+<ul>
+<li>获得了 CT 提供的精确解剖细节</li>
+<li>获得了 PET 提供的发现微小癌细胞团的能力</li>
+</ul>
 </li>
 </ul>
 <h2 id="参考资料">参考资料</h2>
