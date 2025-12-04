@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/dip.jpg">
 <meta property="article:published_time" content="2025-10-28T11:04:44.000Z">
-<meta property="article:modified_time" content="2025-11-06T02:38:12.168Z">
+<meta property="article:modified_time" content="2025-12-04T07:08:05.556Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="知识点整理">
 <meta property="article:tag" content="数字图像处理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.3k words
+          4k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          19 mins
+          34 mins
         
       </span>
     
@@ -402,7 +402,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on November 6, 2025 am
+                    Last updated on December 4, 2025 pm
                   
                 
               </p>
@@ -412,40 +412,210 @@
                 
                 <p>这是SJTU-CS3324《数字图像处理》课程的知识点整理系列。本文整理部分为“第 2 章：数字图像基础”。</p>
 <span id="more"></span>
-<h2 id="数字图像处理基础">数字图像处理基础</h2>
+<h2 id="数字图像处理基础-Basics-of-Digital-Image-Processing">数字图像处理基础 (Basics of Digital Image Processing)</h2>
+<h3 id="数字图像-Digital-Image">数字图像 (Digital Image)</h3>
+<p>这一部分的核心是回答问题：<strong>什么是数字图像</strong>。它从最简单的灰度图开始，将“图像”的概念扩展到多维度、多模态。</p>
 <ul>
-<li><strong>数字图像的分类</strong>：
+<li><strong>1. 灰度图像 (Gray Scale Image)</strong>:
 <ul>
-<li><strong>灰度图像</strong>（Gray Scale Image）：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo>=</mo><mi>f</mi><mo stretchy="false">(</mo><mi>m</mi><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">I = f(m, n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal">m</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≤</mo><mi>I</mi><mo>≤</mo><mn>255</mn></mrow><annotation encoding="application/x-tex">0 \le I \le 255</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7804em;vertical-align:-0.136em;"></span><span class="mord">0</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8193em;vertical-align:-0.136em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">255</span></span></span></span></li>
-<li><strong>二值图像</strong>（Binary Image）：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>m</mi><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo><mo>∈</mo><mo stretchy="false">{</mo><mn>0</mn><mo separator="true">,</mo><mn>1</mn><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">f(m, n) \in \{0, 1\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal">m</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">1</span><span class="mclose">}</span></span></span></span></li>
-<li><strong>彩色图像</strong>（Color Image）：RGB 模式下，由 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mi>r</mi></msub><mo stretchy="false">(</mo><mi>m</mi><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f_r(m, n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.1076em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">m</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mi>g</mi></msub><mo stretchy="false">(</mo><mi>m</mi><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f_g(m, n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0361em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.1076em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">m</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mi>b</mi></msub><mo stretchy="false">(</mo><mi>m</mi><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f_b(m, n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.1076em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">m</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span> 组成</li>
-<li><strong>不可见光的图像</strong>（Image from Invisible light）：伽马射线、X 射线、紫外线、红外线、微波、无线电波</li>
-<li><strong>光谱图像</strong>（Spectrum Image）：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mi>k</mi></msub><mo stretchy="false">(</mo><mi>m</mi><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo><mo separator="true">,</mo><mi>k</mi><mo>=</mo><mn>1</mn><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">f_k(m, n), k = 1, \dots, K</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.1076em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">m</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span></span></span></span>，飞机/卫星生成，用于物体识别、图像匹配</li>
-<li><strong>图像序列（视频）</strong>（Images sequence，Video）</li>
-<li><strong>立体图像</strong>（Stereovision）：左视角 + 右视角，可用于 3D 重建</li>
-<li><strong>射线断层图像</strong>（Tomogram Image）：用于图像重建、CT</li>
-<li><strong>带水印的图像</strong>（Image with watermark）</li>
+<li><strong>思想</strong>: 图像最基本的形式，只包含亮度（强度）信息，没有颜色</li>
+<li><strong>数学表示</strong>:
+<ul>
+<li>二维连续函数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo>=</mo><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">I = f(x,y)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span>，其中 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(x,y)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span> 是空间坐标，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi></mrow><annotation encoding="application/x-tex">I</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span></span></span></span> 是亮度</li>
+<li>经过采样和量化后，变为离散函数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo>=</mo><mi>f</mi><mo stretchy="false">(</mo><mi>m</mi><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">I = f(m,n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal">m</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>，其中 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>m</mi><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(m,n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">m</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span> 是像素的整数坐标</li>
 </ul>
 </li>
-<li><strong>数字图像处理</strong>：
+<li><strong>特点</strong>:
 <ul>
-<li><strong>底层处理</strong>：像素级别
-<ul>
-<li><strong>图像增强</strong>：锐化、去噪、descratch、同态滤波（homomorphic filtering）</li>
-<li><strong>图像复原、图像压缩、图像分割</strong></li>
+<li><strong>灰度级 (Gray level)</strong>: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi></mrow><annotation encoding="application/x-tex">I</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span></span></span></span> 的取值范围，通常是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>0</mn><mo separator="true">,</mo><mn>255</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[0, 255]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">255</span><span class="mclose">]</span></span></span></span>，对应 8 位深度</li>
+<li><strong>像素 (Pixel / Pel)</strong>: 组成数字图像的基本单元</li>
 </ul>
 </li>
-<li><strong>中高层处理</strong>：图像分析、图像识别、图像理解、模式识别、计算机视觉</li>
 </ul>
 </li>
-<li><strong>图像通信系统</strong>：</li>
+<li><strong>2. 二值图像 (Binary Image)</strong>:
+<ul>
+<li><strong>思想</strong>: 灰度图像的一个极端特例，只有两种可能的像素值</li>
+<li><strong>数学表示</strong>: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>m</mi><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo><mo>∈</mo><mo stretchy="false">{</mo><mn>0</mn><mo separator="true">,</mo><mn>1</mn><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">f(m,n) \in \{0, 1\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal">m</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">1</span><span class="mclose">}</span></span></span></span>，其中 0 代表黑色，1 代表白色</li>
+<li><strong>用途</strong>: 常用于打印机、报纸、文字识别，或在图像处理中作为掩模 (Mask) 使用</li>
 </ul>
+</li>
+<li><strong>3. 彩色图像 (Color Image)</strong>:
+<ul>
+<li><strong>思想</strong>: 模拟人眼对不同波长光线的感知，从而表示颜色信息</li>
+<li><strong>特点</strong>:
+<ul>
+<li>不同波长的光产生不同的颜色感受（如波长 555nm 的光对应绿色）</li>
+<li>通常使用 RGB 色彩模型 (RGB color model)，由红®、绿(G)、蓝(B)三个分量图像叠加而成</li>
+</ul>
+</li>
+<li><strong>数学表示</strong>: 由三个独立的二维函数构成：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mi>r</mi></msub><mo stretchy="false">(</mo><mi>m</mi><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f_r(m,n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.1076em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">m</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mi>g</mi></msub><mo stretchy="false">(</mo><mi>m</mi><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f_g(m,n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0361em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.1076em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">m</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mi>b</mi></msub><mo stretchy="false">(</mo><mi>m</mi><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f_b(m,n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.1076em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">b</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">m</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></li>
+</ul>
+</li>
+<li><strong>4. 不可见光图像 (Image from Invisible Light)</strong>:
+<ul>
+<li><strong>思想</strong>: “图像”的概念不局限于人眼可见的光谱，任何能够以二维（或更高维）形式表示的电磁波谱数据都可以是图像</li>
+<li><strong>例子</strong>:
+<ul>
+<li>伽马射线成像 (γ-ray imaging)、X 射线成像 (X-ray imaging)、紫外波段 (Ultraviolet band)</li>
+<li>红外波段 (Infrared band)、微波波段 (Microwave band)、无线电波段 (Radio band)</li>
+</ul>
+</li>
+<li><strong>用途</strong>: 广泛应用于医学成像、无损检测、遥感、天文学等领域</li>
+</ul>
+</li>
+<li><strong>5. 光谱图像 (Spectrum Image)</strong>:
+<ul>
+<li><strong>思想</strong>: 将彩色图像的 3 个通道，扩展到数十、数百甚至数千个通道</li>
+<li><strong>数学表示</strong>: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mi>k</mi></msub><mo stretchy="false">(</mo><mi>m</mi><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f_k(m,n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.1076em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">m</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>，其中 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>=</mo><mn>1</mn><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">k=1, \dots, K</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span></span></span></span>，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span> 代表不同的波段 (wave band)</li>
+<li><strong>特点</strong>:
+<ul>
+<li>每个波段 k 对应一张独立的分量图像 (component image)</li>
+<li>能够获取物体非常精细的光谱特征</li>
+</ul>
+</li>
+<li><strong>用途</strong>: 飞机/卫星遥感、目标分类识别 (Object class recognition)、图像配准 (Image registration)。</li>
+</ul>
+</li>
+<li><strong>6. 图像序列 (Image Sequence / Video)</strong>:
+<ul>
+<li><strong>思想</strong>: 在二维空间图像的基础上，增加时间维度。</li>
+<li><strong>定义</strong>: 视频就是按一定速率连续播放的一系列静态图像（帧）</li>
+<li><strong>特点</strong>: 电影 24 帧/秒 (frames/second)、电视 25 或 30 帧/秒</li>
+<li><strong>数学表示</strong>: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span> 代表时间索引（帧号）
+<ul>
+<li><strong>灰度视频</strong>: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mi>k</mi></msub><mo stretchy="false">(</mo><mi>m</mi><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f_k(m,n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.1076em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">m</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></li>
+<li><strong>彩色视频</strong>: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mi>k</mi></msub><mo stretchy="false">(</mo><mi>m</mi><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">R_k(m,n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0077em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">m</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>G</mi><mi>k</mi></msub><mo stretchy="false">(</mo><mi>m</mi><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">G_k(m,n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">G</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">m</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mi>k</mi></msub><mo stretchy="false">(</mo><mi>m</mi><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">B_k(m,n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">m</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>7. 立体视觉 (Stereovision)</strong>:
+<ul>
+<li><strong>思想</strong>: 模拟人类的双眼视觉，通过从两个或多个不同视点拍摄同一场景，来获取场景的深度和三维信息</li>
+<li><strong>实现</strong>:
+<ul>
+<li><strong>左视图 + 右视图 (Left view + right view)</strong>: 这是最基本的形式，通过匹配左右视图中的对应点，可以计算出深度</li>
+<li><strong>单视图 + 深度图 (Single view + depth map)</strong>: 一种更紧凑的 3D 表示，例如 Kinect 等深度相机可以直接获取</li>
+</ul>
+</li>
+<li><strong>用途</strong>: 三维重建、自动驾驶车辆（ALV）的环境感知</li>
+</ul>
+</li>
+<li><strong>8. 断层扫描图像 (Tomogram Image)</strong>
+<ul>
+<li><strong>思想</strong>: 图像内容并非直接拍摄，而是通过图像重建 (Image Reconstruction) 算法，从一系列投影数据中计算出来的物体“切片”</li>
+<li><strong>用途</strong>: 医学成像，最典型的应用是 CT (Computerized Tomography)</li>
+</ul>
+</li>
+<li><strong>9. 数字水印图像 (Image with Watermark)</strong>:
+<ul>
+<li><strong>思想</strong>: 将一些隐藏的信息（水印）嵌入到原始图像中，用于版权保护等目的</li>
+<li><strong>特点</strong>: 利用人类视觉系统 (HVS) 的特性，使得嵌入的水印在视觉上是不可见的 (Invisible differences)</li>
+<li><strong>用途</strong>: 知识产权保护 (Intellectual Property Protection)</li>
+</ul>
+</li>
+</ul>
+<h3 id="数字图像处理-Digital-Image-Processing">数字图像处理 (Digital Image Processing)</h3>
+<p>这一部分将图像处理任务根据其输入、输出和复杂程度，划分为三个层次。</p>
+<ul>
+<li><strong>低级处理 (Low-level Processing)</strong>:
+<ul>
+<li><strong>定义</strong>: 输入是图像，输出也是图像</li>
+<li><strong>特点</strong>:
+<ul>
+<li>主要在<strong>像素级 (Pixel level)</strong> 进行操作</li>
+<li>通常不需要对图像内容进行理解</li>
+</ul>
+</li>
+<li><strong>主要任务</strong>:
+<ul>
+<li><strong>图像增强 (Image Enhancement)</strong>: 如锐化、去噪、同态滤波等</li>
+<li><strong>图像复原 (Image Restoration)</strong>、<strong>图像压缩 (Image Compression)</strong>、<strong>图像分割 (Image Segmentation)</strong></li>
+</ul>
+</li>
+<li><strong>难点</strong>:
+<ul>
+<li><strong>实时性要求 (Real time)</strong>: 处理算法必须足够快，能够在视频帧率或交互式应用所要求的时间（毫秒级）内完成计算</li>
+<li><strong>对邻域区域的处理 (Adjacent region)</strong>: 这类操作需要访问以当前像素为中心的多个周边像素，这比只处理单个像素在内存访问和计算上都更复杂</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>中/高级处理 (Middle-level &amp; High-level Processing)</strong>:
+<ul>
+<li><strong>定义</strong>:
+<ul>
+<li><strong>中级处理</strong>: 输入是图像，输出是图像的属性或特征（如边缘、轮廓、对象描述）</li>
+<li><strong>高级处理</strong>: 输入是中级处理得到的特征，输出是对场景的理解或决策</li>
+</ul>
+</li>
+<li><strong>主要任务</strong>:
+<ul>
+<li><strong>图像分析 (Image Analysis)</strong>、<strong>图像识别 (Image Recognition)</strong>、<strong>图像理解 (Image Comprehension)</strong></li>
+<li><strong>模式识别 (Pattern Recognition)</strong>、<strong>计算机视觉 (Computer Vision)</strong></li>
+</ul>
+</li>
+<li><strong>难点</strong>: 计算机本身没有智能 (Computer has no intelligence)，如何让机器像人一样去“理解”图像内容是根本性的挑战</li>
+</ul>
+</li>
+</ul>
+<h3 id="图像通信系统-Image-Communication-System">图像通信系统 (Image Communication System)</h3>
+<p>这一部分通过一个框架图，展示了一次完整的图像/视频从采集到最终被感知的全过程，帮助我们理解信息在各个环节可能发生的变化。</p>
 <p><img src="system.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>整个系统可以被看作是由三大部分组成的：发送端、信道、接收端。</p>
 <ul>
-<li><strong>图像质量问题</strong>：
+<li><strong>自然视频发送端 (The Natural Video Transmitter)</strong>:
 <ul>
-<li><strong>客观评价</strong>：PSNR、MSE</li>
-<li><strong>主观评价</strong>：</li>
+<li><strong>自然视频信号 (Natural video signal)</strong>: 现实世界中的连续光信号</li>
+<li><strong>感知与数字化 (Sensing &amp; digitizing)</strong>: 通过摄像机等传感器捕捉光信号，并将其数字化（采样和量化），转换为数字信号</li>
+</ul>
+</li>
+<li><strong>视频信道 (The Video Channel)</strong>:
+<ul>
+<li><strong>前端数字处理 (All front-end digital processing)</strong>: 在传输前对数字信号进行处理，最典型的就是信源编码（图像压缩）</li>
+<li><strong>经典信道 (classical channel)</strong>: 指的是存储媒介（如硬盘、光盘）或传输网络（如互联网、无线网络），数据在这个环节可能会引入错误或丢失</li>
+<li><strong>后端数字处理 (All back-end digital processing)</strong>: 接收到数据后进行的处理，最典型的就是信源解码（图像解压）和纠错</li>
+</ul>
+</li>
+<li><strong>自然视频接收端 (The Natural Video Receiver)</strong>:
+<ul>
+<li><strong>映射与显示 (Mapping &amp; display)</strong>: 将解码后的数字信号转换为可以在显示器上显示的模拟信号</li>
+<li><strong>感知视频信号 (Perceptual video signal)</strong>: 最终的信号被人眼的视觉系统接收，并在大脑中形成感知</li>
+</ul>
+</li>
+</ul>
+<h3 id="图像质量问题-Image-Quality-Issues">图像质量问题 (Image Quality Issues)</h3>
+<p>这一部分引入了图像质量评价的概念，并指出了其复杂性。</p>
+<ul>
+<li><strong>核心问题</strong>：如何评价图像质量
+<ul>
+<li><strong>评价的复杂性</strong>: 图像质量的最终裁判是人，而人类的感知机制 (human perception mechanism) 是极其复杂的</li>
+<li><strong>HVS 的重要性</strong>: 任何有效的图像质量评价体系，都必须考虑到人类视觉系统 (Human Visual System, HVS) 的认知特性 (Cognitive properties)</li>
+</ul>
+</li>
+<li><strong>图像质量评价的方法分类</strong>:
+<ul>
+<li><strong>客观图像质量评价 (Objective Image Quality Assessment)</strong>:
+<ul>
+<li><strong>思想</strong>: 使用数学公式来计算图像的失真程度。</li>
+<li><strong>常用指标</strong>: PSNR (峰值信噪比, Peak Signal Noise Ratio)、MSE (均方误差, Mean Square Error)</li>
+<li><strong>优点</strong>: 计算简单、可重复、客观</li>
+<li><strong>缺点</strong>: 常常与人的主观感受不完全匹配</li>
+</ul>
+</li>
+<li><strong>主观图像质量评价 (Subjective Image Quality Assessment)</strong>:
+<ul>
+<li><strong>思想</strong>: 由真人观察者对图像质量进行打分</li>
+<li><strong>常用指标</strong>: MOS (平均主观意见分, Mean Opinion Score)
+<ul>
+<li>让一组观察者对图像质量进行评分，然后取平均值</li>
+</ul>
+</li>
+<li><strong>优点</strong>: 最可靠，是评价图像质量的金标准</li>
+<li><strong>缺点</strong>: 成本高、耗时长、过程复杂、结果易受环境和观察者状态影响</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
