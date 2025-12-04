@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/pl.png">
 <meta property="article:published_time" content="2025-11-26T05:12:04.000Z">
-<meta property="article:modified_time" content="2025-12-03T13:05:41.787Z">
+<meta property="article:modified_time" content="2025-12-04T15:35:08.590Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="课程笔记">
 <meta property="article:tag" content="知识点整理">
@@ -249,7 +249,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          300 words
+          2.6k words
         
       </span>
     
@@ -260,7 +260,7 @@
         
         
         
-          3 mins
+          22 mins
         
       </span>
     
@@ -367,7 +367,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on December 3, 2025 pm
+                    Last updated on December 4, 2025 pm
                   
                 
               </p>
@@ -377,29 +377,287 @@
                 
                 <p>本文为 SJTU-CS2612 程序语言与编译原理课程的<strong>期末复习</strong>。</p>
 <span id="more"></span>
-<h2 id="Lecture-1-词法分析">Lecture 1: 词法分析</h2>
-<h3 id="1">1.</h3>
-<h2 id="Lecture-2-语法分析">Lecture 2: 语法分析</h2>
-<h2 id="Lecture-3-简单编译器">Lecture 3: 简单编译器</h2>
-<h2 id="Lecture-4-程序语言语法的-Coq-定义">Lecture 4: 程序语言语法的 Coq 定义</h2>
-<h2 id="Lecture-5-表达式指称语义">Lecture 5: 表达式指称语义</h2>
-<h2 id="Lecture-6-利用集合与关系定义指称语义">Lecture 6: 利用集合与关系定义指称语义</h2>
-<h2 id="Lecture-7-霍尔逻辑">Lecture 7: 霍尔逻辑</h2>
-<h2 id="Lecture-8-用单子表示计算">Lecture 8: 用单子表示计算</h2>
+<h2 id="Lecture-1：词法分析">Lecture 1：词法分析</h2>
+<h3 id="1-词法分析的基本知识">1. 词法分析的基本知识</h3>
+<ul>
+<li><strong>核心任务</strong>：词法分析是编译器前端的第一步，它的主要任务是将源代码的字符串切分成一个个有意义的标记 (token)</li>
+<li><strong>标记的分类</strong>：根据标记在语法中承担的功能，可以将它们分为不同的类别，以 While+DB 语言为例
+<ul>
+<li><strong>运算符</strong>：<code>+ - * / % &lt; &lt;= == != &gt;= &gt; ! &amp;&amp; ||</code></li>
+<li><strong>赋值符号</strong>：<code>=</code></li>
+<li><strong>间隔符</strong>：<code>( ) &#123; &#125; ;</code></li>
+<li><strong>自然数</strong>：<code>0 1 2 ...</code>（归为一类 <code>TOK_NAT</code>）</li>
+<li><strong>变量名</strong>：<code>a0 __x ...</code>（归为一类 <code>TOK_IDENT</code>）</li>
+<li><strong>保留字</strong>：<code>var if then else while do</code></li>
+<li><strong>内置函数名</strong>：<code>malloc read_char read_int write_char write_int</code></li>
+<li>事实上，在上述标记除了所有自然数分为一类、所有变量名分为一类之外，其他每个标记应当单独分为一类</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">token_class</span> &#123;</span><br>  <span class="hljs-comment">// 运算符</span><br>  TOK_OR = <span class="hljs-number">1</span>, TOK_AND, TOK_NOT,<br>  TOK_LT, TOK_LE, TOK_GT, TOK_GE, TOK_EQ, TOK_NE,<br>  TOK_PLUS, TOK_MINUS, TOK_MUL, TOK_DIV, TOK_MOD,<br>  <span class="hljs-comment">// 赋值符号</span><br>  TOK_ASGNOP,<br>  <span class="hljs-comment">// 间隔符号</span><br>  TOK_LEFT_BRACE, TOK_RIGHT_BRACE,<br>  TOK_LEFT_PAREN, TOK_RIGHT_PAREN,<br>  TOK_SEMICOL,<br>  <span class="hljs-comment">// 自然数</span><br>  TOK_NAT,<br>  <span class="hljs-comment">// 变量名</span><br>  TOK_IDENT,<br>  <span class="hljs-comment">// 保留字</span><br>  TOK_VAR, TOK_IF, TOK_THEN, TOK_ELSE, TOK_WHILE, TOK_DO,<br>  <span class="hljs-comment">// 内置函数名</span><br>  TOK_MALLOC, TOK_RI, TOK_RC, TOK_WI, TOK_WC<br>&#125;;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>标记的存储</strong>:
+<ul>
+<li>大部分标记（如运算符、保留字）只需要记录它们的类别 (Token Class) 即可</li>
+<li>一些标记需要存储额外的信息，例如：
+<ul>
+<li><strong>自然数 (<code>TOK_NAT</code>)</strong>：需要存储它表示的无符号整数值 <code>n</code></li>
+<li><strong>标识符 (<code>TOK_IDENT</code>)</strong>：需要存储它对应的字符串的地址 <code>i</code></li>
+</ul>
+</li>
+<li>可以使用 union 结构来高效地存储这些额外信息，因为一个 token 不可能既是自然数又是标识符</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">union</span> <span class="hljs-title">token_value</span> &#123;</span><br>  <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> n;<br>  <span class="hljs-type">char</span> * i;<br>  <span class="hljs-type">void</span> * none;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<h3 id="2-正则表达式-Regular-Expression">2. 正则表达式 (Regular Expression)</h3>
+<ul>
+<li><strong>定义</strong>：正则表达式是一种用来描述字符串集合的语言，它是定义词法分析器匹配规则的基础</li>
+<li><strong>核心构成与优先级</strong>:
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi></mrow><annotation encoding="application/x-tex">c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">c</span></span></span></span>：单个字符</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">\epsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">ϵ</span></span></span></span>：空字符串</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>r</mi><mn>1</mn></msub><msub><mi>r</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">r_1 r_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>：两个字符串的连接</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>r</mi><mn>1</mn></msub><mi mathvariant="normal">∣</mi><msub><mi>r</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">r_1 | r_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>：两个字符串的并集</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>∗</mo></mrow><annotation encoding="application/x-tex">r*</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4653em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord">∗</span></span></span></span>：重复出现一类字符串 0 次 1 次或多次</li>
+<li><strong>优先级</strong>：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∗</mo><mo>&gt;</mo><mtext> 连接 </mtext><mo>&gt;</mo><mi mathvariant="normal">∣</mi></mrow><annotation encoding="application/x-tex">* &gt; \text{ 连接 } &gt; |</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mord">∗</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord text"><span class="mord"> </span><span class="mord cjk_fallback">连接</span><span class="mord"> </span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span></span></span></span></li>
+</ul>
+</li>
+<li><strong>例子</strong>：
+<ul>
+<li><code>(a|b)c</code> 表达的字符串有 <code>ac</code> , <code>bc</code></li>
+<li><code>(a|b)*</code> 表达的字符串有空串, <code>a</code> , <code>b</code> , <code>ab</code> , <code>aaaaa</code> , <code>babbb</code> 等</li>
+<li><code>ab*</code> 表达的字符串有 <code>a</code> , <code>ab</code> , <code>abb</code> , <code>abbb</code> , <code>abbbb</code> 等</li>
+<li><code>(ab)*</code> 表达的字符串有空串, ab , abab 等</li>
+</ul>
+</li>
+<li><strong>常见简写形式</strong>：
+<ul>
+<li><strong>字符的集合</strong>：<code>[a-cA-C]</code> 等价于 <code>a|b|c|A|B|C</code></li>
+<li><strong>可选的字符串</strong>：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo stretchy="false">?</mo></mrow><annotation encoding="application/x-tex">r?</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mclose">?</span></span></span></span> 等价于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mi mathvariant="normal">∣</mi><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">r|\epsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord">∣</span><span class="mord mathnormal">ϵ</span></span></span></span> (出现 0 次或 1 次)，例如 <code>a?b</code> 表达的字符串有 <code>b</code> , <code>ab</code></li>
+<li><strong>字符串</strong>：例如 <code>&quot;abc&quot;</code> 表示字符串 <code>abc</code></li>
+<li><strong>重复至少一次</strong>：例如 <code>a+</code> 表达的字符串有 <code>a</code> , <code>aa</code> , <code>aaa</code> 等</li>
+<li><strong>自然数常量</strong>：<code>&quot;0&quot;|[1-9][0-9]*</code></li>
+<li><strong>标识符（不排除保留字、内置函数名）</strong>：<code>[_a-zA-Z][_a-zA-Z0-9]*</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="3-Flex-词法分析工具">3. Flex 词法分析工具</h3>
+<p>Flex 是一个词法分析器生成器，它能自动地将描述标记的规则（正则表达式）转换成一个高效的 C 语言词法分析器。</p>
+<ul>
+<li>
+<p><strong>工作流程</strong>：</p>
+<ul>
+<li><strong>输入</strong>：一个 <code>.l</code> 文件，包含基于正则表达式的词法分析规则</li>
+<li><strong>生成</strong>：运行 <code>flex</code> 命令处理 <code>.l</code> 文件，生成一个 C 语言实现的词法分析器 <code>lexer.c</code>，其中包含 <code>yylex()</code> 函数</li>
+<li><strong>编译</strong>：使用 C 编译器（如 <code>gcc</code>）编译生成的 <code>lexer.c</code> 和其他业务逻辑代码（如 <code>main.c</code>），最终得到一个可执行文件</li>
+</ul>
+</li>
+<li>
+<p><strong>输入文件头 (<code>.l</code>)</strong>：</p>
+<ul>
+<li>说明 Flex 生成词法分析器的基本参数</li>
+<li>指定所生成的词法分析器的文件名</li>
+<li>词法分析器所需头文件 (<code>.h</code> 文件) 与辅助函数</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c">%option noyywrap yylineno<br>%option outfile=<span class="hljs-string">&quot;lexer.c&quot;</span> header -file=<span class="hljs-string">&quot;lexer.h&quot;</span><br>%&#123;<br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;lang.h&quot;</span></span><br>%&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>词法分析用到的辅助函数和全局变量 (<code>lang.h</code>)</strong>：</p>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">extern</span> <span class="hljs-class"><span class="hljs-keyword">union</span> <span class="hljs-title">token_value</span> <span class="hljs-title">val</span>;</span><br><span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> <span class="hljs-title function_">build_nat</span><span class="hljs-params">(<span class="hljs-type">char</span> * c, <span class="hljs-type">int</span> len)</span>;<br><span class="hljs-type">char</span> * <span class="hljs-title function_">new_str</span><span class="hljs-params">(<span class="hljs-type">char</span> * str, <span class="hljs-type">int</span> len)</span>;<br><span class="hljs-type">void</span> <span class="hljs-title function_">print_token</span><span class="hljs-params">(<span class="hljs-keyword">enum</span> token_class c)</span>;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>词法分析规则</strong>：
+<ul>
+<li>所有词法分析规则都放在一组 %% 中</li>
+<li>每一条词法分析规则由匹配规则和处理程序两部分构成</li>
+<li>匹配规则用正则表达式表示</li>
+<li>处理程序是一段 C 代码</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c">%%<br><span class="hljs-number">0</span>|[<span class="hljs-number">1</span><span class="hljs-number">-9</span>][<span class="hljs-number">0</span><span class="hljs-number">-9</span>]* &#123;<br>  val.n = build_nat(yytext , yyleng);<br>  <span class="hljs-keyword">return</span> TOK_NAT;<br>&#125;<br><span class="hljs-string">&quot;var&quot;</span> &#123; <span class="hljs-keyword">return</span> TOK_VAR; &#125;<br>...<br>%%<br></code></pre></td></tr></table></figure>
+<ul>
+<li>
+<p><strong>Flex 专有 C 程序变量</strong>：</p>
+<ul>
+<li><code>yytext</code>：指向当前匹配到的字符串的指针</li>
+<li><code>yyleng</code>：当前匹配到的字符串的长度</li>
+</ul>
+</li>
+<li>
+<p><strong>Flex 的匹配规则</strong>：</p>
+<ul>
+<li><strong>最长匹配原则</strong>：如果有多种切分方案，Flex 会选择匹配尽可能长的字符串的那个规则</li>
+<li><strong>最先出现规则优先</strong>：如果同一种切分方案符合多个词法分析规则（正则表达式），Flex 会选择在 <code>.l</code> 文件中最先出现的那个规则
+<ul>
+<li>这个特性常用于处理关键字，将关键字的规则放在通用标识符规则之前</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>词法分析器的使用</strong>：<code>main.c</code>（只打印词法分析结果）</p>
+<ul>
+<li><code>yylex()</code>：每次调用返回一个 token</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;lang.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;lexer.h&quot;</span></span><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span> &#123;<br>  <span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">token_class</span> <span class="hljs-title">c</span>;</span><br>  <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) &#123;<br>    c = yylex();<br>    <span class="hljs-keyword">if</span> (c != <span class="hljs-number">0</span>) &#123;<br>      print_token(c);<br>    &#125;<br>    <span class="hljs-keyword">else</span> &#123;<br>      <span class="hljs-keyword">break</span>;<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>词法分析全流程</strong>：Makefile</li>
+</ul>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-section">lang.o: lang.c lang.h</span><br>        gcc -c lang.c<br><span class="hljs-section">lexer.c: lang.l</span><br>        flex lang.l<br><span class="hljs-section">lexer.o: lexer.c lang.h</span><br>        gcc -c lexer.c<br><span class="hljs-section">main.o: main.c lang.h lexer.c</span><br>        gcc -c main.c<br><span class="hljs-section">main: main.o lang.o lexer.o</span><br>        gcc main.o lang.o lexer.o -o main<br><span class="hljs-section">%.c: %.l</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>
+<p><strong>词法分析器的算法流程</strong>：</p>
+<ul>
+<li>先根据输入的字符串找到正则表达式的匹配结果（若有多种结果则选最长、最靠前的）</li>
+<li>再更新字符串扫描的初始地址，并执行匹配结果对应的处理程序</li>
+</ul>
+</li>
+<li>
+<p><strong>在处理程序中不返回的方案</strong>：</p>
+<ul>
+<li>在规则对应的动作代码中，<code>return</code> 语句会中断 <code>yylex()</code> 的执行并返回一个 token，下次调用 <code>yylex()</code> 会从上一次扫描结束的位置继续</li>
+<li>如果动作代码中没有 <code>return</code> 语句，<code>yylex()</code> 会在执行完动作后，自动继续进行下一次的词法分析</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-有限状态自动机">4. 有限状态自动机</h3>
+<p>有限状态自动机是识别正则表达式所描述的字符串集合的数学模型。</p>
+<ul>
+<li><strong>基本概念</strong>：
+<ul>
+<li>有限状态自动机包含一个状态集（图中的节点）与一组状态转移规则（图中的边）</li>
+<li>每一条状态转移规则上有一个符号</li>
+<li>状态集中包含一个起始状态，和一组终止状态；起始状态也可能是一个终止状态</li>
+</ul>
+</li>
+</ul>
+<p><img src="fa1.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="fa2.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="fa3.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>
+<p><strong>两类自动机</strong>：</p>
+<ul>
+<li><strong>确定性有限状态自动机 (DFA - Deterministic Finite Automata)</strong>：
+<ul>
+<li>每一条状态转移规则上的符号都是 ascii 码字符。<br>
+– 从任何一个状态出发，每个字符至多对应一条状态转移规则</li>
+</ul>
+</li>
+<li><strong>非确定性有限状态自动机 (NFA - Nondeterministic Finite Automata)</strong>：
+<ul>
+<li>每一条状态转移规则上的符号要么是 ascii 码字符，要么是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">\epsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">ϵ</span></span></span></span><br>
+– 从一个状态出发，每个符号可能对应多条状态转移规则<br>
+– 通过 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">\epsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">ϵ</span></span></span></span> 转移规则时，不消耗字符串中的字符</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>接受字符串的定义</strong>：一个自动机能接受一个字符串，当且仅当存在一种状态转移的方法，可以从自动机的起始状态出发，依次经过这个字符串的所有字符，到达一个终止状态</p>
+</li>
+</ul>
+<h3 id="5-将正则表达式转化为-NFA">5. 将正则表达式转化为 NFA</h3>
+<p>这是将理论（正则表达式）应用到实践（构建词法分析器）的关键步骤之一。</p>
+<ul>
+<li>
+<p>对于任何一个正则表达式，都可以构造出一个与之等价的 NFA</p>
+<ul>
+<li>即一个字符串能被这个 NFA 接受当且仅当这个字符串是正则表达式表示的字符串集合的元素</li>
+</ul>
+</li>
+<li>
+<p><strong>Thompson 构造法</strong>：构造方法是递归的，针对正则表达式的五个基本操作进行：</p>
+<ul>
+<li>为单个字符 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi></mrow><annotation encoding="application/x-tex">c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">c</span></span></span></span> 构造 NFA</li>
+</ul>
+<p><img src="c.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>为空串 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">\epsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">ϵ</span></span></span></span> 构造 NFA</li>
+</ul>
+<p><img src="epsilon.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>为连接 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>r</mi><mn>1</mn></msub><msub><mi>r</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">r_1r_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 构造 NFA</li>
+</ul>
+<p><img src="concat.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>为并集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>r</mi><mn>1</mn></msub><mi mathvariant="normal">∣</mi><msub><mi>r</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">r_1 | r_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 构造 NFA</li>
+</ul>
+<p><img src="union.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>为闭包 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>∗</mo></mrow><annotation encoding="application/x-tex">r*</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4653em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord">∗</span></span></span></span> 构造 NFA</li>
+</ul>
+<p><img src="star.png" srcset="/img/loading.gif" lazyload alt=""></p>
+</li>
+<li>
+<p>这些构造出的 NFA 都有一个唯一的起点和一个唯一的终点</p>
+<ul>
+<li>但是注意：起点也可能在图中有入度，终点也可能在图中有出度</li>
+</ul>
+</li>
+</ul>
+<h3 id="6-将-NFA-转化为-DFA">6. 将 NFA 转化为 DFA</h3>
+<p>这是将理论（正则表达式）应用到实践（构建词法分析器）的关键步骤之一。</p>
+<ul>
+<li>
+<p><strong>子集构造法 (Subset Construction)</strong>：由于 NFA 的不确定性，在某个时刻它可能处于多个状态的集合中，DFA 的每一个状态就对应 NFA 的一个可能的状态集合</p>
+</li>
+<li>
+<p><strong>步骤</strong>：</p>
+<ul>
+<li>DFA 的起始状态是 NFA 起始状态以及所有可以从它通过 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">\epsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">ϵ</span></span></span></span> 转移到达的状态的集合</li>
+<li>从一个 DFA 状态（即一个 NFA 状态集）开始，计算在接收某一个输入字符后，可以到达的新的 NFA 状态集（同样要包含所有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">\epsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">ϵ</span></span></span></span> 转移可达的状态），这个新的集合就是 DFA 的一个新状态</li>
+<li>重复此过程，直到没有新的 DFA 状态产生</li>
+<li>任何包含 NFA 终止状态的 DFA 状态，都是 DFA 的终止状态</li>
+</ul>
+</li>
+<li>
+<p><strong>例子</strong>：</p>
+<ul>
+<li><strong>正则表达式</strong>：<code>if|[_a-zA-Z][_0-9a-zA-Z]*</code></li>
+<li><strong>NFA</strong>：</li>
+</ul>
+<p><img src="nfa1.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>起始状态: { INIT, A, G }<br>
+i: { INIT, A, G } <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> { B, C, D, E, F, H, I, K }<br>
+f: { B, C, D, E, F, H, I, K } <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>  { D, E, F, J, K }<br>
+_0-9a-zA-Z: { D, E, F, J, K } <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>  { D, E, F, K }<br>
+_0-9a-zA-Z: { D, E, F, K } <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>  { D, E, F, K }<br>
+_0-9a-eg-zA-Z: { B, C, D, E, F, H, I, K } <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>  { D, E, F, K }<br>
+_a-hj-zA-Z: { INIT, A, G } <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>  { B, C, D, E, F, K }<br>
+_0-9a-zA-Z: { B, C, D, E, F, K } <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span>  { D, E, F, K }</li>
+<li><strong>构造生成的 DFA</strong>：</li>
+</ul>
+<p><img src="dfa1.png" srcset="/img/loading.gif" lazyload alt=""></p>
+</li>
+</ul>
+<h2 id="Lecture-2：语法分析">Lecture 2：语法分析</h2>
+<h2 id="Lecture-3：简单编译器">Lecture 3：简单编译器</h2>
+<h2 id="Lecture-4：程序语言语法的-Coq-定义">Lecture 4：程序语言语法的 Coq 定义</h2>
+<h2 id="Lecture-5：表达式指称语义">Lecture 5：表达式指称语义</h2>
+<h2 id="Lecture-6：利用集合与关系定义指称语义">Lecture 6：利用集合与关系定义指称语义</h2>
+<h2 id="Lecture-7：霍尔逻辑">Lecture 7：霍尔逻辑</h2>
+<h2 id="Lecture-8：用单子表示计算">Lecture 8：用单子表示计算</h2>
 <h3 id="1-单子的定义">1. 单子的定义</h3>
 <ul>
 <li>假设 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi></mrow><annotation encoding="application/x-tex">M</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span></span></span></span> 是一个单子，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo stretchy="false">(</mo><mi>A</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">M(A)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mopen">(</span><span class="mord mathnormal">A</span><span class="mclose">)</span></span></span></span> 是一个集合，表示一类计算结果（或返回值）类型为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span></span></span></span> 的计算</li>
 <li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi></mrow><annotation encoding="application/x-tex">M</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span></span></span></span> 单子应配有两个算子：
 <ul>
-<li><strong>bind 算子</strong>：表示计算的复合，即 bind: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∀</mi><mi>A</mi><mi>B</mi><mi mathvariant="normal">.</mi><mi>M</mi><mo stretchy="false">(</mo><mi>A</mi><mo stretchy="false">)</mo><mo>→</mo><mo stretchy="false">(</mo><mi>A</mi><mo>→</mo><mi>M</mi><mo stretchy="false">(</mo><mi>B</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo>→</mo><mi>M</mi><mo stretchy="false">(</mo><mi>B</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\forall A B . M(A) \rightarrow(A \rightarrow M(B)) \rightarrow M(B)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∀</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mord">.</span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mopen">(</span><span class="mord mathnormal">A</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mclose">))</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mclose">)</span></span></span></span></li>
-<li><strong>return 算子</strong>：表示直接返回一个特定值，即 return: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∀</mi><mi>A</mi><mi mathvariant="normal">.</mi><mi>A</mi><mo>→</mo><mi>M</mi><mo stretchy="false">(</mo><mi>A</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\forall A . A \rightarrow M(A)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord">∀</span><span class="mord mathnormal">A</span><span class="mord">.</span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mopen">(</span><span class="mord mathnormal">A</span><span class="mclose">)</span></span></span></span></li>
+<li><strong>bind 算子</strong>：表示计算的复合，即 bind：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∀</mi><mi>A</mi><mi>B</mi><mi mathvariant="normal">.</mi><mi>M</mi><mo stretchy="false">(</mo><mi>A</mi><mo stretchy="false">)</mo><mo>→</mo><mo stretchy="false">(</mo><mi>A</mi><mo>→</mo><mi>M</mi><mo stretchy="false">(</mo><mi>B</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo>→</mo><mi>M</mi><mo stretchy="false">(</mo><mi>B</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\forall A B . M(A) \rightarrow(A \rightarrow M(B)) \rightarrow M(B)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∀</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mord">.</span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mopen">(</span><span class="mord mathnormal">A</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mclose">))</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mclose">)</span></span></span></span></li>
+<li><strong>return 算子</strong>：表示直接返回一个特定值，即 return：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∀</mi><mi>A</mi><mi mathvariant="normal">.</mi><mi>A</mi><mo>→</mo><mi>M</mi><mo stretchy="false">(</mo><mi>A</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\forall A . A \rightarrow M(A)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord">∀</span><span class="mord mathnormal">A</span><span class="mord">.</span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mopen">(</span><span class="mord mathnormal">A</span><span class="mclose">)</span></span></span></span></li>
 </ul>
 </li>
 </ul>
-<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs coq"><span class="hljs-keyword">Class</span> Monad (M: <span class="hljs-keyword">Type</span> -&gt; <span class="hljs-keyword">Type</span>): <span class="hljs-keyword">Type</span> := &#123;<br>  bind: <span class="hljs-keyword">forall</span> &#123;A B: <span class="hljs-keyword">Type</span>&#125;, M A -&gt; (A -&gt; M B) -&gt; M B;<br>  ret: <span class="hljs-keyword">forall</span> &#123;A: <span class="hljs-keyword">Type</span>&#125;, A -&gt; M A;<br>&#125;.<br></code></pre></td></tr></table></figure>
-<h2 id="Lecture-9-不动点定理">Lecture 9: 不动点定理</h2>
-<h2 id="Lecture-10-单子程序上的霍尔逻辑">Lecture 10: 单子程序上的霍尔逻辑</h2>
-<h2 id="Lecture-11-分离逻辑">Lecture 11: 分离逻辑</h2>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs coq"><span class="hljs-keyword">Class</span> Monad (M：<span class="hljs-keyword">Type</span> -&gt; <span class="hljs-keyword">Type</span>)：<span class="hljs-keyword">Type</span> := &#123;<br>  bind：<span class="hljs-keyword">forall</span> &#123;A B：<span class="hljs-keyword">Type</span>&#125;, M A -&gt; (A -&gt; M B) -&gt; M B;<br>  ret：<span class="hljs-keyword">forall</span> &#123;A：<span class="hljs-keyword">Type</span>&#125;, A -&gt; M A;<br>&#125;.<br></code></pre></td></tr></table></figure>
+<h2 id="Lecture-9：不动点定理">Lecture 9：不动点定理</h2>
+<h2 id="Lecture-10：单子程序上的霍尔逻辑">Lecture 10：单子程序上的霍尔逻辑</h2>
+<h2 id="Lecture-11：分离逻辑">Lecture 11：分离逻辑</h2>
 <h2 id="参考资料">参考资料</h2>
 <p>本文参考上海交通大学程序语言与编译原理课程 CS2612 曹钦翔老师的讲义，课程网站为 <a target="_blank" rel="noopener" href="https://jhc.sjtu.edu.cn/public/courses/CS2612/">https://jhc.sjtu.edu.cn/public/courses/CS2612/</a>。</p>
 
