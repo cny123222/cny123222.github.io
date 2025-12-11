@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-12-11T05:35:13.000Z">
-<meta property="article:modified_time" content="2025-12-11T06:10:16.252Z">
+<meta property="article:modified_time" content="2025-12-11T07:12:32.940Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.1k words
+          2.7k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          18 mins
+          23 mins
         
       </span>
     
@@ -789,6 +789,94 @@
 <ul>
 <li>内核独占一个 CPU 核心，通过轮询来等待用户的请求，然后执行系统调用，并将返回值写入同一块内存页</li>
 <li>如果只有一个核心，可以将轮询改成批处理，即应用程序一次发起多个系统调用请求，内核一次性将所有系统调用处理完</li>
+</ul>
+</li>
+</ul>
+<h2 id="Lecture-4-从应用视角看操作系统抽象">Lecture 4: 从应用视角看操作系统抽象</h2>
+<h3 id="常见的进程接口">常见的进程接口</h3>
+<ul>
+<li>
+<p><strong><code>exit()</code></strong>：终止进程并带上一个 status 状态</p>
+<ul>
+<li>返回值：无返回值</li>
+<li>语法：<code>void exit(int status);</code></li>
+</ul>
+</li>
+<li>
+<p><strong><code>fork()</code></strong>：父进程创建新的子进程，调用一次返回两次</p>
+<ul>
+<li>返回值：子进程为 0，父进程为子进程 PID</li>
+<li>语法：<code>pid_t fork(void);</code></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;csapp.h&quot;</span></span><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>  <span class="hljs-type">pid_t</span> pid;<br> 	<span class="hljs-type">int</span> x = <span class="hljs-number">1</span>;<br> 	pid = Fork();<br> 	<span class="hljs-keyword">if</span> (pid == <span class="hljs-number">0</span>) &#123; <span class="hljs-comment">/* child */</span><br> 	    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;child : x=%d\n&quot;</span>, ++x);<br> 		<span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br> 	&#125;<br> 	<span class="hljs-comment">/* parent */</span><br> 	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;parent: x=%d\n&quot;</span>, --x);<br> 	<span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>
+<p><strong><code>execve()</code></strong>：加载和运行</p>
+<ul>
+<li>只调用一次，且永远不会返回（仅仅在运行报错的时候，返回调用程序）</li>
+<li>语法：<code>int execve(const char *filename, const char *argv[], const char *envp[]);</code></li>
+</ul>
+</li>
+<li>
+<p><strong><code>waitpid()</code></strong>：等待子进程终止后，内核回收子进程</p>
+<ul>
+<li>返回值：成功返回子进程 PID，出错返回 -1</li>
+<li>语法：<code>pid_t waitpid(pid_t pid, int *status, int options);</code>
+<ul>
+<li>pid&gt;0 ：等待集合中只有 <code>pid</code> 子进程</li>
+<li>pid=-1：等待集合包括所有子进程</li>
+<li>options=0
+<ul>
+<li>挂起调用进程，等待集合中任意子进程终止</li>
+<li>如果等待集合中有子进程在函数调用前已经终止，立刻返回</li>
+<li>返回值是导致函数返回的终止子进程 pid</li>
+<li>该终止子进程被内核回收</li>
+</ul>
+</li>
+<li>status 指针带回被回收子线程的 exit 状态</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>进程的终止</strong>：进程终止后，内核不会立刻销毁该进程，而是以终止态存在，等待父进程回收</p>
+<ul>
+<li><strong>僵尸进程</strong>：终止状态下还未被回收的进程
+<ul>
+<li>如果父进程在自己终止前没有回收僵尸子进程，内核会安排 init 进程回收这些子进程</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="ELF-文件格式">ELF 文件格式</h3>
+<ul>
+<li><strong>ELF 格式</strong>：可执行可链接格式</li>
+</ul>
+<p><img src="elf.png" srcset="/img/loading.gif" lazyload alt="ELF 格式"></p>
+<ul>
+<li><strong>ELF 头部</strong>：通常用于存元数据</li>
+<li><strong>节头部表</strong>：每一个节都有一个节头部（节头部表的一项）描述</li>
+<li><strong>ELF 字符串表（.strtab）</strong>：记录一系列 C 风格字符串，表示符号名或节名</li>
+<li><strong>用以调试的节</strong>：
+<ul>
+<li><strong>.debug</strong>：调试符号表，包括变量、typedef、C 源文件</li>
+<li><strong>.line</strong>：C 源文件的行数与 .text 节中指令的映射</li>
+</ul>
+</li>
+<li><strong>代码和数据节</strong>：
+<ul>
+<li><strong>.text</strong>：代码</li>
+<li><strong>.rodata</strong>：只读数据，包括不可修改的常量数据
+<ul>
+<li><code>char *str = &quot;apple&quot;</code> 中的 <code>&quot;apple&quot;</code> 存放在 <code>.rodata</code> 段</li>
+<li><code>char str2[] = &quot;apple&quot;</code> 中的 <code>&quot;apple&quot;</code> 存放在栈上</li>
+</ul>
+</li>
+<li><strong>.data</strong>：初始化的全局变量和静态变量</li>
+<li><strong>.bss</strong>：未初始化的全局变量和静态变量（不占文件空间，运行时分配内存）</li>
 </ul>
 </li>
 </ul>
