@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/dip.jpg">
 <meta property="article:published_time" content="2025-11-27T03:07:06.000Z">
-<meta property="article:modified_time" content="2025-12-04T06:11:15.740Z">
+<meta property="article:modified_time" content="2025-12-11T03:11:58.713Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="知识点整理">
 <meta property="article:tag" content="数字图像处理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          5.6k words
+          9.2k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          48 mins
+          77 mins
         
       </span>
     
@@ -402,7 +402,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on December 4, 2025 pm
+                    Last updated on December 11, 2025 am
                   
                 
               </p>
@@ -887,6 +887,345 @@
 </li>
 </ul>
 <h2 id="Mini-Chapter-JPEG-压缩-JPEG-Compression">Mini Chapter: JPEG 压缩 (JPEG Compression)</h2>
+<h3 id="JPEG-压缩的核心流程-JPEG-Compression-Steps">JPEG 压缩的核心流程 (JPEG Compression Steps)</h3>
+<p><img src="jpeg.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h4 id="第一步-图像分块与DCT变换-Block-Partitioning-DCT">第一步: 图像分块与DCT变换 (Block Partitioning &amp; DCT)</h4>
+<ul>
+<li><strong>分块</strong>: 将输入的图像（通常是 Y, Cb, Cr 三个分量分别处理）分割成不重叠的 8x8 像素块</li>
+<li><strong>电平偏移</strong>: 为了使 DCT 计算更高效，将每个像素值（范围）减去 128，使其范围变为 [-128, 127]</li>
+<li><strong>DCT</strong>: 对每一个 8x8 的像素块进行二维离散余弦变换 (2D-DCT)，得到一个 8x8 的频率系数矩阵
+<ul>
+<li>矩阵左上角的第一个系数 F(0,0) 称为 DC 系数 (直流分量)，它代表了整个 8x8 块的平均亮度</li>
+<li>其余的 63 个系数称为 AC 系数 (交流分量)，它们代表了图像块在不同频率和方向上的细节信息</li>
+</ul>
+</li>
+</ul>
+<h4 id="第二步-量化-Quantization">第二步: 量化 (Quantization)</h4>
+<ul>
+<li><strong>为什么 (Why?)</strong>: 这是 JPEG 有损压缩的关键步骤，其理论依据是心理视觉冗余
+<ul>
+<li>人眼对亮度在较大范围内的微小变化（低频）很敏感，但对高频亮度变化的精确强度不敏感</li>
+</ul>
+</li>
+<li><strong>怎么做 (How?)</strong>:
+<ul>
+<li>取出一个 8x8 的 DCT 系数矩阵</li>
+<li>准备一个 8x8 的量化表 (Quantization Matrix) <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi></mrow><annotation encoding="application/x-tex">Q</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">Q</span></span></span></span>
+<ul>
+<li>这个表是预定义的（也可以自定义），表中的值对应了每个频率系数的量化步长</li>
+<li>通常，左上角（低频）的量化步长小，右下角（高频）的量化步长非常大</li>
+</ul>
+</li>
+<li>将 DCT 系数矩阵中的每一个系数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>G</mi><mrow><mi>j</mi><mo separator="true">,</mo><mi>k</mi></mrow></msub></mrow><annotation encoding="application/x-tex">G_{j, k}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">G</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span>，逐点除以量化表中对应位置的量化步长 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Q</mi><mrow><mi>j</mi><mo separator="true">,</mo><mi>k</mi></mrow></msub></mrow><annotation encoding="application/x-tex">Q_{j, k}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">Q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span>，然后四舍五入取整<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>B</mi><mrow><mi>j</mi><mo separator="true">,</mo><mi>k</mi></mrow></msub><mo>=</mo><mi mathvariant="normal">round</mi><mo>⁡</mo><mrow><mo fence="true">(</mo><mfrac><msub><mi>G</mi><mrow><mi>j</mi><mo separator="true">,</mo><mi>k</mi></mrow></msub><msub><mi>Q</mi><mrow><mi>j</mi><mo separator="true">,</mo><mi>k</mi></mrow></msub></mfrac><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">B_{j, k}=\operatorname{round}\left(\frac{G_{j, k}}{Q_{j, k}}\right)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.4221em;vertical-align:-0.9721em;"></span><span class="mop"><span class="mord mathrm">round</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">(</span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">Q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">G</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.9721em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">)</span></span></span></span></span></span></span></p>
+</li>
+</ul>
+</li>
+<li><strong>结果</strong>:
+<ul>
+<li>绝大多数高频 AC 系数，由于其本身数值小，再除以一个大的量化步长，结果会变成 0</li>
+<li>低频系数被保留了更多的精度</li>
+<li>通过调整量化表中的值（通常通过一个“质量因子”来整体缩放），可以控制压缩比和图像质量</li>
+</ul>
+</li>
+</ul>
+<h4 id="第三步-Zig-Zag-扫描-Zig-Zag-Scan">第三步: Zig-Zag 扫描 (Zig-Zag Scan)</h4>
+<ul>
+<li><strong>为什么 (Why?)</strong>: 经过量化后，8x8 的系数矩阵中出现了大量的 0，并且这些 0 主要集中在右下角的高频区域
+<ul>
+<li>Zig-Zag 扫描的目的是将这些连续的零聚集在一起，以便于后续的行程编码</li>
+</ul>
+</li>
+<li><strong>怎么做 (How?)</strong>: 按照“之”字形的路径，将 8x8 的量化系数矩阵重新排列成一个 1x64 的一维向量
+<ul>
+<li>这样，低频系数被排在向量的开头，而大量连续的零被排在了向量的末尾</li>
+</ul>
+</li>
+</ul>
+<h4 id="第四步-DC-AC-系数的差分与行程编码-DPCM-for-DC-RLE-for-AC">第四步: DC/AC 系数的差分与行程编码 (DPCM for DC &amp; RLE for AC)</h4>
+<ul>
+<li><strong>DPCM for DC</strong>:
+<ul>
+<li><strong>原因</strong>: 相邻的 8x8 图像块的平均亮度（DC 系数）通常非常接近，存在相关性</li>
+<li><strong>方法</strong>: 不直接编码每个块的 DC 系数，而是编码当前块 DC 系数与前一个块 DC 系数的差值 (Difference)
+<ul>
+<li>这个差值通常很小，用更少的比特就可以表示。这就是差分脉冲编码调制 (DPCM)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>RLE for AC</strong>:
+<ul>
+<li><strong>原因</strong>: Zig-Zag 扫描后的 AC 系数向量中，有大量连续的零</li>
+<li><strong>方法</strong>: 使用行程编码 (Run-Length Encoding, RLE) 来高效地表示这些连续的零
+<ul>
+<li>编码器将 AC 系数流转换为一系列 (skip, value) 数对，其中 skip 表示连续零的个数，value 表示下一个非零系数的值</li>
+<li>特殊码: (0,0) 被用作一个特殊的块结尾符 (End-of-Block, EOB)，表示该块内剩余的 AC 系数全为零</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="第五步-熵编码-Entropy-Coding">第五步: 熵编码 (Entropy Coding)</h4>
+<p>这是最后一步无损压缩，通常使用哈夫曼编码。</p>
+<ul>
+<li><strong>DC 系数编码</strong>:
+<ul>
+<li>DPCM 得到的 DC 差值被分为两部分编码：(SIZE, VALUE)</li>
+<li>SIZE 表示表示这个差值需要多少个比特
+<ul>
+<li>例如，-8 和 9 都需要4个比特，它们的SIZE都是4</li>
+<li>SIZE 本身使用一个专用的 DC 哈夫曼码表进行编码</li>
+</ul>
+</li>
+<li>VALUE 是差值的二进制表示，由下表得到</li>
+</ul>
+</li>
+</ul>
+<p><img src="size_value.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>AC 系数编码</strong>:
+<ul>
+<li>RLE 得到的 (RunLength, value) 数对也被分为两部分：S1 = (RunLength/SIZE) 和 S2 = (Value)
+<ul>
+<li>RunLength 是连续零的个数，SIZE 的含义与 DC 编码中相同</li>
+<li>这个 (RunLength, SIZE) 组合后使用一个专用的 AC 哈夫曼码表进行编码</li>
+</ul>
+</li>
+<li>Value 同样是该 AC 系数的二进制表示</li>
+</ul>
+</li>
+</ul>
+<h3 id="JPEG-模式-JPEG-Modes">JPEG 模式 (JPEG Modes)</h3>
+<h4 id="顺序模式-Sequential-Mode">顺序模式 (Sequential Mode)</h4>
+<ul>
+<li><strong>定义</strong>: 这是最基本、最常用的JPEG模式
+<ul>
+<li>图像按照从左到右、从上到下的顺序，进行一次完整扫描来完成编码</li>
+</ul>
+</li>
+<li><strong>基线顺序模式 (Baseline Sequential Mode)</strong>:
+<ul>
+<li>我们之前详细讨论的，包含“DCT -&gt; 量化 -&gt; Zig-Zag -&gt; 熵编码”这一完整流程的，就是基线顺序模式</li>
+<li>基线模式只支持 8 位的图像深度，而不支持更高（如 12 位）的图像</li>
+</ul>
+</li>
+<li><strong>特点</strong>:
+<ul>
+<li>实现简单，编解码速度快</li>
+<li>解码时必须从头到尾接收完所有数据才能显示完整图像</li>
+</ul>
+</li>
+</ul>
+<h4 id="无损模式-Lossless-Mode">无损模式 (Lossless Mode):</h4>
+<ul>
+<li><strong>定义</strong>: 这是一种可以实现真正无损 (Truly lossless) 压缩的模式，即解压后的图像与原始图像在像素级别上完全一致</li>
+<li><strong>核心机制</strong>:
+<ul>
+<li>它不使用 DCT 和量化，因为量化是导致信息损失的根源</li>
+<li>它采用的是一种预测编码 (Predictive Coding) 机制</li>
+</ul>
+</li>
+<li><strong>工作流程 (Predictive Difference)</strong>:
+<ul>
+<li><strong>预测</strong>: 对于图像中的当前像素 X，编码器从 7 种可能的预测器中选择一个最佳的预测器
+<ul>
+<li>这个预测器通过其 3 个已编码的邻近像素（A: 左边, B: 上边, C: 左上）的组合来预测 X 的值</li>
+<li>7种预测器，例如 P1=A, P2=B, P7=(A+B)/2 等</li>
+</ul>
+</li>
+<li><strong>计算差值</strong>: 计算实际值 X 和预测值之间的预测差 (Predictive Difference)</li>
+<li><strong>编码</strong>: 将所选用的预测器（的编号）和这个预测差一起进行哈夫曼编码</li>
+</ul>
+</li>
+<li><strong>特点</strong>:
+<ul>
+<li>能够完美重建原始图像</li>
+<li>压缩比远低于有损模式，通常在 2:1 左右</li>
+</ul>
+</li>
+</ul>
+<h4 id="渐进模式-Progressive-Mode">渐进模式 (Progressive Mode)</h4>
+<ul>
+<li><strong>定义</strong>: 这种模式主要用于网络传输等场景
+<ul>
+<li>它先以一个较低的比特率快速传输一个粗糙的、模糊的图像版本，然后在后续的传输中逐步地对其进行改善和细化，直到显示完整质量的图像</li>
+</ul>
+</li>
+<li><strong>实现方式</strong>: 渐进模式通过多次扫描同一个图像来实现，每次扫描都增加一些信息。主要有两种技术：
+<ul>
+<li><strong>频谱选择 (Spectral Selection)</strong>:
+<ul>
+<li><strong>思想</strong>: 按频率分批次传输</li>
+<li><strong>流程</strong>:
+<ul>
+<li>首先，只发送每个 8x8 块的 DC 系数和前几个低频 AC 系数，解码端只能恢复出图像的一个严重块化的缩略图</li>
+<li>之后，逐步发送更高频率的 AC 系数，图像的细节被不断补充和丰富</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>逐次逼近 (Successive Approximation)</strong>:
+<ul>
+<li><strong>思想</strong>: 按比特位分批次传输</li>
+<li><strong>流程</strong>: 将所有 DCT 系数看作二进制数
+<ul>
+<li>首先，只发送所有系数的最高几个比特位 (MSB)，解码端得到的是一个精度很低的粗略图像</li>
+<li>之后，逐步发送这些系数的下一个比特位，不断逼近和修正系数的精确值，使图像质量逐步提升</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="分层模式-Hierarchical-Mode">分层模式 (Hierarchical Mode):</h4>
+<ul>
+<li><strong>定义</strong>: 这种模式将同一张图像编码成多个不同分辨率的版本，并存储在同一个码流中</li>
+<li><strong>功能</strong>: 支持多分辨率访问
+<ul>
+<li>解码器可以根据自身的显示能力或需求（例如，生成一个小的缩略图），只解码到它所需要的分辨率层级，而无需解码完整的、最高分辨率的图像数据</li>
+</ul>
+</li>
+<li><strong>实现方式</strong>: 一个 3 级分层编码器的例子
+<ul>
+<li>原始图像 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi></mrow><annotation encoding="application/x-tex">I</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span></span></span></span> 首先被下采样 2 倍得到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">I_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，再下采样 2 倍得到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>4</mn></msub></mrow><annotation encoding="application/x-tex">I_4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">4</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></li>
+<li><strong>编码</strong>:
+<ul>
+<li>从最低分辨率的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>4</mn></msub></mrow><annotation encoding="application/x-tex">I_4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">4</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 开始，对其进行编码（如顺序模式），得到码流 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>4</mn></msub></mrow><annotation encoding="application/x-tex">L_4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">4</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></li>
+<li>然后，将 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>4</mn></msub></mrow><annotation encoding="application/x-tex">I_4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">4</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 解码并上采样，作为对 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">I_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 的预测，只对它们之间的差值进行编码，得到码流 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">L_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></li>
+<li>以此类推，最终得到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>4</mn></msub></mrow><annotation encoding="application/x-tex">L_4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">4</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">L_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">L_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 三个层级的码流</li>
+</ul>
+</li>
+<li><strong>解码</strong>:
+<ul>
+<li>解码器可以只解码 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>4</mn></msub></mrow><annotation encoding="application/x-tex">L_4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">4</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 得到一个低分辨率图像 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>I</mi><mn>4</mn><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msubsup></mrow><annotation encoding="application/x-tex">I&#x27;_4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.2481em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7519em;"><span style="top:-2.4519em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">4</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2481em;"><span></span></span></span></span></span></span></span></span></span></li>
+<li>或者解码 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>4</mn></msub></mrow><annotation encoding="application/x-tex">L_4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">4</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">L_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，并将它们合并，得到一个中等分辨率的图像 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>I</mi><mn>2</mn><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msubsup></mrow><annotation encoding="application/x-tex">I&#x27;_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.2481em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7519em;"><span style="top:-2.4519em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2481em;"><span></span></span></span></span></span></span></span></span></span></li>
+<li>或者解码所有码流，得到全分辨率图像 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi></mrow><annotation encoding="application/x-tex">I</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span></span></span></span></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="小波编码-Wavelet-Coding">小波编码 (Wavelet Coding)</h2>
+<h3 id="小波编码系统框架">小波编码系统框架</h3>
+<p>小波编码的系统框架与变换编码非常相似。</p>
+<ul>
+<li><strong>编码器 (Encoder)</strong>:
+<ul>
+<li><strong>小波变换 (Wavelet Transform)</strong>: 对整张图像（而不是分块）进行二维离散小波变换 (DWT)，得到不同尺度和方向的子带系数</li>
+<li><strong>量化 (Quantizer)</strong>: 对小波系数进行量化</li>
+<li><strong>符号编码 (Symbol Encoder)</strong>: 对量化后的系数进行熵编码，生成压缩码流</li>
+</ul>
+</li>
+<li><strong>解码器 (Decoder)</strong>:
+<ul>
+<li><strong>符号解码 (Symbol Decoder)</strong>: 解码码流，恢复量化后的小波系数</li>
+<li><strong>反量化 (Inverse Quantization)</strong>: 对系数进行反量化</li>
+<li><strong>逆小波变换 (Inverse Wavelet Transform)</strong>: 对系数进行逆变换，重建图像</li>
+</ul>
+</li>
+</ul>
+<h3 id="核心思想-Basic-Ideas">核心思想 (Basic Ideas)</h3>
+<ul>
+<li><strong>去相关性 (Decorrelation)</strong>: 小波变换能够有效地解除图像像素之间的相关性
+<ul>
+<li>相比于原始的高度相关的像素，对这些去相关后的小波系数进行编码会更加高效</li>
+</ul>
+</li>
+<li><strong>能量聚集 (Energy Packing)</strong>: 与 DCT 类似，小波变换的基函数也具有很强的能量聚集能力
+<ul>
+<li>它能将图像中大部分重要的视觉信息，集中到少数几个大幅度的小波系数中</li>
+</ul>
+</li>
+<li><strong>压缩原理</strong>: 变换后，其余大量的、代表细节的小波系数幅度都很小
+<ul>
+<li>这些小系数可以被粗略地量化，或者直接截断置零 (truncated to 0)，而对最终的图像失真影响很小</li>
+</ul>
+</li>
+</ul>
+<h3 id="小波编码-vs-变换编码-JPEG">小波编码 vs. 变换编码 (JPEG)</h3>
+<ul>
+<li><strong>变换基础</strong>: 传统 JPEG 基于分块的 DCT；小波编码（如 JPEG2000）基于对整张图像的小波变换</li>
+<li><strong>块效应 (Blocking Artifact)</strong>:
+<ul>
+<li>由于 JPEG 是对 8x8 的图像块独立进行压缩的，当压缩率很高时，块与块之间的边界会变得非常明显，形成马赛克一样的“块效应”</li>
+<li>小波变换是对整张图像进行处理，不存在分块的概念，因此它从根本上避免了块效应</li>
+<li>在高压缩比下，小波编码产生的失真通常表现为整体的平滑和模糊，视觉上比块效应更容易接受</li>
+</ul>
+</li>
+</ul>
+<h2 id="图像与视频压缩标准-Image-Video-Compression-Standards">图像与视频压缩标准 (Image &amp; Video Compression Standards)</h2>
+<h3 id="国际图像编码标准概览-International-Image-Coding-Standards">国际图像编码标准概览 (International Image Coding Standards)</h3>
+<ul>
+<li><strong>静态图像标准</strong>:
+<ul>
+<li><strong>JPEG</strong>: (1992) 最经典的静态图像编码标准</li>
+<li><strong>JPEG-LS</strong>: (1999) JPEG 的无损/近无损编码标准</li>
+<li><strong>JPEG2000</strong>: (2000) 基于小波变换（DWT）的新一代静态图像编码标准，性能优于 JPEG</li>
+<li><strong>JBIG1/JBIG2</strong>: 主要用于二值图像（如传真、扫描文档）的编码标准</li>
+</ul>
+</li>
+<li><strong>视频编码标准</strong>: 这是一个由 ITU-T (国际电信联盟电信标准化部门) 的 H.26x 系列（主要面向实时通信，如视频会议）和 ISO/IEC (国际标准化组织/国际电工委员会) 的 MPEG-x 系列（主要面向存储和流媒体，如 VCD, DVD）共同推动发展的领域
+<ul>
+<li><strong>早期标准</strong>: H.261, H.263, MPEG-1, MPEG-2</li>
+<li><strong>里程碑式的合作</strong>: H.262 与 MPEG-2 (DVD标准), H.264 与 MPEG-4 Part 10/AVC，这两次合作产生了极其成功的视频编码标准</li>
+<li><strong>新一代标准</strong>:
+<ul>
+<li>H.265 / HEVC (High Efficiency Video Coding): 相比H.264，在同等画质下码率节省约 50%</li>
+<li>H.266 / VVC (Versatile Video Coding): 最新一代标准，目标是再节省 50% 码率</li>
+</ul>
+</li>
+<li><strong>其他重要标准</strong>:
+<ul>
+<li><strong>Google</strong>: VP8, VP9, AV1 (作为开放媒体联盟 AOMedia 的一部分，免版税)</li>
+<li><strong>中国</strong>: AVS, AVS2, AVS3 (中国自主的音视频编码标准)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>视频编码的“摩尔定律”</strong>: 大约每隔十年，新一代视频编码标准就能在同等主观画质下，将码率（数据量）降低一半，即压缩率提高一倍</li>
+</ul>
+<h3 id="成功标准的要求-Requirements-of-A-Successful-Standard">成功标准的要求 (Requirements of A Successful Standard)</h3>
+<p>一个成功的压缩标准需要满足以下要求：</p>
+<ul>
+<li><strong>创新性 (Innovation)</strong></li>
+<li><strong>竞争性 (Competition)</strong></li>
+<li><strong>独立性 (Independence)</strong>: 与传输和存储介质无关</li>
+<li><strong>兼容性 (Compatibility)</strong>: 这是至关重要的一点，包括：
+<ul>
+<li><strong>前向兼容</strong>: 新设备应能解码旧标准的码流（如 H.263 设备能解 H.261）</li>
+<li><strong>后向兼容</strong>: 旧设备应能以某种方式处理新标准的信号（如黑白电视能接收彩色信号，只是显示为黑白）</li>
+<li><strong>上向兼容</strong>: 高级设备能接收低级信号（如 HDTV 能接收 SDTV）</li>
+<li><strong>下向兼容</strong>: 旧接收器应能接收并解码新一代标准码流中的基本层</li>
+</ul>
+</li>
+</ul>
+<h3 id="混合编码框架-Framework-of-Hybrid-Coding">混合编码框架 (Framework of Hybrid Coding)</h3>
+<p>现代几乎所有的主流视频编码标准（如 H.26x 系列, MPEG 系列）都基于一个统一的混合编码框架。这个框架巧妙地结合了预测编码和变换编码的优点。</p>
+<ul>
+<li><strong>核心思想</strong>:
+<ul>
+<li>使用帧间预测 (Inter-prediction) 或帧内预测 (Intra-prediction) 来消除时间或空间冗余，得到预测误差</li>
+<li>对这个预测误差进行变换编码（DCT/DST），以消除其内部的空间冗余</li>
+</ul>
+</li>
+<li><strong>H.261 框架</strong>: 这是一个经典的混合编码器框图
+<ul>
+<li>输入图像与预测图像相减，得到预测误差</li>
+<li>对预测误差进行 DCT -&gt; 量化(Q)</li>
+<li>对量化后的系数进行变长编码(VLC)，送入缓冲区(Buf)输出码流</li>
+<li>内部解码环路: 量化后的系数经过反量化(IQ) -&gt; 反变换(IDCT)，得到重建的预测误差</li>
+<li>重建的预测误差与预测图像相加，得到重建的当前帧</li>
+<li>这个重建帧会经过一个环路滤波器(Loop Filter)（用于去除块效应等瑕疵），然后存起来作为下一次预测的参考帧</li>
+<li>运动估计/补偿 (ME/MC) 模块负责生成预测图像</li>
+</ul>
+</li>
+</ul>
+<p><img src="h261.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>深度学习驱动的压缩</strong>: 使用端到端 (End-to-end) 的深度学习框架来替代传统视频压缩中的各个模块（如运动估计、变换、熵编码等），是该领域最新的研究方向</li>
+</ul>
 <h2 id="参考资料">参考资料</h2>
 <p>本文参考上海交通大学电子工程系《数字图像处理》课程 CS3324 闵雄阔老师的 PPT 课件整理。</p>
 
