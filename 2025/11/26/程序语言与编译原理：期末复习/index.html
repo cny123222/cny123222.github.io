@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/pl.png">
 <meta property="article:published_time" content="2025-11-26T05:12:04.000Z">
-<meta property="article:modified_time" content="2025-12-13T16:19:11.286Z">
+<meta property="article:modified_time" content="2025-12-14T07:23:00.990Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="课程笔记">
 <meta property="article:tag" content="知识点整理">
@@ -249,7 +249,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.4k words
+          4.2k words
         
       </span>
     
@@ -260,7 +260,7 @@
         
         
         
-          29 mins
+          36 mins
         
       </span>
     
@@ -367,7 +367,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on December 14, 2025 am
+                    Last updated on December 14, 2025 pm
                   
                 
               </p>
@@ -713,8 +713,47 @@ _0-9a-zA-Z: { B, C, D, E, F, K } <span class="katex"><span class="katex-mathml">
 <h4 id="存在量词规则">存在量词规则</h4>
 <ul>
 <li>如果对于任意 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">a</span></span></span></span> 都有，并且 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">{</mo><mi>P</mi><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo><mo stretchy="false">}</mo><mtext> </mtext><mi>c</mi><mtext> </mtext><mo stretchy="false">{</mo><mi>Q</mi><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\{P(a)\} \, c \, \{Q\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathnormal">a</span><span class="mclose">)}</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mopen">{</span><span class="mord mathnormal">Q</span><span class="mclose">}</span></span></span></span></li>
-<li>那么 <span class='katex-error' title='ParseError: KaTeX parse error: Undefined control sequence: \exis at position 3: \{\̲e̲x̲i̲s̲ ̲s a, P (a)\} \,…'>\{\exis s a, P (a)\} \, c \, \{Q\}</span></li>
+<li>那么 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">{</mo><mi mathvariant="normal">∃</mi><mi>a</mi><mo separator="true">,</mo><mi>P</mi><mo stretchy="false">(</mo><mi>a</mi><mo stretchy="false">)</mo><mo stretchy="false">}</mo><mtext> </mtext><mi>c</mi><mtext> </mtext><mo stretchy="false">{</mo><mi>Q</mi><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\{\exists a, P (a)\} \, c \, \{Q\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord">∃</span><span class="mord mathnormal">a</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathnormal">a</span><span class="mclose">)}</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mopen">{</span><span class="mord mathnormal">Q</span><span class="mclose">}</span></span></span></span></li>
 </ul>
+<h3 id="例子-交换地址上的值">例子 - 交换地址上的值</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c">&#123; store(x, m) * store(y, n) &#125;<br>  t = * x;<br>  * x = * y;<br>  * y = t<br>&#123; store(x, n) * store(y, m) &#125;<br></code></pre></td></tr></table></figure>
+<h3 id="例子-单链表取反">例子 - 单链表取反</h3>
+<p>下面程序描述了单链表取反的过程。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">while</span> (x != <span class="hljs-number">0</span>) <span class="hljs-keyword">do</span> &#123;<br>  t = x;<br>  x = * (x + <span class="hljs-number">8</span>);<br>  * (t + <span class="hljs-number">8</span>) = y;<br>  y = t<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="sll-p-谓词的定义"><code>sll(p)</code> 谓词的定义</h4>
+<p>利用分离逻辑，我们可以定义一些新的谓词，从而简洁描述数据结构。以单链表为例：</p>
+<p>谓词 <code>sll(p)</code> 表示以 <code>p</code> 地址为头指针存储了一个单链表，定义为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c">p == <span class="hljs-number">0</span> &amp;&amp; emp ||<br>exists u q, store(p, u) * store(p + <span class="hljs-number">8</span>, q) * sll(q)<br></code></pre></td></tr></table></figure>
+<p>其中 <code>emp</code> 表示占据空内存。</p>
+<p>利用 <code>sll(p)</code> 谓词，可以如下描述单链表取反程序的内存安全性性质：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c">&#123; y == <span class="hljs-number">0</span> &amp;&amp; sll(x) &#125;<br><span class="hljs-keyword">while</span> (x != <span class="hljs-number">0</span>) <span class="hljs-keyword">do</span> &#123;<br>  t = x;<br>  x = * (x + <span class="hljs-number">8</span>);<br>  * (t + <span class="hljs-number">8</span>) = y;<br>  y = t<br>&#125;<br>&#123; x == <span class="hljs-number">0</span> &amp;&amp; sll(y) &#125;<br></code></pre></td></tr></table></figure>
+<h4 id="循环不变量的验证">循环不变量的验证</h4>
+<p>可以选用 <code>sll(x) * sll(y)</code> 作为循环不变量。</p>
+<ul>
+<li>首先，前条件可以推出循环不变量。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c">    y == <span class="hljs-number">0</span> &amp;&amp; sll(x)<br>|-- y == <span class="hljs-number">0</span> &amp;&amp; emp * sll(x)<br>|-- (y == <span class="hljs-number">0</span> &amp;&amp; emp) * sll(x)<br>|-- sll(y) * sll(x)<br>|-- sll(x) * sll(y).<br></code></pre></td></tr></table></figure>
+<ul>
+<li>其次，循环体能保持循环不变量。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c">&#123; x != <span class="hljs-number">0</span> &amp;&amp; sll(x) * sll(y) &#125;<br>&#123; exists u z, store(x, u) * store(x + <span class="hljs-number">8</span>, z) * sll(z) * sll(y) &#125;<br>  <span class="hljs-comment">// Given u z,</span><br>&#123; store(x, u) * store(x + <span class="hljs-number">8</span>, z) * sll(z) * sll(y) &#125;<br>  t = x;<br>&#123; t == x &amp;&amp; store(x, u) * store(x + <span class="hljs-number">8</span>, z) * sll(z) * sll(y) &#125;<br>  x = * (x + <span class="hljs-number">8</span>);<br>&#123; exists x<span class="hljs-string">&#x27;, x == z &amp;&amp; t == x&#x27;</span> &amp;&amp; store(x<span class="hljs-string">&#x27;, u) * store(x&#x27;</span> + <span class="hljs-number">8</span>, z) * sll(z) * sll(y) &#125;<br>&#123; x == z &amp;&amp; store(t, u) * store(t + <span class="hljs-number">8</span>, z) * sll(z) * sll(y) &#125;<br>  * (t + <span class="hljs-number">8</span>) = y;<br>&#123; x == z &amp;&amp; store(t, u) * store(t + <span class="hljs-number">8</span>, y) * sll(z) * sll(y) &#125;<br>  y = t<br>&#123; exists y<span class="hljs-string">&#x27;, y == t &amp;&amp; x == z &amp;&amp; store(t, u) * store(t + 8, y&#x27;</span>) * sll(z) * sll(y<span class="hljs-string">&#x27;) &#125;</span><br><span class="hljs-string">&#123; exists y&#x27;</span>, store(y, u) * store(y + <span class="hljs-number">8</span>, y<span class="hljs-string">&#x27;) * sll(x) * sll(y&#x27;</span>) &#125;<br>&#123; sll(x) * sll(y) &#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>最后，退出循环时后条件成立。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c">    !(x != <span class="hljs-number">0</span>) &amp;&amp; sll(x) * sll(y)<br>|-- (x == <span class="hljs-number">0</span>) &amp;&amp; sll(x) * sll(y)<br>|-- (x == <span class="hljs-number">0</span>) &amp;&amp; sll(y).<br></code></pre></td></tr></table></figure>
+<h3 id="例子-单链表的连接-1">例子 - 单链表的连接 1</h3>
+<p>下面程序描述了单链表的连接。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">//@ require sll(x) * sll(y)</span><br><span class="hljs-comment">//@ ensure sll(res)</span><br><span class="hljs-keyword">if</span> (x == <span class="hljs-number">0</span>)<br>then &#123;<br>  res = y<br>&#125;<br><span class="hljs-keyword">else</span> &#123;<br>  res = x;<br>  nx = * (x + <span class="hljs-number">8</span>);<br>  <span class="hljs-keyword">while</span> (nx != <span class="hljs-number">0</span>) <span class="hljs-keyword">do</span> &#123;<br>    x = nx;<br>    nx = * (x + <span class="hljs-number">8</span>)<br>  &#125;;<br>  * (x + <span class="hljs-number">8</span>) = y<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="sllseg-p-q-谓词的定义"><code>sllseg(p, q)</code> 谓词的定义</h4>
+<p>用谓词 <code>sllseg(p, q)</code> 表示以 <code>p</code> 地址为头指针开始到 <code>q</code> 为止是单链表中的一段（注意不包含 <code>q</code>），定义为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c">p == q &amp;&amp; emp ||<br>exists u r, store(p, u) * store(p + <span class="hljs-number">8</span>, r) * sllseg(r, q)<br></code></pre></td></tr></table></figure>
+<h4 id="循环不变量的验证-2">循环不变量的验证</h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">//@ require sll(x) * sll(y)</span><br><span class="hljs-comment">//@ ensure sll(res)</span><br><span class="hljs-keyword">if</span> (x == <span class="hljs-number">0</span>)<br>then &#123; res = y &#125;<br><span class="hljs-keyword">else</span> &#123;<br>  res = x;<br>  nx = * (x + <span class="hljs-number">8</span>);<br>  <span class="hljs-comment">//@ [generated] v == nx &amp;&amp; x == res &amp;&amp; store(x, u) *</span><br>  store(x + <span class="hljs-number">8</span>, v) * sll(v) * sll(y)<br>  <span class="hljs-comment">//@ inv exists u, sllseg(res, x) * store(x, u) *</span><br>  store(x + <span class="hljs-number">8</span>, nx) * sll(nx) * sll(y)<br>  <span class="hljs-keyword">while</span> (nx != <span class="hljs-number">0</span>) <span class="hljs-keyword">do</span> &#123;<br>    x = nx;<br>    nx = * (x + <span class="hljs-number">8</span>)<br>  &#125;;<br>  * (x + <span class="hljs-number">8</span>) = y<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="例子-单链表的连接-2">例子 - 单链表的连接 2</h3>
+<p>下面是用二阶指针实现的单链表连接。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c">&#123; exists u, store(phead , u) * sll(x) * sll(y) &#125;<br>  * phead = x;<br>  pt = phead;<br>  <span class="hljs-keyword">while</span> ( * pt != <span class="hljs-number">0</span>) &#123;<br>    pt = * pt + <span class="hljs-number">8</span>;<br>  &#125;;<br>  * pt = y;<br>  res = * phead<br>&#123; exists u, store(phead , u) * sll(res) &#125;<br></code></pre></td></tr></table></figure>
+<h4 id="SllSeg-p-q-谓词的定义"><code>SllSeg(p, q)</code> 谓词的定义</h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c">p == q &amp;&amp; emp ||<br>exists u r, store(p, r) * store(r, u) * SllSeg(r + <span class="hljs-number">8</span>, q)<br></code></pre></td></tr></table></figure>
 <h2 id="参考资料">参考资料</h2>
 <p>本文参考上海交通大学程序语言与编译原理课程 CS2612 曹钦翔老师的讲义，课程网站为 <a target="_blank" rel="noopener" href="https://jhc.sjtu.edu.cn/public/courses/CS2612/">https://jhc.sjtu.edu.cn/public/courses/CS2612/</a>。</p>
 
