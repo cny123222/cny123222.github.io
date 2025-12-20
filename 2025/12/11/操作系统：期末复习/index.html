@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-12-11T05:35:13.000Z">
-<meta property="article:modified_time" content="2025-12-12T07:35:16.235Z">
+<meta property="article:modified_time" content="2025-12-20T06:22:50.351Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.8k words
+          4.7k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          32 mins
+          40 mins
         
       </span>
     
@@ -465,7 +465,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on December 12, 2025 pm
+                    Last updated on December 20, 2025 pm
                   
                 
               </p>
@@ -895,22 +895,25 @@
 <h2 id="Lecture-8-物理内存管理">Lecture 8: 物理内存管理</h2>
 <h2 id="Lecture-9-进程">Lecture 9: 进程</h2>
 <ul>
-<li>
-<p><strong>进程控制块（PCB）</strong>：用于表示进程，存储在内核态</p>
+<li><strong>进程控制块（PCB）</strong>：用于表示进程，存储在内核态
 <ul>
 <li>保存的信息包括：虚拟地址空间、处理器上下文、内核栈</li>
 <li>进程标识符 PID、退出状态、子进程列表、执行状态</li>
 </ul>
 </li>
-<li>
-<p><strong>进程的退出与等待</strong>：</p>
+</ul>
+<p><img src="pcb.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>进程的退出与等待</strong>：
 <ul>
 <li><strong>进程的退出</strong>：进程退出时，其上下文结构和虚拟地址空间会被销毁，但 PCB 和内核栈保留（处于僵尸状态）</li>
 <li><strong>进程的等待</strong>：父进程会等待子进程退出，记录子进程的退出状态，回收 PCB 并销毁内核栈</li>
 </ul>
 </li>
-<li>
-<p><strong>进程的五种典型执行状态</strong>：</p>
+</ul>
+<p><img src="process_exit_waitpid.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>进程的五种典型执行状态</strong>：
 <ul>
 <li><strong>新生（new）</strong>：刚调用 <code>process_create</code></li>
 <li><strong>就绪（ready）</strong>：随时准备执行（但暂时没有执行）</li>
@@ -1050,6 +1053,127 @@
 </ul>
 </li>
 </ul>
+<h2 id="Lecture-10-线程">Lecture 10: 线程</h2>
+<ul>
+<li>
+<p><strong>进程的问题</strong>：</p>
+<ul>
+<li><strong>创建进程的开销较大</strong>：包括了数据、代码、堆、栈等</li>
+<li><strong>进程的隔离性过强</strong>：进程间交互可以通过进程间通信（IPC），但开销较大</li>
+<li><strong>进程内部无法支持并行</strong>：单一进程无法充分利用多核资源</li>
+</ul>
+</li>
+<li>
+<p><strong>线程</strong>：更加轻量级的运行时抽象</p>
+<ul>
+<li>只包含运行时的状态（主要是寄存器和栈），静态部分由进程提供</li>
+<li>一个进程的多个线程可以在不同处理器上同时执行</li>
+<li>调度和切换的基本单元由进程变成了线程</li>
+<li>线程有自己的栈及内核栈，但数据、代码、堆等其他区域共享</li>
+</ul>
+</li>
+<li>
+<p><strong>线程的优势</strong>：</p>
+<ul>
+<li><strong>降低管理开销</strong>：从属于进程，创建和销毁时不涉及进程的所有内容</li>
+<li><strong>数据共享和同步方便</strong>：共享同一地址空间，可以直接读写彼此的数据，无需使用耗时的 IPC 机制</li>
+</ul>
+</li>
+</ul>
+<h3 id="线程的基本操作">线程的基本操作</h3>
+<ul>
+<li><strong>线程的创建</strong>：<code>pthread_create(&amp;tid, attr, start_routine, arg)</code>
+<ul>
+<li><strong>参数说明</strong>：
+<ul>
+<li><code>tid</code>：返回子线程 ID</li>
+<li><code>attr</code>：子线程属性，一般是 <code>NULL</code></li>
+<li><code>start_routine</code>：子线程起始执行点</li>
+<li><code>arg</code>：子线程参数，即传入起始执行点函数的参数</li>
+</ul>
+</li>
+<li><strong>作用</strong>：
+<ul>
+<li><strong>内核态</strong>：创建相应的内核态线程及内核态</li>
+<li><strong>应用态</strong>：创建 TCB、应用栈和 TLS</li>
+</ul>
+</li>
+<li>主线程创建子线程后，两线程独立执行</li>
+</ul>
+</li>
+<li><strong>线程的合并</strong>：<code>pthread_join(tid, &amp;status)</code>，等待 <code>tid</code> 对应线程执行完成，并获取其执行结果
+<ul>
+<li>主线程需要<strong>手动调用来回收资源</strong>，否则可能出现资源溢出</li>
+</ul>
+</li>
+<li><strong>线程的分离</strong>：<code>pthread_detach(tid)</code>，使 <code>tid</code> 对应线程进入分离状态
+<ul>
+<li>分离线程不能被其他线程杀死或回收，<strong>退出时资源自动回收</strong></li>
+<li>但是，分离线程并不完全独立，主线程调用 <code>exit()</code> 仍会强制终止所有线程</li>
+</ul>
+</li>
+<li><strong>线程的退出</strong>：<code>pthread_exit(status)</code>，只退出当前线程（参数为返回值）
+<ul>
+<li>使用 <code>exit()</code> 会终结当前线程及所有子线程</li>
+</ul>
+</li>
+</ul>
+<h3 id="线程的实现">线程的实现</h3>
+<h4 id="线程控制块-TCB">线程控制块 (TCB)</h4>
+<ul>
+<li><strong>TCB 保存的信息</strong>：处理器上下文、所属进程、内核栈、退出/执行状态</li>
+<li><strong>PCB 保存的信息</strong>：虚拟地址空间、PID、子进程列表、包含的线程列表及总数</li>
+</ul>
+<p><img src="tcb.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h4 id="线程创建">线程创建</h4>
+<p><img src="thread_create.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h4 id="线程退出与合并">线程退出与合并</h4>
+<p><img src="thread_exit_join.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h3 id="线程模型">线程模型</h3>
+<ul>
+<li>
+<p><strong>线程的分类</strong>：</p>
+<ul>
+<li><strong>内核态线程</strong>：由内核创建并直接管理，内核维护其 TCB
+<ul>
+<li>内核态线程是内核进行调度的单位</li>
+</ul>
+</li>
+<li><strong>用户态线程</strong>：由用户态的线程库创建并管理，对应的数据结构保存在用户态
+<ul>
+<li>内核不知晓该线程的存在，也不对其进行管理</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>线程模型</strong>：表示了用户态线程与内核态线程之间的联系</p>
+<ul>
+<li><strong>多对一模型</strong>：多个用户态线程对应一个内核态线程
+<ul>
+<li><strong>优点</strong>：内核管理简单</li>
+<li><strong>缺点</strong>：可扩展性差，无法适应多核机器的发展</li>
+<li>在主流操作系统中被弃用，用于各种用户态线程库中</li>
+</ul>
+</li>
+<li><strong>一对一模型</strong>：一个用户态线程对应一个内核态线程
+<ul>
+<li><strong>优点</strong>：解决了多对一模型中的可扩展性问题</li>
+<li><strong>缺点</strong>：内核线程数量大，开销大</li>
+<li>主流操作系统都采用一对一模型</li>
+</ul>
+</li>
+<li><strong>多对多模型</strong>：多个用户态线程对应多个内核态线程
+<ul>
+<li><strong>优点</strong>：解决了可扩展性问题（多对一）和线程过多问题（一对一）</li>
+<li><strong>缺点</strong>：管理更为复杂</li>
+<li>在虚拟化中得到了广泛应用</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="thread_model.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <h2 id="参考资料">参考资料</h2>
 <p>本文参考上海交通大学并行与分布式系统研究所（IPADS）操作系统课程 CS3601 华志超老师的 PPT 课件整理。</p>
 <p>部分图片来源于上海交通大学程序语言与编译原理课程 CS2612 曹钦翔老师的讲义。</p>
