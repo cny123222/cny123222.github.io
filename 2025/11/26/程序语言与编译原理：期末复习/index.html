@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/pl.png">
 <meta property="article:published_time" content="2025-11-26T05:12:04.000Z">
-<meta property="article:modified_time" content="2025-12-14T07:23:00.990Z">
+<meta property="article:modified_time" content="2025-12-20T08:50:07.827Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="课程笔记">
 <meta property="article:tag" content="知识点整理">
@@ -249,7 +249,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          4.2k words
+          6.2k words
         
       </span>
     
@@ -260,7 +260,7 @@
         
         
         
-          36 mins
+          52 mins
         
       </span>
     
@@ -367,7 +367,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on December 14, 2025 pm
+                    Last updated on December 20, 2025 pm
                   
                 
               </p>
@@ -639,6 +639,161 @@ _0-9a-zA-Z: { B, C, D, E, F, K } <span class="katex"><span class="katex-mathml">
 </li>
 </ul>
 <h2 id="Lecture-2：语法分析">Lecture 2：语法分析</h2>
+<h3 id="1-语法分析的任务">1. 语法分析的任务</h3>
+<p>语法分析的<strong>主要任务</strong>是在词法分析结果的基础上，进一步得到解析树（parsing tree）。</p>
+<h3 id="2-上下文无关语法与解析树">2. 上下文无关语法与解析树</h3>
+<ul>
+<li><strong>上下文无关语法（Context-Free Grammar，CFG）</strong>：是用于描述程序设计语言语法结构的形式化工具，一套 CFG 包含：
+<ul>
+<li><strong>初始符号 (Start Symbol)</strong>: 语法的起点，通常表示一个完整的程序或语句，例如 <code>S</code></li>
+<li><strong>终结符 (Terminal Symbols) 集合</strong>: 构成语言的基本符号，也就是词法分析器生成的标记 (token) 集合，例如 <code>ID NAT , ; ( ) + :=</code></li>
+<li><strong>非终结符 (Nonterminal Symbols) 集合</strong>: 表示语法结构的变量，可以被进一步展开，例如 <code>S E L</code></li>
+<li><strong>产生式 (Productions) 集合</strong>: 定义了非终结符如何被展开成终结符或非终结符序列（可以为空）的规则
+<ul>
+<li>格式为 <code>A -&gt; β</code>，其中 <code>A</code> 是一个非终结符，<code>β</code> 是一个符号序列</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">S -&gt; S ; S              E -&gt; ID             L -&gt; E<br>S -&gt; ID := E            E -&gt; NAT            L -&gt; L , E<br>S -&gt; PRINT ( L )        E -&gt; E + E<br>                        E -&gt; ( E )<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>派生 (Derivation)</strong>: 从初始符号开始，反复应用产生式，将非终结符替换为其产生式的右侧，最终得到一个只包含终结符的序列，这个过程称为派生</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">S -&gt; S; S<br>  -&gt; ID := E; S<br>  -&gt; ID := E + E; S<br>  -&gt; ID := ID + E; S<br>  -&gt; ID := ID + NAT; S<br>  -&gt; ID := ID + NAT; PRINT(L)<br>  -&gt; ID := ID + NAT; PRINT(L, E)<br>  -&gt; ID := ID + NAT; PRINT(E, E)<br>  -&gt; ID := ID + NAT; PRINT(ID, E)<br>  -&gt; ID := ID + NAT; PRINT(ID, ID)<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>解析树 (Parsing Tree)</strong>: 是派生过程的图形化表示，它具有以下性质：
+<ul>
+<li>根节点是语法的初始符号</li>
+<li>每个内部节点是一个非终结符，每个叶子节点是一个终结符</li>
+<li>每一个父节点和它的所有子节点共同对应一条产生式规则</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">         E<br>      /  |  \                   E<br>    E    *    E                 -&gt; E * E<br>  / | \       |                 -&gt; E + E * E<br> E  +  E      ID                -&gt; ID + E * E<br> |     |                        -&gt; ID + ID * E<br>ID     ID                       -&gt; ID + ID * ID<br></code></pre></td></tr></table></figure>
+<h3 id="3-歧义与歧义的消除">3. 歧义与歧义的消除</h3>
+<ul>
+<li>
+<p><strong>定义</strong>: 如果一个文法对于某个特定的标记串可以产生两棵或更多不同的解析树，那么这个文法就是有歧义的 (ambiguous)</p>
+<ul>
+<li><strong>问题</strong>: 歧义会导致一个程序的含义不确定，因为不同的解析树可能对应不同的执行逻辑</li>
+</ul>
+</li>
+<li>
+<p><strong>常见的歧义类型</strong>：优先级歧义、结合性歧义</p>
+</li>
+<li>
+<p><strong>消除歧义的方法</strong>: 通过引入新的非终结符和产生式来强制规定优先级 (precedence) 和结合性 (associativity)</p>
+</li>
+<li>
+<p><strong>例子</strong>：下面上下文无关语法有歧义</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">E -&gt; ID     E -&gt; E + E      E -&gt; E * E      E -&gt; ( E )<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>歧义1</strong>：加法和乘法的优先级<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">    E                      E<br>  / | \                  / | \<br> E  +  E                E  *  E<br> |   / | \            / | \   |<br>ID  E  *  E          E  +  E  ID<br>    |     |          |     |<br>   ID     ID        ID     ID<br></code></pre></td></tr></table></figure>
+为了消除该歧义，引入了新的非终结符 <code>F</code>，并将文法改写为：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">E -&gt; F        E -&gt; E + E      F -&gt; F * F<br>F -&gt; ( E )    F -&gt; ID<br></code></pre></td></tr></table></figure>
+这时，加法的因子 <code>E</code> 可以继续展开产生乘法，但乘法的因子 <code>F</code> 无法再展开产生加法，从而规定了乘法的优先级高于加法。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">    E                    <br>  / | \                  E <br> E  +  E                 -&gt; E + E     <br> |     |                 -&gt; E + F<br> F     F                 -&gt; E + F * F<br> |   / | \               -&gt; E + F * ID<br>ID  F  *  F              -&gt; E + ID * ID<br>    |     |              -&gt; F + ID * ID<br>   ID     ID             -&gt; ID + ID * ID   <br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>歧义2</strong>：加法的结合律 / 乘法的结合律<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">    E                     E  <br>  / | \                 / | \   <br> E  +  E               E  +  E   <br> |   / | \           / | \   |<br> F  E  +  E         E  +  E  F     <br> |  |     |         |     |  | <br>ID  F     F         F     F  ID<br>    |     |         |     |    <br>   ID     ID        ID    ID <br></code></pre></td></tr></table></figure>
+为了消除该歧义，再次引入新的非终结符 <code>G</code>，并将文法改写为：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">E -&gt; F        E -&gt; E + F      F -&gt; F * G<br>F -&gt; G        G -&gt; ( E )      G -&gt; ID<br></code></pre></td></tr></table></figure>
+这时，只有加法左侧的因子 <code>E</code> 能够继续展开产生加法，从而规定了加法是左结合的。乘法同理。<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">      E                    <br>    / | \                  E <br>   E  +  F                 -&gt; E + F     <br> / | \   |                 -&gt; E + F + F<br>E  +  F  G                 -&gt; F + F + F<br>|     |  |                 -&gt; G + F + F<br>F     G  ID                -&gt; ID + F + F<br>|     |                    -&gt; ID + G + F<br>G     ID                   -&gt; ID + ID + F<br>|                          -&gt; ID + ID + G<br>ID                         -&gt; ID + ID + ID<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-派生与规约">4. 派生与规约</h3>
+<ul>
+<li><strong>最左派生 (Left-most Derivation)</strong>: 在派生的每一步，总是选择最左边的非终结符进行展开</li>
+<li><strong>最右派生 (Right-most Derivation)</strong>: 在派生的每一步，总是选择最右边的非终结符进行展开</li>
+<li><strong>唯一性</strong>: 同一棵解析树能够唯一确定一种最左派生，同一棵解析树能够唯一确定一种最右派生
+<ul>
+<li>如果一串标记串没有歧义，那么只有唯一的最左派生可以生成这一标记串，也只有唯一的最右派生可以生成这一标记串</li>
+</ul>
+</li>
+<li><strong>规约 (Reduction)</strong>: 是派生的逆过程，它将一个终结符序列中与某个产生式右部匹配的子串替换成该产生式的左部非终结符
+<ul>
+<li>最左规约的逆过程恰好是最右派生，最右规约的逆过程恰好是最左派生</li>
+</ul>
+</li>
+<li><strong>例子</strong>：最右规约与最左派生<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">   ID + ID + ID                            E -&gt; E + F<br>-&gt; G + ID + ID                               -&gt; E + G<br>-&gt; F + ID + ID                               -&gt; E + ID<br>-&gt; E + ID + ID                               -&gt; E + F + ID<br>-&gt; E + G + ID                                -&gt; E + G + ID<br>-&gt; E + F + ID                                -&gt; E + ID + ID<br>-&gt; E + ID                                    -&gt; F + ID + ID<br>-&gt; E + G                                     -&gt; G + ID + ID<br>-&gt; E + F                                     -&gt; ID + ID + ID<br>-&gt; E<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="5-移入规约分析">5. 移入规约分析</h3>
+<ul>
+<li>
+<p><strong>思想</strong>: 这是最常见的自底向上分析方法</p>
+<ul>
+<li>它从左到右扫描输入的标记串，从左向右进行规约</li>
+<li>目标是计算出最左规约（或者说最右派生）</li>
+</ul>
+</li>
+<li>
+<p><strong>核心操作</strong>: 移入 (Shift)、规约 (Reduce)</p>
+<ul>
+<li>扫描线的右侧全部都是终结符</li>
+<li>规约操作都发生在扫描线的左侧紧贴扫描线的区域内</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">   | ID + ID + ID<br>-&gt; ID | + ID + ID<br>-&gt; G | + ID + ID<br>-&gt; F | + ID + ID<br>-&gt; E | + ID + ID<br>-&gt; E + | ID + ID<br>-&gt; E + ID | + ID<br>-&gt; E + G | + ID<br>-&gt; E + F | + ID<br>-&gt; E | + ID<br>-&gt; E + | ID<br>-&gt; E + ID |<br>-&gt; E + G |<br>-&gt; E + F |<br>-&gt; E |<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>移入与规约的选择问题</strong>:</p>
+<ul>
+<li>既能移入，又能规约的情形，应当选择移入还是规约？</li>
+<li>有多种规约方案的情形，应当如何选择？</li>
+</ul>
+</li>
+</ul>
+<h3 id="6-已移入部分的结构">6. 已移入部分的结构</h3>
+<p>这部分在探讨扫描线左侧的可行结构，这有助于我们解决移入与规约的选择问题。</p>
+<ul>
+<li><strong>已移入部分的结构特征</strong>:
+<ul>
+<li>已移入规约的部分可以分为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 段，每段对应一条产生式</li>
+<li>第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span> 段拼接上第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">i + 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7429em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> 条产生式的左侧非终结符是第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span> 条产生式右侧符号串的一个前缀</li>
+</ul>
+</li>
+<li><strong>例子</strong>:
+<ul>
+<li><code>F * (E) |</code> 中已移入规约的部分可以分为： <code>F *</code> <code>( E )</code></li>
+<li>分别对应产生式：<code>E -&gt; . F</code> <code>F -&gt; F * . G</code> <code>G -&gt; ( E ) .</code></li>
+<li><code>F * (E + | ID )</code> 中已移入规约的部分可以分为： <code>F *</code> <code>(</code> <code>E +</code></li>
+<li>分别对应产生式：<code>E -&gt; . F</code> <code>F -&gt; F * . G</code> <code>G -&gt; ( . E )</code> <code>E -&gt; E + . F</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="7-已移入部分的结构判定">7. 已移入部分的结构判定</h3>
+<p>这部分提出了判定可行的扫描线左侧结构的算法。</p>
+<ul>
+<li><strong>核心思想</strong>: 以扫描线左侧的最右段为状态，构建 NFA，该 NFA 中的所有状态都是终止状态
+<ul>
+<li>新增一段带来的变化对应一条 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">\epsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">ϵ</span></span></span></span> 边，其他加入符号带来的变化对应一条普通边</li>
+<li>要判断一串符号串是否是可行的扫描线左侧结构，只需判断这个符号串能否被这个 NFA 接受</li>
+</ul>
+</li>
+<li><strong>状态转移</strong>:
+<ul>
+<li><strong>普通转移</strong>: 当从一个状态 <code>S</code> 读入一个符号 <code>X</code> 时，它会转移到一个新的状态 <code>S'</code>
+<ul>
+<li><code>S'</code> 中的项是 <code>S</code> 中形如 <code>A -&gt; α . X β</code> 的项将点右移一位后得到的结果，即 <code>A -&gt; α X . β</code></li>
+</ul>
+</li>
+<li><strong><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">\epsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">ϵ</span></span></span></span>-转移</strong>: 在一个状态中，如果存在一个项 <code>A -&gt; α . B β</code>（其中 <code>B</code> 是非终结符），那么必须为接下来可能出现的 <code>B</code> 做好准备
+<ul>
+<li>因此，所有 <code>B</code> 的产生式对应的初始项，如 <code>B -&gt; . γ</code>，都必须被递归地加入到当前状态中</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>判定过程</strong>:
+<ul>
+<li>从包含初始产生式 <code>START -&gt; . E</code> 的初始状态开始</li>
+<li>每次移入一个符号，就根据状态转移规则进入下一个状态</li>
+<li>如果某一步无法找到合法的转移，说明输入的符号串不可行</li>
+</ul>
+</li>
+<li><strong>例子</strong>：判断 <code>E + F + | ...</code> 是否是可行的扫描线左侧结构：</li>
+</ul>
+<p><img src="parser1.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="parser2.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <h2 id="Lecture-3：简单编译器">Lecture 3：简单编译器</h2>
 <h2 id="Lecture-4：程序语言语法的-Coq-定义">Lecture 4：程序语言语法的 Coq 定义</h2>
 <h2 id="Lecture-5：表达式指称语义">Lecture 5：表达式指称语义</h2>
