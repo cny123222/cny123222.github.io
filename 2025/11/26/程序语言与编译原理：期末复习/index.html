@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/pl.png">
 <meta property="article:published_time" content="2025-11-26T05:12:04.000Z">
-<meta property="article:modified_time" content="2025-12-20T08:50:07.827Z">
+<meta property="article:modified_time" content="2025-12-20T12:13:41.896Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="课程笔记">
 <meta property="article:tag" content="知识点整理">
@@ -249,7 +249,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          6.2k words
+          7.4k words
         
       </span>
     
@@ -260,7 +260,7 @@
         
         
         
-          52 mins
+          62 mins
         
       </span>
     
@@ -743,7 +743,7 @@ _0-9a-zA-Z: { B, C, D, E, F, K } <span class="katex"><span class="katex-mathml">
 </li>
 </ul>
 <h3 id="6-已移入部分的结构">6. 已移入部分的结构</h3>
-<p>这部分在探讨扫描线左侧的可行结构，这有助于我们解决移入与规约的选择问题。</p>
+<p>这部分在探讨扫描线左侧的可行结构，这有助于我们解决“移入与规约的选择问题”。</p>
 <ul>
 <li><strong>已移入部分的结构特征</strong>:
 <ul>
@@ -761,7 +761,7 @@ _0-9a-zA-Z: { B, C, D, E, F, K } <span class="katex"><span class="katex-mathml">
 </li>
 </ul>
 <h3 id="7-已移入部分的结构判定">7. 已移入部分的结构判定</h3>
-<p>这部分提出了判定可行的扫描线左侧结构的算法。</p>
+<p>这部分提出了判定可行的扫描线左侧结构的算法，是用于解决“移入与规约的选择问题”的一个判断方法。</p>
 <ul>
 <li><strong>核心思想</strong>: 以扫描线左侧的最右段为状态，构建 NFA，该 NFA 中的所有状态都是终止状态
 <ul>
@@ -790,10 +790,123 @@ _0-9a-zA-Z: { B, C, D, E, F, K } <span class="katex"><span class="katex-mathml">
 <li>如果某一步无法找到合法的转移，说明输入的符号串不可行</li>
 </ul>
 </li>
-<li><strong>例子</strong>：判断 <code>E + F + | ...</code> 是否是可行的扫描线左侧结构：</li>
+<li><strong>例子</strong>：判断 <code>E + F + | ...</code> 是否是可行的扫描线左侧结构：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">E + F + | ...<br><br>[]<br>START -&gt; . E<br>    E -&gt; . F<br>    E -&gt; . E + F<br>    F -&gt; . G<br>    F -&gt; . F * G<br>    G -&gt; . ( E )<br>    G -&gt; . ID<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">E + F + | ...<br><br>[E]<br>START -&gt; E .<br>    E -&gt; E . + F<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">E + F + | ...<br><br>[E +]<br>E -&gt; E + . F<br>F -&gt; . G<br>F -&gt; . F * G<br>G -&gt; . ID<br>G -&gt; . ( E )<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">E + F + | ...<br><br>[E + F]<br>E -&gt; E + F .<br>F -&gt; F . * G<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">E + F + | ...<br><br>[E + F +]<br>( No possible state )<br></code></pre></td></tr></table></figure>
+</li>
 </ul>
-<p><img src="parser1.png" srcset="/img/loading.gif" lazyload alt=""></p>
-<p><img src="parser2.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h3 id="8-基于-follow-集合的判定法">8. 基于 follow 集合的判定法</h3>
+<p>这部分用于解决“移入与规约的选择问题”的另一个判断方法。</p>
+<ul>
+<li>
+<p><strong>定义</strong>: 假设 <code>X</code> 是一个终结符，</p>
+<ul>
+<li><code>X</code> 是 Follow( <code>Y</code> ) 的元素当且仅当 <code>... Y X ...</code> 是可能被完全规约的</li>
+<li><code>X</code> 是 First( <code>Y</code> ) 的元素当且仅当 <code>X ...</code> 是可能被规约为 <code>Y</code> 的</li>
+</ul>
+</li>
+<li>
+<p><strong>First 集合的计算</strong>:</p>
+<ul>
+<li>对任意终结符 <code>X</code> ， <code>X</code> 都是 First( <code>X</code> ) 的元素</li>
+<li>对任意产生式 <code>Y -&gt; Z ...</code> ，First( <code>Z</code> ) 的元素都是 First( <code>Y</code> ) 的元素</li>
+</ul>
+</li>
+<li>
+<p><strong>Follow 集合的计算</strong>:</p>
+<ul>
+<li>对任意产生式 <code>U -&gt; ... Y Z ...</code> ，First( <code>Z</code> ) 是 Follow( <code>Y</code> ) 的子集</li>
+<li>对任意产生式 <code>Z -&gt; ... Y</code> ，Follow( <code>Z</code> ) 是 Follow( <code>Y</code> ) 的子集</li>
+</ul>
+</li>
+</ul>
+<h3 id="9-移入规约分析完整过程实例">9. 移入规约分析完整过程实例</h3>
+<p><code>ID * (ID + ID)</code> 的移入规约分析：</p>
+<ul>
+<li>初始： <code>| ID * ( ID + ID )</code></li>
+<li>移入： <code>ID | * ( ID + ID )</code></li>
+<li>规约： <code>G | * ( ID + ID )</code> ，因为 <code>ID * | ...</code> 不可行</li>
+<li>规约： <code>F | * ( ID + ID )</code> ，因为 <code>G * | ...</code> 不可行</li>
+<li>移入： <code>F * | ( ID + ID )</code> ，因为 <code>*</code> 不是 Follow( <code>E</code> ) 中的元素</li>
+<li>移入： <code>F * ( | ID + ID )</code></li>
+<li>移入： <code>F * ( ID | + ID )</code></li>
+<li>规约： <code>F * ( G | + ID )</code> ，因为 <code>F * ( ID + | ...</code> 不可行</li>
+<li>规约： <code>F * ( F | + ID )</code> ，因为 <code>F * ( G + | ...</code> 不可行</li>
+<li>规约： <code>F * ( E | + ID )</code> ，因为 <code>F * ( F + | ...</code> 不可行</li>
+<li>移入： <code>F * ( E + | ID )</code></li>
+<li>移入： <code>F * ( E + ID | )</code></li>
+<li>规约： <code>F * ( E + G | )</code> ，因为 <code>F * ( E + ID ) | ...</code> 不可行</li>
+<li>规约： <code>F * ( E + F | )</code> ，因为 <code>F * ( E + G ) | ...</code> 不可行</li>
+<li>规约： <code>F * ( E | )</code> ，因为另外两种方案扫描线左侧的结构都不可行</li>
+<li>移入： <code>F * ( E ) |</code></li>
+<li>规约： <code>F * G |</code></li>
+<li>规约： <code>F |</code>，因为 <code>F * F | ...</code> 不可行</li>
+<li>规约： <code>E |</code> ，亦可看做 <code>E | EOF</code></li>
+<li>移入： <code>E EOF |</code></li>
+<li>规约： <code>START |</code></li>
+<li>语法分析结束</li>
+</ul>
+<h3 id="10-冲突">10. 冲突</h3>
+<ul>
+<li><strong>移入/规约冲突（shift/reduce conflict）</strong>: 在同一时刻既能进行移入操作，又能进行规约操作</li>
+<li><strong>规约/规约冲突（reduce/reduce conflict）</strong>: 在同一时刻能进行两种不同的规约操作</li>
+<li><strong>歧义与冲突的关系</strong>: 给定一套上下文无关语法，如果移入规约分析中，一定不会出现移入/规约冲突，也不会出现规约/规约冲突，那么任何一串标记串都不会有歧义；反之不一定。
+<ul>
+<li>没有冲突 -&gt; 没有歧义</li>
+<li>有歧义 -&gt; 有冲突</li>
+</ul>
+</li>
+<li><strong>例子</strong>: 考虑 <code>U V W | X Y</code>，存在规约/规约冲突，但该语法没有歧义<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-tag">A</span> -&gt; <span class="hljs-selector-tag">B</span> <span class="hljs-attribute">X</span> <span class="hljs-attribute">Y</span>      <span class="hljs-selector-tag">A</span> -&gt; C <span class="hljs-attribute">X</span> Z<br><span class="hljs-selector-tag">B</span> -&gt; U V W      C -&gt; U V W<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="11-Bison-语法分析器">11. Bison 语法分析器</h3>
+<p>Bison 是一个语法分析器生成器，可以语法分析规则生成 C 语言的语法分析器。</p>
+<ul>
+<li><strong>输入（<code>.y</code> 文件）</strong>：基于上下文无关语法与优先级、结合性的语法分析规则</li>
+<li><strong>输出（<code>.c</code> 文件）</strong>：用 C 语言实现的基于移入规约分析算法的语法分析器</li>
+<li><strong><code>lang.y</code></strong>:
+<ul>
+<li><strong>文件头</strong>: 描述语法分析器所需的头文件、全局变量以及函数<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c">%&#123;<br>  <span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br>  <span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;lang.h&quot;</span></span><br>  <span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;lexer.h&quot;</span></span><br>  <span class="hljs-type">int</span> <span class="hljs-title function_">yyerror</span><span class="hljs-params">(<span class="hljs-type">char</span> * str)</span>;<br>  <span class="hljs-type">int</span> <span class="hljs-title function_">yylex</span><span class="hljs-params">()</span>;<br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">cmd</span> * <span class="hljs-title">root</span>;</span><br>%&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>其中 <code>yylex()</code> 是 Flex 词法分析器提供的函数</li>
+<li><code>yyerror(str)</code> 是处理语法错误的必要设定</li>
+<li><code>root</code> 是语法分析最后生成的语法树根节点</li>
+</ul>
+</li>
+<li><strong>语法分析结果在 C 中的存储</strong>: 描述多种语法结构产生对应的语法分析结果<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c">%<span class="hljs-class"><span class="hljs-keyword">union</span> &#123;</span><br>  <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> n;<br>  <span class="hljs-type">char</span> * i;<br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">expr</span> * <span class="hljs-title">e</span>;</span><br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">cmd</span> * <span class="hljs-title">c</span>;</span><br>  <span class="hljs-type">void</span> * none;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><code>n</code> 表示自然数常数的词法语法分析结果</li>
+<li><code>i</code> 表示变量的词法语法分析结果</li>
+<li><code>e</code> 表示表达式的语法分析结果</li>
+<li><code>c</code> 表示程序语句的语法分析结果</li>
+</ul>
+</li>
+<li><strong>终结符与非终结符</strong>:<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c">%token &lt;n&gt; TM_NAT<br>%token &lt;i&gt; TM_IDENT<br>%token &lt;none&gt; TM_LEFT_BRACE TM_RIGHT_BRACE<br>%token &lt;none&gt; TM_LEFT_PAREN TM_RIGHT_PAREN<br>%token &lt;none&gt; TM_MALLOC TM_RI TM_RC TM_WI TM_WC<br>%token &lt;none&gt; TM_VAR TM_IF TM_THEN TM_ELSE TM_WHILE TM_DO<br>%token &lt;none&gt; TM_SEMICOL TM_ASGNOP TM_OR TM_AND TM_NOT<br>%token &lt;none&gt; TM_LT TM_LE TM_GT TM_GE TM_EQ TM_NE<br>%token &lt;none&gt; TM_PLUS TM_MINUS TM_MUL TM_DIV TM_MOD<br>%type &lt;c&gt; NT_WHOLE NT_CMD<br>%type &lt;e&gt; NT_EXPR<br></code></pre></td></tr></table></figure>
+<ul>
+<li><code>%token</code> 表示终结符， <code>%type</code> 表示非终结符</li>
+<li>尖括号内表示语义值的存储方式</li>
+</ul>
+</li>
+<li><strong>优先级与结合性</strong>:<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c">%nonassoc TM_ASGNOP<br>%left TM_OR<br>%left TM_AND<br>%left TM_LT TM_LE TM_GT TM_GE TM_EQ TM_NE<br>%left TM_PLUS TM_MINUS<br>%left TM_MUL TM_DIV TM_MOD<br>%left TM_NOT<br>%left TM_LEFT_PAREN TM_RIGHT_PAREN<br>%right TM_SEMICOL<br></code></pre></td></tr></table></figure>
+<ul>
+<li>越先出现优先级越低</li>
+<li>同一行声明内的优先级相同</li>
+</ul>
+</li>
+<li><strong>上下文无关语法</strong>:<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c">%%<br>NT_WHOLE:<br>  NT_CMD &#123;<br>    $$ = ($<span class="hljs-number">1</span>);<br>    root = $$;<br>  &#125;<br>;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>所有词法分析规则都放在一组 <code>%%</code> 中</li>
+<li>第一条语法分析规则描述初始符号对应的产生式</li>
+<li>用 <code>$$</code> 表示产生式左侧符号的语义值</li>
+<li>用 <code>$1</code>、<code>$2</code> 等表示产生式右侧符号的语义值</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs c">NT_EXPR:<br>  TM_NAT &#123;<br>    $$ = (TConst($<span class="hljs-number">1</span>));<br>  &#125;<br>  | TM_LEFT_PAREN NT_EXPR TM_RIGHT_PAREN &#123;<br>    $$ = ($<span class="hljs-number">2</span>);<br>  &#125;<br>  | TM_MINUS NT_EXPR &#123;<br>    $$ = (TUnOp(T_UMINUS,$<span class="hljs-number">2</span>));<br>  &#125;<br>  | NT_EXPR TM_PLUS NT_EXPR &#123;<br>    $$ = (TBinOp(T_PLUS,$<span class="hljs-number">1</span>,$<span class="hljs-number">3</span>));<br>  &#125;<br>  | NT_EXPR TM_MINUS NT_EXPR &#123;<br>    $$ = (TBinOp(T_MINUS,$<span class="hljs-number">1</span>,$<span class="hljs-number">3</span>));<br>&#125;<br>...<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
 <h2 id="Lecture-3：简单编译器">Lecture 3：简单编译器</h2>
 <h2 id="Lecture-4：程序语言语法的-Coq-定义">Lecture 4：程序语言语法的 Coq 定义</h2>
 <h2 id="Lecture-5：表达式指称语义">Lecture 5：表达式指称语义</h2>
