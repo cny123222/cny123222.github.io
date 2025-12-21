@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-12-11T05:35:13.000Z">
-<meta property="article:modified_time" content="2025-12-21T08:50:01.069Z">
+<meta property="article:modified_time" content="2025-12-21T13:05:41.294Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          7.2k words
+          8.7k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          60 mins
+          73 mins
         
       </span>
     
@@ -1457,7 +1457,7 @@
 <li><strong>准备阶段</strong>：建立通信连接，即进程间的信道</li>
 <li><strong>通信阶段</strong>：
 <ul>
-<li><strong>数据传递</strong>：通信数据抽象为“消息”，通常包含头部和数据内容</li>
+<li><strong>数据传递</strong>：以消息接口为例，通信数据抽象为消息，通常包含头部和数据内容</li>
 <li><strong>通信机制</strong>：在新的数据或消息到来时通知接收方</li>
 </ul>
 </li>
@@ -1537,6 +1537,192 @@
 </li>
 </ul>
 <p><img src="ipc2.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h3 id="共享内存-内存接口-IPC">共享内存: 内存接口 IPC</h3>
+<p>共享内存为两个（或多个）进程在它们的虚拟地址空间中映射了同一段物理内存。</p>
+<ul>
+<li><strong>基础实现</strong>：
+<ul>
+<li><strong>共享区域</strong>：共享区域容量、共享状态</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> BUFFER_SIZE 10</span><br><span class="hljs-comment">// 消息抽象，即缓冲区中的元素</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> &#123;</span><br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">msg_header</span> <span class="hljs-title">header</span>;</span><br>  <span class="hljs-type">char</span> data[<span class="hljs-number">0</span>];<br>&#125; item;<br><span class="hljs-comment">// 共享数据区域，容量为 10</span><br>item buffer[BUFFER_SIZE];<br><span class="hljs-comment">// 共享状态</span><br><span class="hljs-keyword">volatile</span> <span class="hljs-type">int</span> buffer_write_cnt = <span class="hljs-number">0</span>;<br><span class="hljs-keyword">volatile</span> <span class="hljs-type">int</span> buffer_read_cnt = <span class="hljs-number">0</span>;<br><span class="hljs-keyword">volatile</span> <span class="hljs-type">int</span> empty_slot = BUFFER_SIZE;<br><span class="hljs-keyword">volatile</span> <span class="hljs-type">int</span> filled_slot = <span class="hljs-number">0</span>;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>发送者(生产者)</strong>：在缓冲区上产生新的数据</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// Produce an item/msg</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">send</span><span class="hljs-params">(item msg)</span><br>&#123;    <br>  <span class="hljs-keyword">while</span> (empty_slot == <span class="hljs-number">0</span>)<br>    ;   <span class="hljs-comment">// do nothing -- no free buffers</span><br>  empty_slot--;<br>  buffer[buffer_write_cnt] = msg;<br>  buffer_write_cnt = (buffer_write_cnt + <span class="hljs-number">1</span>) % BUFFER_SIZE;<br>  filled_slot++; <br>  ...<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>接收者(消费者)</strong>：从缓冲区中获取数据</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c">item <span class="hljs-title function_">recv</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>  <span class="hljs-keyword">while</span> (filled_slot == <span class="hljs-number">0</span>)<br>    ;  <span class="hljs-comment">// do nothing -- nothing to consume</span><br>  filled_slot--;  <span class="hljs-comment">// remove an item from the buffer</span><br>  item = buffer[buffer_read_cnt];<br>  buffer_read_cnt = (buffer_read_cnt + <span class="hljs-number">1</span>) % BUFFER SIZE;<br>  empty_slot++;<br>  <span class="hljs-keyword">return</span> item;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>共享内存的问题</strong>：
+<ul>
+<li><strong>缺少通知机制</strong>：
+<ul>
+<li>若轮询检查，则导致 CPU 资源浪费</li>
+<li>若周期性检查，则可能导致较长的等待时延</li>
+<li><strong>根本原因</strong>：共享内存的抽象过于底层；缺少 OS 更多支持</li>
+</ul>
+</li>
+<li><strong>TOCTTOU （Time-of-check to Time-of-use）问题</strong>：
+<ul>
+<li>当接收者直接用共享内存上的数据时，可能存在被发送者恶意篡改的情况</li>
+<li>这可能导致 buffer overflow 等问题</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="消息队列-消息接口-IPC">消息队列: 消息接口 IPC</h3>
+<ul>
+<li>
+<p><strong>消息队列</strong>：一种消息传递机制，属于间接通信</p>
+<ul>
+<li>发送和接收的接口是内核提供的</li>
+<li>信箱是内核中维护的消息队列结构体</li>
+<li>有缓存，没有超时机制，支持异步通信（非阻塞）</li>
+<li>支持多个发送者和接收者同时存在</li>
+</ul>
+</li>
+<li>
+<p><strong>消息队列的结构</strong>：在内核中的表示是队列，以链表的方式组织消息</p>
+<ul>
+<li>任何有权限的进程都可以访问队列（写入或者读取）</li>
+<li>消息的格式：类型（整型）+ 数据，允许按照类型进行消息查询</li>
+</ul>
+</li>
+</ul>
+<p><img src="message.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>基本操作</strong>：
+<ul>
+<li><strong><code>msgget</code></strong>：获取已有消息队列的连接，或创建一个新的消息队列</li>
+<li><strong><code>msgctl</code></strong>：控制和管理消息队列，如修改消息队列的权限信息或删除该消息队列</li>
+<li><strong><code>msgsnd</code></strong>：向消息队列发送消息</li>
+<li><strong><code>msgrcv</code></strong>：从消息队列接收消息</li>
+</ul>
+</li>
+</ul>
+<h3 id="轻量级远程方法调用-LRPC">轻量级远程方法调用 (LRPC)</h3>
+<ul>
+<li>
+<p><strong>核心思想</strong>：</p>
+<ul>
+<li><strong>传统思路</strong>：将需要处理的数据发送到另一个进程处理，这使得控制流切换和数据传输成为主要瓶颈</li>
+<li><strong>LRPC 的思路</strong>：将另一个进程处理数据的代码拉到当前进程，以避免控制流切换和数据传输，从而优化 IPC 性能</li>
+</ul>
+</li>
+<li>
+<p><strong>控制流转换</strong>：</p>
+<ul>
+<li><strong>问题</strong>：需要下陷到内核，内核调度会导致不确定时延
+<ul>
+<li>即 Client 和 Server 之间可能会执行多个不相关进程</li>
+</ul>
+</li>
+<li><strong>解决方法</strong>：将 Client 运行在 Server 的上下文
+<ul>
+<li>只切换地址空间、权限表等状态，不做调度和线程切换</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>数据传输</strong>：</p>
+<ul>
+<li><strong>问题</strong>：经过内核的传输经历两次拷贝，即 Client → 内核 → Server
+<ul>
+<li>数据拷贝很慢（内存指令），并且不可扩展（数据量增大，时延增大）</li>
+</ul>
+</li>
+<li><strong>解决方法</strong>：共享参数栈和寄存器
+<ul>
+<li><strong>参数栈 (A-stack)</strong>：系统内核为每一对 LRPC 连接预先分配好一个 A-stack
+<ul>
+<li>A-stack 被同时映射在 Client 进程和 Server 进程地址空间</li>
+<li>Client 进程只需要将参数准备到 A-stack 即可，不需要内核额外拷贝</li>
+</ul>
+</li>
+<li><strong>共享寄存器</strong>：直接使用当前的通用寄存器，类似函数调用中用寄存器传递参数</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>通信连接建立</strong>：</p>
+<ul>
+<li>Server 进程通过内核注册一个服务描述符，对应 Server 进程内部的一个处理函数</li>
+<li>内核为服务描述符预先分配好参数栈及连接记录，连接记录用于从 Server 进程处返回（类似栈）</li>
+<li>内核返回给 Clinet 一个绑定对象，作为成功建立连接的标志
+<ul>
+<li>后续 Client 通过绑定对象发起通信</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>通信过程</strong>：</p>
+<ol>
+<li>内核验证绑定对象的正确性，并找到正确的服务描述符</li>
+<li>内核验证参数栈和连接记录</li>
+<li>检查是否有并发调用 (可能导致 A-stack 等异常)</li>
+<li>将 Client 的返回地址和栈指针放到连接记录中</li>
+<li>将连接记录放到线程控制结构体中的栈上 (支持嵌套 LRPC 调用)</li>
+<li>找到 Server 进程的 E-stack (执行代码所使用的栈)</li>
+<li>将当前线程的栈指针设置为 Server 进程的运行栈地址</li>
+<li>将地址空间切换到 Server 进程中</li>
+<li>执行 Server 地址空间中的处理函数</li>
+</ol>
+</li>
+</ul>
+<h3 id="Binder-IPC">Binder IPC</h3>
+<ul>
+<li><strong>Binder IPC</strong>：兼具IPC数据传输的高性能与高安全
+<ul>
+<li>框架层 Binder 服务框架：发现服务，接口封装</li>
+<li>内核层 Binder 驱动：提供内核层 IPC 能力</li>
+</ul>
+</li>
+<li><strong>Binder IPC 数据传输</strong>：通过内存映射减少 IPC数据拷贝
+<ul>
+<li>发送端一次数据拷贝，接受端零次数据拷贝</li>
+</ul>
+</li>
+<li><strong>数据序列化</strong>：
+<ul>
+<li><strong>问题</strong>：复杂数据结构无法直接跨进程传输
+<ul>
+<li>数据结构嵌套</li>
+<li>指针、文件描述符等接收端无法访问</li>
+</ul>
+</li>
+<li><strong>方案</strong>：序列化与反序列化
+<ul>
+<li>序列化：将数据结构展开为一个字节串</li>
+<li>反序列化：将字节串转换为原有数据结构</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Binder IPC 数据序列化</strong>：内核辅助完成特殊对象传输
+<ul>
+<li>文件描述符、句柄等</li>
+<li>定位特殊对象位置 + 帮助接收端进程重构特殊对象</li>
+</ul>
+</li>
+<li><strong>服务端线程数量</strong>：
+<ul>
+<li>IPC 请求需要服务端线程的处理：一个 IPC Server 可能处理大量 Client 请求</li>
+<li>少量服务线程 -&gt; 无法应对高负载任务</li>
+<li>大量服务线程 -&gt; 低负载时浪费资源</li>
+</ul>
+</li>
+<li><strong>Binder IPC 线程池模型</strong>：
+<ul>
+<li>服务端设置最大线程数量</li>
+<li>内核动态创建服务线程：默认从服务线程池挑选处理线程，服务线程不足自动创建</li>
+</ul>
+</li>
+</ul>
 <h2 id="参考资料">参考资料</h2>
 <p>本文参考上海交通大学并行与分布式系统研究所（IPADS）操作系统课程 CS3601 华志超老师的 PPT 课件整理。</p>
 <p>部分图片来源于上海交通大学程序语言与编译原理课程 CS2612 曹钦翔老师的讲义。</p>
