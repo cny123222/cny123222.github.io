@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-12-11T05:35:13.000Z">
-<meta property="article:modified_time" content="2025-12-21T08:00:12.734Z">
+<meta property="article:modified_time" content="2025-12-21T08:50:01.069Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          6.6k words
+          7.2k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          55 mins
+          60 mins
         
       </span>
     
@@ -1435,6 +1435,108 @@
 </li>
 </ul>
 <p><img src="cfs.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h2 id="Lecture-12-进程间通信">Lecture 12: 进程间通信</h2>
+<h3 id="IPC-基础">IPC 基础</h3>
+<ul>
+<li>
+<p><strong>IPC 的消息接口</strong>：</p>
+<ul>
+<li>发送消息：<code>Send(message)</code></li>
+<li>接收消息：<code>Recv(message)</code></li>
+<li>远程方法调用：<code>RPC(req_message, resp_message)</code>
+<ul>
+<li>相当于在发送消息后，等待一个返回消息</li>
+</ul>
+</li>
+<li>远程方法调用的回复：<code>Reply(resp_message)</code></li>
+</ul>
+</li>
+<li>
+<p><strong>IPC 的两个阶段</strong>：</p>
+<ul>
+<li><strong>准备阶段</strong>：建立通信连接，即进程间的信道</li>
+<li><strong>通信阶段</strong>：
+<ul>
+<li><strong>数据传递</strong>：通信数据抽象为“消息”，通常包含头部和数据内容</li>
+<li><strong>通信机制</strong>：在新的数据或消息到来时通知接收方</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>数据传递的两种方法</strong>：</p>
+<ul>
+<li><strong>基于共享内存的数据传递</strong>：OS 在通信过程中不干预数据传输，仅负责准备阶段的映射
+<ul>
+<li>无需切换到内核态即可完成 IPC（多核场景下）</li>
+<li>完全由用户态控制，定制能力更强</li>
+<li>可实现零内存拷贝（无需内核介入）</li>
+</ul>
+</li>
+<li><strong>基于操作系统辅助的数据传递</strong>：OS 提供接口（系统调用），通过内核态内存来传递数据，无需在用户态建立共享内存
+<ul>
+<li>抽象更简单，用户态直接调用接口，使用更方便</li>
+<li>安全性保证更强，发送者在消息被接收时通常无法修改消息</li>
+<li>多方（多进程）通信时更灵活、更安全</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>两种通知机制</strong>：</p>
+<ul>
+<li><strong>基于轮询</strong>：轮询内存数据检查是否有消息到来
+<ul>
+<li><strong>缺点</strong>：大量 CPU 计算资源的浪费</li>
+</ul>
+</li>
+<li><strong>基于控制流转移</strong>：由内核控制进程的运行状态
+<ul>
+<li><strong>优点</strong>：进程只有在条件满足的情况下才运行，避免 CPU 浪费</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>IPC 控制流</strong>：同步和异步</p>
+<ul>
+<li><strong>同步 IPC</strong>：IPC 操作会阻塞进程直到操作完成
+<ul>
+<li>调用者继续运行时，返回结果已经 ready</li>
+</ul>
+</li>
+<li><strong>异步 IPC</strong>：进程发起 IPC 操作后即可返回而不需要等待其完成
+<ul>
+<li>通过轮询或回调函数（需内核支持）来获取返回结果</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>IPC 的超时机制</strong>：</p>
+<ul>
+<li>应用可自行设置超时的阈值，但如何选择合适的阈值却很难</li>
+<li>特殊的超时机制：阻塞、立即返回（要求被调用者处于可立即响应的状态）</li>
+</ul>
+</li>
+<li>
+<p><strong>IPC 的权限检查</strong>：</p>
+<ul>
+<li><strong>宏内核</strong>：通常基于权限检查的机制实现
+<ul>
+<li>如 Linux 中与文件的权限检查结合在一起</li>
+</ul>
+</li>
+<li><strong>微内核</strong>：通常基于 Capability 安全检查机制实现
+<ul>
+<li>Capability 保存在内核中，与进程绑定</li>
+<li>进程发起 IPC 时，内核检查其是否拥有对应的 Capability</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="ipc2.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <h2 id="参考资料">参考资料</h2>
 <p>本文参考上海交通大学并行与分布式系统研究所（IPADS）操作系统课程 CS3601 华志超老师的 PPT 课件整理。</p>
 <p>部分图片来源于上海交通大学程序语言与编译原理课程 CS2612 曹钦翔老师的讲义。</p>
