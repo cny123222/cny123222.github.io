@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-12-11T05:35:13.000Z">
-<meta property="article:modified_time" content="2025-12-21T07:23:55.502Z">
+<meta property="article:modified_time" content="2025-12-21T08:00:12.734Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          6k words
+          6.6k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          51 mins
+          55 mins
         
       </span>
     
@@ -1325,18 +1325,116 @@
 </ul>
 <h3 id="公平共享调度策略-Fair-Share-Scheduling">公平共享调度策略 (Fair-Share Scheduling)</h3>
 <ul>
-<li><strong>公平共享</strong>：
+<li><strong>思想</strong>：每个用户占用的资源是成比例的，设定<strong>份额 (Share)</strong> 以确定相对比例</li>
+<li><strong>方法</strong>：使用 ticket 表示任务的份额，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi></mrow><annotation encoding="application/x-tex">T</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span></span></span></span> 表示 ticket 的总量</li>
+</ul>
+<h4 id="7-彩票调度-Lottery-Scheduling">7. 彩票调度 (Lottery Scheduling)</h4>
 <ul>
-<li>每个用户占用的资源是成比例的，而非被任务的数量决定</li>
-<li>每个用户占用的资源是可以被计算的，设定“份额”以确定相对比例</li>
+<li><strong>规则</strong>：
+<ul>
+<li>每次调度时，生成随机数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>∈</mo><mo stretchy="false">[</mo><mn>0</mn><mo separator="true">,</mo><mi>T</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">R \in [0,T)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mclose">)</span></span></span></span></li>
+<li>根据 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi></mrow><annotation encoding="application/x-tex">R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span>，找到对应的任务</li>
 </ul>
 </li>
-<li><strong>方法</strong>：使用 ticket 表示任务的份额
+</ul>
+<p><img src="lottery.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <ul>
-<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi></mrow><annotation encoding="application/x-tex">T</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span></span></span></span>：ticket 的总量</li>
+<li><strong>份额与优先级的异同</strong>：
+<ul>
+<li>份额影响任务对 CPU 的占用比例，不会有任务饿死</li>
+<li>优先级影响任务对 CPU 的使用顺序，可能产生饿死</li>
+</ul>
+</li>
+<li><strong>随机的利弊</strong>：
+<ul>
+<li><strong>好处</strong>：简单</li>
+<li><strong>问题</strong>：不精确（伪随机），各个任务对 CPU 时间的占比会有误差</li>
 </ul>
 </li>
 </ul>
+<h4 id="8-步幅调度-Stride-Scheduling">8. 步幅调度 (Stride Scheduling)</h4>
+<ul>
+<li><strong>Stride</strong>：步幅，任务一次执行增加的虚拟时间<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext> stride </mtext><mo>=</mo><mfrac><mtext> MaxStride </mtext><mtext> ticket </mtext></mfrac></mrow><annotation encoding="application/x-tex">\text { stride }=\frac{\text { MaxStride }}{\text { ticket }}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord text"><span class="mord"> stride </span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0574em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord"> ticket </span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord"> MaxStride </span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext> MaxStride </mtext></mrow><annotation encoding="application/x-tex">\text{ MaxStride }</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord text"><span class="mord"> MaxStride </span></span></span></span></span> 是一个足够大的整数，可以设为所有 tickets 的最小公倍数</li>
+<li><strong>虚拟时间</strong>：物理时间除以任务对应的份额，大小表示 CPU 资源的相对使用情况</li>
+</ul>
+</li>
+<li><strong>Pass</strong>：累计执行的虚拟时间</li>
+<li><strong>规则</strong>：每次调度时，挑选 Pass 最小的任务</li>
+</ul>
+<p><img src="stride.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">Lottery Scheduling</th>
+<th style="text-align:center">Stride Scheduling</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">调度决策生成</td>
+<td style="text-align:center">随机</td>
+<td style="text-align:center">确定性计算</td>
+</tr>
+<tr>
+<td style="text-align:center">任务实际执行时间与预期的差距</td>
+<td style="text-align:center">大</td>
+<td style="text-align:center">小</td>
+</tr>
+</tbody>
+</table>
+<h3 id="多核调度策略-Multicore-Scheduling-Policy">多核调度策略 (Multicore Scheduling Policy)</h3>
+<ul>
+<li>
+<p><strong>全局运行队列</strong>：所有 CPU 共享同一个全局运行队列</p>
+<ul>
+<li><strong>问题</strong>：
+<ul>
+<li>多个 CPU 对全局调度器的访问产生锁竞争</li>
+<li>同一个线程可能在不同 CPU 上切换：切换开销大（Cache 和 TLB）、缓存局部性差</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>本地运行队列</strong>：每个 CPU 核心维护本地运行队列</p>
+<ul>
+<li>现被应用于 Linux、ChCore 等操作系统中</li>
+<li><strong>问题</strong>：负载不均衡</li>
+</ul>
+</li>
+<li>
+<p><strong>负载均衡</strong>：尽可能让每个 CPU 都同等忙碌</p>
+<ul>
+<li>需要追踪 CPU 的负载情况</li>
+<li>将任务从负载高的 CPU 迁移到负载低的 CPU</li>
+</ul>
+</li>
+<li>
+<p><strong>亲和性</strong>：尽量让一个进程调度到同一个 CPU 上运行，以发挥 CPU 中 Cache 的作用</p>
+<ul>
+<li>通过操作系统暴露的任务亲和性接口，可以指定任务能够使用的 CPU 核心</li>
+</ul>
+</li>
+</ul>
+<h3 id="Linux-调度器">Linux 调度器</h3>
+<p>Linux 为了满足不同需求，提供了多种调度策略。下面以 Linux 两种调度器为例，每种调度器都对应多个调度策略。</p>
+<ul>
+<li>
+<p><strong>Linux Real-Time Scheduler</strong>：使用 Multi-level Queue 优先级调度</p>
+<ul>
+<li>每个任务有自己的优先级、具体策略</li>
+<li>具体策略可根据任务需求针对性选择</li>
+</ul>
+</li>
+<li>
+<p><strong>Linux Complete Fair Scheduler</strong>：通过调整任务每次执行的时间，达成公平共享的方式</p>
+</li>
+</ul>
+<p><img src="cfs.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <h2 id="参考资料">参考资料</h2>
 <p>本文参考上海交通大学并行与分布式系统研究所（IPADS）操作系统课程 CS3601 华志超老师的 PPT 课件整理。</p>
 <p>部分图片来源于上海交通大学程序语言与编译原理课程 CS2612 曹钦翔老师的讲义。</p>
