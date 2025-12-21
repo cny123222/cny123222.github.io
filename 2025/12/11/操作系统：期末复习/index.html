@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-12-11T05:35:13.000Z">
-<meta property="article:modified_time" content="2025-12-20T06:22:50.351Z">
+<meta property="article:modified_time" content="2025-12-21T07:23:55.502Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          4.7k words
+          6k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          40 mins
+          51 mins
         
       </span>
     
@@ -465,7 +465,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on December 20, 2025 pm
+                    Last updated on December 21, 2025 pm
                   
                 
               </p>
@@ -1174,6 +1174,169 @@
 </li>
 </ul>
 <p><img src="thread_model.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h2 id="Lecture-11-处理器调度">Lecture 11: 处理器调度</h2>
+<ul>
+<li><strong>共用的调度指标</strong>：高资源利用率、多任务公平性、低调度开销
+<ul>
+<li><strong>降低周转时间</strong>：任务第一次进入系统到执行结束的时间</li>
+<li><strong>降低响应时间</strong>：任务第一次进入系统到第一次给用户输出的时间</li>
+<li><strong>实时性</strong>：在任务的截止时间内完成任务</li>
+<li><strong>公平性</strong>：每个任务都应该有机会执行，不能饿死</li>
+<li><strong>开销低</strong>：调度器是为了优化系统，而非制造性能 BUG</li>
+<li><strong>可扩展</strong>：随着任务数量增加，仍能正常工作</li>
+</ul>
+</li>
+</ul>
+<h3 id="经典调度策略-Classical-Scheduling">经典调度策略 (Classical Scheduling)</h3>
+<h4 id="1-先到先得（First-Come-First-Served-FCFS）">1. 先到先得（First Come First Served, FCFS）</h4>
+<ul>
+<li><strong>规则</strong>：按作业或进程到达的先后顺序进行服务</li>
+<li><strong>优点</strong>：
+<ul>
+<li>设计实现简单</li>
+<li>对所有任务公平</li>
+</ul>
+</li>
+<li><strong>问题</strong>：平均周转、响应时间过长
+<ul>
+<li>长短任务混合场景下，对短任务不友好</li>
+<li>对 I/O 密集型任务不友好</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-最短任务优先（Shortest-Job-First-SJF）">2. 最短任务优先（Shortest Job First, SJF）</h4>
+<ul>
+<li><strong>规则</strong>：运行时间最短的作业或进程优先得到服务</li>
+<li><strong>优点</strong>：平均周转时间短</li>
+<li><strong>问题</strong>：平均响应时间过长
+<ul>
+<li>对长任务不公平，可能饿死</li>
+<li>必须预知任务执行时间</li>
+<li>性能表现严重依赖任务到达时间点</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-时间片轮转-Round-Robin-RR">3. 时间片轮转 (Round Robin, RR)</h4>
+<ul>
+<li><strong>规则</strong>：
+<ul>
+<li>按照各进程到达就绪队列的顺序，轮流让各个进程执行一个时间片</li>
+<li>若进程未在一个时间片内执行完，则剥夺 CPU，将进程重新放到就绪队列队尾重新排队</li>
+</ul>
+</li>
+<li><strong>优点</strong>：
+<ul>
+<li>平均响应时间短</li>
+<li>对所有任务公平</li>
+</ul>
+</li>
+<li><strong>问题</strong>：
+<ul>
+<li>任务运行时间相似的场景下，平均周转时间长</li>
+<li>时间片过短会导致调度开销过大</li>
+</ul>
+</li>
+</ul>
+<h3 id="优先级调度策略-Priority-Scheduling">优先级调度策略 (Priority Scheduling)</h3>
+<h4 id="4-多级队列-Multi-Level-Queue-MLQ">4. 多级队列 (Multi-Level Queue, MLQ)</h4>
+<ul>
+<li><strong>规则</strong>：
+<ul>
+<li>维护多个队列，每个对应静态设置好的优先级</li>
+<li>高优先级的任务优先执行（高优先级空时，低优先级进程才能被调度）</li>
+<li>同优先级内使用 Round Robin 调度（也可使用其他调度策略）</li>
+</ul>
+</li>
+<li><strong>高优先级任务</strong>：
+<ul>
+<li><strong>I/O 密集型任务</strong>：为了更高的资源利用率</li>
+<li>用户主动设置的重要任务</li>
+<li>时延要求极高（必须在短时间内完成）的任务</li>
+</ul>
+</li>
+<li><strong>优先级的动态调整</strong>：工作场景是动态变化的
+<ul>
+<li>静态设置的优先级可能导致：资源利用率低（优先级反转）、低优先级任务饥饿</li>
+</ul>
+</li>
+</ul>
+<h4 id="5-多级反馈队列-Multi-Level-Feedback-Queue-MLFQ">5. 多级反馈队列 (Multi-Level Feedback Queue, MLFQ)</h4>
+<ul>
+<li><strong>目标</strong>：一个无需先验知识的通用调度策略
+<ul>
+<li>周转时间低、响应时间低</li>
+<li>调度开销低</li>
+</ul>
+</li>
+<li><strong>规则</strong>：
+<ul>
+<li>优先级高的任务会抢占优先级低的任务</li>
+<li>每个任务会被分配时间片，优先级相同的两个任务使用时间片轮转</li>
+<li>任务被创建时，假设该任务是短任务，为它分配最高优先级</li>
+<li>一个任务时间片耗尽后，它的优先级会被降低一级</li>
+<li>如果一个任务在时间片耗尽前放弃 CPU，那么它的优先级不变</li>
+<li><strong>定时优先级提升</strong>：在某个时间段 S 后，将系统中所有任务优先级升为最高
+<ul>
+<li>避免长任务饿死</li>
+<li>针对任务特征动态变化的场景</li>
+</ul>
+</li>
+<li><strong>准确记录执行时间</strong>：任务放弃 CPU 后时间片不重置，当累计一个完整时间片被用完后，降低其优先级
+<ul>
+<li>为了应对抢占 CPU 时间的攻击</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>时间片长短的选择</strong>：
+<ul>
+<li>高优先级队列时间片较短（针对短任务），提升响应时间</li>
+<li>低优先级队列时间片较长（针对长任务），降低调度开销</li>
+</ul>
+</li>
+<li><strong>小结</strong>：
+<ul>
+<li>通过观察任务的历史执行，动态确定任务优先级
+<ul>
+<li>无需任务的先验知识</li>
+</ul>
+</li>
+<li>同时达到了周转时间和响应时间两方面的要求
+<ul>
+<li>对于短任务，周转时间指标近似于 SJF</li>
+<li>对于交互式任务，响应时间指标近似于 RR</li>
+</ul>
+</li>
+<li>可以避免长任务的饿死</li>
+</ul>
+</li>
+</ul>
+<h4 id="6-高响应比优先（Highest-Response-Ratio-Next-HRRN）">6. 高响应比优先（Highest Response Ratio Next, HRRN）</h4>
+<ul>
+<li><strong>规则</strong>：在每次调度时先计算各个任务的响应比，选择响应比最高的任务为其服务</li>
+<li><strong>响应比（Response Ratio）</strong>：一个任务的响应时间 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mtext>Response </mtext></msub></mrow><annotation encoding="application/x-tex">T_\text{Response }</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord text mtight"><span class="mord mtight">Response </span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span> 与其运行时间 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mtext>Run </mtext></msub></mrow><annotation encoding="application/x-tex">T_\text{Run }</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord text mtight"><span class="mord mtight">Run </span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 的比值<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext> 优先级 </mtext><mo>=</mo><mtext> Response Ratio </mtext><mo>=</mo><mfrac><msub><mi>T</mi><mtext>Response </mtext></msub><msub><mi>T</mi><mtext>Run </mtext></msub></mfrac><mo>=</mo><mfrac><mrow><msub><mi>T</mi><mtext>Waiting </mtext></msub><mo>+</mo><msub><mi>T</mi><mtext>Run </mtext></msub></mrow><msub><mi>T</mi><mtext>Run </mtext></msub></mfrac><mo>=</mo><mfrac><msub><mi>T</mi><mtext>Waiting </mtext></msub><msub><mi>T</mi><mtext>Run </mtext></msub></mfrac><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\text { 优先级 }=\text { Response Ratio }=\frac{T_{\text {Response }}}{T_{\text {Run }}}=\frac{T_{\text {Waiting }}+T_{\text {Run }}}{T_{\text {Run }}}=\frac{T_{\text {Waiting }}}{T_{\text {Run }}}+1
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord"> </span><span class="mord cjk_fallback">优先级</span><span class="mord"> </span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord text"><span class="mord"> Response Ratio </span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.1963em;vertical-align:-0.836em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">Run </span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">Response </span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.1963em;vertical-align:-0.836em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">Run </span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">Waiting </span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">Run </span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.1963em;vertical-align:-0.836em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">Run </span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">Waiting </span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span></span></p>
+<ul>
+<li>如果两个任务等待时间相同，则运行时间越短越优先</li>
+<li>如果两个任务运行时间相同，则等待时间越长，越优先</li>
+</ul>
+</li>
+<li>HRRN 策略通过结合 FCFS 策略和 SJF 策略，避免了 SJF 策略在公平性方面的问题</li>
+</ul>
+<h3 id="公平共享调度策略-Fair-Share-Scheduling">公平共享调度策略 (Fair-Share Scheduling)</h3>
+<ul>
+<li><strong>公平共享</strong>：
+<ul>
+<li>每个用户占用的资源是成比例的，而非被任务的数量决定</li>
+<li>每个用户占用的资源是可以被计算的，设定“份额”以确定相对比例</li>
+</ul>
+</li>
+<li><strong>方法</strong>：使用 ticket 表示任务的份额
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi></mrow><annotation encoding="application/x-tex">T</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span></span></span></span>：ticket 的总量</li>
+</ul>
+</li>
+</ul>
 <h2 id="参考资料">参考资料</h2>
 <p>本文参考上海交通大学并行与分布式系统研究所（IPADS）操作系统课程 CS3601 华志超老师的 PPT 课件整理。</p>
 <p>部分图片来源于上海交通大学程序语言与编译原理课程 CS2612 曹钦翔老师的讲义。</p>
