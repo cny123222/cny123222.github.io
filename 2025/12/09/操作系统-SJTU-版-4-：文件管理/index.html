@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-12-09T00:55:40.000Z">
-<meta property="article:modified_time" content="2025-12-23T00:43:51.542Z">
+<meta property="article:modified_time" content="2025-12-23T01:22:10.356Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="课程笔记">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.7k words
+          3.3k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          23 mins
+          28 mins
         
       </span>
     
@@ -994,6 +994,88 @@
 </ul>
 <h2 id="Lecture-16-设备管理与驱动">Lecture 16: 设备管理与驱动</h2>
 <h3 id="标准-I-O-协议">标准 I/O 协议</h3>
+<ul>
+<li><strong>OS 的分层设计</strong>：</li>
+</ul>
+<p><img src="device_layer.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>设备最基本的抽象</strong>：</li>
+</ul>
+<p><img src="device.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>
+<p><strong>传统 I/O 流程</strong>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c">While(STATUS == BUSY)<br>  ; <span class="hljs-comment">// 不断等待，直到设备不再忙碌</span><br>Write data to DATA <span class="hljs-keyword">register</span> and address to ADDRESS <span class="hljs-keyword">register</span><br>Write command to COMMAND <span class="hljs-keyword">register</span><br>  （此时设备开始工作，并执行 COMMAND 对应操作）<br>While(STATUS == BUSY)<br>    ; <span class="hljs-comment">// 再次等待，直到设备响应完请求</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>轮询</strong>：CPU 反复读取设备的状态寄存器，直到确认设备可以接受新的命令</li>
+<li>如果设备是磁盘，则需要若干次写操作才能将磁盘块传输到设备中</li>
+<li>当 CPU 参与数据的搬移时，我们称之为 programmed I/O (PIO)</li>
+<li>OS 向设备的命令寄存器写入命令</li>
+<li>设备获悉数据已经就绪，随即设备开始工作，执行 OS 发送的命令</li>
+<li>OS 再次通过不断轮询状态寄存器，判断设备是否完成工作</li>
+<li>最后，OS 会收到设备返回的 success 或 failure 状态码</li>
+</ul>
+</li>
+<li>
+<p><strong>问题</strong>：轮询消耗太多 CPU 时间</p>
+<ul>
+<li><strong>解法</strong>：使用中断</li>
+</ul>
+</li>
+</ul>
+<h3 id="中断">中断</h3>
+<ul>
+<li>
+<p><strong>中断</strong>：提高 CPU 利用率</p>
+<ul>
+<li>OS 向设备发送一个请求，随后令 I/O 进程睡眠，切换到其他任务
+<ul>
+<li>此时进程处于 WAITING 状态</li>
+</ul>
+</li>
+<li>设备完成 I/O 命令后，触发硬件中断</li>
+<li>CPU 跳转到 OS 预先注册好的中断处理程序
+<ul>
+<li>Interrupt service routine / ISR 或 interrupt handler</li>
+</ul>
+</li>
+<li>中断处理程序是一段运行在内核态的代码，负责响应设备中断
+<ul>
+<li>例如，读取设备数据，亦或是读取设备返回的状态码，进而唤醒等待 I/O 的进程，完成后续工作</li>
+</ul>
+</li>
+<li><strong>局限性</strong>：只适用于慢速设备</li>
+</ul>
+</li>
+<li>
+<p><strong>中断的问题</strong>：活锁</p>
+<ul>
+<li>网络场景下的中断使用（网卡设备）
+<ul>
+<li>当每个网络包到来时都发送中断请求时，OS 可能进入活锁</li>
+<li><strong>活锁</strong>：CPU 只顾着响应中断，无法调度用户进程和处理中断发来的数据</li>
+</ul>
+</li>
+<li><strong>解决方案</strong>：合二为一（中断+轮询），兼顾各方优势
+<ul>
+<li>默认使用中断</li>
+<li>网络中断发生后，使用轮询处理后续达到的网络包</li>
+<li>如果没有更多中断，或轮询中断超过时间限制，则回到中断模式</li>
+<li>该方案在 Linux 网络驱动中称为 NAPI (New API)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>优化</strong>：中断合并（Interrupt Coalescing）</p>
+<ul>
+<li>设备在发送中断前，需要等待一小段时间</li>
+<li>在等待期间，其他中断可能也会马上到来，因此多个中断合并（merged）为同一个中断，进而降低频繁中断带来的开销</li>
+<li>注意：等待过长时间会导致中断响应时延增加，这是系统中常见的“折衷”（trade-off）</li>
+</ul>
+</li>
+</ul>
+<h3 id="设备交互-PIO-MMIO">设备交互: PIO / MMIO</h3>
 <h2 id="参考资料">参考资料</h2>
 <p>本文参考上海交通大学并行与分布式系统研究所（IPADS）操作系统课程 CS3601 华志超老师的 PPT 课件整理。</p>
 
