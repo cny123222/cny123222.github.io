@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/pl.png">
 <meta property="article:published_time" content="2025-11-26T05:12:04.000Z">
-<meta property="article:modified_time" content="2025-12-21T16:53:23.415Z">
+<meta property="article:modified_time" content="2025-12-22T07:38:45.464Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="课程笔记">
 <meta property="article:tag" content="知识点整理">
@@ -249,7 +249,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          8.1k words
+          9.1k words
         
       </span>
     
@@ -260,7 +260,7 @@
         
         
         
-          68 mins
+          77 mins
         
       </span>
     
@@ -367,7 +367,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on December 22, 2025 am
+                    Last updated on December 22, 2025 pm
                   
                 
               </p>
@@ -1000,6 +1000,82 @@ _0-9a-zA-Z: { B, C, D, E, F, K } <span class="katex"><span class="katex-mathml">
 <li><strong>步骤四，Start over</strong>：如果有至少一个节点无法分配到寄存器，则改写相关代码并重做 liveness 分析与上述所有步骤</li>
 </ul>
 <h2 id="Lecture-4：程序语言语法的-Coq-定义">Lecture 4：程序语言语法的 Coq 定义</h2>
+<h3 id="1-一个极简的指令式程序语言：SimpleWhile">1. 一个极简的指令式程序语言：SimpleWhile</h3>
+<ul>
+<li><strong>SimpleWhile 语言的程序表达式</strong>：
+<ul>
+<li><strong>整数类型表达式</strong>：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">EI :: = N | V | EI + EI | EI - EI | EI * EI<br></code></pre></td></tr></table></figure>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs coq"><span class="hljs-keyword">Inductive</span> expr_int : <span class="hljs-keyword">Type</span> :=<br>  | <span class="hljs-type">EConst</span> (n: Z): expr_int<br>  | <span class="hljs-type">EVar</span> (x: var_name): expr_int<br>  | <span class="hljs-type">EAdd</span> (e1 e2: expr_int): expr_int<br>  | <span class="hljs-type">ESub</span> (e1 e2: expr_int): expr_int<br>  | <span class="hljs-type">EMul</span> (e1 e2: expr_int): expr_int.<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>布尔类型表达式</strong>：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">EB :: = TRUE | FALSE | EI &lt; EI | EB &amp;&amp; EB | ! EB<br></code></pre></td></tr></table></figure>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs coq"><span class="hljs-keyword">Inductive</span> expr_bool: <span class="hljs-keyword">Type</span> :=<br>  | <span class="hljs-type">ETrue</span>: expr_bool<br>  | <span class="hljs-type">EFalse</span>: expr_bool<br>  | <span class="hljs-type">ELt</span> (e1 e2: expr_int): expr_bool<br>  | <span class="hljs-type">EAnd</span> (e1 e2: expr_bool): expr_bool<br>  | <span class="hljs-type">ENot</span> (e: expr_bool): expr_bool.<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>SimpleWhile 语言的程序语句</strong>：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">C :: = SKIP |<br>       V = EI |<br>       C; C |<br>       if (EB) then &#123; C &#125; else &#123; C &#125; |<br>       while (EB) do &#123; C &#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs coq"><span class="hljs-keyword">Inductive</span> com : <span class="hljs-keyword">Type</span> :=<br>  | <span class="hljs-type">CSkip</span>: com<br>  | <span class="hljs-type">CAsgn</span> (x: var_name) (e: expr_int): com<br>  | <span class="hljs-type">CSeq</span> (c1 c2: com): com<br>  | <span class="hljs-type">CIf</span> (e: expr_bool) (c1 c2: com): com<br>  | <span class="hljs-type">CWhile</span> (e: expr_bool) (c: com): com.<br></code></pre></td></tr></table></figure>
+<h3 id="2-更多的程序语言：While-语言">2. 更多的程序语言：While 语言</h3>
+<p>在许多以 C 语言为代表的常用程序语言中，往往不区分整数类型表达式与布尔类型表达式，同时表达式中也包含更多运算符。</p>
+<ul>
+<li><strong>While 语言的程序表达式</strong>：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">E :: = N | V | -E | E+E | E-E | E*E | E/E | E%E |<br>       E&lt;E | E&lt;=E | E==E | E!=E | E&gt;=E | E&gt;E |<br>       E&amp;&amp;E | E||E | !E<br></code></pre></td></tr></table></figure>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs coq"><span class="hljs-keyword">Inductive</span> binop : <span class="hljs-keyword">Type</span> :=<br>  | <span class="hljs-type">OOr</span> | <span class="hljs-type">OAnd</span><br>  | <span class="hljs-type">OLt</span> | <span class="hljs-type">OLe</span> | <span class="hljs-type">OGt</span> | <span class="hljs-type">OGe</span> | <span class="hljs-type">OEq</span> | <span class="hljs-type">ONe</span><br>  | <span class="hljs-type">OPlus</span> | <span class="hljs-type">OMinus</span> | <span class="hljs-type">OMul</span> | <span class="hljs-type">ODiv</span> | <span class="hljs-type">OMod</span>.<br><br><span class="hljs-keyword">Inductive</span> unop : <span class="hljs-keyword">Type</span> :=<br>  | <span class="hljs-type">ONot</span> | <span class="hljs-type">ONeg</span>.<br><br><span class="hljs-keyword">Inductive</span> expr : <span class="hljs-keyword">Type</span> :=<br>  | <span class="hljs-type">EConst</span> (n: Z): expr<br>  | <span class="hljs-type">EVar</span> (x: var_name): expr<br>  | <span class="hljs-type">EBinop</span> (op: binop) (e1 e2: expr): expr<br>  | <span class="hljs-type">EUnop</span> (op: unop) (e: expr): expr.<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>While 语言的程序语句</strong>：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">C :: = SKIP |<br>       V = E |<br>       C; C |<br>       if (E) then &#123; C &#125; else &#123; C &#125; |<br>       while (E) do &#123; C &#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs coq"><span class="hljs-keyword">Inductive</span> com : <span class="hljs-keyword">Type</span> :=<br>  | <span class="hljs-type">CSkip</span>: com<br>  | <span class="hljs-type">CAsgn</span> (x: var_name) (e: expr): com<br>  | <span class="hljs-type">CSeq</span> (c1 c2: com): com<br>  | <span class="hljs-type">CIf</span> (e: expr) (c1 c2: com): com<br>  | <span class="hljs-type">CWhile</span> (e: expr) (c: com): com.<br></code></pre></td></tr></table></figure>
+<h3 id="3-更多的程序语言：WhileDeref">3. 更多的程序语言：WhileDeref</h3>
+<p>在 While 程序语言中增加取地址上的值 EDeref 操作。</p>
+<ul>
+<li><strong>WhileDeref 语言的程序表达式</strong>：</li>
+</ul>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs coq"><span class="hljs-keyword">Inductive</span> expr : <span class="hljs-keyword">Type</span> :=<br>  | <span class="hljs-type">EConst</span> (n: Z): expr<br>  | <span class="hljs-type">EVar</span> (x: var_name): expr<br>  | <span class="hljs-type">EBinop</span> (op: binop) (e1 e2: expr): expr<br>  | <span class="hljs-type">EUnop</span> (op: unop) (e: expr): expr<br>  | <span class="hljs-type">EDeref</span> (e: expr): expr.<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>WhileDeref 语言的程序语句</strong>：赋值语句分为两种情况</li>
+</ul>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs coq"><span class="hljs-keyword">Inductive</span> com : <span class="hljs-keyword">Type</span> :=<br>  | <span class="hljs-type">CSkip</span>: com<br>  | <span class="hljs-type">CAsgnVar</span> (x: var_name) (e: expr): com<br>  | <span class="hljs-type">CAsgnDeref</span> (e1 e2: expr): com<br>  | <span class="hljs-type">CSeq</span> (c1 c2: com): com<br>  | <span class="hljs-type">CIf</span> (e: expr) (c1 c2: com): com<br>  | <span class="hljs-type">CWhile</span> (e: expr) (c: com): com.<br></code></pre></td></tr></table></figure>
+<h3 id="4-更多的程序语言：WhileD">4. 更多的程序语言：WhileD</h3>
+<p>在大多数程序语言中，会同时支持或不支持取地址 EAddrOf 与取地址上的值 EDeref 两类操作，我们在 WhileDeref 语言中再加入取地址操作。</p>
+<ul>
+<li><strong>WhileD 语言的程序表达式</strong>：</li>
+</ul>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs coq"><span class="hljs-keyword">Inductive</span> expr : <span class="hljs-keyword">Type</span> :=<br>  | <span class="hljs-type">EConst</span> (n: Z): expr<br>  | <span class="hljs-type">EVar</span> (x: var_name): expr<br>  | <span class="hljs-type">EBinop</span> (op: binop) (e1 e2: expr): expr<br>  | <span class="hljs-type">EUnop</span> (op: unop) (e: expr): expr<br>  | <span class="hljs-type">EDeref</span> (e: expr): expr<br>  | <span class="hljs-type">EAddrOf</span> (e: expr): expr.<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>WhileD 语言的程序语句</strong>：语法树不变</li>
+</ul>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs coq"><span class="hljs-keyword">Inductive</span> com : <span class="hljs-keyword">Type</span> :=<br>  | <span class="hljs-type">CSkip</span>: com<br>  | <span class="hljs-type">CAsgnVar</span> (x: var_name) (e: expr): com<br>  | <span class="hljs-type">CAsgnDeref</span> (e1 e2: expr): com<br>  | <span class="hljs-type">CSeq</span> (c1 c2: com): com<br>  | <span class="hljs-type">CIf</span> (e: expr) (c1 c2: com): com<br>  | <span class="hljs-type">CWhile</span> (e: expr) (c: com): com.<br></code></pre></td></tr></table></figure>
+<h3 id="5-更多的程序语言：WhileDC">5. 更多的程序语言：WhileDC</h3>
+<p>在程序语句中增加控制流语句 continue 与 break，并增加多种循环语句。</p>
+<ul>
+<li><strong>WhileDC 语言的程序表达式</strong>：</li>
+</ul>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs coq"><span class="hljs-keyword">Inductive</span> expr : <span class="hljs-keyword">Type</span> :=<br>  | <span class="hljs-type">EConst</span> (n: Z): expr<br>  | <span class="hljs-type">EVar</span> (x: var_name): expr<br>  | <span class="hljs-type">EBinop</span> (op: binop) (e1 e2: expr): expr<br>  | <span class="hljs-type">EUnop</span> (op: unop) (e: expr): expr<br>  | <span class="hljs-type">EDeref</span> (e: expr): expr<br>  | <span class="hljs-type">EAddrOf</span> (e: expr): expr.<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>WhileDC 语言的程序语句</strong>：</li>
+</ul>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs coq"><span class="hljs-keyword">Inductive</span> com : <span class="hljs-keyword">Type</span> :=<br>  | <span class="hljs-type">CSkip</span>: com<br>  | <span class="hljs-type">CAsgnVar</span> (x: var_name) (e: expr): com<br>  | <span class="hljs-type">CAsgnDeref</span> (e1 e2: expr): com<br>  | <span class="hljs-type">CSeq</span> (c1 c2: com): com<br>  | <span class="hljs-type">CIf</span> (e: expr) (c1 c2: com): com<br>  | <span class="hljs-type">CWhile</span> (e: expr) (c: com): com<br>  | <span class="hljs-type">CFor</span> (c1: com) (e: expr) (c2: com) (c3: com): com<br>  | <span class="hljs-type">CDoWhile</span> (c: com) (e: expr): com<br>  | <span class="hljs-type">CContinue</span>: com<br>  | <span class="hljs-type">CBreak</span>: com.<br></code></pre></td></tr></table></figure>
+<h3 id="7-带类型标注的表达式">7. 带类型标注的表达式</h3>
+<p>先定义整数类型，每个整数类型由其所需比特数（ <code>sz</code> ）和其有无符号（ <code>sg</code> ）两部分构成。</p>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs coq"><span class="hljs-keyword">Inductive</span> Signedness : <span class="hljs-keyword">Type</span> :=<br>  | <span class="hljs-type">Signed</span>: Signedness<br>  | <span class="hljs-type">Unsigned</span>: Signedness.<br></code></pre></td></tr></table></figure>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs coq"><span class="hljs-keyword">Inductive</span> IntType : <span class="hljs-keyword">Type</span> :=<br>  | <span class="hljs-type">Build_IntType</span> (sz: Z) (sg: Signedness): IntType.<br></code></pre></td></tr></table></figure>
+<p>基于此，定义带类型标注的 While 语言表达式。</p>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs coq"><span class="hljs-keyword">Inductive</span> expr : <span class="hljs-keyword">Type</span> :=<br>  | <span class="hljs-type">EConst</span> (n: Z) (t: IntType): expr<br>  | <span class="hljs-type">EVar</span> (x: var_name) (t: IntType): expr<br>  | <span class="hljs-type">EBinop</span> (op: binop) (e1 e2: expr) (t: IntType): expr<br>  | <span class="hljs-type">EUnop</span> (op: unop) (e: expr) (t: IntType): expr.<br></code></pre></td></tr></table></figure>
+<h3 id="8-基于语法树递归定义的例子">8. 基于语法树递归定义的例子</h3>
+<h4 id="8-1-表达式中包含的计算次数">8.1 表达式中包含的计算次数</h4>
+<p>下面定义 SimpleWhile 语言中一个整数类型表达式中包含的算数运算数量。</p>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs coq"><span class="hljs-keyword">Fixpoint</span> number_of_comp (ei: expr_int): Z :=<br>  <span class="hljs-keyword">match</span> ei <span class="hljs-built_in">with</span><br>  | <span class="hljs-type">EAdd</span> e1 e2 =&gt;  number_of_comp e1 + number_of_comp e2 + <span class="hljs-number">1</span><br>  | <span class="hljs-type">ESub</span> e1 e2 =&gt; number_of_comp e1 + number_of_comp e2 + <span class="hljs-number">1</span><br>  | <span class="hljs-type">EMul</span> e1 e2 =&gt; number_of_comp e1 + number_of_comp e2 + <span class="hljs-number">1</span><br>  | <span class="hljs-type">EVar</span> v =&gt; <span class="hljs-number">0</span><br>  | <span class="hljs-type">EConst</span> n =&gt; <span class="hljs-number">0</span><br><span class="hljs-keyword">end</span>.<br></code></pre></td></tr></table></figure>
+<h4 id="8-2-带类型表达式的几个基本合法性条件">8.2 带类型表达式的几个基本合法性条件</h4>
+<p>我们定义表达式中常数的合法性条件，即每个常数都落在其类型规定的范围之内。</p>
+<p>首先定义每个整数类型对应的数值范围。</p>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs coq"><span class="hljs-keyword">Definition</span> const_in_range (n: Z) (t: IntType): <span class="hljs-keyword">Prop</span> :=<br>  <span class="hljs-keyword">match</span> t <span class="hljs-built_in">with</span><br>  | <span class="hljs-type">Build_IntType</span> sz Signed =&gt;<br>      - Z.pow <span class="hljs-number">2</span> (sz - <span class="hljs-number">1</span>) &lt;= n &lt; Z.pow <span class="hljs-number">2</span> (sz - <span class="hljs-number">1</span>)<br>  | <span class="hljs-type">Build_IntType</span> sz Unsigned =&gt;<br>      <span class="hljs-number">0</span> &lt;= n &lt; Z.pow <span class="hljs-number">2</span> sz<br>  <span class="hljs-keyword">end</span>.<br></code></pre></td></tr></table></figure>
+<p>接着定义“表达式中所有常数全都满足类型范围要求”的合法性条件。</p>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs coq"><span class="hljs-keyword">Fixpoint</span> consts_in_range (e: expr): <span class="hljs-keyword">Prop</span> :=<br>  <span class="hljs-keyword">match</span> e <span class="hljs-built_in">with</span><br>  | <span class="hljs-type">EConst</span> n t =&gt; const_in_range n t<br>  | <span class="hljs-type">EVar</span> v t =&gt; True<br>  | <span class="hljs-type">EBinop</span> op e1 e2 t =&gt; consts_in_range e1 /\ consts_in_range e2<br>  | <span class="hljs-type">EUnop</span> op e1 t =&gt; consts_in_range e1<br>  <span class="hljs-keyword">end</span>.<br></code></pre></td></tr></table></figure>
 <h2 id="Lecture-5：表达式指称语义">Lecture 5：表达式指称语义</h2>
 <h2 id="Lecture-6：利用集合与关系定义指称语义">Lecture 6：利用集合与关系定义指称语义</h2>
 <h2 id="Lecture-7：霍尔逻辑">Lecture 7：霍尔逻辑</h2>

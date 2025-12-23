@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-12-09T00:55:40.000Z">
-<meta property="article:modified_time" content="2025-12-20T05:40:14.685Z">
+<meta property="article:modified_time" content="2025-12-23T00:43:51.542Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="课程笔记">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2k words
+          2.7k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          17 mins
+          23 mins
         
       </span>
     
@@ -465,7 +465,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on December 20, 2025 pm
+                    Last updated on December 23, 2025 am
                   
                 
               </p>
@@ -856,11 +856,11 @@
 <p><strong>删除一个打开的文件</strong>：inode 引用数变成 0，但不会被立即释放和删除</p>
 <ul>
 <li>直到前一个进程调用 close 将其关闭</li>
-<li>在 Windows 上，则通过&quot;禁止删除打开的文件&quot;实现类似效果</li>
+<li>在 Windows 上，则通过“禁止删除打开的文件”实现类似效果</li>
 </ul>
 </li>
 <li>
-<p><strong><code>fsync</code></strong>：</p>
+<p><strong><code>fsync()</code></strong>：</p>
 <ul>
 <li><strong>Block cache</strong>：缓存了最近被使用的磁盘块
 <ul>
@@ -870,11 +870,130 @@
 <li>问题：如果在写入前发生故障，可能会造成不一致</li>
 </ul>
 </li>
-<li><strong><code>SYNC</code></strong>：保证对文件的所有修改被写入到存储设备</li>
+<li><strong>SYNC</strong>：保证对文件的所有修改被写入到存储设备</li>
+</ul>
+</li>
+</ul>
+<h3 id="文件系统的崩溃一致性">文件系统的崩溃一致性</h3>
+<ul>
+<li>
+<p><strong>文件系统的崩溃一致性</strong>：</p>
+<ul>
+<li>文件系统中保存了多种数据结构</li>
+<li>各种数据结构之间存在依赖关系与一致性要求</li>
+<li>突发状况（崩溃）可能会造成这些一致性被打破</li>
+</ul>
+</li>
+<li>
+<p><strong>用户期望</strong>：重启并恢复后</p>
+<ul>
+<li>维护文件系统数据结构的内部的不变量</li>
+<li>仅有最近的一些操作没有被保存到磁盘中</li>
+<li>没有顺序的异常</li>
+</ul>
+</li>
+<li>
+<p><strong>方法1</strong>：同步元数据写+ fsck</p>
+<ul>
+<li><strong>同步元数据写</strong>：每次元数据写入后，运行 <code>sync()</code> 保证更新后的元数据入盘</li>
+<li><strong><code>fsck</code> 的步骤</strong>：非正常重启后，运行 <code>fsck</code> 检查磁盘，具体步骤：
+<ul>
+<li>检查 superblock
+<ul>
+<li>例如，保证文件系统大小大于已分配的磁盘块总和</li>
+<li>如果出错，则尝试使用superblock的备份</li>
+</ul>
+</li>
+<li>检查空闲的 block
+<ul>
+<li>扫描所有 inode 的所有包含的磁盘块</li>
+<li>用扫描结果来检验磁盘块的 bitmap</li>
+<li>对 inode bitmap 也用类似方法</li>
+</ul>
+</li>
+<li>检查 inode 的状态
+<ul>
+<li>检查类型：如普通文件、目录、符号链接等</li>
+<li>若类型错误，则清除掉inode以及对应的bitmap</li>
+</ul>
+</li>
+<li>检查 inode 链接
+<ul>
+<li>扫描整个文件系统树，核对文件链接的数量</li>
+<li>如果某个 inode 存在但不在任何一个目录，则放到 /lost+found</li>
+</ul>
+</li>
+<li>检查重复磁盘块
+<ul>
+<li>例如，两个 inode 指向同一个磁盘块</li>
+<li>如果一个 inode 明显有问题则删掉，否则复制磁盘块一边给一个</li>
+</ul>
+</li>
+<li>检查坏的磁盘块 ID
+<ul>
+<li>例如，指向超出磁盘空间的ID</li>
+</ul>
+</li>
+<li>检查目录
+<ul>
+<li>这是 fsck 对数据有更多语义的唯一的一种文件</li>
+<li>保证 . 和 … 是位于头部的目录项</li>
+<li>保证目录的链接数只能是 1 个</li>
+<li>保证目录中不会有相同的文件名</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>问题</strong>：太慢
+<ul>
+<li>fsck 时间与磁盘的大小成比例增长</li>
+<li>同步元数据写导致创建文件等操作非常慢</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>方法2</strong>：日志（Journaling）</p>
+<ul>
+<li><strong>方法</strong>：
+<ul>
+<li>在进行修改之前，先将修改记录到日志中
+<ul>
+<li>例如，如何修改 block-bitmap、如何修改 data</li>
+</ul>
+</li>
+<li>所有要进行的修改都记录完毕后，提交日志</li>
+<li>确定日志落盘后，再修改数据和元数据</li>
+<li>修改完成后，删除日志</li>
+</ul>
+</li>
+<li><strong>Ext4 的日志</strong>：以 Ordered mode 为例
+<ul>
+<li>先写数据（原本的文件位置），再写元数据（日志）</li>
+<li>两次 Flush 保证顺序</li>
+</ul>
+</li>
+<li><strong>崩溃后的恢复方法</strong>：
+<ul>
+<li>启动后首先检查日志区域
+<ul>
+<li>若没有任何日志记录，则无需恢复</li>
+</ul>
+</li>
+<li>扫描所有已经 COMMIT 的事务
+<ul>
+<li>若没有 COMMIT 的事务，则无需恢复</li>
+<li>对已经 COMMIT 的事务，将元数据从日志区写到原本位置</li>
+</ul>
+</li>
+<li>完成后清空日志区域</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 <h2 id="Lecture-16-设备管理与驱动">Lecture 16: 设备管理与驱动</h2>
+<h3 id="标准-I-O-协议">标准 I/O 协议</h3>
 <h2 id="参考资料">参考资料</h2>
 <p>本文参考上海交通大学并行与分布式系统研究所（IPADS）操作系统课程 CS3601 华志超老师的 PPT 课件整理。</p>
 
