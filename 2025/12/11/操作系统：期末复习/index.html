@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-12-11T05:35:13.000Z">
-<meta property="article:modified_time" content="2025-12-23T05:44:30.991Z">
+<meta property="article:modified_time" content="2025-12-23T06:16:52.685Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          9.9k words
+          11k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          83 mins
+          89 mins
         
       </span>
     
@@ -1886,8 +1886,89 @@
 <ul>
 <li><strong>互斥访问</strong>：同一时刻只有一个线程能够访问</li>
 <li><strong>持有并等待</strong>：一直持有一部分资源并等待另一部分，不会中途释放</li>
-<li><strong>资源非抢占</strong>：即 proc_B 不会抢 proc_A 已经持有的锁 A</li>
+<li><strong>资源非抢占</strong>：即进程 B 不会抢进程 A 已经持有的锁</li>
 <li><strong>循环等待</strong>：存在一种进程资源的循环等待链（A 等 B，B 等 A）</li>
+</ul>
+<h4 id="死锁的检测与恢复">死锁的检测与恢复</h4>
+<ul>
+<li><strong>资源分配图</strong>：
+<ul>
+<li><strong>进程结点</strong>：对应一个进程</li>
+<li><strong>资源结点</strong>：对应一类资源（一类资源可能有多个）</li>
+<li><strong>请求边 (进程结点 --&gt; 资源结点)</strong>：表示进程想申请几个资源（每条边代表一个）</li>
+<li><strong>分配边 (资源节点 --&gt; 进程结点)</strong>：表示已经为进程分配了几个资源（每条边代表一个）</li>
+</ul>
+</li>
+</ul>
+<p><img src="deadlock-detection.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>死锁的检测</strong>：在资源分配图中找到环（循环等待），表明存在死锁</li>
+<li><strong>死锁的恢复</strong>：
+<ul>
+<li><strong>方法 1</strong>：终止环中的任一线程，检查是否仍然有环，如果有则重复该操作</li>
+<li><strong>方法 2</strong>：让环上所有进程回滚到之前的某一状态</li>
+</ul>
+</li>
+</ul>
+<h4 id="死锁预防">死锁预防</h4>
+<ul>
+<li><strong>避免互斥访问</strong>：通过其他手段，如代理执行
+<ul>
+<li>只有代理线程能够访问共享资源，避免数据竞争</li>
+<li>发送修改请求，由代理线程统一执行</li>
+</ul>
+</li>
+<li><strong>不允许持有并等待</strong>：一次性申请所有资源
+<ul>
+<li><strong><code>trylock</code> 接口</strong>：非阻塞，立即返回成功或失败</li>
+<li><strong>活锁问题</strong>：会导致活锁问题，但活锁可能自己恢复</li>
+</ul>
+</li>
+<li><strong>资源允许抢占</strong>：需要考虑如何恢复
+<ul>
+<li>要让线程 A 正确回滚到拿锁 A 之前的状态</li>
+</ul>
+</li>
+<li><strong>打破循环等待</strong>：按照特定顺序获取资源
+<ul>
+<li>对所有资源进行编号，让所有线程递增获取</li>
+<li>任意时刻，获取最大资源号的线程可以继续执行，然后释放资源</li>
+</ul>
+</li>
+</ul>
+<h4 id="死锁避免">死锁避免</h4>
+<ul>
+<li><strong>银行家算法</strong>：所有线程获取资源需要通过管理者同意，管理者预演会不会造成死锁
+<ul>
+<li><strong>如果会造成</strong>：阻塞线程，下次再给</li>
+<li><strong>如果不会造成</strong>：给线程该资源</li>
+</ul>
+</li>
+<li><strong>安全状态与非安全状态</strong>：对于一组线程 {P1, P2, … , Pn}：
+<ul>
+<li><strong>安全状态</strong>：能找出至少一个执行序列，如 P2-&gt;P1-&gt;P5…，让所有线程需求得到满足</li>
+<li><strong>非安全状态</strong>：不能找出这个序列，必定会导致死锁</li>
+<li>银行家算法通过安全性检查算法，保证系统一直处于安全状态，且按照这个序列执行</li>
+</ul>
+</li>
+<li><strong>安全性检查</strong>：
+<ul>
+<li><strong>四个数据结构</strong>：
+<ul>
+<li>全局可利用资源：<code>Available[M]</code></li>
+<li>每线程最大需求量：<code>Max[N][M]</code></li>
+<li>已分配资源：<code>Allocation[N][M]</code></li>
+<li>还需要的资源：<code>Need[N][M]</code></li>
+</ul>
+</li>
+<li><strong>检查步骤</strong>：
+<ul>
+<li>检查当前的剩余可用资源是否能满足某个进程的最大需求，如果可以，就把该进程加入安全序列，并把该进程持有的资源全部回收</li>
+<li>不断重复上述过程，看最终是否能让所有进程都加入安全序列</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 <h2 id="参考资料">参考资料</h2>
 <p>本文参考上海交通大学并行与分布式系统研究所（IPADS）操作系统课程 CS3601 华志超老师的 PPT 课件整理。</p>
