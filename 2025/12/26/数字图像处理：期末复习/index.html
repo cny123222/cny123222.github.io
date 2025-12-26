@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/dip.jpg">
 <meta property="article:published_time" content="2025-12-26T05:41:37.000Z">
-<meta property="article:modified_time" content="2025-12-26T06:29:57.452Z">
+<meta property="article:modified_time" content="2025-12-26T07:00:36.196Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="知识点整理">
 <meta property="article:tag" content="数字图像处理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          486 words
+          2.7k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          5 mins
+          23 mins
         
       </span>
     
@@ -476,7 +476,222 @@
 </ul>
 </li>
 </ul>
-
+<h4 id="前端涉及的图像处理技术">前端涉及的图像处理技术</h4>
+<p>前端处理的目标是<strong>加工</strong>原始的数字图像/视频，使其<strong>更适合传输或存储</strong>。核心任务是<strong>减少数据量（压缩）<strong>和</strong>为后续处理做准备</strong>。</p>
+<p>涉及的主要技术包括：</p>
+<ol>
+<li>
+<p><strong>图像增强 (Image Enhancement)</strong>:</p>
+<ul>
+<li><strong>目的</strong>: 改善图像的视觉质量，突出重要信息，或抑制干扰。这通常是很多处理流程的第一步。</li>
+<li><strong>技术</strong>:
+<ul>
+<li><strong>对比度增强</strong>: 如直方图均衡化，用于改善光照不均或欠曝/过曝的图像。</li>
+<li><strong>去噪</strong>: 使用空间域滤波器（如均值滤波、中值滤波）或变换域滤波器（如小波去噪）来去除传感器引入的噪声。</li>
+<li><strong>锐化</strong>: 使用拉普拉斯算子等方法，在压缩前适度增强图像细节，以补偿压缩可能带来的模糊。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>图像分割 (Image Segmentation)</strong>:</p>
+<ul>
+<li><strong>目的</strong>: 将图像划分为不同的区域或物体。这在<strong>基于对象 (Object-based)</strong> 的压缩或分析中至关重要。</li>
+<li><strong>技术</strong>:
+<ul>
+<li><strong>边缘检测</strong>: 如Canny算子，用于提取物体轮廓。</li>
+<li><strong>区域生长/阈值分割</strong>: 用于分离前景和背景。在视频监控等场景中，首先分割出运动物体，然后只对运动物体区域进行编码。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>特征提取 (Feature Extraction)</strong>:</p>
+<ul>
+<li><strong>目的</strong>: 从图像中提取关键的、紧凑的描述信息。</li>
+<li><strong>技术</strong>: 在一些高级的压缩方案（如模型编码）或内容分析应用中，可能会提取如SIFT、SURF等特征点，或者人脸的关键点等。</li>
+</ul>
+</li>
+<li>
+<p><strong>图像压缩 (Image Compression) - 核心中的核心</strong>:</p>
+<ul>
+<li><strong>目的</strong>: 极大地减少表示图像所需的数据量。</li>
+<li><strong>技术 (信源编码)</strong>:
+<ul>
+<li><strong>变换编码</strong>: 如 <strong>DCT</strong> (用于JPEG, MPEG系列) 和 <strong>小波变换 (DWT)</strong> (用于JPEG2000)，通过能量聚集来去除空间冗余。</li>
+<li><strong>预测编码</strong>:
+<ul>
+<li><strong>帧内预测</strong>: 去除单帧图像内的空间冗余。</li>
+<li><strong>帧间预测 (运动估计与补偿)</strong>: 去除视频序列中相邻帧之间的时间冗余。</li>
+</ul>
+</li>
+<li><strong>量化</strong>: 对变换系数或预测误差进行量化，这是实现高压缩率的有损步骤。</li>
+<li><strong>熵编码</strong>: 如<strong>哈夫曼编码</strong>或<strong>算术编码</strong>，对量化后的符号进行最终的无损压缩，消除编码冗余。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>信道编码 (Channel Coding)</strong>:</p>
+<ul>
+<li><strong>目的</strong>: 增加可控的冗余（如奇偶校验、CRC、前向纠错码），以使数据流能够抵抗在物理信道中传输时可能发生的比特错误。严格来说这属于通信领域的技术，但在整个系统中是前端处理的重要一环。</li>
+</ul>
+</li>
+</ol>
+<h4 id="后端涉及的图像处理技术">后端涉及的图像处理技术</h4>
+<p>后端处理的目标是<strong>复原</strong>和<strong>呈现</strong>接收到的数据。核心任务是<strong>解压缩</strong>和<strong>纠正可能出现的错误</strong>。</p>
+<p>涉及的主要技术包括：</p>
+<ol>
+<li>
+<p><strong>信道解码 (Channel Decoding)</strong>:</p>
+<ul>
+<li><strong>目的</strong>: 检查接收到的数据流是否有错误，并根据信道编码的规则进行<strong>纠错</strong>或<strong>检错</strong>（如果错误无法纠正，则可能请求重传或进行错误隐藏）。</li>
+</ul>
+</li>
+<li>
+<p><strong>图像解压缩 (Image Decompression) - 核心中的核心</strong>:</p>
+<ul>
+<li><strong>目的</strong>: 从压缩码流中重建图像或视频。</li>
+<li><strong>技术 (信源解码)</strong>: 它是压缩过程的逆操作。
+<ul>
+<li><strong>熵解码</strong>: 如<strong>哈夫曼解码</strong>或<strong>算术解码</strong>，从码流中解析出量化符号。</li>
+<li><strong>反量化</strong>: 将量化符号乘以量化步长，恢复变换系数或预测误差的近似值。</li>
+<li><strong>逆变换/预测重建</strong>:
+<ul>
+<li><strong>逆变换</strong>: 如 <strong>IDCT</strong> 或 <strong>IDWT</strong>，将系数从变换域转换回空间域。</li>
+<li><strong>运动补偿与重建</strong>: 在视频解码中，根据接收到的运动向量，在已解码的参考帧上进行运动补偿，生成预测帧，然后与解码出的预测误差相加，得到最终的重建帧。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>图像复原 (Image Restoration)</strong>:</p>
+<ul>
+<li><strong>目的</strong>: 进一步处理解压后的图像，以减轻压缩或传输过程中引入的失真。</li>
+<li><strong>技术</strong>:
+<ul>
+<li><strong>去块效应滤波 (Deblocking Filter)</strong>: 在所有现代视频解码器中都是标准配置。用于平滑基于块的压缩（如H.264/AVC）所产生的块边界上的马赛克效应。</li>
+<li><strong>去振铃效应</strong>: 减轻由于高频系数被粗暴量化而产生的边缘振铃（Gibbs现象）。</li>
+<li><strong>错误隐藏 (Error Concealment)</strong>: 如果信道解码发现数据包丢失且无法恢复，解码器会尝试用周围时空上有效的信息来“猜测”和“填补”丢失的图像块，以避免出现大的马赛克或黑屏。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>图像增强 (Post-processing Enhancement)</strong>:</p>
+<ul>
+<li><strong>目的</strong>: 在显示前，根据用户的偏好或显示设备的能力，对重建的图像进行最终的视觉优化。</li>
+<li><strong>技术</strong>:
+<ul>
+<li><strong>锐化</strong>: 适度增强图像边缘，使其看起来更清晰。</li>
+<li><strong>色彩校正/饱和度调整</strong>: 调整颜色，使其更鲜艳或更符合特定的色调。</li>
+<li><strong>超分辨率 (Super-Resolution)</strong>: 在某些高级应用中，可能会使用深度学习等技术，将解码出的低分辨率视频“放大”成高分辨率版本。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="图像质量评价-Image-Quality-Assessment">图像质量评价 (Image Quality Assessment)</h3>
+<ul>
+<li><strong>主观质量评价 (Subjective Quality Assessment)</strong>: 直接由人类观察者对图像质量进行评分
+<ul>
+<li><strong>核心指标</strong>:
+<ul>
+<li><strong>MOS (平均主观意见分, Mean Opinion Score)</strong>: 让一组观察者对图像质量进行评分，然后取平均值</li>
+</ul>
+</li>
+<li><strong>优点</strong>: 最可靠，是评价图像质量的金标准</li>
+<li><strong>缺点</strong>: 成本高、耗时长、过程复杂、结果易受环境和观察者状态影响</li>
+</ul>
+</li>
+<li><strong>客观质量评价 (Objective Quality Assessment)</strong>: 通过设计数学算法来自动计算图像的质量分数，以模拟人的主观评价结果
+<ul>
+<li><strong>分类 (根据对原始参考图像的依赖程度)</strong>:
+<ul>
+<li><strong>全参考 (Full-Reference, FR)</strong>: 在评价时，需要一个无失真的原始参考图像进行对比
+<ul>
+<li><strong>MSE (均方误差, Mean Square Error)</strong>: 计算失真图像与原始图像之间每个像素差值的平方和的均值</li>
+</ul>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>M</mi><mi>S</mi><mi>E</mi><mo>=</mo><mfrac><mn>1</mn><mrow><mi>M</mi><mi>N</mi></mrow></mfrac><munderover><mo>∑</mo><mrow><mi>m</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>M</mi><mo>−</mo><mn>1</mn></mrow></munderover><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow></munderover><mo stretchy="false">[</mo><mi>f</mi><mo stretchy="false">(</mo><mi>m</mi><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo><mo>−</mo><mi>g</mi><mo stretchy="false">(</mo><mi>m</mi><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo><msup><mo stretchy="false">]</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">M S E=\frac{1}{M N} \sum_{m=0}^{M-1} \sum_{n=0}^{N-1}[f(m, n)-g(m, n)]^2
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">MSE</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:3.0954em;vertical-align:-1.2671em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3214em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">MN</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.8283em;"><span style="top:-1.8829em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">m</span><span class="mrel mtight">=</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.10903em;">M</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.2671em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.8283em;"><span style="top:-1.8829em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mrel mtight">=</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.10903em;">N</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.2671em;"><span></span></span></span></span></span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal">m</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.1141em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mopen">(</span><span class="mord mathnormal">m</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mclose"><span class="mclose">]</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span></p>
+<ul>
+<li><strong>PSNR (峰值信噪比, Peak Signal Noise Ratio)</strong>: 基于 MSE 计算得来，是一个对数值，单位是分贝(dB)；PSNR 值越高，通常代表失真越小<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>P</mi><mi>S</mi><mi>N</mi><mi>R</mi><mo>=</mo><mn>10</mn><msub><mrow><mi>log</mi><mo>⁡</mo></mrow><mn>10</mn></msub><mfrac><msup><mn>255</mn><mn>2</mn></msup><mrow><mi>M</mi><mi>S</mi><mi>E</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">P S N R=10 \log _{10} \frac{255^2}{M S E}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">PSNR</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.1771em;vertical-align:-0.686em;"></span><span class="mord">10</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop"><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.207em;"><span style="top:-2.4559em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">10</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2441em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.4911em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">MSE</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">25</span><span class="mord"><span class="mord">5</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+</li>
+</ul>
+</li>
+<li><strong>无参考 (No-Reference, NR) / 盲评 (Blind)</strong>: 在评价时，不需要原始参考图像，直接对失真图像进行分析并给出质量分数。</li>
+<li><strong>弱参考 (Reduced-Reference, RR)</strong>: 介于全参考和无参考之间，评价时需要从原始图像中提取的部分特征信息，而不是整张原始图像</li>
+</ul>
+</li>
+<li><strong>优点</strong>: 计算简单、可重复、客观</li>
+<li><strong>缺点</strong>: 常常与人的主观感受不完全匹配</li>
+</ul>
+</li>
+</ul>
+<h3 id="采样-Sampling-与量化-Quantization">采样 (Sampling) 与量化 (Quantization)</h3>
+<h4 id="采样-Sampling">采样 (Sampling)</h4>
+<ul>
+<li><strong>定义</strong>: 对图像在<strong>空间坐标</strong>上进行离散化，形成像素</li>
+<li><strong>空间频率</strong>:
+<ul>
+<li>图像的细节对应高空间频率，亮度变化快，复杂度高</li>
+<li>平滑区域对应低空间频率，亮度变化慢，复杂度低</li>
+</ul>
+</li>
+<li><strong>采样定理</strong>: 如果采样频率大于或等于信号最高频率的两倍，就可以从采样得到的离散点中无失真地恢复出原始的连续信号</li>
+</ul>
+<p><img src="sample.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h4 id="量化-Quantization">量化 (Quantization)</h4>
+<ul>
+<li><strong>定义</strong>: 对图像中每个像素的<strong>亮度</strong>进行离散化的过程</li>
+<li><strong>特点</strong>: 量化是一种<strong>有损操作</strong>，是图像<strong>信息损失</strong>的主要来源</li>
+</ul>
+<h3 id="辐射度学基础-Radiometry-Fundamentals">辐射度学基础 (Radiometry Fundamentals)</h3>
+<ul>
+<li><strong>视敏度</strong>: 人眼对不同波长光的敏感程度
+<ul>
+<li><strong>峰值</strong>: 对波长为 555nm 的<strong>绿光</strong>最敏感</li>
+</ul>
+</li>
+</ul>
+<p><img src="acuity.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h3 id="色度学基础-Colorimetry-Fundamentals">色度学基础 (Colorimetry Fundamentals)</h3>
+<h4 id="感光细胞">感光细胞</h4>
+<ul>
+<li><strong>锥状细胞 (Cones)</strong>: 负责<strong>明视觉 (Photopic Vision)</strong>，即在光线充足的环境下工作
+<ul>
+<li>能够分辨颜色和高细节</li>
+<li>有三种锥状细胞，比例不均匀，分别对红、绿、蓝光敏感</li>
+<li>主要集中在视网膜的中心区域——中央凹 (Fovea)</li>
+</ul>
+</li>
+<li><strong>杆状细胞 (Rods)</strong>: 负责<strong>暗视觉 (Scotopic Vision)</strong>，在光线昏暗的环境下工作
+<ul>
+<li>对光极其敏感，但无法分辨颜色，且分辨率较低</li>
+<li>主要分布在视网膜的周边区域（中心凹附近没有）</li>
+</ul>
+</li>
+</ul>
+<h4 id="HSI-色彩空间">HSI 色彩空间</h4>
+<ul>
+<li><strong>H (色调, Hue)</strong>: 颜色的基本属性，即“是什么颜色”，如红色、绿色、蓝色等
+<ul>
+<li>通常用一个角度来表示（0° 到 360°）</li>
+</ul>
+</li>
+<li><strong>S (饱和度, Saturation)</strong>: 颜色的纯度或鲜艳程度，表示颜色中掺入白光的比例
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">S=1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> 表示最纯粹、最鲜艳的颜色（如光谱色）</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 越小，颜色越不饱和，看起来越“灰白”</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">S=0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span> 表示完全不饱和，即各种灰色、白色或黑色</li>
+</ul>
+</li>
+<li><strong>I (强度, Intensity)</strong>: 颜色的明亮程度，对应于我们常说的亮度</li>
+</ul>
+<div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="chroma.png" srcset="/img/loading.gif" lazyload alt=""></div><div class="group-image-wrap"><img src="hsi.png" srcset="/img/loading.gif" lazyload alt=""></div></div></div>
                 
               </div>
             
