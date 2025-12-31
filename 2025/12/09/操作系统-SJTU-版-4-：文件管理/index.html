@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-12-09T00:55:40.000Z">
-<meta property="article:modified_time" content="2025-12-23T01:40:18.671Z">
+<meta property="article:modified_time" content="2025-12-31T17:09:04.515Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="课程笔记">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.8k words
+          4.6k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          32 mins
+          38 mins
         
       </span>
     
@@ -465,7 +465,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on December 23, 2025 am
+                    Last updated on January 1, 2026 am
                   
                 
               </p>
@@ -1157,6 +1157,161 @@
 </li>
 <li><strong>可以更好地支持“长消息”</strong>：需要总线支持</li>
 <li><strong>分摊总线协议开销</strong>：单次操作包括获取总线、传输、释放总线</li>
+</ul>
+</li>
+<li>
+<p><strong>CPU 访问设备的方式小结</strong>：</p>
+<ul>
+<li>Load/Store 指令（ARM）
+<ul>
+<li>用于CPU读写内存</li>
+<li>作用于物理地址空间</li>
+</ul>
+</li>
+<li>MMIO 操作（x86/ARM 等）
+<ul>
+<li>将设备寄存器映射到物理地址空间</li>
+<li>页表再将物理地址映射为虚拟地址</li>
+</ul>
+</li>
+<li>DMA
+<ul>
+<li>设备使用物理地址访问内存</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="cpu_device.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>
+<p><strong>DMA 的安全性问题</strong>：设备可通过 DMA 访问任意物理内存</p>
+<ul>
+<li>错误地址访问
+<ul>
+<li>误读：设备操作出错、数据泄露等</li>
+<li>误写：系统崩溃，关键数据丢失等</li>
+</ul>
+</li>
+<li>恶意地址访问
+<ul>
+<li>恶意设备、恶意用户态驱动：可发起任意DMA请求</li>
+</ul>
+</li>
+<li>应用攻击：应用挟持、应用数据窃取等</li>
+<li>内核攻击：内核代码注入，内核数据窃取等</li>
+</ul>
+</li>
+<li>
+<p><strong>IOMMU</strong>：为 I/O 设备做地址翻译，避免设备直接使用物理地址访问内存</p>
+<ul>
+<li>设备 DMA 使用 IOVA，由 IOMMU 翻译为 PA（实际的物理地址）</li>
+<li>使用 IOTLB 优化 IOMMU 地址翻译流程</li>
+<li>广泛用于 DMA 隔离：用户态驱动、虚拟化等</li>
+</ul>
+</li>
+</ul>
+<h3 id="I-O-子系统">I/O 子系统</h3>
+<ul>
+<li>
+<p><strong>I/O 子系统的必要性</strong>：</p>
+<ul>
+<li>数以千计的设备类型，个性千差万别
+<ul>
+<li>如何标准化设备接口？</li>
+</ul>
+</li>
+<li>设备的不可靠性：
+<ul>
+<li>介质失效或传输错误</li>
+<li>如何提供可靠性保证？</li>
+</ul>
+</li>
+<li>设备的不可预测性和慢速：
+<ul>
+<li>如果不清楚设备的具体表现，该如何管理它们？</li>
+</ul>
+</li>
+<li>I/O 子系统必须能处理好这些差别
+<ul>
+<li>高速设备：最小化开销</li>
+<li>慢速设备：避免浪费 CPU 时间盲目等待</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>I/O 子系统的目标</strong>：</p>
+<ul>
+<li>提供统一接口，涵盖不同设备
+<ul>
+<li>如下代码对各种设备通用：  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c">FILE fd = fopen(“/dev/something”, “rw”);<br><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) &#123;<br>  <span class="hljs-built_in">fprintf</span>(fd, “Count %d\n”,i);<br>&#125;<br>close(fd);<br></code></pre></td></tr></table></figure>
+</li>
+<li>原因：设备代码（即“驱动程序”）实现了标准接口</li>
+</ul>
+</li>
+<li>提供 I/O 硬件的抽象层
+<ul>
+<li>管理硬件资源；隐藏硬件细节</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>三类设备接口</strong>：</p>
+<ul>
+<li><strong>字符设备</strong>
+<ul>
+<li>例子：键盘/鼠标，串口，部分 USB 设备等
+<ul>
+<li>串行访问，每次一个字符</li>
+</ul>
+</li>
+<li>I/O 命令：<code>get()</code>, <code>put()</code> 等</li>
+<li>通常使用文件系统接口进行交互：<code>open()</code>, <code>read()</code>, <code>write()</code>, <code>close()</code></li>
+</ul>
+</li>
+<li><strong>块设备</strong>
+<ul>
+<li>例子：磁盘、磁带、DVD</li>
+<li>统一的块 I/O 接口：以块为粒度访问数据</li>
+<li>提供原始I/O接口（Raw I/O）或文件形式访问
+<ul>
+<li>原始I/O：字节流</li>
+</ul>
+</li>
+<li>允许以内存映射文件的方式访问文件内容，即 Memory-Mapped File</li>
+</ul>
+</li>
+<li><strong>网络设备</strong>
+<ul>
+<li>例子：以太网卡、无线网络、蓝牙等</li>
+<li>不同于块设备、字符设备，网络设备有自己的接口
+<ul>
+<li>提供特殊网络接口，支持各类网络协议</li>
+<li>负责网络包的收发</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>设备驱动</strong>：</p>
+<ul>
+<li>内核中设备特定代码，和硬件设备直接交互：
+<ul>
+<li>提供标准的文件系统接口</li>
+<li>内核 I/O 子系统可以和内核不同驱动交互</li>
+<li>可借助 <code>ioctl()</code> 系统调用进行设备相关配置</li>
+</ul>
+</li>
+<li>Linux 的设备驱动通常分为两部分：
+<ul>
+<li>上半部：迅速处理；此时中断处于关闭状态，没有嵌套</li>
+<li>下半部：延后处理；此时中断处于打开状态，可能发生嵌套</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
