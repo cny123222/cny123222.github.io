@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-12-11T05:35:13.000Z">
-<meta property="article:modified_time" content="2026-01-01T07:16:48.721Z">
+<meta property="article:modified_time" content="2026-01-01T12:54:28.062Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          14k words
+          16k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          119 mins
+          133 mins
         
       </span>
     
@@ -2217,6 +2217,302 @@
 </ul>
 <h2 id="Lecture-14-同步原语的实现">Lecture 14: 同步原语的实现</h2>
 <h2 id="Lecture-15-文件系统">Lecture 15: 文件系统</h2>
+<ul>
+<li><strong>文件</strong>：对数据的一种抽象，是有名字且持久化的一段数据</li>
+<li><strong>文件系统</strong>：是文件的管理者，提供了一组操作文件的 API</li>
+</ul>
+<p><img src="location.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h3 id="Inode">Inode</h3>
+<ul>
+<li>
+<p><strong>inode</strong>：即 index node，记录文件多个磁盘块的位置</p>
+<ul>
+<li>每个文件对应一个 inode，称为文件元数据</li>
+<li>记录了多个磁盘块号；头部记录文件 size 信息</li>
+<li><strong>文件读写操作的实现</strong>：
+<ul>
+<li>给定 inode 和文件内偏移 offset</li>
+<li>根据 offset 计算出对应的磁盘块号</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>inode 文件系统的存储布局</strong>：</p>
+<ul>
+<li><strong>inode 表</strong>：记录所有 inode
+<ul>
+<li>每个 inode 使用 inode 号作为索引</li>
+<li>此时，inode 号即为文件名</li>
+</ul>
+</li>
+<li><strong>inode 分配信息（位图）</strong>：
+<ul>
+<li>记录哪些 inode 已分配，哪些空闲</li>
+</ul>
+</li>
+<li><strong>超级块</strong>：是整个文件系统的元数据
+<ul>
+<li>记录磁盘块的大小、其他信息的起始磁盘块位置，等等</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="inode.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>
+<p><strong>inode 文件系统的基本操作</strong>：</p>
+<ul>
+<li><strong>加载文件系统</strong>：
+<ul>
+<li>首先读取超级块，然后找到其他信息</li>
+</ul>
+</li>
+<li><strong>创建新文件</strong>：
+<ul>
+<li>根据 inode 分配信息找到空闲 inode，将 inode 对应的 bit 设置为 1</li>
+<li>返回 inode 在 inode 表中的索引，作为文件名</li>
+</ul>
+</li>
+<li><strong>查找文件（根据 inode 号）</strong>：
+<ul>
+<li>在 inode 表中根据 inode 号定位该 inode</li>
+</ul>
+</li>
+<li><strong>删除文件</strong>：
+<ul>
+<li>在 inode 分配表中，将该 inode 对应的 bit 设置为 0</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>多级 inode</strong>：解决单级 inode 过大的问题，一个多级 inode 占用的空间很少</p>
+<ul>
+<li>索引块指向数据块；二级索引块指向索引块；以此类推</li>
+<li>索引块（包括二级索引块）不在 inode 表的存储区域，而是在数据区域</li>
+</ul>
+</li>
+</ul>
+<p><img src="multi-inode.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h3 id="目录">目录</h3>
+<ul>
+<li><strong>目录文件</strong>：记录字符串到 inode 号的映射，实现了字符串的文件名
+<ul>
+<li>目录中的每条映射称为一个目录项</li>
+<li>目录本身也是一个文件，同样有 inode</li>
+<li>目录文件的大小与其记录的文件大小无关</li>
+<li><strong>支持查找操作</strong>：给定一个目录文件和字符串，返回对应的 inode</li>
+</ul>
+</li>
+</ul>
+<p><img src="dir.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>
+<p><strong>目录的递归</strong>：</p>
+<ul>
+<li>目录中可以记录子目录，因为目录本身也是一个文件
+<ul>
+<li>通过“/”来分割父目录和子目录</li>
+</ul>
+</li>
+<li>最顶端的目录没有文件名，被称为“根目录”（root）</li>
+</ul>
+</li>
+<li>
+<p><strong>文件的查找过程</strong>：以 <code>/os-book/fs.tex</code> 为例</p>
+</li>
+</ul>
+<p><img src="find.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h3 id="硬链接与软链接">硬链接与软链接</h3>
+<h4 id="（硬）链接：Link">（硬）链接：Link</h4>
+<ul>
+<li><strong><code>LINK</code></strong>：创建（硬）链接，如 Linux 中的 <code>ln</code> 命令
+<ul>
+<li>不同的文件名指向同一个 inode 号</li>
+<li>将严格的层次结构（树）变成有向图
+<ul>
+<li>不允许出现环（除了 <code>.</code> 和 <code>..</code>）</li>
+<li>用户不能为目录创建 Link，否则会出现环</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong><code>UNLINK</code></strong>：删掉从文件名到 inode 号的绑定关系
+<ul>
+<li>如果 <code>UNLINK</code> 最后一个绑定，则把 inode 和对应的 blocks 放到 free-list</li>
+<li>每个文件都需要一个<strong>引用计数器（Reference count）</strong>
+<ul>
+<li><code>LINK</code> 时 +1, <code>UNLINK</code> 时 -1</li>
+<li>当 reference count 为 0 时，文件被删除</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="软链接（符号链接）">软链接（符号链接）</h4>
+<ul>
+<li>
+<p><strong>Link 的问题</strong>：无法在一个磁盘上建立指向另一个磁盘的 Link</p>
+<ul>
+<li>因为不同磁盘的 inode 命名空间是不同的</li>
+</ul>
+</li>
+<li>
+<p><strong>软链接（符号链接）</strong>: <code>SYMLINK</code>，如 Linux 中的 <code>ln -s</code> 命令</p>
+<ul>
+<li>是一个独立的文件，有自己的文件名和 inode</li>
+<li>增加一种新的 inode 类型，其中直接存储了路径字符串</li>
+<li>既可以对文件链接，也可以对目录链接</li>
+</ul>
+</li>
+<li>
+<p><strong>硬链接和软链接的对比</strong>：</p>
+</li>
+</ul>
+<p><img src="hard-soft-link.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h3 id="文件系统-API">文件系统 API</h3>
+<ul>
+<li>
+<p><strong>两类元数据</strong>：</p>
+<ul>
+<li><strong>磁盘上文件的元数据</strong>：静态的、在磁盘中
+<ul>
+<li><strong>拥有者/所在组 ID</strong>：拥有该 inode 的用户 ID 和组 ID</li>
+<li><strong>权限的类型</strong>：拥有者、所在组、其他；读、写、执行</li>
+<li><strong>时间戳</strong>：最后一次访问；最后一次修改；最后一次 inode 更新</li>
+</ul>
+</li>
+<li><strong>被打开文件的元数据</strong>：动态的、在内存中
+<ul>
+<li>整个系统维护了一个 <code>file_table</code>，记录了所有打开的文件的信息
+<ul>
+<li>包括：文件游标（file cursor）、引用数（ref_count）</li>
+<li>父子进程间可以共享文件游标</li>
+</ul>
+</li>
+<li>每个进程维护了一个 <code>fd_table</code>，记录了该进程每个 <code>fd</code> 所对应文件在 <code>file_table</code> 中的索引</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>文件游标 Cursor</strong>：记录了一个文件中下一次操作的位置</p>
+<ul>
+<li>可以通过 <code>SEEK</code> 操作修改；读写共享文件游标</li>
+<li><strong>共享游标</strong>: 允许父子进程共享同一个文件，父进程将 <code>fd</code> 传递给子进程</li>
+<li><strong>非共享游标</strong>: 两个不同的进程打开同一个文件</li>
+</ul>
+</li>
+</ul>
+<p><img src="cursor.png" srcset="/img/loading.gif" lazyload alt="文件游标共享实例"></p>
+<ul>
+<li>
+<p><strong><code>close()</code></strong>：</p>
+<ul>
+<li>释放 <code>fd_table</code> 中的相关项</li>
+<li>减小 <code>file_table</code> 中相关项的 <code>refcnt</code>
+<ul>
+<li>如果 <code>file_table</code> 中相关项 <code>refcnt</code> 为 0，则将其释放</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>write()</code></strong>：</p>
+<ul>
+<li>可能需要分配新的 block</li>
+<li>更新 inode 的 size 和 mtime
+<ul>
+<li><code>read()</code> 也有写操作，需要更新最后一次访问时间</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>删除一个打开的文件</strong>：inode 引用数变成 0，但不会被立即释放和删除，直到前一个进程调用 <code>close</code> 将其关闭</p>
+</li>
+<li>
+<p><strong><code>fsync()</code></strong>：</p>
+<ul>
+<li><strong>Block cache</strong>：缓存了最近被使用的磁盘块
+<ul>
+<li>推迟数据向磁盘的写入，寻求机会批量写入，提升性能</li>
+<li><strong>问题</strong>：如果在写入前发生故障，可能会造成不一致</li>
+</ul>
+</li>
+<li><strong><code>SYNC</code></strong>：保证对文件的所有修改被写入到存储设备</li>
+</ul>
+</li>
+</ul>
+<h3 id="文件系统的崩溃一致性">文件系统的崩溃一致性</h3>
+<ul>
+<li>
+<p><strong>文件系统的崩溃一致性</strong>：文件系统中的各种数据结构存在依赖关系与一致性要求，崩溃可能会造成这些一致性被打破</p>
+<ul>
+<li><strong>用户期望</strong>：重启并恢复后
+<ul>
+<li>维护文件系统数据结构的内部的不变量</li>
+<li>仅有最近的一些操作没有被保存到磁盘中</li>
+<li>没有顺序的异常</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>方法1</strong>：同步元数据写 + <code>fsck</code></p>
+<ul>
+<li><strong>同步元数据写</strong>：每次元数据写入后，运行 <code>sync()</code> 保证更新后的元数据入盘</li>
+<li><strong><code>fsck</code></strong>：非正常重启后，运行 <code>fsck</code> 检查磁盘的一致性关系</li>
+<li><strong>问题</strong>：太慢
+<ul>
+<li><code>fsck</code> 时间与磁盘的大小成比例增长</li>
+<li>同步元数据写导致创建文件等操作非常慢</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>方法2</strong>：日志（Journaling）</p>
+<ul>
+<li><strong>方法</strong>：
+<ul>
+<li>在进行修改之前，先将修改记录到日志中
+<ul>
+<li>例如，如何修改 block-bitmap、如何修改 data</li>
+</ul>
+</li>
+<li>所有要进行的修改都记录完毕后，提交日志</li>
+<li>确定日志落盘后，再修改数据和元数据</li>
+<li>修改完成后，删除日志</li>
+</ul>
+</li>
+<li><strong>Ext4 的日志</strong>：以 Ordered mode 为例
+<ul>
+<li>先写数据（原本的文件位置），再写元数据（日志）</li>
+<li>两次 Flush 保证顺序</li>
+</ul>
+</li>
+<li><strong>崩溃后的恢复方法</strong>：
+<ul>
+<li>启动后首先检查日志区域
+<ul>
+<li>若没有任何日志记录，则无需恢复</li>
+</ul>
+</li>
+<li>扫描所有已经 COMMIT 的事务
+<ul>
+<li>若没有 COMMIT 的事务，则无需恢复</li>
+<li>对已经 COMMIT 的事务，将元数据从日志区写到原本位置</li>
+</ul>
+</li>
+<li>完成后清空日志区域</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 <h2 id="Lecture-16-设备管理与驱动">Lecture 16: 设备管理与驱动</h2>
 <ul>
 <li><strong>OS 的分层设计</strong>：应用 I/O 框架层、设备管理的共性功能层、设备驱动层</li>

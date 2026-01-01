@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-12-09T00:55:40.000Z">
-<meta property="article:modified_time" content="2026-01-01T07:04:00.431Z">
+<meta property="article:modified_time" content="2026-01-01T12:38:51.404Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="课程笔记">
@@ -527,7 +527,7 @@
 </li>
 <li><strong>inode 分配信息（位图）</strong>：
 <ul>
-<li>记录哪些inode已分配，哪些空闲</li>
+<li>记录哪些 inode 已分配，哪些空闲</li>
 </ul>
 </li>
 <li><strong>超级块</strong>：Super Block
@@ -568,7 +568,7 @@
 </ul>
 </li>
 <li>
-<p><strong>多级 inode</strong>：单级 inode 过大的问题</p>
+<p><strong>多级 inode</strong>：解决单级 inode 过大的问题</p>
 <ul>
 <li><strong>引入索引块</strong>：指向数据块；以及二级索引块：指向索引块；…</li>
 <li>索引块（包括二级索引块）不在 inode 表的存储区域，而是在数据区域</li>
@@ -683,7 +683,7 @@
 </ul>
 </li>
 <li>
-<p><strong><code>UNLINK</code></strong>：删除文件</p>
+<p><strong><code>UNLINK</code></strong>：删除（硬）链接</p>
 <ul>
 <li>删掉从文件名到 inode 号的绑定关系</li>
 <li>如果 UNLINK 最后一个绑定，则把 inode 和对应的 blocks 放到 free-list
@@ -838,7 +838,7 @@
 <p><img src="cursor.png" srcset="/img/loading.gif" lazyload alt="文件游标共享实例"></p>
 <ul>
 <li>
-<p><strong><code>write()</code> 与 <code>read()</code></strong>：</p>
+<p><strong><code>write()</code></strong>：与 <code>read()</code> 类似</p>
 <ul>
 <li>可能需要分配新的 block</li>
 <li>更新 inode 的 size 和 mtime</li>
