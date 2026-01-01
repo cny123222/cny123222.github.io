@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-12-11T05:35:13.000Z">
-<meta property="article:modified_time" content="2025-12-23T06:33:48.556Z">
+<meta property="article:modified_time" content="2026-01-01T07:16:48.721Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          13k words
+          14k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          106 mins
+          119 mins
         
       </span>
     
@@ -465,7 +465,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on December 23, 2025 pm
+                    Last updated on January 1, 2026 pm
                   
                 
               </p>
@@ -2218,6 +2218,223 @@
 <h2 id="Lecture-14-同步原语的实现">Lecture 14: 同步原语的实现</h2>
 <h2 id="Lecture-15-文件系统">Lecture 15: 文件系统</h2>
 <h2 id="Lecture-16-设备管理与驱动">Lecture 16: 设备管理与驱动</h2>
+<ul>
+<li><strong>OS 的分层设计</strong>：应用 I/O 框架层、设备管理的共性功能层、设备驱动层</li>
+</ul>
+<p><img src="device_layer.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>设备最基本的抽象</strong>：将设备的外部接口设计为一组寄存器，称为设备寄存器</li>
+</ul>
+<p><img src="device.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>
+<p><strong>I/O 子系统的目标</strong>：</p>
+<ul>
+<li>提供统一接口，涵盖不同设备
+<ul>
+<li>设备代码（即驱动程序）需要实现标准接口</li>
+</ul>
+</li>
+<li>提供 I/O 硬件的抽象层
+<ul>
+<li>管理硬件资源；隐藏硬件细节</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>设备驱动</strong>：</p>
+<ul>
+<li>内核中设备特定代码，和硬件设备直接交互
+<ul>
+<li>提供标准的文件系统接口</li>
+<li>内核 I/O 子系统可以和内核不同驱动交互</li>
+<li>可借助 <code>ioctl()</code> 系统调用进行设备相关配置</li>
+</ul>
+</li>
+<li>Linux 的设备驱动通常分为两部分
+<ul>
+<li>上半部：迅速处理；关中断状态，没有嵌套</li>
+<li>下半部：延后处理；开中断状态，可能发生嵌套</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="I-O-设备分类">I/O 设备分类</h3>
+<ul>
+<li><strong>字符设备</strong>
+<ul>
+<li><strong>例子</strong>：键盘/鼠标，串口，部分 USB 设备等</li>
+<li><strong>特点</strong>：串行访问，每次一个字符</li>
+<li><strong>交互方式</strong>：
+<ul>
+<li><strong>I/O 命令</strong>：如 <code>get()</code>, <code>put()</code> 等</li>
+<li><strong>文件系统接口</strong>：如 <code>open()</code>, <code>read()</code>, <code>write()</code>, <code>close()</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>块设备</strong>
+<ul>
+<li><strong>例子</strong>：磁盘、磁带、DVD</li>
+<li><strong>交互方式</strong>：
+<ul>
+<li><strong>统一的块 I/O 接口</strong>：以块为粒度访问数据</li>
+<li><strong>原始 I/O 接口或文件形式访问</strong>：获得字节流</li>
+<li><strong>以内存映射文件的方式访问</strong>：即 Memory-Mapped File</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>网络设备</strong>
+<ul>
+<li><strong>例子</strong>：以太网卡、无线网络、蓝牙等</li>
+<li>不同于块设备、字符设备，网络设备有自己的接口</li>
+</ul>
+</li>
+</ul>
+<h3 id="传统-I-O-流程-轮询与中断">传统 I/O 流程: 轮询与中断</h3>
+<ul>
+<li>
+<p><strong>传统 I/O 流程</strong>：</p>
+<ul>
+<li><strong>Step 1</strong>：<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c">While(STATUS == BUSY)<br>  ; <span class="hljs-comment">// 不断等待，直到设备不再忙碌</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>轮询</strong>：CPU 反复读取设备的状态寄存器，直到确认设备可以接受新的命令</li>
+</ul>
+</li>
+<li><strong>Step 2</strong>：<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">Write data to DATA <span class="hljs-keyword">register</span> and address to ADDRESS <span class="hljs-keyword">register</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>如果设备是磁盘，则需要若干次写操作才能将磁盘块传输到设备中</li>
+<li>当 CPU 参与数据的搬移时，称为 programmed I/O (PIO)</li>
+</ul>
+</li>
+<li><strong>Step 3</strong>：<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c">Write command to COMMAND <span class="hljs-keyword">register</span><br>  <span class="hljs-comment">// 此时设备开始工作，并执行 COMMAND 对应操作</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>OS 向设备的命令寄存器写入命令</li>
+<li>设备获悉数据已经就绪，随即设备开始工作，执行 OS 发送的命令</li>
+</ul>
+</li>
+<li><strong>Step 4</strong>：<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c">While(STATUS == BUSY)<br>  ; <span class="hljs-comment">// 再次等待，直到设备响应完请求</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>OS 再次通过不断轮询状态寄存器，判断设备是否完成工作</li>
+<li>最后，OS 会收到设备返回的 success 或 failure 状态码</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>中断</strong>：不需要轮询设备状态，提高 CPU 利用率</p>
+<ul>
+<li>OS 向设备发送一个请求，随后令 I/O 进程睡眠，切换到其他任务（此时进程处于 WAITING 状态）</li>
+<li>设备完成 I/O 命令后，触发硬件中断</li>
+<li>CPU 跳转到 OS 预先注册好的中断处理程序 (Interrupt service routine / ISR)
+<ul>
+<li>中断处理程序运行在内核态，负责响应设备中断</li>
+<li>例如，读取设备数据，或读取设备返回的状态码，进而唤醒等待 I/O 的进程，完成后续工作</li>
+</ul>
+</li>
+<li><strong>局限性</strong>：只适用于慢速设备（如鼠标、键盘）</li>
+</ul>
+</li>
+<li>
+<p><strong>中断的活锁问题</strong>：快速设备（如网卡）可能频繁触发中断，导致 CPU 只顾着响应中断，无法调度用户进程和处理中断发来的数据</p>
+<ul>
+<li><strong>解决方案 1</strong>：合二为一（中断+轮询）
+<ul>
+<li>默认使用中断；中断发生后，使用轮询处理后续达到的网络包</li>
+<li>如果没有更多中断，或轮询中断超过时间限制，则回到中断模式</li>
+<li>该方案在Linux网络驱动中称为 NAPI (New API)</li>
+</ul>
+</li>
+<li><strong>解决方案 2</strong>：中断合并（Interrupt Coalescing）</li>
+<li>设备在发送中断前，需要等待一小段时间</li>
+<li>在等待期间，其他中断可能也会马上到来，因此多个中断合并为同一个中断，进而降低频繁中断带来的开销</li>
+</ul>
+</li>
+</ul>
+<h3 id="设备交互-PIO-与-MMIO">设备交互: PIO 与 MMIO</h3>
+<ul>
+<li>
+<p><strong>方法1</strong>：端口 I/O (Port I/O, PIO)</p>
+<ul>
+<li>使用 I/O 端口对设备进行寻址
+<ul>
+<li>I/O 端口：独立于物理地址空间的特殊地址空间</li>
+</ul>
+</li>
+<li>通过特殊的 I/O 指令进行读写，如 x86 的 <code>IN</code> 和 <code>OUT</code> 指令</li>
+<li>必须以特权模式执行，只有 OS 可以和直接和设备交互</li>
+</ul>
+</li>
+<li>
+<p><strong>方法2</strong>：内存映射 I/O（Memory-mapped I/O, MMIO）</p>
+<ul>
+<li>将设备寄存器直接映射到物理地址空间</li>
+<li>使用访存的 <code>LOAD</code> 和 <code>STORE</code> 指令，直接访问设备寄存器
+<ul>
+<li>MMU 将物理地址（即总线地址）转换为虚拟地址</li>
+<li>I/O 模块负责将总线地址转换为设备的寄存器地址</li>
+</ul>
+</li>
+<li>可以以非特权模式下执行，ARM 和 x86 都支持</li>
+<li>MMIO 地址应使用 <code>volatile</code> 关键字，防止编译器和 CPU 的错误优化</li>
+<li><strong>例子</strong>：DPDK 用户态网络栈，在用户态进行网络设备管理，减少数据拷贝，去除特权级切换，显著提升了网络性能</li>
+</ul>
+</li>
+</ul>
+<h3 id="数据移动-DMA-与-IOMMU">数据移动: DMA 与 IOMMU</h3>
+<h4 id="直接内存访问-Direct-Memory-Access-DMA">直接内存访问 (Direct Memory Access, DMA)</h4>
+<ul>
+<li>
+<p><strong>工作流程</strong>：</p>
+<ul>
+<li>CPU 向磁盘控制器发送“读”指令，一次读取一大块数据
+<ul>
+<li>“读”指令中包含了目标数据在内存中的地址</li>
+</ul>
+</li>
+<li>磁盘控制器将数据直接读取到磁盘的内存缓冲区
+<ul>
+<li>直接读取物理内存中的目标数据，不需要 CPU 的参与</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>DMA 的优点</strong>：</p>
+<ul>
+<li><strong>减轻 CPU 负载</strong>：CPU 可以执行其他程序</li>
+<li><strong>减少传输次数</strong>：直接从设备传输到内存，不用经过 CPU</li>
+<li><strong>可以更好地支持“长消息”</strong>：需要总线支持</li>
+<li><strong>分摊总线协议开销</strong>：单次操作包括获取总线、传输、释放总线</li>
+</ul>
+</li>
+<li>
+<p><strong>CPU 访问设备的方式小结</strong>：</p>
+<ul>
+<li><strong>Load/Store 指令（ARM）</strong>：用于 CPU 读写内存，作用于物理地址空间</li>
+<li><strong>MMIO 操作（x86/ARM 等）</strong>：将设备寄存器映射到物理地址空间，页表再将物理地址映射为虚拟地址</li>
+<li><strong>DMA</strong>：设备使用物理地址访问内存</li>
+</ul>
+</li>
+</ul>
+<p><img src="cpu_device.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>DMA 的安全性问题</strong>：设备可通过 DMA 访问任意物理内存</li>
+</ul>
+<h4 id="IOMMU">IOMMU</h4>
+<ul>
+<li><strong>IOMMU</strong>：为 I/O 设备做地址翻译，避免设备直接使用物理地址访问内存
+<ul>
+<li>设备 DMA 使用 IOVA，由 IOMMU 翻译为 PA（实际的物理地址）</li>
+<li>使用 IOTLB 优化 IOMMU 地址翻译流程</li>
+<li>广泛用于 DMA 隔离：用户态驱动、虚拟化等</li>
+</ul>
+</li>
+</ul>
+<p><img src="iommu.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <h2 id="参考资料">参考资料</h2>
 <p>本文参考上海交通大学并行与分布式系统研究所（IPADS）操作系统课程 CS3601 华志超老师的 PPT 课件整理。</p>
 <p>部分图片来源于上海交通大学程序语言与编译原理课程 CS2612 曹钦翔老师的讲义。</p>
