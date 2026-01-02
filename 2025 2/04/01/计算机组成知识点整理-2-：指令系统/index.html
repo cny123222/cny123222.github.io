@@ -1,0 +1,1200 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Nuoyan Chen">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="这是SJTU-ICE2603《计算机组成》课程的知识点整理系列。本文整理部分为“第2章：指令系统”。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机组成知识点整理(2)：指令系统">
+<meta property="og:url" content="https://cny123222.github.io/2025/04/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-2-%EF%BC%9A%E6%8C%87%E4%BB%A4%E7%B3%BB%E7%BB%9F/index.html">
+<meta property="og:site_name" content="Nuoyan Chen&#39;s Blog">
+<meta property="og:description" content="这是SJTU-ICE2603《计算机组成》课程的知识点整理系列。本文整理部分为“第2章：指令系统”。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cny123222.github.io/img/%E8%AE%A1%E7%BB%84.png">
+<meta property="article:published_time" content="2025-04-01T04:59:50.000Z">
+<meta property="article:modified_time" content="2025-06-06T13:28:00.874Z">
+<meta property="article:author" content="Nuoyan Chen">
+<meta property="article:tag" content="计算机组成">
+<meta property="article:tag" content="知识点整理">
+<meta property="article:tag" content="期末复习">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cny123222.github.io/img/%E8%AE%A1%E7%BB%84.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>计算机组成知识点整理(2)：指令系统 - Nuoyan Chen&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"cny123222.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 80vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Nuoyan Chen&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/nanjing.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.4)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="计算机组成知识点整理(2)：指令系统"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Nuoyan Chen
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-04-01 12:59" pubdate>
+          April 1, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.1k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          18 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="计算机组成"
+        id="heading-e64a83de4627390b1e9bb9ab855b7284" role="tab" data-toggle="collapse" href="#collapse-e64a83de4627390b1e9bb9ab855b7284"
+        aria-expanded="true"
+      >
+        计算机组成
+        <span class="list-group-count">(8)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-e64a83de4627390b1e9bb9ab855b7284"
+           role="tabpanel" aria-labelledby="heading-e64a83de4627390b1e9bb9ab855b7284">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/03/24/Verilog%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/" title="Verilog编程入门"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Verilog编程入门</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/06/06/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0/" title="计算机组成期末复习"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">计算机组成期末复习</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/31/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-1-%EF%BC%9A%E6%A6%82%E8%BF%B0/" title="计算机组成知识点整理(1)：概述"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">计算机组成知识点整理(1)：概述</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/04/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-2-%EF%BC%9A%E6%8C%87%E4%BB%A4%E7%B3%BB%E7%BB%9F/" title="计算机组成知识点整理(2)：指令系统"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">计算机组成知识点整理(2)：指令系统</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/04/07/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-3-%EF%BC%9A%E7%AE%97%E6%9C%AF%E8%BF%90%E7%AE%97/" title="计算机组成知识点整理(3)：算术运算"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">计算机组成知识点整理(3)：算术运算</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/04/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-4-%EF%BC%9A%E5%A4%84%E7%90%86%E5%99%A8/" title="计算机组成知识点整理(4)：处理器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">计算机组成知识点整理(4)：处理器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/05/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-5-%EF%BC%9A%E5%AD%98%E5%82%A8%E5%99%A8/" title="计算机组成知识点整理(5)：存储器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">计算机组成知识点整理(5)：存储器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/05/28/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-6-%EF%BC%9A%E5%B9%B6%E8%A1%8C%E5%A4%84%E7%90%86%E5%99%A8/" title="计算机组成知识点整理(6)：并行处理器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">计算机组成知识点整理(6)：并行处理器</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">计算机组成知识点整理(2)：指令系统</h1>
+            
+              <p id="updated-time" class="note note-default" style="">
+                
+                  
+                    Last updated on June 6, 2025 pm
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>这是SJTU-ICE2603《计算机组成》课程的知识点整理系列。本文整理部分为“第2章：指令系统”。</p>
+<span id="more"></span>
+<h2 id="2-1-RISC-V-指令集">2.1 RISC-V 指令集</h2>
+<ul>
+<li><strong>典型 RISC 架构</strong>：定长指令、精简指令集、32个通用寄存器</li>
+</ul>
+<p><img src="img1.png" srcset="/img/loading.gif" lazyload alt="RISC-V操作数"></p>
+<ul>
+<li>下面两张表是<strong>重点</strong></li>
+</ul>
+<p><img src="img2.png" srcset="/img/loading.gif" lazyload alt="RISC-V汇编语言1"></p>
+<p><img src="img3.png" srcset="/img/loading.gif" lazyload alt="RISC-V汇编语言2"></p>
+<ul>
+<li>以下是剩余的指令（了解）</li>
+</ul>
+<p><img src="img14.png" srcset="/img/loading.gif" lazyload alt="RISC-V汇编语言（补充）"></p>
+<h2 id="2-2-操作数">2.2 操作数</h2>
+<h3 id="2-2-1-寄存器操作数">2.2.1 寄存器操作数</h3>
+<ul>
+<li>RISC-V 体系中有 32 个 64 位寄存器（<strong>字表示 32 位</strong>）</li>
+<li>RISC-V 按<strong>单字节寻址</strong>，<strong>连续双字的地址相差 8</strong>
+<ul>
+<li>如下标 8 对应的偏移量是 64</li>
+</ul>
+</li>
+<li>RISC-V <strong>无对齐限制</strong>，即双字的起始地址不一定是 8 的倍数</li>
+</ul>
+<hr>
+<ul>
+<li>访问寄存器比访问存储器快</li>
+<li>对存储器数据进行操作需要取数和存数</li>
+</ul>
+<h3 id="2-2-2-大端与小端存储">2.2.2 大端与小端存储</h3>
+<ul>
+<li>RISC-V 采用<strong>小端模式</strong>，即<strong>低位字节位于字中的低地址</strong></li>
+<li><strong>大端模式</strong>：高位字节位于低地址</li>
+</ul>
+<hr>
+<ul>
+<li>例：存放二进制数 0001-0010-0011-0100-0101-0110-0111-1000</li>
+<li>小端模式：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">地址</th>
+<th style="text-align:center">0</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">数值</td>
+<td style="text-align:center">0111-1000</td>
+<td style="text-align:center">0101-0110</td>
+<td style="text-align:center">0011-0100</td>
+<td style="text-align:center">0001-0010</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>大端模式：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">地址</th>
+<th style="text-align:center">0</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">数值</td>
+<td style="text-align:center">0001-0010</td>
+<td style="text-align:center">0011-0100</td>
+<td style="text-align:center">0101-0110</td>
+<td style="text-align:center">0111-1000</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-3-数字的表示">2.3 数字的表示</h2>
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 位有符号整数
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mo>−</mo><msub><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub><msup><mn>2</mn><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>+</mo><msub><mi>x</mi><mrow><mi>n</mi><mo>−</mo><mn>2</mn></mrow></msub><msup><mn>2</mn><mrow><mi>n</mi><mo>−</mo><mn>2</mn></mrow></msup><mo>+</mo><mo>⋯</mo><mo>+</mo><msub><mi>x</mi><mn>1</mn></msub><msup><mn>2</mn><mn>1</mn></msup><mo>+</mo><msub><mi>x</mi><mn>0</mn></msub><msup><mn>2</mn><mn>0</mn></msup></mrow><annotation encoding="application/x-tex">x = -x_{n-1} 2^{n-1} + x_{n-2} 2^{n-2} + \cdots + x_1 2^1 + x_0 2^0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.0224em;vertical-align:-0.2083em;"></span><span class="mord">−</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0224em;vertical-align:-0.2083em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">2</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="minner">⋯</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9641em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9641em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span></span></span></span></span></span></span></span></li>
+<li>表示范围：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><msup><mn>2</mn><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>∼</mo><msup><mn>2</mn><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">-2^{n-1} \sim 2^{n - 1} - 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span></li>
+</ul>
+</li>
+<li><strong>有符号数取负</strong>：按位取反再加 1</li>
+<li><strong>符号扩展</strong>（用更多的位表示一个数）：把符号位复制到左边</li>
+</ul>
+<h2 id="2-4-指令格式">2.4 指令格式</h2>
+<p><img src="img5.png" srcset="/img/loading.gif" lazyload alt="RISC-V指令格式"></p>
+<ul>
+<li>
+<p><strong>opcode</strong>：操作码</p>
+</li>
+<li>
+<p><strong>funct</strong>：功能码（扩展操作码）</p>
+</li>
+<li>
+<p><strong>rs</strong>：源操作数寄存器</p>
+</li>
+<li>
+<p><strong>rd</strong>：目的操作数寄存器</p>
+</li>
+<li>
+<p>S 型指令中，rs1 是基地址寄存器，rs2 是源操作数寄存器</p>
+</li>
+</ul>
+<h2 id="2-5-条件操作">2.5 条件操作</h2>
+<h3 id="2-5-1-if-语句">2.5.1 if 语句</h3>
+<ul>
+<li>例：假设 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="monospace">f</mi></mrow><annotation encoding="application/x-tex">\mathtt{f}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord mathtt">f</span></span></span></span> 到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="monospace">j</mi></mrow><annotation encoding="application/x-tex">\mathtt{j}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.2222em;"></span><span class="mord mathtt">j</span></span></span></span> 保存在 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">19</mn></mrow><annotation encoding="application/x-tex">\mathtt{x19}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x19</span></span></span></span></span> 到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">23</mn></mrow><annotation encoding="application/x-tex">\mathtt{x23}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x23</span></span></span></span></span> 中</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-keyword">if</span> (i == j) f = g + h;<br><span class="hljs-keyword">else</span> f = g - h;<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs riscv">      bne x22, x23, Else<br>      add x19, x20, x21<br>      beq x0, x0, Exit  // 无条件跳转<br>Else: sub x19, x20, x21<br>Exit: <br></code></pre></td></tr></table></figure>
+<h3 id="2-5-2-循环语句">2.5.2 循环语句</h3>
+<ul>
+<li>例：假设 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="monospace">i</mi></mrow><annotation encoding="application/x-tex">\mathtt{i}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord mathtt">i</span></span></span></span> 在 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">22</mn></mrow><annotation encoding="application/x-tex">\mathtt{x22}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x22</span></span></span></span></span> 中，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="monospace">k</mi></mrow><annotation encoding="application/x-tex">\mathtt{k}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord mathtt">k</span></span></span></span> 在 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">24</mn></mrow><annotation encoding="application/x-tex">\mathtt{x24}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x24</span></span></span></span></span> 中，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="monospace">s</mi><mi mathvariant="monospace">a</mi><mi mathvariant="monospace">v</mi><mi mathvariant="monospace">e</mi></mrow><annotation encoding="application/x-tex">\mathtt{save}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord"><span class="mord mathtt">save</span></span></span></span></span> 的地址在 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">25</mn></mrow><annotation encoding="application/x-tex">\mathtt{x25}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x25</span></span></span></span></span> 中</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-keyword">while</span> (save[i] == k) i += <span class="hljs-number">1</span>;<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs riscv">Loop: slli x10, x22, 3<br>      add x10, x10, x25<br>      ld x9, 0(x10)<br>      bne x9, x24, Exit<br>      addi x22, x22, 1<br>      beq x0, x0, Loop<br>Exit:<br></code></pre></td></tr></table></figure>
+<ul>
+<li>基本块：只有一个入口（第一个语句）和一个出口（最后一个语句）的指令序列
+<ul>
+<li>没有分支（除非在末尾）</li>
+<li>没有分支目标（除非在开头）</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-6-过程调用">2.6 过程调用</h2>
+<h3 id="2-6-1-步骤及寄存器约定">2.6.1 步骤及寄存器约定</h3>
+<ul>
+<li>
+<p>六个步骤：将参数放在过程可以访问到的位置 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> 获取过程所需的存储空间 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> 执行过程中的操作 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> 将结果值放在调用程序可以访问到的位置 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> 将控制返回到初始点</p>
+</li>
+<li>
+<p>寄存器约定：</p>
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">10</mn></mrow><mo>∼</mo><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">17</mn></mrow></mrow><annotation encoding="application/x-tex">\mathtt{x10} \sim \mathtt{x17}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x10</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x17</span></span></span></span></span>：参数寄存器，用于传递参数或返回值</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">1</mn></mrow><annotation encoding="application/x-tex">\mathtt{x1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x1</span></span></span></span></span>：返回地址寄存器，用于返回到起始点</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">5</mn></mrow><mo>∼</mo><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">7</mn></mrow></mrow><annotation encoding="application/x-tex">\mathtt{x5} \sim \mathtt{x7}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x5</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x7</span></span></span></span></span>，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">28</mn></mrow><mo>∼</mo><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">31</mn></mrow></mrow><annotation encoding="application/x-tex">\mathtt{x28} \sim \mathtt{x31}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x28</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x31</span></span></span></span></span>: 临时寄存器，被调用者不需要保留其中的值</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">8</mn></mrow><mo>∼</mo><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">9</mn></mrow></mrow><annotation encoding="application/x-tex">\mathtt{x8} \sim \mathtt{x9}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x8</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x9</span></span></span></span></span>，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">18</mn></mrow><mo>∼</mo><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">27</mn></mrow></mrow><annotation encoding="application/x-tex">\mathtt{x18} \sim \mathtt{x27}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x18</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x27</span></span></span></span></span>: 保存寄存器，如用到这些寄存器，被调用者需先保存原值，用完再恢复原值</li>
+</ul>
+</li>
+</ul>
+<p><img src="img4.png" srcset="/img/loading.gif" lazyload alt="RISC-V寄存器约定"></p>
+<h3 id="2-6-2-过程指令">2.6.2 过程指令</h3>
+<ol>
+<li>过程调用：跳转-链接（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="monospace">j</mi><mi mathvariant="monospace">a</mi><mi mathvariant="monospace">l</mi></mrow><annotation encoding="application/x-tex">\mathtt{jal}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.2222em;"></span><span class="mord"><span class="mord mathtt">jal</span></span></span></span></span>）</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs riscv">jal x1, ProcedureLabel<br></code></pre></td></tr></table></figure>
+<ul>
+<li>将下一条指令的地址（PC + 4）保存在 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">1</mn></mrow><annotation encoding="application/x-tex">\mathtt{x1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x1</span></span></span></span></span> 中</li>
+<li>跳转到目标地址</li>
+</ul>
+<ol start="2">
+<li>过程返回：寄存器跳转-链接（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="monospace">j</mi><mi mathvariant="monospace">a</mi><mi mathvariant="monospace">l</mi><mi mathvariant="monospace">r</mi></mrow><annotation encoding="application/x-tex">\mathtt{jalr}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.2222em;"></span><span class="mord"><span class="mord mathtt">jalr</span></span></span></span></span>）</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs riscv">jalr x0, 0(x1)<br></code></pre></td></tr></table></figure>
+<ul>
+<li>跳转到 0 + <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">1</mn></mrow><annotation encoding="application/x-tex">\mathtt{x1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x1</span></span></span></span></span> 中保存的地址</li>
+<li>把 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">0</mn></mrow><annotation encoding="application/x-tex">\mathtt{x0}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x0</span></span></span></span></span> 用作目的寄存器（实际 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">0</mn></mrow><annotation encoding="application/x-tex">\mathtt{x0}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x0</span></span></span></span></span> 不会被改变）</li>
+<li>可用于 case / switch 语句</li>
+</ul>
+<h3 id="2-6-3-叶过程的汇编代码">2.6.3 叶过程的汇编代码</h3>
+<ul>
+<li>例：假设 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="monospace">f</mi></mrow><annotation encoding="application/x-tex">\mathtt{f}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord mathtt">f</span></span></span></span> 保存在 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">20</mn></mrow><annotation encoding="application/x-tex">\mathtt{x20}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x20</span></span></span></span></span> 中，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">5</mn></mrow><annotation encoding="application/x-tex">\mathtt{x5}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x5</span></span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">6</mn></mrow><annotation encoding="application/x-tex">\mathtt{x6}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x6</span></span></span></span></span> 保存临时变量</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-type">long</span> <span class="hljs-type">long</span> <span class="hljs-type">int</span> <span class="hljs-title function_">leaf_example</span> <span class="hljs-params">(<span class="hljs-type">long</span> <span class="hljs-type">long</span> <span class="hljs-type">int</span> g, <span class="hljs-type">long</span> <span class="hljs-type">long</span> <span class="hljs-type">int</span> h,  <span class="hljs-type">long</span> <span class="hljs-type">long</span> <span class="hljs-type">int</span> i, <span class="hljs-type">long</span> <span class="hljs-type">long</span> <span class="hljs-type">int</span> j)</span> &#123;<br>    <span class="hljs-type">long</span> <span class="hljs-type">long</span> <span class="hljs-type">int</span> f;<br>    f = (g + h) - (i + j);<br>    <span class="hljs-keyword">return</span> f;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs riscv">leaf_example:<br>    addi sp,sp,-24    // 把x5, x6, x20的值存到栈中<br>    sd x5,16(sp)<br>    sd x6,8(sp)<br>    sd x20,0(sp)<br>    add x5,x10,x11    // x5 = g + h<br>    add x6,x12,x13    // x6 = i + j<br>    sub x20,x5,x6     // f = x5 – x6<br>    addi x10,x20,0    // 将f复制到返值寄存器<br>    ld x20,0(sp)      // 从栈中恢复x5, x6, x20的值<br>    ld x6,8(sp)<br>    ld x5,16(sp)<br>    addi sp,sp,24<br>    jalr x0,0(x1)     // 返回到调用者<br></code></pre></td></tr></table></figure>
+<p><img src="img8.png" srcset="/img/loading.gif" lazyload alt="过程调用之前、之中和之后栈的分配情况"></p>
+<ul>
+<li><strong>栈指针</strong>（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="monospace">s</mi><mi mathvariant="monospace">p</mi></mrow><annotation encoding="application/x-tex">\mathtt{sp}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6528em;vertical-align:-0.2222em;"></span><span class="mord"><span class="mord mathtt">sp</span></span></span></span></span>）指向栈顶</li>
+<li><strong>帧指针</strong>（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="monospace">f</mi><mi mathvariant="monospace">p</mi></mrow><annotation encoding="application/x-tex">\mathtt{fp}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.2222em;"></span><span class="mord"><span class="mord mathtt">fp</span></span></span></span></span> 或 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="monospace">x</mi><mn mathvariant="monospace">8</mn></mrow><annotation encoding="application/x-tex">\mathtt{x8}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6111em;"></span><span class="mord"><span class="mord mathtt">x8</span></span></span></span></span>）指向帧的第一个双字（通常是保存的参数寄存器）</li>
+<li>注意，栈向<strong>低地址</strong>方向扩展</li>
+</ul>
+<h3 id="2-6-3-非叶过程的汇编代码">2.6.3 非叶过程的汇编代码</h3>
+<ul>
+<li>
+<p>调用者需要在栈中保存：返回地址、调用后还需要的参数和临时变量</p>
+</li>
+<li>
+<p>例：</p>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-type">long</span> <span class="hljs-type">long</span> <span class="hljs-type">int</span> <span class="hljs-title function_">fact</span> <span class="hljs-params">(<span class="hljs-type">long</span> <span class="hljs-type">long</span> <span class="hljs-type">int</span> n)</span> &#123; <br>    <span class="hljs-keyword">if</span> (n &lt; <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> f;<br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> n * fact(n - <span class="hljs-number">1</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs riscv">fact:<br>    addi sp,sp,-16    // 将返回地址和n保存到栈中<br>    sd x1,8(sp)<br>    sd x10,0(sp)<br>    addi x5,x10,-1    // x5 = n - 1<br>    bge x5,x0,L1      // 若n &gt;= 1，则跳转到L1<br>    addi x10,x0,1     // 否则，将返值置1<br>    addi sp,sp,16     // 出栈，此处不需要恢复原值<br>    jalr x0,0(x1)     // 返回<br>L1: addi x10,x10,-1   // n = n - 1<br>    jal x1,fact       // 调用fact(n-1)<br>    addi x6,x10,0     // 将fact(n - 1)的结果存到x6<br>    ld x10,0(sp)      // 恢复调用者的n<br>    ld x1,8(sp)       // 恢复调用者的返回地址<br>    addi sp,sp,16     // 出栈<br>    mul x10,x10,x6    // 返回n * fact(n-1)<br>    jalr x0,0(x1)     // 返回<br></code></pre></td></tr></table></figure>
+<p><img src="img7.png" srcset="/img/loading.gif" lazyload alt="过程调用中的保存和不保存对象"></p>
+<h3 id="2-6-4-内存布局">2.6.4 内存布局</h3>
+<p><img src="img9.png" srcset="/img/loading.gif" lazyload alt="程序和数据的RISC-V内存分配"></p>
+<ul>
+<li>一个可执行的程序要包括：<strong>指令段、数据段、堆栈段</strong></li>
+<li>全局指针 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="monospace">g</mi><mi mathvariant="monospace">p</mi></mrow><annotation encoding="application/x-tex">\mathtt{gp}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6528em;vertical-align:-0.2222em;"></span><span class="mord"><span class="mord mathtt">gp</span></span></span></span></span> 指向静态数据区</li>
+</ul>
+<h2 id="2-7-寻址模式">2.7 寻址模式</h2>
+<p><img src="img5.png" srcset="/img/loading.gif" lazyload alt="RISC-V指令格式"></p>
+<h3 id="2-7-1-大立即数（32位常量）">2.7.1 大立即数（32位常量）</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs riscv">lui rd, constant<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>U 型指令</strong></li>
+<li>加载 20 位常量到 rd[31:12]，符号扩展 rd[63:32]</li>
+<li>将 rd[11:0] 清零</li>
+</ul>
+<h3 id="2-7-2-分支寻址">2.7.2 分支寻址</h3>
+<ul>
+<li><strong>SB 型指令</strong></li>
+<li><strong>PC 相对寻址</strong>：目标地址 = PC + 立即数 × 2
+<ul>
+<li>立即数表示偏移的半字数，即只能跳转到<strong>偶数地址</strong></li>
+<li>跳转范围：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mn>4096</mn><mo>∼</mo><mn>4094</mn></mrow><annotation encoding="application/x-tex">-4096 \sim 4094</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord">4096</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">4094</span></span></span></span></li>
+</ul>
+</li>
+</ul>
+<h3 id="2-7-3-跳转寻址">2.7.3 跳转寻址</h3>
+<ul>
+<li><code>jal</code>：UJ 型指令，PC 相对寻址</li>
+<li><code>jalr</code>：I 型指令，绝对地址</li>
+<li>对于<strong>长跳转</strong>（32 位地址），<code>lui</code> 将 address[31:12] 写入临时寄存器，  <code>jalr</code> 将 address[11:1] 加到临时寄存器并跳转到目标位置</li>
+</ul>
+<h2 id="2-8-同步">2.8 同步</h2>
+<ul>
+<li>两个处理器共享存储器中的某一位置，若不同步，则发生<strong>数据竞争</strong></li>
+</ul>
+<h3 id="2-8-1-保留加载-条件存储机制">2.8.1 保留加载 / 条件存储机制</h3>
+<h4 id="预留取数">预留取数</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs riscv">lr.d rd,(rs1)<br></code></pre></td></tr></table></figure>
+<ul>
+<li>从地址 rs1 处取数，保存到 rd</li>
+<li>对内存地址设置预留</li>
+</ul>
+<h4 id="条件存数">条件存数</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs riscv">sc.d rd,rs2,(rs1)<br></code></pre></td></tr></table></figure>
+<ul>
+<li>将 rs2 的内容保存到地址 rs1</li>
+<li>如果从 <code>lr.d</code> 之后该位置没有被更改则执行成功，在 rd 中返回 0</li>
+<li>如果该位置被更改则执行失败，在 rd 中返回非 0 值</li>
+</ul>
+<h3 id="2-8-2-原子交换">2.8.2 原子交换</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs riscv">again: lr.d x10,(x20)<br>       sc.d x11,x23,(x20)    // x11 = 执行状态<br>       bne x11,x0,again      // 如果存数失败则跳转<br>       addi x23,x10,0        // x23 = 从(x20)读到的数值<br></code></pre></td></tr></table></figure>
+<h3 id="2-8-3-加锁">2.8.3 加锁</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs riscv">       addi x12,x0,1        // x12 = 1，用于表示关锁<br>again: lr.d x10,(x20)       // 读(x20)的锁值<br>       bne x10,x0,again     // 如果锁不为0则跳转<br>       sc.d x11,x12,(x20)   // 尝试向(x20)写1以关锁<br>       bne x11,x0,again     // 如果存数失败则跳转解锁<br>       sd x0,0(x20)         // 向(x20)写0以开锁<br></code></pre></td></tr></table></figure>
+<h2 id="2-9-翻译与启动程序">2.9 翻译与启动程序</h2>
+<p><img src="img11.png" srcset="/img/loading.gif" lazyload alt="C语言的转换层次结构"></p>
+<ul>
+<li>
+<p><strong>目标模块(.o)的组成</strong>：</p>
+<ul>
+<li>头：描述目标模块的内容</li>
+<li>代码段：翻译后的指令</li>
+<li>静态数据段：分配的数据，作用于程序生命周期</li>
+<li>重定位信息：依赖于程序加载的绝对地址的内容（用于加载程序）</li>
+<li>符号表：匹配标签名和指令所在地址及外部引用（用于链接模块）</li>
+<li>调试信息：用于关联到源代码</li>
+</ul>
+</li>
+<li>
+<p><strong>动态链接</strong>：仅在调用时链接 / 加载库过程</p>
+<ul>
+<li>避免了静态链接导致的映像膨胀</li>
+<li>自动调用新版本的库</li>
+</ul>
+</li>
+<li>
+<p><strong>可移植性</strong>：虚拟机 与 即时编译器</p>
+</li>
+</ul>
+<p><img src="img12.png" srcset="/img/loading.gif" lazyload alt="Java的转换层次结构"></p>
+<h2 id="2-10-RISC-与-CISC-对比">2.10 RISC 与 CISC 对比</h2>
+<p><img src="img13.png" srcset="/img/loading.gif" lazyload alt="RISC 与 CISC 对比（图源：王道考研）"></p>
+<h2 id="历年真题">历年真题</h2>
+<ol>
+<li>二进制补码 10101100 代表的十进制是</li>
+</ol>
+<ul>
+<li>A：-172</li>
+<li>B：+172</li>
+<li>C：-84</li>
+<li>D：+83</li>
+</ul>
+<ol start="2">
+<li>小端方式32位计算机中数值 -6 的存储方式的描述正确的是</li>
+</ol>
+<ul>
+<li>A：内存位置从低到高存储的十六进制数分别是0xFA、0xFF、0xFF和0xFF</li>
+<li>B：因为其值为负，所以一般采用反码方式存储</li>
+<li>C：内存位置从低到高存储的十六进制数分别是0xFF、0xFF、0xFF和0xFA</li>
+<li>D：内存位置从低到高存储的十六进制数分别是0xFF、0xFF、0xFF和0xFB</li>
+</ul>
+<h2 id="Reference">Reference</h2>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45633061/article/details/117421452">https://blog.csdn.net/weixin_45633061/article/details/117421452</a></p>
+<p><a target="_blank" rel="noopener" href="https://gist.github.com/smallaccount101/6324d7c82d103783f21b7cc6da7d0f7c">https://gist.github.com/smallaccount101/6324d7c82d103783f21b7cc6da7d0f7c</a></p>
+<div class="note note-secondary">
+            <p>注：本文中部分图片来自《计算机组成与设计·硬件/软件接口》。</p>
+          </div>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90/" class="category-chain-item">计算机组成</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90/" class="print-no-link">#计算机组成</a>
+      
+        <a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86/" class="print-no-link">#知识点整理</a>
+      
+        <a href="/tags/%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0/" class="print-no-link">#期末复习</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>计算机组成知识点整理(2)：指令系统</div>
+      <div>https://cny123222.github.io/2025/04/01/计算机组成知识点整理-2-：指令系统/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Nuoyan Chen</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>April 1, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/04/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-4-%EF%BC%9A%E5%A4%84%E7%90%86%E5%99%A8/" title="计算机组成知识点整理(4)：处理器">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">计算机组成知识点整理(4)：处理器</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/03/31/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-1-%EF%BC%9A%E6%A6%82%E8%BF%B0/" title="计算机组成知识点整理(1)：概述">
+                        <span class="hidden-mobile">计算机组成知识点整理(1)：概述</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"cny123222/cny123222.github.io","repo-id":"R_kgDOOFgnVw","category":"Announcements","category-id":"DIC_kwDOOFgnV84CnwXM","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"en"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
