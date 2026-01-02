@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/pl.png">
 <meta property="article:published_time" content="2025-11-26T05:12:04.000Z">
-<meta property="article:modified_time" content="2026-01-02T07:47:55.155Z">
+<meta property="article:modified_time" content="2026-01-02T08:19:29.541Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="课程笔记">
 <meta property="article:tag" content="知识点整理">
@@ -249,7 +249,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          20k words
+          21k words
         
       </span>
     
@@ -260,7 +260,7 @@
         
         
         
-          170 mins
+          173 mins
         
       </span>
     
@@ -1760,6 +1760,25 @@ _0-9a-zA-Z: { B, C, D, E, F, K } <span class="katex"><span class="katex-mathml">
 <p>程序语句的语义可以最后表示成下面递归函数。</p>
 <figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs coq"><span class="hljs-keyword">Fixpoint</span> eval_com (c: com): CDenote :=<br>  <span class="hljs-keyword">match</span> c <span class="hljs-built_in">with</span><br>  | <span class="hljs-type">CSkip</span> =&gt;<br>    skip_sem<br>  | <span class="hljs-type">CAsgn</span> X e =&gt;<br>    asgn_sem X (eval_expr e)<br>  | <span class="hljs-type">CSeq</span> c1 c2 =&gt;<br>    seq_sem (eval_com c1) (eval_com c2)<br>  | <span class="hljs-type">CIf</span> e c1 c2 =&gt;<br>    if_sem (eval_expr e) (eval_com c1) (eval_com c2)<br>  | <span class="hljs-type">CWhile</span> e c1 =&gt;<br>    while_sem (eval_expr e) (eval_com c1)<br>  | <span class="hljs-type">CBreak</span> =&gt;<br>    brk_sem<br>  | <span class="hljs-type">CContinue</span> =&gt;<br>    cnt_sem<br>  <span class="hljs-keyword">end</span>.<br></code></pre></td></tr></table></figure>
 <h3 id="5-SetMonad-中加入循环">5. SetMonad 中加入循环</h3>
+<p>首先定义循环体的计算结果，其结果要么是 continue 终止，要么是 break 终止。</p>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs coq"><span class="hljs-keyword">Inductive</span> ContinueOrBreak (A B: <span class="hljs-keyword">Type</span>): <span class="hljs-keyword">Type</span> :=<br>  | <span class="hljs-type">by_continue</span> (a: A)<br>  | <span class="hljs-type">by_break</span> (b: B).<br></code></pre></td></tr></table></figure>
+<p>下面用不动点定义 repeat 循环。</p>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs coq"><span class="hljs-keyword">Definition</span> repeat_break_f<br>            &#123;A B: <span class="hljs-keyword">Type</span>&#125;<br>            (body: A -&gt; SetMonad.M (ContinueOrBreak A B))<br>            (W: A -&gt; SetMonad.M B)<br>            (a: A): SetMonad.M B :=<br>  x &lt;- body a;;<br>  <span class="hljs-keyword">match</span> x <span class="hljs-built_in">with</span><br>  | <span class="hljs-type">by_continue</span> a&#x27; =&gt; W a&#x27;<br>  | <span class="hljs-type">by_break</span> b =&gt; ret b<br>  <span class="hljs-keyword">end</span>.<br><br><span class="hljs-keyword">Definition</span> repeat_break<br>            &#123;A B: <span class="hljs-keyword">Type</span>&#125;<br>            (body: A -&gt; SetMonad.M (ContinueOrBreak A B)):<br>  A -&gt; SetMonad.M B :=<br>  Kleene_LFix (repeat_break_f body).<br></code></pre></td></tr></table></figure>
+<p>下面还可以定义循环体中的 continue 语句和 break 语句。</p>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs coq"><span class="hljs-keyword">Definition</span> continue &#123;A B: <span class="hljs-keyword">Type</span>&#125; (a: A):<br>  SetMonad.M (ContinueOrBreak A B) :=<br>  ret (by_continue a).<br><br><span class="hljs-keyword">Definition</span> break &#123;A B: <span class="hljs-keyword">Type</span>&#125; (b: B):<br>  SetMonad.M (ContinueOrBreak A B) :=<br>  ret (by_break b).<br></code></pre></td></tr></table></figure>
+<p>下面是一些加入循环的 SetMonad 的例子。</p>
+<ul>
+<li><strong>例 1</strong>：</li>
+</ul>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs coq"><span class="hljs-keyword">Definition</span> body_3x1 (x: Z): SetMonad.M (ContinueOrBreak Z Z) :=<br>  choice<br>    (assume (x &lt;= <span class="hljs-number">1</span>);; break x)<br>    (choice<br>      (assume (<span class="hljs-built_in">exists</span> k, x = <span class="hljs-number">2</span> * k);;<br>        continue (x / <span class="hljs-number">2</span>))<br>      (assume (<span class="hljs-built_in">exists</span> k, k &lt;&gt; <span class="hljs-number">0</span> /\ x = <span class="hljs-number">2</span> * k + <span class="hljs-number">1</span>);;<br>        continue (<span class="hljs-number">3</span> * x + <span class="hljs-number">1</span>))).<br><br><span class="hljs-keyword">Definition</span> run_3x1: Z -&gt; SetMonad.M Z :=<br>  repeat_break body_3x1.<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>例 2</strong>：二分查找</li>
+</ul>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs coq"><span class="hljs-keyword">Definition</span> body_binary_search (P: Z -&gt; <span class="hljs-keyword">Prop</span>):<br>  Z * Z -&gt; SetMonad.M (ContinueOrBreak (Z * Z) Z) :=<br>  <span class="hljs-keyword">fun</span> &#x27;(lo, hi) =&gt;<br>  choice<br>    (assume (lo + <span class="hljs-number">1</span> = hi);; break lo)<br>    (assume (lo + <span class="hljs-number">1</span> &lt; hi);;<br>      <span class="hljs-keyword">let</span> mid := (lo + hi) / <span class="hljs-number">2</span> <span class="hljs-built_in">in</span><br>      choice<br>        (assume (P mid);; continue (mid, hi))<br>        (assume (~ P mid);; continue (lo, mid))).<br><br><span class="hljs-keyword">Definition</span> binary_search (P: Z -&gt; <span class="hljs-keyword">Prop</span>) (lo hi: Z):<br>  SetMonad.M Z :=<br>  repeat_break (body_binary_search P) (lo, hi).<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>例 3</strong>：归并</li>
+</ul>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs coq"><span class="hljs-keyword">Definition</span> body_merge:<br>  list Z * list Z * list Z -&gt;<br>  SetMonad.M (ContinueOrBreak (list Z * list Z * list Z) (list Z)) :=<br>  <span class="hljs-keyword">fun</span> &#x27;(l1, l2, l3) =&gt;<br>  <span class="hljs-keyword">match</span> l1, l2 <span class="hljs-built_in">with</span><br>  | <span class="hljs-type">nil</span>, <span class="hljs-keyword">_</span> =&gt; break (l3 ++ l2)<br>  | <span class="hljs-type">_</span>, nil =&gt; break (l3 ++ l1)<br>  | <span class="hljs-type">x</span> :: l1&#x27;, y :: l2&#x27; =&gt;<br>    choice<br>      (assume (x &lt;= y);; continue (l1&#x27;, l2, l3 ++ x :: nil))<br>      (assume (y &lt;= x);; continue (l1, l2&#x27;, l3 ++ y :: nil))<br>  <span class="hljs-keyword">end</span>.<br><br><span class="hljs-keyword">Definition</span> merge l l0 :=<br>  repeat_break body_merge (l, l0, nil).<br></code></pre></td></tr></table></figure>
 <h2 id="Lecture-10：单子程序上的霍尔逻辑">Lecture 10：单子程序上的霍尔逻辑</h2>
 <h2 id="Lecture-11：分离逻辑">Lecture 11：分离逻辑</h2>
 <h3 id="基本概念">基本概念</h3>
