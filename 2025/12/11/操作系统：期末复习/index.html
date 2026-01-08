@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-12-11T05:35:13.000Z">
-<meta property="article:modified_time" content="2026-01-08T04:32:09.242Z">
+<meta property="article:modified_time" content="2026-01-08T04:51:52.101Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="知识点整理">
@@ -259,7 +259,7 @@
         
         
         
-          151 mins
+          152 mins
         
       </span>
     
@@ -836,7 +836,7 @@
 <li>
 <p><strong><code>fork()</code></strong>：父进程创建新的子进程，调用一次返回两次</p>
 <ul>
-<li>返回值：子进程为 0，父进程为子进程 PID</li>
+<li>返回值：子进程为 0，父进程为子进程 PID，出错为 -1</li>
 <li>语法：<code>pid_t fork(void);</code></li>
 </ul>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;csapp.h&quot;</span></span><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>  <span class="hljs-type">pid_t</span> pid;<br>  <span class="hljs-type">int</span> x = <span class="hljs-number">1</span>;<br>  pid = Fork();<br>  <span class="hljs-keyword">if</span> (pid == <span class="hljs-number">0</span>) &#123; <span class="hljs-comment">/* child */</span><br>      <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;child : x=%d\n&quot;</span>, ++x);<br>    <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>  &#125;<br>  <span class="hljs-comment">/* parent */</span><br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;parent: x=%d\n&quot;</span>, --x);<br>  <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
@@ -845,13 +845,14 @@
 <p><strong><code>execve()</code></strong>：加载文件并运行</p>
 <ul>
 <li>只调用一次，且永远不会返回（仅仅在运行报错的时候，返回调用程序）</li>
+<li>返回值：成功（不返回），失败（-1）</li>
 <li>语法：<code>int execve(const char *filename, const char *argv[], const char *envp[]);</code></li>
 </ul>
 </li>
 <li>
 <p><strong><code>waitpid()</code></strong>：等待子进程终止后，内核回收子进程</p>
 <ul>
-<li>返回值：成功返回子进程 PID，出错返回 -1</li>
+<li>返回值：成功（子进程 PID），出错（-1）</li>
 <li>语法：<code>pid_t waitpid(pid_t pid, int *status, int options);</code>
 <ul>
 <li>pid&gt;0 ：等待集合中只有 <code>pid</code> 子进程</li>
@@ -903,6 +904,41 @@
 </li>
 <li><strong>.data</strong>：初始化的全局变量和静态变量</li>
 <li><strong>.bss</strong>：未初始化的全局变量和静态变量（不占文件空间，运行时分配内存）</li>
+</ul>
+</li>
+</ul>
+<h3 id="常见的文件接口">常见的文件接口</h3>
+<ul>
+<li>
+<p><strong><code>open()</code></strong>：打开文件，返回一个文件标识符（file descriptor, fd）</p>
+<ul>
+<li>应用只需要记录内核返回的文件标识符</li>
+<li>语法：<code>int open(char *filename, int flags, mode_t mode);</code></li>
+<li>返回值：成功（新文件标识符），出错（-1）</li>
+</ul>
+</li>
+<li>
+<p><strong><code>close()</code></strong>：关闭文件</p>
+<ul>
+<li>内核把文件标识符返回到可用标识符池</li>
+<li>语法：<code>int close(int fd);</code></li>
+<li>返回值：成功（0），失败（-1）</li>
+</ul>
+</li>
+<li>
+<p><strong><code>read()</code></strong>：读文件，即从文件中复制 <code>m</code>&gt;0 个字节到内存中</p>
+<ul>
+<li>从当前文件的位置 <code>k</code> 开始, 并更新 <code>k+=m</code></li>
+<li>如果从 <code>k</code> 开始到文件末尾的长度小于 <code>m</code>，触发 EOF</li>
+<li>语法：<code>ssize_t read(int fd, void *buf, size_t count);</code></li>
+<li>返回值：成功（读到字节数），遇到 EOF（0），失败（-1）</li>
+</ul>
+</li>
+<li>
+<p><strong><code>write()</code></strong>：写文件</p>
+<ul>
+<li>语法：<code>ssize_t write(int fd, const void *buf, size_t count);</code></li>
+<li>返回值：成功（写入字节数），失败（-1）</li>
 </ul>
 </li>
 </ul>
