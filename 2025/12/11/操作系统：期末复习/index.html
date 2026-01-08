@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-12-11T05:35:13.000Z">
-<meta property="article:modified_time" content="2026-01-08T10:57:43.347Z">
+<meta property="article:modified_time" content="2026-01-08T11:59:55.679Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="知识点整理">
@@ -259,7 +259,7 @@
         
         
         
-          154 mins
+          147 mins
         
       </span>
     
@@ -2286,15 +2286,6 @@
 <h3 id="互斥锁实现：基于硬件原子指令">互斥锁实现：基于硬件原子指令</h3>
 <ul>
 <li>
-<p><strong>互斥锁的 naive 实现</strong>：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">lock</span> &#123;</span> integer state; &#125;;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">lock</span> <span class="hljs-params">(lock reference L)</span> &#123;<br>    <span class="hljs-keyword">while</span> L.state == LOCKED<br>      ;                <span class="hljs-comment">// spin until L is UNLOCKED</span><br>    L.state = LOCKED;  <span class="hljs-comment">// the while test failed, got the lock</span><br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">unlock</span> <span class="hljs-params">(lock reference L)</span> &#123;<br>    L.state = UNLOCKED;<br>&#125;<br></code></pre></td></tr></table></figure>
-<ul>
-<li><strong>问题</strong>：两个线程同时拿到锁</li>
-<li><strong>根本原因</strong>：读 <code>L</code> 和写 <code>L</code> 并非原子完成</li>
-<li><strong>硬件方法</strong>：用<strong>原子指令</strong>来保证两步是原子的</li>
-</ul>
-</li>
-<li>
 <p><strong>使用 <code>Test-and-Set</code> 指令实现互斥锁</strong>：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">TestAndSet</span><span class="hljs-params">(<span class="hljs-type">int</span> *old_ptr, <span class="hljs-type">int</span> new)</span> &#123;<br>  <span class="hljs-type">int</span> old = *old_ptr; <span class="hljs-comment">// fetch old value at old_ptr</span><br>  *old_ptr = new; <span class="hljs-comment">// store &#x27;new&#x27; into old_ptr</span><br>  <span class="hljs-keyword">return</span> old; <span class="hljs-comment">// return the old value</span><br>&#125;<br></code></pre></td></tr></table></figure>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> __<span class="hljs-title">lock_t</span> &#123;</span><br>  <span class="hljs-type">int</span> flag;<br>&#125; <span class="hljs-type">lock_t</span>;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">init</span><span class="hljs-params">(<span class="hljs-type">lock_t</span> *lock)</span> &#123;<br>  <span class="hljs-comment">// 0 indicates that lock is available, 1 that it is held</span><br>  lock-&gt;flag = <span class="hljs-number">0</span>;<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">lock</span><span class="hljs-params">(<span class="hljs-type">lock_t</span> *lock)</span> &#123;<br>  <span class="hljs-keyword">while</span> (TestAndSet(&amp;lock-&gt;flag, <span class="hljs-number">1</span>) == <span class="hljs-number">1</span>)<br>  ; <span class="hljs-comment">// spin-wait (do nothing)</span><br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">unlock</span><span class="hljs-params">(<span class="hljs-type">lock_t</span> *lock)</span> &#123;<br>  lock-&gt;flag = <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
@@ -2311,18 +2302,19 @@
 </li>
 <li>
 <p><strong>使用 <code>Fetch-and-add</code> 指令实现互斥锁</strong>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">FetchAndAdd</span><span class="hljs-params">(<span class="hljs-type">int</span> *ptr)</span> &#123;<br>  <span class="hljs-type">int</span> old = *ptr;<br>  *ptr = old + <span class="hljs-number">1</span>;<br>  <span class="hljs-keyword">return</span> old;<br>&#125;<br></code></pre></td></tr></table></figure>
 <ul>
 <li><strong>排号锁（Ticket Lock）</strong>：通过遵循竞争者到达的顺序来传递锁</li>
 <li><strong><code>owner</code></strong>：表示当前的持有者</li>
 <li><strong><code>next</code></strong>：表示目前放号的最新值</li>
 </ul>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">FetchAndAdd</span><span class="hljs-params">(<span class="hljs-type">int</span> *ptr)</span> &#123;<br>  <span class="hljs-type">int</span> old = *ptr;<br>  *ptr = old + <span class="hljs-number">1</span>;<br>  <span class="hljs-keyword">return</span> old;<br>&#125;<br></code></pre></td></tr></table></figure>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> __<span class="hljs-title">lock_t</span> &#123;</span><br>  <span class="hljs-type">int</span> ticket;<br>  <span class="hljs-type">int</span> turn;<br>&#125; <span class="hljs-type">lock_t</span>;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">lock_init</span><span class="hljs-params">(<span class="hljs-type">lock_t</span> *lock)</span> &#123;<br>  lock-&gt;ticket = <span class="hljs-number">0</span>;<br>  lock-&gt;turn = <span class="hljs-number">0</span>;<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">lock</span><span class="hljs-params">(<span class="hljs-type">lock_t</span> *lock)</span> &#123;<br>  <span class="hljs-type">int</span> myturn = FetchAndAdd(&amp;lock-&gt;ticket);<br>  <span class="hljs-keyword">while</span> (lock-&gt;turn != myturn)<br>  ; <span class="hljs-comment">// spin</span><br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">unlock</span><span class="hljs-params">(<span class="hljs-type">lock_t</span> *lock)</span> &#123;<br>  lock-&gt;turn = lock-&gt;turn + <span class="hljs-number">1</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 </li>
 </ul>
 <h3 id="条件变量的实现">条件变量的实现</h3>
 <ul>
-<li><strong>条件变量的实现（语义级）</strong>：需要操作系统辅助实现
+<li>
+<p><strong>条件变量的实现（语义级）</strong>：需要操作系统辅助实现</p>
 <ul>
 <li><strong>等待的接口</strong>：<code>void wait(struct cond *cond, struct lock *mutex);</code>
 <ol>
@@ -2339,63 +2331,28 @@
 </li>
 </ul>
 </li>
-</ul>
-<h4 id="条件变量的基础：YIELD">条件变量的基础：<code>YIELD()</code></h4>
-<ul>
-<li><strong>系统调用 yield()</strong>：主动放弃 CPU，进入可运行队列等待，类似 <code>sleep()</code></li>
-<li><strong><code>yield()</code> 的具体步骤</strong>：暂停当前运行的线程；选择新的可运行线程；恢复上一步所选线程</li>
-<li><strong>三个数据结构</strong>：
-<ul>
-<li><code>threads table</code>：记录所有线程的表（整个系统只用一张）</li>
-<li><code>t_lock</code>：用于保护 threads table</li>
-<li><code>cpus table</code>：记录每个 CPU 当前运行线程（这个表不需要 lock 保护）</li>
-</ul>
-</li>
-<li><strong><code>YIELD()</code> 实现</strong>：<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs c">yield():<br>  lock(t_lock)<br><br>  <span class="hljs-comment">// 暂停运行的线程</span><br>  id = cpus[CPU].thread<br>  <span class="hljs-keyword">if</span> (id == null) <span class="hljs-keyword">return</span><br>  threads[id].state = RUNNABLE<br>  threads[id].sp = SP<br><br>  <span class="hljs-comment">// 选择新线程</span><br>  <span class="hljs-keyword">do</span>:<br>    id = (id + <span class="hljs-number">1</span>) mod N<br>  <span class="hljs-keyword">while</span> threads[id].state != RUNNABLE<br><br>  <span class="hljs-comment">// 恢复新线程运行</span><br>  SP = threads[id].sp<br>  threads[id].state = RUNNING<br>  cpus[CPU].thread = id<br>  <br>  unlock(t_lock)<br></code></pre></td></tr></table></figure>
-<ul>
-<li><strong>t_lock</strong>：
-<ul>
-<li>原子性地设置 <code>threads[].state</code> 和 <code>.sp</code></li>
-<li>原子性地找到一个 <code>RUNNABLE</code> 的线程，并改为 <code>RUNNING</code></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h4 id="条件变量的实现：Wait-Signal">条件变量的实现：<code>Wait</code> &amp; <code>Signal</code></h4>
-<ul>
 <li>
-<p><strong>带锁参数的 API</strong>：<code>WAIT(bb.full, bb.lock)</code></p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-function"><span class="hljs-title">send</span><span class="hljs-params">(bb, msg)</span></span>:<br>  <span class="hljs-built_in">lock</span>(bb.lock)<br>  while True:<br>    <span class="hljs-keyword">if</span> bb<span class="hljs-selector-class">.in</span> - bb<span class="hljs-selector-class">.out</span> &lt; N:<br>      bb<span class="hljs-selector-class">.buf</span><span class="hljs-selector-attr">[bb.in mod N]</span> &lt;- msg<br>      bb<span class="hljs-selector-class">.in</span> &lt;- bb<span class="hljs-selector-class">.in</span> + <span class="hljs-number">1</span><br>      <span class="hljs-built_in">unlock</span>(bb.lock)<br>      <span class="hljs-built_in">signal</span>(bb.not_empty)<br>      return<br>  <span class="hljs-built_in">wait</span>(bb<span class="hljs-selector-class">.not_full</span>, bb.lock)<br></code></pre></td></tr></table></figure>
-</li>
-<li>
-<p><strong><code>WAIT</code></strong>：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c">wait(cv, lock):<br>  disable_interrupt()<br>  lock(t_lock)<br>  unlock(lock)<br>  threads[id].cv = cv<br>  threads[id].state = WAITING<br>  yield_wait()<br>  unlock(t_lock)<br>  enable_interrupt()<br>  lock(lock)<br></code></pre></td></tr></table></figure>
+<p><strong>丢失唤醒</strong>：必须原子地完成挂起和放锁，否则会有丢失唤醒问题</p>
 <ul>
-<li>使用 <code>t_lock</code> 来保证放 <code>lock</code> 和 <code>yield</code> 的原子性</li>
-<li>注意：<code>t_lock</code> 和 <code>lock</code> 的顺序很重要，否则有 Lost Notification 问题</li>
+<li>可能存在其他线程在放锁和挂起的间隙调用唤醒操作，导致唤醒丢失</li>
 </ul>
-</li>
-<li>
-<p><strong><code>SIGNAL</code></strong>：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c">signal(cv):<br>  lock(t_lock)<br>  <span class="hljs-keyword">for</span> I = <span class="hljs-number">0</span> to N<span class="hljs-number">-1</span>:<br>    <span class="hljs-keyword">if</span> threads[i].cv == cv &amp;&amp; threads[i].state == WAITING:<br>      threads[i].state = RUNNABLE<br>  unlock(t_lock)<br></code></pre></td></tr></table></figure>
-</li>
-<li>
-<p><strong><code>YIELD_WAIT()</code></strong>：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs c">yield_wait(): <span class="hljs-comment">// called by wait()</span><br>  id = cpus[CPU].thread<br>  <span class="hljs-comment">// 防止时钟中断导致当前 thread 无法被唤醒</span><br>  cpus[CPU].thread = null<br>  threads[id].sp = SP<br>  <span class="hljs-comment">// 防止多个 CPU 的 SP 同时指向这个栈，导致栈被破坏</span><br>  SP = cpus[CPU].<span class="hljs-built_in">stack</span><br><br>  <span class="hljs-keyword">do</span>:<br>    id = (id + <span class="hljs-number">1</span>) mod N<br>    <span class="hljs-comment">// 防止当前 threads[] 中没有一个 RUNNABLE 的线程，导致死锁</span><br>    unlock(t_lock)<br>    <span class="hljs-comment">// 防止此时发生时钟中断，导致死锁</span><br>    enable_interrupt()<br>    disable_interrupt()<br>    lock(t_lock)<br>  <span class="hljs-keyword">while</span> threads[id].state != RUNNABLE<br><br>  SP = threads[id].sp<br>  threads[id].state = RUNNING<br>  cpus[CPU].thread = id<br></code></pre></td></tr></table></figure>
 </li>
 </ul>
 <h3 id="信号量的实现">信号量的实现</h3>
 <ul>
 <li>
-<p><strong>信号量的实现</strong>：</p>
+<p><strong>非阻塞信号量的实现</strong>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">wait</span><span class="hljs-params">(<span class="hljs-type">sem_t</span> *S)</span> &#123;<br>  lock(&amp;S-&gt;sem_lock);<br>  <span class="hljs-keyword">while</span>(S-&gt;value == <span class="hljs-number">0</span>) &#123;<br>    unlock(&amp;S-&gt;sem_lock);<br>    lock(&amp;S-&gt;sem_lock); 	<br>  &#125;<br>  S-&gt;value --;<br>  unlock(&amp;S-&gt;sem_lock);<br>&#125; <br><br><span class="hljs-type">void</span> <span class="hljs-title function_">signal</span><span class="hljs-params">(<span class="hljs-type">sem_t</span> *S)</span> &#123;<br>  lock(&amp;S-&gt;sem_lock);<br>  S-&gt;value ++;<br>  unlock(&amp;S-&gt;sem_lock);<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>阻塞信号量的实现</strong>：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">wait</span><span class="hljs-params">(<span class="hljs-type">sem_t</span> *S)</span> &#123;<br>  lock(S-&gt;sem_lock);<br>  S-&gt;value --;<br>  <span class="hljs-keyword">if</span> (S-&gt;value &lt; <span class="hljs-number">0</span>) &#123;<br>    <span class="hljs-keyword">do</span> &#123;<br>      cond_wait(S-&gt;sem_cond, S-&gt;sem_lock);<br>    &#125; <span class="hljs-keyword">while</span> (S-&gt;wakeup == <span class="hljs-number">0</span>);<br>    S-&gt;wakeup --;<br>  &#125;<br>  unlock(S-&gt;sem_lock);<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">signal</span><span class="hljs-params">(<span class="hljs-type">sem_t</span> *S)</span> &#123;<br>  lock(S-&gt;sem_lock);<br>  S-&gt;value ++;<br>  <span class="hljs-keyword">if</span> (S-&gt;value &lt;= <span class="hljs-number">0</span>) &#123;<br>    S-&gt;wakeup ++;<br>    cond_signal(S-&gt;sem_cond);                <br>  &#125;<br>  unlock(S-&gt;sem_lock);<br>&#125;<br></code></pre></td></tr></table></figure>
 </li>
 <li>
 <p><strong>实现说明</strong>：</p>
 <ul>
 <li><code>value</code>：正数为信号量，负数为有人等待</li>
-<li><code>wakeup</code>：等待时可以唤醒的数量</li>
+<li><code>wakeup</code>：有线程等待时的可用资源数量，即应当唤醒的线程数量</li>
 <li>某一时刻真实的资源数：<code>value &lt; 0 ? wakeup : value + wakeup</code></li>
 </ul>
 </li>
@@ -2423,66 +2380,8 @@
 </ul>
 </li>
 </ul>
-<h3 id="不同同步原语之间的比较">不同同步原语之间的比较</h3>
-<p><img src="sync_comp.png" srcset="/img/loading.gif" lazyload alt=""></p>
-<ul>
-<li>
-<p><strong>互斥锁 vs 读写锁</strong>：</p>
-<ul>
-<li>读写锁为特定场景（衍生场景一）下提升读者并行度</li>
-<li>衍生场景一直接使用互斥锁，也可以保证正确性，读者之间不能并发执行</li>
-<li>特定场景下的性能优化</li>
-</ul>
-</li>
-<li>
-<p><strong>互斥锁 vs 条件变量</strong>：</p>
-<ul>
-<li>解决不同场景（正交）：
-<ul>
-<li>互斥锁：互斥访问</li>
-<li>条件变量：条件等待与唤醒</li>
-</ul>
-</li>
-<li>条件变量需要搭配互斥锁使用</li>
-<li>互斥锁中也可以使用条件变量避免循环等待
-<ul>
-<li>场景一中也可能包含场景二的需求</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p><strong>互斥锁 vs 信号量</strong>：</p>
-<ul>
-<li><strong>互斥锁与二元信号量</strong>：
-<ul>
-<li>功能基本一致，二元信号量可以实现互斥</li>
-<li>语义差别：二元信号量可以由不同的线程获取/释放；互斥锁语义上只能由同一个线程获取与释放</li>
-<li>保护资源互斥场景，推荐使用互斥锁（方便优化）</li>
-</ul>
-</li>
-<li><strong>互斥锁与计数信号量</strong>：应对不同场景
-<ul>
-<li>互斥锁控制对唯一资源的互斥访问（即临界区）</li>
-<li>计数信号量控制多个线程对多个资源的获取与释放</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p><strong>条件变量 vs 信号量</strong>：</p>
-<ul>
-<li>提供了类似的接口</li>
-<li>抽象层级的区别
-<ul>
-<li>条件变量：更底层，提供睡眠唤醒机制；适用范围更广</li>
-<li>信号量：针对具体的场景（提供对有限资源的管理）；可以使用条件变量+互斥锁+计数器实现信号量</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
 <h3 id="同步原语案例分析">同步原语案例分析</h3>
+<p><img src="sync_comp.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <h4 id="同步案例1：多线程执行屏障">同步案例1：多线程执行屏障</h4>
 <ul>
 <li>多线程执行屏障，等待全部执行到屏障后再继续执行</li>
@@ -2542,6 +2441,7 @@
 </ul>
 </li>
 </ul>
+<h4 id="同步原语选择的参考原则">同步原语选择的参考原则</h4>
 <p><img src="selection.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <h2 id="Lecture-15-文件系统">Lecture 15: 文件系统</h2>
 <ul>
