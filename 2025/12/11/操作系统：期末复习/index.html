@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-12-11T05:35:13.000Z">
-<meta property="article:modified_time" content="2026-01-08T05:25:00.604Z">
+<meta property="article:modified_time" content="2026-01-08T05:31:33.557Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="知识点整理">
@@ -259,7 +259,7 @@
         
         
         
-          153 mins
+          154 mins
         
       </span>
     
@@ -1012,6 +1012,20 @@
 </li>
 </ul>
 <h2 id="Lecture-6-系统初始化">Lecture 6: 系统初始化</h2>
+<ul>
+<li><strong>内核启动的 3 个主要任务</strong>：
+<ul>
+<li>设置 CPU 异常级别为 EL1</li>
+<li>设置页表并开启虚拟内存机制</li>
+<li>设置异常向量表
+<ul>
+<li>每个异常向量表项跳转到对应的异常处理函数</li>
+<li>处理异常前保存进程上下文、返回进程前恢复其上下文</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 <h3 id="页表初始化">页表初始化</h3>
 <ol>
 <li>设置 TTBR0 页表：将低地址虚拟内存映射到物理内存，使当前低地址代码能正常运行</li>
