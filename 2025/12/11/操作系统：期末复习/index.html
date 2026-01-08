@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-12-11T05:35:13.000Z">
-<meta property="article:modified_time" content="2026-01-08T06:56:49.293Z">
+<meta property="article:modified_time" content="2026-01-08T07:39:19.163Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="知识点整理">
@@ -1282,18 +1282,17 @@
 </ul>
 <p><img src="pcb.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <ul>
-<li><strong>进程的退出与等待</strong>：
+<li>
+<p><strong>进程的退出与等待</strong>：</p>
 <ul>
 <li><strong>进程的退出</strong>：进程退出时，其上下文结构和虚拟地址空间会被销毁，但 PCB 和内核栈保留（处于僵尸状态）</li>
 <li><strong>进程的等待</strong>：父进程会等待子进程退出，记录子进程的退出状态，回收 PCB 并销毁内核栈</li>
 </ul>
 </li>
-</ul>
-<p><img src="process_exit_waitpid.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<li>
+<p><strong>进程的五种典型执行状态</strong>：</p>
 <ul>
-<li><strong>进程的五种典型执行状态</strong>：
-<ul>
-<li><strong>新生（new）</strong>：刚调用 <code>process_create</code></li>
+<li><strong>新生（new）</strong>：正在初始化的进程</li>
 <li><strong>就绪（ready）</strong>：随时准备执行（但暂时没有执行）</li>
 <li><strong>运行（running）</strong>：正在执行</li>
 <li><strong>僵尸（zombie）</strong>：退出但未回收</li>
@@ -1304,27 +1303,20 @@
 <p><img src="process_states.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <h3 id="进程的创建">进程的创建</h3>
 <h4 id="进程创建的过程">进程创建的过程</h4>
-<p><img src="process_init.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <ul>
 <li>
 <p><strong>一、PCB 相关初始化</strong>：PCB 及其包含的内容都需要创建及初始化</p>
 <ul>
 <li>分配 PCB 本身的数据结构</li>
-<li>初始化 PCB：虚拟内存
-<ul>
-<li>创建及初始化 vmspace 数据结构</li>
-<li>分配一个物理页，作为顶级页表</li>
-</ul>
-</li>
-<li>内核栈：分配物理页，作为进程内核栈</li>
+<li>初始化虚拟内存：创建及初始化 vmspace 数据结构；分配一个物理页，作为顶级页表</li>
+<li>初始化内核栈：分配物理页，作为进程内核栈</li>
 </ul>
 </li>
 <li>
-<p><strong>二、可执行文件加载</strong>：可执行文件通常有固定的存储格式，以 ELF 为例</p>
+<p><strong>二、可执行文件加载</strong>：以 ELF 为例</p>
 <ul>
 <li>从程序头部表可以获取需要的段所在位置</li>
-<li>通常只有代码段和数据段需要被加载（loadable）</li>
-<li>加载即从 ELF 文件中映射到虚拟地址空间的过程</li>
+<li>通常只有代码段和数据段需要被加载，即从 ELF 文件中映射到虚拟地址空间</li>
 </ul>
 </li>
 <li>
@@ -1335,7 +1327,7 @@
 </ul>
 </li>
 <li>
-<p><strong>四、处理器上下文初始化</strong>：最后才初始化处理器上下文，因为其包含的内容直到前序操作完成才确定</p>
+<p><strong>四、处理器上下文初始化</strong>：</p>
 <ul>
 <li>SP：设置为用户栈的栈顶地址（用户栈分配后才确定地址）</li>
 <li>PC：设置 ELR_EL1 寄存器（加载 ELF 才知道程序入口地址）</li>
