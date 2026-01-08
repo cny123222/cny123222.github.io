@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-12-11T05:35:13.000Z">
-<meta property="article:modified_time" content="2026-01-08T04:51:52.101Z">
+<meta property="article:modified_time" content="2026-01-08T05:25:00.604Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="知识点整理">
@@ -259,7 +259,7 @@
         
         
         
-          152 mins
+          153 mins
         
       </span>
     
@@ -944,6 +944,12 @@
 </ul>
 <h2 id="Lecture-5-内存地址翻译">Lecture 5: 内存地址翻译</h2>
 <ul>
+<li><strong>页表</strong>：记录虚拟页号到物理页号的映射
+<ul>
+<li>存储在物理内存中，由 OS 负责维护</li>
+<li>其起始地址存放在页表基地址寄存器中</li>
+</ul>
+</li>
 <li><strong>64 位虚拟地址解析</strong>:
 <ul>
 <li>[63:48] 16-bit：全 0（应用程序地址）或全 1（内核地址）</li>
@@ -969,6 +975,7 @@
 </li>
 </ul>
 <p><img src="big_page.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="addr_trans.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <ul>
 <li><strong>页描述符 / 表描述符 / 块描述符</strong>：PFN，即物理页号
 <ul>
@@ -979,7 +986,8 @@
 </ul>
 <p><img src="entry.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <ul>
-<li><strong>大页的优缺点</strong>：
+<li>
+<p><strong>大页的优缺点</strong>：</p>
 <ul>
 <li><strong>好处</strong>：
 <ul>
@@ -993,6 +1001,13 @@
 <li>增加管理内存的复杂度</li>
 </ul>
 </li>
+</ul>
+</li>
+<li>
+<p><strong>TLB</strong>：位于 CPU 内部，是页表的缓存，用于加速地址翻译</p>
+<ul>
+<li><strong>TLB 刷新</strong>：由于 TLB 使用虚拟地址索引，当切换进程页表时需要全部刷新</li>
+<li><strong>避免 TLB 刷新的方法</strong>：为不同进程分配 ASID（地址空间标识），TLB 的每一项也会缓存 ASID</li>
 </ul>
 </li>
 </ul>
