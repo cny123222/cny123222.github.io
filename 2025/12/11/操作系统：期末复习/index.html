@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-12-11T05:35:13.000Z">
-<meta property="article:modified_time" content="2026-01-08T02:30:09.302Z">
+<meta property="article:modified_time" content="2026-01-08T04:32:09.242Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="知识点整理">
@@ -259,7 +259,7 @@
         
         
         
-          150 mins
+          151 mins
         
       </span>
     
@@ -465,7 +465,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on January 8, 2026 am
+                    Last updated on January 8, 2026 pm
                   
                 
               </p>
@@ -815,6 +815,18 @@
 <h3 id="常见的进程接口">常见的进程接口</h3>
 <ul>
 <li>
+<p><strong><code>getpid()</code></strong>：返回调用进程的 PID</p>
+<ul>
+<li>语法：<code>pid_t getpid(void);</code></li>
+</ul>
+</li>
+<li>
+<p><strong><code>getppid()</code></strong>：返回父进程的 PID</p>
+<ul>
+<li>语法：<code>pid_t getppid(void);</code></li>
+</ul>
+</li>
+<li>
 <p><strong><code>exit()</code></strong>：终止进程并带上一个 status 状态</p>
 <ul>
 <li>返回值：无返回值</li>
@@ -827,12 +839,10 @@
 <li>返回值：子进程为 0，父进程为子进程 PID</li>
 <li>语法：<code>pid_t fork(void);</code></li>
 </ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;csapp.h&quot;</span></span><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>  <span class="hljs-type">pid_t</span> pid;<br>  <span class="hljs-type">int</span> x = <span class="hljs-number">1</span>;<br>  pid = Fork();<br>  <span class="hljs-keyword">if</span> (pid == <span class="hljs-number">0</span>) &#123; <span class="hljs-comment">/* child */</span><br>      <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;child : x=%d\n&quot;</span>, ++x);<br>    <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>  &#125;<br>  <span class="hljs-comment">/* parent */</span><br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;parent: x=%d\n&quot;</span>, --x);<br>  <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
 </li>
-</ul>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;csapp.h&quot;</span></span><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>  <span class="hljs-type">pid_t</span> pid;<br> 	<span class="hljs-type">int</span> x = <span class="hljs-number">1</span>;<br> 	pid = Fork();<br> 	<span class="hljs-keyword">if</span> (pid == <span class="hljs-number">0</span>) &#123; <span class="hljs-comment">/* child */</span><br> 	    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;child : x=%d\n&quot;</span>, ++x);<br> 		<span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br> 	&#125;<br> 	<span class="hljs-comment">/* parent */</span><br> 	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;parent: x=%d\n&quot;</span>, --x);<br> 	<span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
-<ul>
 <li>
-<p><strong><code>execve()</code></strong>：加载和运行</p>
+<p><strong><code>execve()</code></strong>：加载文件并运行</p>
 <ul>
 <li>只调用一次，且永远不会返回（仅仅在运行报错的时候，返回调用程序）</li>
 <li>语法：<code>int execve(const char *filename, const char *argv[], const char *envp[]);</code></li>
@@ -862,11 +872,8 @@
 <li>
 <p><strong>进程的终止</strong>：进程终止后，内核不会立刻销毁该进程，而是以终止态存在，等待父进程回收</p>
 <ul>
-<li><strong>僵尸进程</strong>：终止状态下还未被回收的进程
-<ul>
+<li><strong>僵尸进程</strong>：终止状态下还未被回收的进程</li>
 <li>如果父进程在自己终止前没有回收僵尸子进程，内核会安排 init 进程回收这些子进程</li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
