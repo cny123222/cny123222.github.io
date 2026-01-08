@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-12-11T05:35:13.000Z">
-<meta property="article:modified_time" content="2026-01-08T10:40:34.750Z">
+<meta property="article:modified_time" content="2026-01-08T10:57:43.347Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          19k words
+          18k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          155 mins
+          154 mins
         
       </span>
     
@@ -2170,7 +2170,7 @@
 <ul>
 <li><strong>二元信号量</strong>：初始化的资源数量为 1
 <ul>
-<li>其计数器（counter）只有可能为 0、1 两个值</li>
+<li>其计数器只有可能为 0、1 两个值</li>
 <li>同一时刻只有一个线程能够拿到资源</li>
 </ul>
 </li>
@@ -2190,32 +2190,6 @@
 </ul>
 </li>
 <li><strong>使用示例</strong>：读者写者问题<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">rwlock</span> *<span class="hljs-title">lock</span>;</span><br><span class="hljs-type">char</span> data[SIZE];<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">reader</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> &#123;<br>  lock_reader(lock);<br>  read_data(data);<br>  unlock_reader(lock);<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">writer</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> &#123;<br>  lock_writer(lock);<br>  update_data(data);<br>  unlock_writer(lock);<br>&#125;<br></code></pre></td></tr></table></figure>
-</li>
-</ul>
-<h4 id="不同同步原语之间的比较">不同同步原语之间的比较</h4>
-<ul>
-<li><strong>互斥锁/条件变量/信号量</strong>：
-<ul>
-<li><strong>互斥锁</strong>与<strong>二元信号量</strong>功能类似，但抽象不同：
-<ul>
-<li>互斥锁有拥有者的概念，一般同一个线程拿锁/放锁</li>
-<li>信号量为资源协调，一般一个线程 signal，另一个线程 wait</li>
-</ul>
-</li>
-<li><strong>条件变量</strong>用于解决不同问题（睡眠/唤醒），需要搭配<strong>互斥锁</strong>使用
-<ul>
-<li>搭配<strong>互斥锁+计数器</strong>可以实现与<strong>信号量</strong>相同的功能</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><strong>互斥锁 vs 读写锁</strong>：
-<ul>
-<li>接口不同：读写锁区分读者与写者</li>
-<li>针对场景不同：获取更多程序语义，标明只读代码段，达到更好性能</li>
-<li>读写锁在读多写少场景中可以显著提升读者并行度，即允许多个读者同时执行读临界区</li>
-<li>只用写者锁，则与互斥锁的语义基本相同</li>
-</ul>
 </li>
 </ul>
 <h3 id="死锁">死锁</h3>
@@ -2290,7 +2264,7 @@
 </li>
 <li><strong>安全性检查</strong>：
 <ul>
-<li><strong>四个数据结构</strong>：
+<li><strong>四个数据结构</strong>：<code>M</code> 个资源，<code>N</code> 个线程
 <ul>
 <li>全局可利用资源：<code>Available[M]</code></li>
 <li>每线程最大需求量：<code>Max[N][M]</code></li>
@@ -2307,6 +2281,7 @@
 </ul>
 </li>
 </ul>
+<p><img src="banker.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <h2 id="Lecture-14-同步原语的实现">Lecture 14: 同步原语的实现</h2>
 <h3 id="互斥锁实现：基于硬件原子指令">互斥锁实现：基于硬件原子指令</h3>
 <ul>
@@ -2448,7 +2423,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="不同同步原语之间的比较-2">不同同步原语之间的比较</h3>
+<h3 id="不同同步原语之间的比较">不同同步原语之间的比较</h3>
 <p><img src="sync_comp.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <ul>
 <li>
