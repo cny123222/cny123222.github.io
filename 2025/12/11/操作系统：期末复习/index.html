@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-12-11T05:35:13.000Z">
-<meta property="article:modified_time" content="2026-01-08T05:31:33.557Z">
+<meta property="article:modified_time" content="2026-01-08T05:43:25.239Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          18k words
+          19k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          154 mins
+          155 mins
         
       </span>
     
@@ -1044,7 +1044,7 @@
 <li>
 <p><strong>直接映射</strong>：虚拟地址 = 物理地址 + 固定偏移</p>
 <ul>
-<li>操作系统使用，映射全部物理内存，在启动时填写</li>
+<li>内核页表使用，映射全部物理内存，在启动时填写</li>
 <li><strong>好处</strong>：能在内核地址空间中很方便地在物理地址和虚拟地址之间进行转换</li>
 </ul>
 </li>
@@ -1059,10 +1059,16 @@
 <p><strong>延迟映射</strong>：先记录为进程分配的虚拟内存区域，但不分配物理内存</p>
 <ul>
 <li>当进程实际访问某个虚拟页时，CPU 触发缺页异常，OS 在缺页异常处理函数中添加映射</li>
-<li><strong>VMA (vm_area_struct) 结构体</strong>：Linux 中记录进程已分配的虚拟内存区域，通过平衡树数据结构组织</li>
+<li><strong>VMA (<code>vm_area_struct</code>) 结构体</strong>：Linux 中记录进程已分配的虚拟内存区域，通过平衡树数据结构组织</li>
 </ul>
 <p><img src="vma.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <ul>
+<li><strong>VMA 的添加时机</strong>：
+<ul>
+<li><strong>创建进程时分配</strong>：数据（对应 ELF 段）、代码（对应 ELF 段）、栈（初始无内容）</li>
+<li><strong>进程运行时添加</strong>：堆、栈、分配内存缓冲区、加载新的代码库</li>
+</ul>
+</li>
 <li><strong>根据 VMA 判断缺页异常的合法性</strong>:
 <ul>
 <li>根据 ESR 信息判断是否为缺页异常</li>
@@ -1079,8 +1085,12 @@
 <li>
 <p><strong>改变虚拟内存区域的接口</strong>：</p>
 <ul>
-<li><strong><code>mmap</code></strong>：新增一段虚拟内存区域</li>
-<li><strong><code>brk</code></strong>：扩大或缩小堆区域</li>
+<li><strong><code>mmap()</code></strong>：新增一段虚拟内存区域，通常把一个文件映射到内存
+<ul>
+<li>也可以不映射任何文件，仅仅新建虚拟内存区域（匿名映射）</li>
+</ul>
+</li>
+<li><strong><code>brk()</code></strong>：扩大或缩小堆区域</li>
 </ul>
 </li>
 <li>
