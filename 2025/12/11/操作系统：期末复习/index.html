@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-12-11T05:35:13.000Z">
-<meta property="article:modified_time" content="2026-01-08T06:21:26.221Z">
+<meta property="article:modified_time" content="2026-01-08T06:56:49.293Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="知识点整理">
@@ -259,7 +259,7 @@
         
         
         
-          155 mins
+          156 mins
         
       </span>
     
@@ -1071,11 +1071,16 @@
 </li>
 <li><strong>根据 VMA 判断缺页异常的合法性</strong>:
 <ul>
+<li><strong>导致缺页异常的三种可能</strong>：访问非法虚拟地址、按需分配、内存页被换出到磁盘上</li>
+<li><strong>OS 的判断步骤</strong>：
+<ul>
 <li>根据 ESR_EL1 判断是否为缺页异常</li>
 <li>从 FAR_EL1 读取导致缺页异常的虚拟地址</li>
-<li>若该地址不落在 VMA 区域内，则为非法（段错误）</li>
-<li>检查权限，若权限错误，则触发访问权限异常</li>
+<li>若该地址不落在 VMA 区域内，则判定为非法访问，触发段错误</li>
+<li>检查页表项是否为空，若为不为空，表明被换出，需要从磁盘中换回</li>
 <li>反之，则分配物理页，并在页表中添加映射</li>
+</ul>
+</li>
 </ul>
 </li>
 <li><strong>优势</strong>：节约内存资源</li>
@@ -1190,7 +1195,7 @@
 </ul>
 </li>
 <li><strong>4. 新增 slab</strong>：当某个资源池中的 slab 已经分配完，再从伙伴系统分配一个slab</li>
-<li><strong>5. 资源池内组织多个 slab</strong>：引入两个指针
+<li><strong>5. 资源池内组织多个 slab</strong>：每种 slot 大小维护两个指针
 <ul>
 <li><code>Current</code> 指向一个 slab，并从其中分配</li>
 <li>当 <code>Current</code> slab 全满，则从 <code>Partial</code> 链表中取出一个放入 <code>Current</code></li>
@@ -1202,6 +1207,9 @@
 </li>
 </ul>
 <p><img src="slab.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>优势</strong>：减少内部碎片、分配效率高（常数时间）</li>
+</ul>
 <h3 id="换页机制">换页机制</h3>
 <ul>
 <li><strong>换页机制的代价</strong>：
@@ -1215,22 +1223,34 @@
 <h4 id="换页策略">换页策略</h4>
 <ul>
 <li><strong>OPT 策略（理想）</strong>：优先换出未来最长时间内不会再访问的页面</li>
+</ul>
+<p><img src="swap_opt.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
 <li><strong>FIFO 策略</strong>：优先选择最先换入的页进行换出
 <ul>
 <li>OS 维护一个队列，每换入一个物理页就把其页号加到队尾，因此最先换进的物理页号总是处于队头位置</li>
 </ul>
 </li>
-<li><strong>Second Chance 策略</strong>：FIFO 策略的一种改进版本，为每一个物理页号维护一个访问标志位
+</ul>
+<p><img src="swap_fifo.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>Second Chance 策略</strong>：FIFO 策略的改进版本，为每一个物理页号维护一个访问标志位
 <ul>
 <li>如果访问的页面号已经处在队列中，则置上其访问标志位</li>
 <li>换页时查看队头：1）无标志则换出；2）有标志则去除并放入队尾，继续寻找</li>
 </ul>
 </li>
+</ul>
+<p><img src="swap_second_chance.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
 <li><strong>LRU 策略</strong>：优先选择最久未被访问的页面
 <ul>
 <li>OS 维护一个链表，在每次内存访问后，OS 把刚刚访问的内存页调整到链表尾端；每次都选择换出位于链表头部的页面</li>
 </ul>
 </li>
+</ul>
+<p><img src="swap_lru.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
 <li><strong>时钟算法策略</strong>：将换进物理内存的页号排成一个时钟的形状
 <ul>
 <li>有一个针臂，指向新换进内存的页号的后一个；同时，为每个页号维护一个访问位</li>
@@ -1241,9 +1261,16 @@
 <li>如果是 F，则换出该页</li>
 </ul>
 </li>
+<li><strong>实现</strong>：如何知道物理页被访问
+<ul>
+<li>MMU 在页表项里为虚拟页打上“访问位”</li>
+<li>OS 在物理页的结构体中记录页表项位置（反向映射）</li>
 </ul>
 </li>
 </ul>
+</li>
+</ul>
+<p><img src="swap_clock.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <h2 id="Lecture-9-进程">Lecture 9: 进程</h2>
 <ul>
 <li><strong>进程控制块（PCB）</strong>：用于表示进程，存储在内核态
