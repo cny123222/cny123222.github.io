@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-12-11T05:35:13.000Z">
-<meta property="article:modified_time" content="2026-01-08T07:56:04.636Z">
+<meta property="article:modified_time" content="2026-01-08T08:00:32.810Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="知识点整理">
@@ -1273,15 +1273,13 @@
 <p><img src="swap_clock.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <h2 id="Lecture-9-进程">Lecture 9: 进程</h2>
 <ul>
-<li><strong>进程控制块（PCB）</strong>：用于表示进程，存储在内核态
+<li>
+<p><strong>进程控制块（PCB）</strong>：用于表示进程，存储在内核态</p>
 <ul>
 <li>保存的信息包括：虚拟地址空间、处理器上下文、内核栈</li>
 <li>进程标识符 PID、退出状态、子进程列表、执行状态</li>
 </ul>
 </li>
-</ul>
-<p><img src="pcb.png" srcset="/img/loading.gif" lazyload alt=""></p>
-<ul>
 <li>
 <p><strong>进程的退出与等待</strong>：</p>
 <ul>
@@ -1462,12 +1460,6 @@
 <li><code>arg</code>：子线程参数，即传入起始执行点函数的参数</li>
 </ul>
 </li>
-<li><strong>作用</strong>：
-<ul>
-<li><strong>内核态</strong>：创建相应的内核态线程及内核态</li>
-<li><strong>应用态</strong>：创建 TCB、应用栈和 TLS</li>
-</ul>
-</li>
 <li>主线程创建子线程后，两线程独立执行</li>
 </ul>
 </li>
@@ -1494,7 +1486,6 @@
 <li><strong>TCB 保存的信息</strong>：处理器上下文、所属进程、内核栈、退出/执行状态</li>
 <li><strong>PCB 保存的信息</strong>：虚拟地址空间、PID、子进程列表、包含的线程列表及总数</li>
 </ul>
-<p><img src="tcb.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <h4 id="线程创建">线程创建</h4>
 <p><img src="thread_create.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <h4 id="线程退出与合并">线程退出与合并</h4>
