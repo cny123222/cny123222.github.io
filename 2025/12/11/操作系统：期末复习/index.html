@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-12-11T05:35:13.000Z">
-<meta property="article:modified_time" content="2026-01-08T08:13:49.586Z">
+<meta property="article:modified_time" content="2026-01-08T08:25:16.547Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="知识点整理">
@@ -1628,15 +1628,10 @@
 <li>静态设置的优先级可能导致：资源利用率低（优先级反转）、低优先级任务饥饿</li>
 </ul>
 </li>
+<li><strong>问题</strong>：需要预知任务是否为 I/O 密集型任务</li>
 </ul>
 <h4 id="5-多级反馈队列-Multi-Level-Feedback-Queue-MLFQ">5. 多级反馈队列 (Multi-Level Feedback Queue, MLFQ)</h4>
 <ul>
-<li><strong>目标</strong>：一个无需先验知识的通用调度策略
-<ul>
-<li>周转时间低、响应时间低</li>
-<li>调度开销低</li>
-</ul>
-</li>
 <li><strong>规则</strong>：
 <ul>
 <li>优先级高的任务会抢占优先级低的任务</li>
@@ -1670,7 +1665,7 @@
 <li>无需任务的先验知识</li>
 </ul>
 </li>
-<li>同时达到了周转时间和响应时间两方面的要求
+<li>周转时间低、响应时间低、调度开销低
 <ul>
 <li>对于短任务，周转时间指标近似于 SJF</li>
 <li>对于交互式任务，响应时间指标近似于 RR</li>
