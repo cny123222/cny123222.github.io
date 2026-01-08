@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-12-11T05:35:13.000Z">
-<meta property="article:modified_time" content="2026-01-01T16:42:06.874Z">
+<meta property="article:modified_time" content="2026-01-08T02:30:09.302Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="知识点整理">
@@ -465,7 +465,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on January 2, 2026 am
+                    Last updated on January 8, 2026 am
                   
                 
               </p>
@@ -539,8 +539,13 @@
 <li>
 <p><strong>外核</strong>：不提供硬件抽象；不管理资源，只管理应用</p>
 <ul>
-<li>应当由应用来尽可能地控制对硬件资源的抽象</li>
+<li><strong>思想</strong>：应当由应用来尽可能地控制对硬件资源的抽象</li>
+<li><strong>设计</strong>：
+<ul>
 <li>将对硬件的抽象以库（LibOS）的形式提供，不同应用可使用不同的 LibOS</li>
+<li>外核负责计算资源与应用的绑定与回收；保证多个应用之间的隔离</li>
+</ul>
+</li>
 <li><strong>优点</strong>：
 <ul>
 <li>OS 无抽象，能在理论上提供最优性能</li>
@@ -603,8 +608,13 @@
 <li>
 <p><strong>修改过的寄存器</strong>：对操作数进行移位或位扩展</p>
 <ul>
-<li><strong>无符号扩展</strong>：uxtb, uxth, uxtw (Zero-extend single-word / half-word / byte)</li>
-<li><strong>符号扩展</strong>：sxtb, sxth, sxtw (Sign-extend single-word / half-word / byte)</li>
+<li>对操作数进行移位：如 <code>eor w0, w8, w8, asr #16</code></li>
+<li>对操作数进行位扩展：如 <code>add x19, x19, w0, sxtw</code>
+<ul>
+<li><strong>无符号扩展</strong>：<code>uxtw</code>, <code>uxth</code>, <code>uxtb</code> (Zero-extend single-word / half-word / byte)</li>
+<li><strong>符号扩展</strong>：<code>sxtw</code>, <code>sxth</code>, <code>sxtb</code> (Sign-extend single-word / half-word / byte)</li>
+</ul>
+</li>
 </ul>
 </li>
 <li>
@@ -646,8 +656,8 @@
 <ul>
 <li><strong>直接分支指令</strong>：以标签对应的地址作为跳转目标
 <ul>
-<li>无条件分支指令：<code>b \&lt;label&gt;</code></li>
-<li>有条件分支指令：<code>bcond \&lt;label&gt;</code>，如 <code>beq</code>、<code>bne</code>、<code>ble</code></li>
+<li>无条件分支指令：<code>b &lt;label&gt;</code></li>
+<li>有条件分支指令：<code>bcond &lt;label&gt;</code>，如 <code>beq</code>、<code>bne</code>、<code>ble</code></li>
 </ul>
 </li>
 <li><strong>间接分支指令</strong>：以寄存器中的地址作为跳转目标
