@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-12-11T05:35:13.000Z">
-<meta property="article:modified_time" content="2026-01-08T11:59:55.679Z">
+<meta property="article:modified_time" content="2026-01-08T12:32:52.319Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="知识点整理">
@@ -259,7 +259,7 @@
         
         
         
-          147 mins
+          146 mins
         
       </span>
     
@@ -2444,11 +2444,6 @@
 <h4 id="同步原语选择的参考原则">同步原语选择的参考原则</h4>
 <p><img src="selection.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <h2 id="Lecture-15-文件系统">Lecture 15: 文件系统</h2>
-<ul>
-<li><strong>文件</strong>：对数据的一种抽象，是有名字且持久化的一段数据</li>
-<li><strong>文件系统</strong>：是文件的管理者，提供了一组操作文件的 API</li>
-</ul>
-<p><img src="location.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <h3 id="Inode">Inode</h3>
 <ul>
 <li>
@@ -2456,31 +2451,21 @@
 <ul>
 <li>每个文件对应一个 inode，称为文件元数据</li>
 <li>记录了多个磁盘块号；头部记录文件 size 信息</li>
-<li><strong>文件读写操作的实现</strong>：
-<ul>
-<li>给定 inode 和文件内偏移 offset</li>
-<li>根据 offset 计算出对应的磁盘块号</li>
-</ul>
-</li>
 </ul>
 </li>
 <li>
 <p><strong>inode 文件系统的存储布局</strong>：</p>
 <ul>
+<li><strong>超级块</strong>：是整个文件系统的元数据
+<ul>
+<li>记录磁盘块的大小、其他信息的起始磁盘块位置，等等</li>
+</ul>
+</li>
+<li><strong>inode 分配信息（位图）</strong>：记录哪些 inode 已分配，哪些空闲</li>
 <li><strong>inode 表</strong>：记录所有 inode
 <ul>
 <li>每个 inode 使用 inode 号作为索引</li>
 <li>此时，inode 号即为文件名</li>
-</ul>
-</li>
-<li><strong>inode 分配信息（位图）</strong>：
-<ul>
-<li>记录哪些 inode 已分配，哪些空闲</li>
-</ul>
-</li>
-<li><strong>超级块</strong>：是整个文件系统的元数据
-<ul>
-<li>记录磁盘块的大小、其他信息的起始磁盘块位置，等等</li>
 </ul>
 </li>
 </ul>
@@ -2491,27 +2476,15 @@
 <li>
 <p><strong>inode 文件系统的基本操作</strong>：</p>
 <ul>
-<li><strong>加载文件系统</strong>：
-<ul>
-<li>首先读取超级块，然后找到其他信息</li>
-</ul>
-</li>
+<li><strong>加载文件系统</strong>：首先读取超级块，然后找到其他信息</li>
 <li><strong>创建新文件</strong>：
 <ul>
 <li>根据 inode 分配信息找到空闲 inode，将 inode 对应的 bit 设置为 1</li>
 <li>返回 inode 在 inode 表中的索引，作为文件名</li>
 </ul>
 </li>
-<li><strong>查找文件（根据 inode 号）</strong>：
-<ul>
-<li>在 inode 表中根据 inode 号定位该 inode</li>
-</ul>
-</li>
-<li><strong>删除文件</strong>：
-<ul>
-<li>在 inode 分配表中，将该 inode 对应的 bit 设置为 0</li>
-</ul>
-</li>
+<li><strong>查找文件（根据 inode 号）</strong>：在 inode 表中根据 inode 号定位该 inode</li>
+<li><strong>删除文件</strong>：在 inode 分配表中，将该 inode 对应的 bit 设置为 0</li>
 </ul>
 </li>
 <li>
@@ -2581,10 +2554,7 @@
 <h4 id="软链接（符号链接）">软链接（符号链接）</h4>
 <ul>
 <li>
-<p><strong>Link 的问题</strong>：无法在一个磁盘上建立指向另一个磁盘的 Link</p>
-<ul>
-<li>因为不同磁盘的 inode 命名空间是不同的</li>
-</ul>
+<p><strong>Link 的问题</strong>：无法在一个磁盘上建立指向另一个磁盘的 Link，因为不同磁盘的 inode 命名空间是不同的</p>
 </li>
 <li>
 <p><strong>软链接（符号链接）</strong>: <code>SYMLINK</code>，如 Linux 中的 <code>ln -s</code> 命令</p>
@@ -2677,15 +2647,6 @@
 <ul>
 <li>
 <p><strong>文件系统的崩溃一致性</strong>：文件系统中的各种数据结构存在依赖关系与一致性要求，崩溃可能会造成这些一致性被打破</p>
-<ul>
-<li><strong>用户期望</strong>：重启并恢复后
-<ul>
-<li>维护文件系统数据结构的内部的不变量</li>
-<li>仅有最近的一些操作没有被保存到磁盘中</li>
-<li>没有顺序的异常</li>
-</ul>
-</li>
-</ul>
 </li>
 <li>
 <p><strong>方法1</strong>：同步元数据写 + <code>fsck</code></p>
