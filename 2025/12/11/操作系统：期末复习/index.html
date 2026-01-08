@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-12-11T05:35:13.000Z">
-<meta property="article:modified_time" content="2026-01-08T12:32:52.319Z">
+<meta property="article:modified_time" content="2026-01-08T12:36:40.693Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="知识点整理">
@@ -2693,11 +2693,12 @@
 </ul>
 <h2 id="Lecture-16-设备管理与驱动">Lecture 16: 设备管理与驱动</h2>
 <ul>
-<li><strong>OS 的分层设计</strong>：应用 I/O 框架层、设备管理的共性功能层、设备驱动层</li>
-</ul>
-<p><img src="device_layer.png" srcset="/img/loading.gif" lazyload alt=""></p>
-<ul>
-<li><strong>设备最基本的抽象</strong>：将设备的外部接口设计为一组寄存器，称为设备寄存器</li>
+<li>
+<p><strong>OS 的分层设计</strong>：应用 I/O 框架层、设备管理的共性功能层、设备驱动层</p>
+</li>
+<li>
+<p><strong>设备最基本的抽象</strong>：将设备的外部接口设计为一组寄存器，称为设备寄存器</p>
+</li>
 </ul>
 <p><img src="device.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <ul>
@@ -2819,12 +2820,15 @@
 <ul>
 <li>默认使用中断；中断发生后，使用轮询处理后续达到的网络包</li>
 <li>如果没有更多中断，或轮询中断超过时间限制，则回到中断模式</li>
-<li>该方案在Linux网络驱动中称为 NAPI (New API)</li>
+<li>该方案在 Linux 网络驱动中称为 NAPI (New API)</li>
 </ul>
 </li>
-<li><strong>解决方案 2</strong>：中断合并（Interrupt Coalescing）</li>
+<li><strong>解决方案 2</strong>：中断合并（Interrupt Coalescing）
+<ul>
 <li>设备在发送中断前，需要等待一小段时间</li>
 <li>在等待期间，其他中断可能也会马上到来，因此多个中断合并为同一个中断，进而降低频繁中断带来的开销</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
