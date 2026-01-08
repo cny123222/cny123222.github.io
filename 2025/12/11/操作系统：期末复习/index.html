@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-12-11T05:35:13.000Z">
-<meta property="article:modified_time" content="2026-01-08T06:16:18.354Z">
+<meta property="article:modified_time" content="2026-01-08T06:21:26.221Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="知识点整理">
@@ -259,7 +259,7 @@
         
         
         
-          156 mins
+          155 mins
         
       </span>
     
@@ -1146,18 +1146,25 @@
 </ul>
 <h3 id="SLUB-分配器">SLUB 分配器</h3>
 <ul>
-<li><strong>目标</strong>：快速分配小内存对象，因为内核中的数据结构大小远小于 4K（例如 VMA）</li>
-<li><strong>SLUB 分配器的思路</strong>：OS 频繁分配的对象大小相对比较固定；避免外部碎片
+<li>
+<p><strong>目标</strong>：快速分配小内存对象，因为内核中的数据结构大小远小于 4K（例如 VMA）</p>
+</li>
+<li>
+<p><strong>SLUB 分配器的思路</strong>：OS 频繁分配的对象大小相对比较固定；避免外部碎片</p>
 <ul>
 <li>从伙伴系统获得大块内存（名为 slab）</li>
 <li>对每份大块内存进一步细分成固定大小的小块内存进行管理</li>
 <li>块的大小通常是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">2^n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6644em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span></span></span></span></span></span></span> 个字节（一般来说，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mo>≤</mo><mi>n</mi><mo>&lt;</mo><mn>12</mn></mrow><annotation encoding="application/x-tex">3 \le n &lt; 12</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7804em;vertical-align:-0.136em;"></span><span class="mord">3</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">12</span></span></span></span>）</li>
 </ul>
 </li>
-<li><strong>SLUB 设计</strong>：对于每个固定块大小，SLUB 分配器都会使用独立的内存资源池进行分配（采用 best fit 定位资源池）
+<li>
+<p><strong>SLUB 设计</strong>：对于每个固定块大小，SLUB 分配器都会使用独立的内存资源池进行分配（采用 best fit 定位资源池）</p>
 <ul>
 <li><strong>1. 初始化资源池</strong>：把从伙伴系统得到的连续物理页划分成若干等份（slot）</li>
-<li><strong>2. 空闲链表</strong>：采用空闲链表区分是否空闲，当分配时直接分配一个空闲 slot</li>
+<li><strong>2. 空闲链表</strong>：采用空闲链表区分是否空闲</li>
+</ul>
+<p><img src="slab_slot.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
 <li><strong>3. 分配与释放</strong>：
 <ul>
 <li><strong>分配</strong>：
@@ -1169,14 +1176,14 @@
 </li>
 <li>
 <ol start="2">
-<li>从 slab 中取走 Next_Free 指向的第一个 slot</li>
+<li>从 slab 中取走 <code>Next_Free</code> 指向的第一个 slot</li>
 </ol>
 </li>
 </ul>
 </li>
 <li><strong>释放</strong>：将 Next_Free 指针指向待释放内存（slot）
 <ul>
-<li><strong>如何找到 Next_Free</strong>：根据待释放内存地址计算 slab 起始地址</li>
+<li><strong>如何找到 <code>Next_Free</code></strong>：根据待释放内存地址和 slab 大小，计算 slab 起始地址</li>
 <li>在物理页结构体中要记录所属 slab 信息</li>
 </ul>
 </li>
@@ -1185,9 +1192,9 @@
 <li><strong>4. 新增 slab</strong>：当某个资源池中的 slab 已经分配完，再从伙伴系统分配一个slab</li>
 <li><strong>5. 资源池内组织多个 slab</strong>：引入两个指针
 <ul>
-<li>Current 指向一个 slab，并从其中分配</li>
-<li>当 Current slab 全满，则从 Partial 链表中取出一个放入 Current</li>
-<li>释放后，若某个 slab 不再全满，则加入 partial</li>
+<li><code>Current</code> 指向一个 slab，并从其中分配</li>
+<li>当 <code>Current</code> slab 全满，则从 <code>Partial</code> 链表中取出一个放入 <code>Current</code></li>
+<li>释放后，若某个 slab 不再全满，则加入 <code>Partial</code></li>
 <li>释放后，若某个 slab 全空则可还给伙伴系统</li>
 </ul>
 </li>
