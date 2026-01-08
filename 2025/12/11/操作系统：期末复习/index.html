@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
 <meta property="article:published_time" content="2025-12-11T05:35:13.000Z">
-<meta property="article:modified_time" content="2026-01-08T08:25:16.547Z">
+<meta property="article:modified_time" content="2026-01-08T08:34:07.490Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="操作系统">
 <meta property="article:tag" content="知识点整理">
@@ -1641,8 +1641,7 @@
 <li>如果一个任务在时间片耗尽前放弃 CPU，那么它的优先级不变</li>
 <li><strong>定时优先级提升</strong>：在某个时间段 S 后，将系统中所有任务优先级升为最高
 <ul>
-<li>避免长任务饿死</li>
-<li>针对任务特征动态变化的场景</li>
+<li>避免长任务饿死、可以解决任务特征动态变化的场景</li>
 </ul>
 </li>
 <li><strong>准确记录执行时间</strong>：任务放弃 CPU 后时间片不重置，当累计一个完整时间片被用完后，降低其优先级
@@ -1685,7 +1684,11 @@
 <li>如果两个任务运行时间相同，则等待时间越长，越优先</li>
 </ul>
 </li>
-<li>HRRN 策略通过结合 FCFS 策略和 SJF 策略，避免了 SJF 策略在公平性方面的问题</li>
+<li><strong>优点</strong>：既可以让短任务优先执行，又不会让长任务产生饥饿
+<ul>
+<li>通过结合 FCFS 策略和 SJF 策略，避免了 SJF 策略在公平性方面的问题</li>
+</ul>
+</li>
 </ul>
 <h3 id="公平共享调度策略-Fair-Share-Scheduling">公平共享调度策略 (Fair-Share Scheduling)</h3>
 <ul>
@@ -1703,18 +1706,8 @@
 </ul>
 <p><img src="lottery.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <ul>
-<li><strong>份额与优先级的异同</strong>：
-<ul>
-<li>份额影响任务对 CPU 的占用比例，不会有任务饿死</li>
-<li>优先级影响任务对 CPU 的使用顺序，可能产生饿死</li>
-</ul>
-</li>
-<li><strong>随机的利弊</strong>：
-<ul>
 <li><strong>好处</strong>：简单</li>
 <li><strong>问题</strong>：不精确（伪随机），各个任务对 CPU 时间的占比会有误差</li>
-</ul>
-</li>
 </ul>
 <h4 id="8-步幅调度-Stride-Scheduling">8. 步幅调度 (Stride Scheduling)</h4>
 <ul>
