@@ -1,0 +1,1368 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Nuoyan Chen">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="本文介绍了 ML4CO 中经常被研究的组合优化问题（如 TSP 等选边问题和 MIS 等选点问题）及相应的数据集生成算法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Common CO Problems in ML4CO">
+<meta property="og:url" content="https://cny123222.github.io/2025/07/28/Common-CO-Problems-in-ML4CO/index.html">
+<meta property="og:site_name" content="Nuoyan Chen&#39;s Blog">
+<meta property="og:description" content="本文介绍了 ML4CO 中经常被研究的组合优化问题（如 TSP 等选边问题和 MIS 等选点问题）及相应的数据集生成算法。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cny123222.github.io/img/ml4co.png">
+<meta property="article:published_time" content="2025-07-28T01:46:55.000Z">
+<meta property="article:modified_time" content="2025-08-23T14:34:44.789Z">
+<meta property="article:author" content="Nuoyan Chen">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="ML4CO">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cny123222.github.io/img/ml4co.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Common CO Problems in ML4CO - Nuoyan Chen&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"cny123222.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 80vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Nuoyan Chen&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/nanjing.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.4)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Common CO Problems in ML4CO"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Nuoyan Chen
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-07-28 09:46" pubdate>
+          July 28, 2025 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.2k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          43 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="ML4CO"
+        id="heading-f96b490a324eb7ddf9240b3448b5a7a7" role="tab" data-toggle="collapse" href="#collapse-f96b490a324eb7ddf9240b3448b5a7a7"
+        aria-expanded="true"
+      >
+        ML4CO
+        <span class="list-group-count">(17)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-f96b490a324eb7ddf9240b3448b5a7a7"
+           role="tabpanel" aria-labelledby="heading-f96b490a324eb7ddf9240b3448b5a7a7">
+        
+        
+          
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/07/25/A-Living-Guide-to-ML4CO/" title="A Living Guide to ML4CO"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">A Living Guide to ML4CO</span>
+        </a>
+      
+    
+  </div>
+
+          
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="Basics"
+        id="heading-bbc9105ee8508ce6e083a589a351e83a" role="tab" data-toggle="collapse" href="#collapse-bbc9105ee8508ce6e083a589a351e83a"
+        aria-expanded="true"
+      >
+        Basics
+        <span class="list-group-count">(6)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-bbc9105ee8508ce6e083a589a351e83a"
+           role="tabpanel" aria-labelledby="heading-bbc9105ee8508ce6e083a589a351e83a">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/07/28/Common-CO-Problems-in-ML4CO/" title="Common CO Problems in ML4CO"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">Common CO Problems in ML4CO</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/07/27/Paradigm-1-Supervised-GNN-Decoding/" title="Paradigm 1: Supervised GNN + Decoding"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Paradigm 1: Supervised GNN + Decoding</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/08/01/Paradigm-2-Autoregressive-Transformer-RL/" title="Paradigm 2: Autoregressive Transformer + RL"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Paradigm 2: Autoregressive Transformer + RL</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/07/28/Traditional-Solver-Baselines-in-ML4CO/" title="Traditional Solver Baselines in ML4CO"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Traditional Solver Baselines in ML4CO</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/07/26/Understading-GNN-An-ML4CO-perspective/" title="Understading GNN - An ML4CO perspective"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Understading GNN - An ML4CO perspective</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/08/01/Understading-Transformer-An-ML4CO-perspective/" title="Understading Transformer - An ML4CO perspective"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Understading Transformer - An ML4CO perspective</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="Code Reading"
+        id="heading-f77e38c01e2888b0c14a4f2e5ee3be87" role="tab" data-toggle="collapse" href="#collapse-f77e38c01e2888b0c14a4f2e5ee3be87"
+        aria-expanded="false"
+      >
+        Code Reading
+        <span class="list-group-count">(1)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse " id="collapse-f77e38c01e2888b0c14a4f2e5ee3be87"
+           role="tabpanel" aria-labelledby="heading-f77e38c01e2888b0c14a4f2e5ee3be87">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/08/24/Code-Reading-1-GNN4CO/" title="Code Reading #1: GNN4CO"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Code Reading #1: GNN4CO</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="Paper Reading"
+        id="heading-717502770b97d51394e7c55fa4354d40" role="tab" data-toggle="collapse" href="#collapse-717502770b97d51394e7c55fa4354d40"
+        aria-expanded="false"
+      >
+        Paper Reading
+        <span class="list-group-count">(9)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse " id="collapse-717502770b97d51394e7c55fa4354d40"
+           role="tabpanel" aria-labelledby="heading-717502770b97d51394e7c55fa4354d40">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/07/30/Paper-Reading-1-GCN4TSP/" title="Paper Reading #1: GCN4TSP"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Paper Reading #1: GCN4TSP</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/07/30/Paper-Reading-2-AM/" title="Paper Reading #2: AM"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Paper Reading #2: AM</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/08/18/Paper-Reading-3-RL4VRP/" title="Paper Reading #3: RL4VRP"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Paper Reading #3: RL4VRP</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/08/19/Paper-Reading-4-POMO/" title="Paper Reading #4: POMO"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Paper Reading #4: POMO</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/08/23/Paper-Reading-5-MatNet/" title="Paper Reading #5: MatNet"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Paper Reading #5: MatNet</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/08/28/Paper-Reading-6-SymNCO/" title="Paper Reading #6: SymNCO"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Paper Reading #6: SymNCO</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/10/28/Paper-Reading-7-DIMES/" title="Paper Reading #7: DIMES"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Paper Reading #7: DIMES</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/10/28/Paper-Reading-8-DIFUSCO/" title="Paper Reading #8: DIFUSCO"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Paper Reading #8: DIFUSCO</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/10/29/Paper-Reading-9-T2T/" title="Paper Reading #9: T2T"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Paper Reading #9: T2T</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Common CO Problems in ML4CO</h1>
+            
+              <p id="updated-time" class="note note-default" style="">
+                
+                  
+                    Last updated on August 23, 2025 pm
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>本文介绍了 ML4CO 中经常被研究的组合优化问题（如 TSP 等选边问题和 MIS 等选点问题）及相应的数据集生成算法。</p>
+<span id="more"></span>
+<h2 id="TSP-Traveling-Salesman-Problem">TSP (Traveling Salesman Problem)</h2>
+<p>旅行商问题（TSP）是组合优化领域中<strong>最经典、最具代表性的问题</strong>之一，属于<strong>选边</strong>的问题。</p>
+<h3 id="问题描述">问题描述</h3>
+<p>这边引用 [2] 中的一段非常有趣的描述：</p>
+<div class="note note-secondary">
+            <p>Imagine yourself travelling to a scientific conference. The field is popular, and surely you do not want to miss out on anything. You have selected several posters you want to visit, and naturally you must return to the place where you are now: the coffee corner. In which order should you visit the posters, to minimize your time walking around? This is the Travelling Scientist Problem (TSP).</p><p>You realize that your problem is equivalent to the Travelling Salesman Problem (conveniently also TSP). This seems discouraging as you know the problem is (NP-)hard.</p>
+          </div>
+<p>旅行商问题一般描述为：给定一组城市及它们之间的距离（或代价），一名旅行商需要从其中一个城市出发，访问每个城市恰好一次，最终返回出发城市。目标是找到一条总行程距离最短的路径。</p>
+<p>或者更 formal 的表述：<strong>给定一个加权无向完全图，找出一条通过图中每一个节点一次且仅一次，并最终返回起始节点的回路，使得该回路上所有边的权重之和最小</strong>。</p>
+<p>在 ML4CO 中，我们一般研究<strong>二维欧几里得情形</strong>的 TSP 问题，并<strong>将距离视为权重</strong>，即</p>
+<ul>
+<li><strong>输入</strong>：
+<ul>
+<li><code>points</code>：<code>N</code> 个顶点的坐标，形状为 <code>(B, N, 2)</code></li>
+</ul>
+</li>
+<li><strong>输出</strong>：
+<ul>
+<li><code>tours</code>：访问每个顶点的顺序（含返回起点），形状为 <code>(B, N+1)</code></li>
+</ul>
+</li>
+<li><strong>目标值</strong>：回路总长度，越小越好</li>
+</ul>
+<h3 id="生成方法">生成方法</h3>
+<p>按照惯例，我们一般生成固定顶点数的数据集。</p>
+<h4 id="Uniform（均匀分布）">Uniform（均匀分布）</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">_generate_uniform</span>(<span class="hljs-params">self</span>) -&gt; np.ndarray:<br>    <span class="hljs-keyword">return</span> np.random.random([<span class="hljs-variable language_">self</span>.num_threads, <span class="hljs-variable language_">self</span>.nodes_num, <span class="hljs-number">2</span>])<br></code></pre></td></tr></table></figure>
+<p>即<strong>在单位正方形内完全随机地撒点</strong>。生成的节点会非常均匀地、无规律地散布在 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>0</mn><mo separator="true">,</mo><mn>1</mn><msup><mo stretchy="false">]</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">[0, 1]^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">1</span><span class="mclose"><span class="mclose">]</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span> 范围内的正方形区域里。这种数据是TSP问题中最基础、最通用的基准测试类型。</p>
+<p><img src="tsp_uniform.png" srcset="/img/loading.gif" lazyload alt="TSP200-uniform 示意图"></p>
+<h4 id="Gaussian（高斯分布）">Gaussian（高斯分布）</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">_generate_gaussian</span>(<span class="hljs-params">self</span>) -&gt; np.ndarray:<br>    <span class="hljs-keyword">return</span> np.random.normal(<br>        loc=[<span class="hljs-variable language_">self</span>.gaussian_mean_x, <span class="hljs-variable language_">self</span>.gaussian_mean_y],<br>        scale=<span class="hljs-variable language_">self</span>.gaussian_std,<br>        size=(<span class="hljs-variable language_">self</span>.num_threads, <span class="hljs-variable language_">self</span>.nodes_num, <span class="hljs-number">2</span>),<br>    )<br></code></pre></td></tr></table></figure>
+<p>节点从高斯分布中采样，即让所有节点都围绕着一个中心点密集分布，越靠近中心越密集，越远离中心越稀疏。这种分布模式在现实世界中也很常见，比如模拟一个城市群，其中有一个中心大城市和周围的卫星城。</p>
+<p><img src="tsp_gaussian.png" srcset="/img/loading.gif" lazyload alt="TSP200-gaussian 示意图"></p>
+<h4 id="Cluster（簇状分布）">Cluster（簇状分布）</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">_generate_cluster</span>(<span class="hljs-params">self</span>) -&gt; np.ndarray:<br>    nodes_coords = np.zeros([<span class="hljs-variable language_">self</span>.num_threads, <span class="hljs-variable language_">self</span>.nodes_num, <span class="hljs-number">2</span>])<br>    <span class="hljs-comment"># 确定簇中心</span><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-variable language_">self</span>.num_threads):<br>        cluster_centers = np.random.random([<span class="hljs-variable language_">self</span>.cluster_nums, <span class="hljs-number">2</span>])<br>        cluster_points = []<br>        <span class="hljs-comment"># 在每个簇内生成节点</span><br>        <span class="hljs-keyword">for</span> center <span class="hljs-keyword">in</span> cluster_centers:<br>            points = np.random.normal(<br>                loc=center,<br>                scale=<span class="hljs-variable language_">self</span>.cluster_std,<br>                size=(<span class="hljs-variable language_">self</span>.nodes_num // <span class="hljs-variable language_">self</span>.cluster_nums, <span class="hljs-number">2</span>),<br>            )<br>            cluster_points.append(points)<br>        <span class="hljs-comment"># 合并所有节点</span><br>        nodes_coords[i] = np.concatenate(cluster_points, axis=<span class="hljs-number">0</span>)<br>    <span class="hljs-keyword">return</span> nodes_coords<br></code></pre></td></tr></table></figure>
+<p>Cluster 的生成过程是：先随机确定几个聚集中心，然后让节点分别围绕着这几个中心形成多个小团体（簇）。因此，<strong>生成的节点呈现出明显的簇结构</strong>，簇内节点距离近，簇间节点距离远。这种数据分布非常贴近许多现实世界的物流问题，例如需要去几个不同的城市群送货，每个城市群内部又有多个配送点。</p>
+<p>对于 TSP 求解器来说，这种结构通常更具挑战性，因为它需要在“先跑完一个簇再到下一个”和“在不同簇之间来回穿梭以寻找更优路径”之间做出权衡。</p>
+<p><img src="tsp_cluster.png" srcset="/img/loading.gif" lazyload alt="TSP200-cluster 示意图"></p>
+<h2 id="ATSP-Asymmetric-Traveling-Salesman-Problem">ATSP (Asymmetric Traveling Salesman Problem)</h2>
+<p>非对称旅行商问题（ATSP）是 TSP 问题的一个重要变种。其核心区别在于，<strong>从城市 A 到城市 B 的距离（或代价）不一定等于从城市 B 到城市 A 的距离（或代价）</strong>。这非常贴近现实场景，例如考虑城市中的单行道、不同的去程与返程机票价格、因上下坡导致的油耗或时间差异等情况。</p>
+<h3 id="问题描述-2">问题描述</h3>
+<p>ATSP 问题可以描述为：<strong>给定一个加权有向完全图，找出一条通过图中每一个节点一次且仅一次，并最终返回起始节点的回路，使得该回路上所有边的权重之和最小</strong>。</p>
+<p>ATSP 与 TSP 的核心差异在于<strong>有向图</strong>，即边的权重是非对称的。其输入输出如下：</p>
+<ul>
+<li><strong>输入</strong>：
+<ul>
+<li><code>dists</code>：<code>N</code> 个顶点之间的距离（即权重）矩阵，形状为 <code>(B, N, N)</code></li>
+</ul>
+</li>
+<li><strong>输出</strong>：
+<ul>
+<li><code>tours</code>：访问每个顶点的顺序（含返回起点），形状为 <code>(B, N+1)</code></li>
+</ul>
+</li>
+<li><strong>目标值</strong>：回路上所有边的距离（即权重）之和，越小越好</li>
+</ul>
+<h3 id="生成方法-2">生成方法</h3>
+<h4 id="Uniform">Uniform</h4>
+<p>这种方法生成的是最经典的 ATSP 实例，其核心特点是<strong>距离矩阵中的值是连续的，并且满足三角不等式</strong>。</p>
+<p>生成步骤是：</p>
+<ul>
+<li>初始化一个距离矩阵 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">D</mi></mrow><annotation encoding="application/x-tex">\mathcal{D}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal" style="margin-right:0.02778em;">D</span></span></span></span>，其中的值从一个很大的范围 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>1</mn><mo separator="true">,</mo><mi>M</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[1, M]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mclose">]</span></span></span></span> 内（如 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><msup><mn>10</mn><mn>6</mn></msup></mrow><annotation encoding="application/x-tex">M = 10^6</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">6</span></span></span></span></span></span></span></span></span></span></span>）均匀随机抽取。</li>
+<li>通过迭代来强制<strong>满足三角不等式</strong>：不断检查是否存在 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="script">D</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>&gt;</mo><msub><mi mathvariant="script">D</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo>+</mo><msub><mi mathvariant="script">D</mi><mrow><mi>k</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\mathcal{D}_{ij} &gt; \mathcal{D}_{ik} + \mathcal{D}_{kj}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">ij</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">ik</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">kj</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span> 的情况。如果存在，就用更短的路径 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="script">D</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><mo>+</mo><msub><mi mathvariant="script">D</mi><mrow><mi>k</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\mathcal{D}_{ik} + \mathcal{D}_{kj}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">ik</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">kj</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span> 来更新 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="script">D</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\mathcal{D}_{ij}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">ij</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span> 的值。这个过程重复进行，直到矩阵中不再有任何可以更新的值。（本质上是 Floyd-Warshall 算法的应用，用来寻找所有节点对之间的最短路径。）</li>
+<li>最后，将矩阵的对角线元素 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="script">D</mi><mrow><mi>i</mi><mi>i</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\mathcal{D}_{ii}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">ii</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 设置为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>，并将整个矩阵通过除以 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi></mrow><annotation encoding="application/x-tex">M</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span></span></span></span> 来归一化到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>0</mn><mo separator="true">,</mo><mn>1</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[0, 1]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">1</span><span class="mclose">]</span></span></span></span> 区间。</li>
+</ul>
+<p>这种方法生成的实例<strong>没有已知的最优解</strong>。</p>
+<h4 id="HCP">HCP</h4>
+<p>这是一种将哈密顿回路问题（HCP）转化为 ATSP 问题的方法，其特点是<strong>距离矩阵是二元的（只有 0 和 1）</strong>。</p>
+<p>生成方式是：先构建一条哈密顿回路，在距离矩阵中将该回路中边的权重设置为 0，其余边的权重设置为 1。再加入一定的噪声，即随机选择一些原本权重为 1 的路径，并将它们的权重也设置为 0。</p>
+<p>不难发现，这样构造出的 ATSP 实例<strong>具有已知最优解，并且其成本为 0</strong>。</p>
+<h4 id="SAT">SAT</h4>
+<p>这是一种将 3-SAT 问题转化为 ATSP 问题的方法。其特点与 HCP 分布类似，即<strong>距离矩阵是二元的（只有 0 和 1），具有已知且成本为 0 的最优解</strong>。</p>
+<p>生成方式是：先为所有变量预设一组满足解，再根据这个满足解构造出一个保证可满足的 3-SAT 实例，最后由这个 3-SAT 实例按照某种方法生成对应的一张有向图，该有向图的邻接矩阵（有连接为 1，无连接为 0）即为生成 ATSP 实例的距离矩阵。</p>
+<p>这种从 3-SAT 实例到有向图的方法，能够满足：当且仅当原始的 3-SAT 问题有解时，图中才存在有向哈密顿回路。（事实上，AI2615 中就讲过这个将 3-SAT 问题归约到有向哈密顿回路的方法。）因此，这样构造出的 ATSP 实例能够<strong>保证具有已知且成本为 0 的最优解</strong>。</p>
+<h2 id="CVRP-Capacitated-Vehicle-Routing-Problem">CVRP (Capacitated Vehicle Routing Problem)</h2>
+<p>CVRP 是运筹学和物流领域最核心、最经典的路由问题之一。</p>
+<h3 id="问题描述-3">问题描述</h3>
+<p>简单来说，CVRP 问题旨在解决一个现实世界中无处不在的挑战：<strong>如何规划一支有容量限制的车队，从一个仓库出发，以最低的总成本（通常是总行驶距离）服务完所有客户的需求，并最终返回仓库</strong>，即问题的目标是<strong>在满足所有客户需求和车辆容量限制的前提下，最小化车队行驶的总距离（或总成本）</strong>。</p>
+<p>CVRP 问题的输入输出如下：</p>
+<ul>
+<li><strong>输入</strong>：
+<ul>
+<li><code>depots</code>：仓库的位置坐标，形状为 <code>(B, 2)</code></li>
+<li><code>points</code>：客户的位置坐标，形状为 <code>(B, N, 2)</code></li>
+<li><code>demands</code>：每个客户的需求，形状为 <code>(B, N)</code></li>
+<li><code>capacities</code>：货车的容量，形状为 <code>(B,)</code>（每辆货车容量相同）</li>
+</ul>
+</li>
+<li><strong>输出</strong>：
+<ul>
+<li><code>tours</code>：每辆车行驶的路径，是一个由客户节点索引（<code>1</code> 到 <code>N</code>）和仓库节点索引（<code>0</code>）组成的序列，多个 <code>0</code> 用于分隔不同车辆的路径，形状为 <code>(B, L_max)</code>，其中 <code>L_max</code> 是最长解的长度</li>
+</ul>
+</li>
+<li><strong>目标值</strong>：车队行驶的总距离，越小越好</li>
+</ul>
+<h3 id="生成方法-3">生成方法</h3>
+<p>首先是 <code>depots</code> 和 <code>points</code> 的生成，一般采用<strong>和 TSP 相同</strong>的 uniform 或 gaussian 分布。</p>
+<p>其次是 <code>demands</code> 和 <code>capacities</code> 的生成，通常采用<strong>在某一范围内生成随机数</strong>的方法。</p>
+<h2 id="OP-Orienteering-Problem">OP (Orienteering Problem)</h2>
+<p>OP 问题是 TSP 问题和 KP 问题的结合，广泛应用于需要<strong>在成本预算下最大化收益的路径规划和调度</strong>的场景中。[9]</p>
+<h3 id="问题描述-4">问题描述</h3>
+<p>OP 问题可以描述为：给定一系列带有不同奖励的地点、一个起点和一个终点（通常是同一个），目标是找出一条路径，这条路径<strong>访问一部分地点，使得收集到的总奖励最大，同时确保旅行总距离不超过预设的最大距离</strong>。</p>
+<p>OP 问题的输入输出如下：</p>
+<ul>
+<li><strong>输入</strong>：
+<ul>
+<li><code>depots</code>：起点（也是终点）的位置坐标，形状为 <code>(B, 2)</code></li>
+<li><code>points</code>：地点的位置坐标，形状为 <code>(B, N, 2)</code></li>
+<li><code>prizes</code>：每个地点带有的奖励，形状为 <code>(B, N)</code></li>
+<li><code>max_lengths</code>：最大路径长度，形状为 <code>(B,)</code></li>
+</ul>
+</li>
+<li><strong>输出</strong>：
+<ul>
+<li><code>tours</code>：路径访问顶点的顺序，形状为 <code>(B, L_max)</code>，其中 <code>L_max</code> 是最长解的长度</li>
+</ul>
+</li>
+<li><strong>目标值</strong>：收集到的总奖励，越大越好</li>
+</ul>
+<h3 id="生成方法-4">生成方法</h3>
+<p>首先是 <code>depots</code> 和 <code>points</code> 的生成，一般采用<strong>和 TSP 相同</strong>的 uniform 分布。</p>
+<p>其次是 <code>prizes</code> 的生成，有三种常见的方式：</p>
+<ul>
+<li><code>constant</code>：每个节点都分配固定的奖励值，如 <code>1.0</code>；</li>
+<li><code>uniform</code>：每个节点的奖励值均匀分布；</li>
+<li><code>dist</code>：奖励值与节点到 depot 的距离成正比，模拟了越远的客户越有价值的场景。</li>
+</ul>
+<h2 id="PCTSP-Prize-Collection-Traveling-Salesman-Problem">PCTSP (Prize Collection Traveling Salesman Problem)</h2>
+<p>PCTSP 问题是 TSP 问题的一个重要变体，引入了<strong>奖励和惩罚</strong>的概念。</p>
+<h3 id="问题描述-5">问题描述</h3>
+<p>PCTSP 问题可以描述为：给定一系列地点，每个地点有对应的奖励和惩罚，一个起点（也是终点），目标是<strong>寻找一条路径，使得收集到的总奖励不少于一个最低总奖励的前提下，总旅行距离与所有未访问节点的惩罚之和最小</strong>。</p>
+<p>PCTSP 问题的输入输出如下：</p>
+<ul>
+<li><strong>输入</strong>：
+<ul>
+<li><code>depots</code>：起点（也是终点）的位置坐标，形状为 <code>(B, 2)</code></li>
+<li><code>points</code>：每个地点的位置坐标，形状为 <code>(B, N, 2)</code></li>
+<li><code>prizes</code>：每个地点对应的奖励，形状为 <code>(B, N)</code></li>
+<li><code>penalties</code>：每个地点对应的惩罚，形状为 <code>(B, N)</code></li>
+</ul>
+</li>
+<li><strong>输出</strong>：
+<ul>
+<li><code>tours</code>：路径访问顶点的顺序，形状为 <code>(B, L_max)</code>，其中 <code>L_max</code> 是最长解的长度</li>
+</ul>
+</li>
+<li><strong>目标值</strong>：总旅行距离加上所有未访问节点的惩罚之和，越小越好</li>
+</ul>
+<h3 id="生成方法-5">生成方法</h3>
+<p>一般采用 uniform 分布，即 <code>depots</code> 和 <code>points</code> 在 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>0</mn><mo separator="true">,</mo><mn>1</mn><msup><mo stretchy="false">]</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">[0,1]^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">1</span><span class="mclose"><span class="mclose">]</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span> 内随机生成，<code>prizes</code> 和 <code>penalties</code> 在某一范围内随机生成。</p>
+<h2 id="MIS-Maximum-Independent-Set">MIS (Maximum Independent Set)</h2>
+<p>我们进入<strong>选点</strong>的组合优化问题，首先是最经典的最大独立集问题（MIS）。</p>
+<h3 id="问题描述-6">问题描述</h3>
+<p>MIS 问题可以描述为：给定一个无向图 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>=</mo><mo stretchy="false">(</mo><mi>V</mi><mo separator="true">,</mo><mi>E</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">G=(V,E)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">G</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mclose">)</span></span></span></span>，找一个最大的顶点子集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>⊂</mo><mi>V</mi></mrow><annotation encoding="application/x-tex">S \subset V</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⊂</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span></span></span></span>，使得 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 中任意两个顶点之间都没有边直接相连。</p>
+<p>MIS 问题的输入输出如下：</p>
+<ul>
+<li><strong>输入</strong>：
+<ul>
+<li><code>edge_index</code>：每条边连接的顶点索引，形状为 <code>(B, 2, E)</code></li>
+</ul>
+</li>
+<li><strong>输出</strong>：
+<ul>
+<li><code>nodes_label</code>：每个节点在解中是否被选中，选中为 1，未选中为 0，形状为 <code>(B, V)</code></li>
+</ul>
+</li>
+<li><strong>目标值</strong>：独立集中顶点的个数，越大越好</li>
+</ul>
+<h3 id="生成方式">生成方式</h3>
+<p>MIS、MCl、MCut、MVC 等选边问题的数据生成方式是一致的，常见的有如下几种。</p>
+<h4 id="RB">RB</h4>
+<p>RB 图是由 RB 模型[3]生成的，常用作模拟社交网络中不同社群之间的互动。其特点是：<strong>存在多个内部紧密的社群（即图论中的团，任意两个节点之间都存在边），在这些群体之间有稀疏的连接</strong>。</p>
+<p>RB 图的生成有三个<strong>核心参数</strong>：</p>
+<ul>
+<li><code>n</code>: 图中“团”（社群）的数量</li>
+<li><code>k</code>: 每个“团”内部节点的数量</li>
+<li><code>p</code>: 用于控制不同“团”之间的连接密度（<code>p</code> 越大，社群间的连接越紧密）</li>
+</ul>
+<p>RB 图的<strong>生成过程</strong>是：先创建多个独立的团，再在团之间建立连接，连接的密度由参数 <code>p</code> 控制。</p>
+<p><img src="mis_rb.png" srcset="/img/loading.gif" lazyload alt="RB 示意图"></p>
+<h4 id="BA-Barabasi-Albert">BA (Barabási-Albert)</h4>
+<p>你是否注意到，在社交网络上，少数名人拥有数千万粉丝，而大多数普通人的关注者寥寥无几；在航空网络中，少数几个枢纽机场连接着成百上千条航线，而绝大多数地方机场只有几条航线。这种<strong>高度不均匀的连接分布</strong>就是<strong>无标度（scale-free）网络</strong>的标志。</p>
+<p>BA 图[4]最核心的特征是<strong>无标度性</strong>。节点的度遵循幂律分布，即图中存在少量拥有极高连接数的中心节点，以及大量只有很少连接的末端节点。</p>
+<p>BA 图的<strong>生成过程</strong>是：网络从一个很小的初始核心开始，节点一个接一个地加入。当一个新节点加入网络时，它不会随机地选择旧节点进行连接。相反，它<strong>更倾向于连接那些已经拥有很多连接的节点</strong>。这样，就形成了 BA 图的无标度特征。</p>
+<p><img src="mis_ba.png" srcset="/img/loading.gif" lazyload alt="BA 示意图"></p>
+<h4 id="HK-Holme-Kim">HK (Holme-Kim)</h4>
+<p>HK 图[5]在保留 BA 图无标度特性的基础上，显著<strong>提高网络的聚集系数</strong>。与 BA 图一样，HK 图中节点的度仍遵循幂律分布。但节点的邻居之间也倾向于相互连接，使得网络中存在大量<strong>三角形结构</strong>。这与真实社交网络中紧密的“小圈子”或社群现象类似。</p>
+<p>HK 图的<strong>生成过程</strong>与 BA 图相似。不同之处在于，当新节点选择连接到某一旧节点时，会以概率 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span> <strong>额外连接到其该旧节点的一个随机邻居</strong>。这个步骤极大地促进了三角形的形成，从而提高了网络的聚集系数。</p>
+<p><img src="mis_hk.png" srcset="/img/loading.gif" lazyload alt="HK 示意图"></p>
+<p>HK 图能较好<strong>模拟现实生活中的复杂系统</strong>，如社交网络、生态系统等。</p>
+<h4 id="WS-Watts-Strogatz">WS (Watts-Strogatz)</h4>
+<p>为什么在这个拥有数十亿人口的星球上，你与任何一个陌生人之间，平均只隔着几个人？这被称为<strong>小世界（Small-world）效应</strong>，也是 WS 图的特点之一。</p>
+<p>与 HK 图类似，WS 图[6]中的节点也具有<strong>高度聚集性</strong>。但同时，WS 图具有小世界效应，即<strong>节点间的平均路径长度很短</strong>。这种特性来自于模型中引入的少量随机“捷径”。</p>
+<p>WS 图的<strong>生成过程</strong>可以概括为，先创建一个规则的环形网络，再引入随机的捷径。首先，想象所有节点排列在一个圆环上，并与圆环上最近的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span> 个邻居相连，构建了一个高度有序且局部连接紧密（高聚集性）的网络。接着，对每一条边以一定概率 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span> 进行重连操作，即断开该边的一端，并将其随机连接到任意一个其他节点上。这一操作创造了随机的“长程连接”，急剧地缩短了整个网络的平均路径长度。</p>
+<p><img src="mis_ws.png" srcset="/img/loading.gif" lazyload alt="WS 示意图"></p>
+<h4 id="ER-Erdos-Renyi">ER (Erdős-Rényi)</h4>
+<p>ER 模型是<strong>随机图理论的开山之作</strong>，它不试图模仿任何特定的现实世界结构，而是提出了一个最纯粹、最简单的问题：如果我们在一些节点之间完全随机地连边，会得到一个什么样的网络？</p>
+<p>与之前的所有图都不同，ER 图[7]的特点在于<strong>完全没有特点</strong>，或者说，它的特点就是<strong>均匀的随机性</strong>。任意两节点之间都以一定概率 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span> 连接，与网络中任何其他地方的结构都毫无关系。由于其纯粹的随机性，<strong>ER 图在结构上是同质的</strong>，即图中几乎没有特殊的节点。节点的度分布近似于泊松分布，度极高或度极低的节点都非常罕见，绝大多数节点的度都非常接近整个网络的平均值。</p>
+<p><img src="mis_er.png" srcset="/img/loading.gif" lazyload alt="ER 示意图"></p>
+<h4 id="TWITTER">TWITTER</h4>
+<p>TWITTER [8]是一个<strong>真实数据集</strong>，来自斯坦福网络分析项目（Stanford Network Analysis Project）。它是对一个<strong>真实世界社交网络的快照</strong>，直接反映了数百万用户之间复杂的关注关系。TWITTER 常被用于<strong>评估泛化能力</strong>。</p>
+<h4 id="SATLIB">SATLIB</h4>
+<p>SATLIB 是一个<strong>经典的 SAT 数据集</strong>，通过<strong>将 SAT 问题转化为 MIS 问题</strong>（这在 AI2615 的 NP-complete 部分中有类似方法），我们可以获得用于 MIS 的图。SATLIB 图的特点是<strong>非常稠密</strong>。</p>
+<h2 id="MCl-Maximum-Clique">MCl (Maximum Clique)</h2>
+<p>最大团问题（MCl）是最大独立集问题（MIS）的<strong>对偶问题</strong>，它们之间的关系通过补图建立。</p>
+<h3 id="问题描述-7">问题描述</h3>
+<p>MCl 问题可以描述为：给定一个无向图 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>=</mo><mo stretchy="false">(</mo><mi>V</mi><mo separator="true">,</mo><mi>E</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">G=(V,E)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">G</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mclose">)</span></span></span></span>，找一个最大顶点子集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mo>⊂</mo><mi>V</mi></mrow><annotation encoding="application/x-tex">C \subset V</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⊂</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span></span></span></span>，使得 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span></span></span> 中任意两个顶点之间都有一条边直接相连。</p>
+<p>MCl 问题的输入输出如下：</p>
+<ul>
+<li><strong>输入</strong>：
+<ul>
+<li><code>edge_index</code>：每条边连接的顶点索引，形状为 <code>(2, E)</code></li>
+</ul>
+</li>
+<li><strong>输出</strong>：
+<ul>
+<li><code>nodes_label</code>：每个节点在解中是否被选中，选中为 1，未选中为 0，形状为 <code>(V,)</code></li>
+</ul>
+</li>
+<li><strong>目标值</strong>：团中顶点的个数，越大越好</li>
+</ul>
+<h3 id="生成方法-6">生成方法</h3>
+<p>和 MIS 一致。</p>
+<h2 id="MCut-Maximum-Cut">MCut (Maximum Cut)</h2>
+<h3 id="问题描述-8">问题描述</h3>
+<p>最小割问题（MCut）可以描述为：给定一个无向图 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>=</mo><mo stretchy="false">(</mo><mi>V</mi><mo separator="true">,</mo><mi>E</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">G=(V,E)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">G</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mclose">)</span></span></span></span>，将图中的所有顶点 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi></mrow><annotation encoding="application/x-tex">V</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span></span></span></span> 划分成两个互不相交的非空子集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi></mrow><annotation encoding="application/x-tex">T</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span></span></span></span>，要找到一种划分方式，使得横跨这两个子集（即一个端点在 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 中，另一个端点在 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi></mrow><annotation encoding="application/x-tex">T</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span></span></span></span> 中）的边的数量最少。</p>
+<p>最小割问题的输入输出如下：</p>
+<ul>
+<li><strong>输入</strong>：
+<ul>
+<li><code>edge_index</code>：每条边连接的顶点索引，形状为 <code>(B, 2, E)</code></li>
+</ul>
+</li>
+<li><strong>输出</strong>：
+<ul>
+<li><code>nodes_label</code>：每个节点所属的分割子集标签，如属于子集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 的为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>，属于子集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi></mrow><annotation encoding="application/x-tex">T</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span></span></span></span> 的为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>，形状为 <code>(B, V)</code></li>
+</ul>
+</li>
+<li><strong>目标值</strong>：割的大小（即横跨两个子集的边的数量），越小越好</li>
+</ul>
+<h3 id="生成方法-7">生成方法</h3>
+<p>和 MIS 一致。</p>
+<h2 id="MVC-Minimum-Vertex-Cover">MVC (Minimum Vertex Cover)</h2>
+<h3 id="问题描述-9">问题描述</h3>
+<p>最小顶点覆盖问题（MVC）可以描述为：给定一个无向图 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>=</mo><mo stretchy="false">(</mo><mi>V</mi><mo separator="true">,</mo><mi>E</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">G=(V,E)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">G</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mclose">)</span></span></span></span>，找一个最小的顶点子集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>⊂</mo><mi>V</mi></mrow><annotation encoding="application/x-tex">S \subset V</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⊂</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span></span></span></span>，使得图中的每一条边都至少有一个端点在这个子集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 中。</p>
+<p>MVC 问题的输入输出如下：</p>
+<ul>
+<li><strong>输入</strong>：
+<ul>
+<li><code>edge_index</code>：每条边连接的顶点索引，形状为 <code>(B, 2, E)</code></li>
+</ul>
+</li>
+<li><strong>输出</strong>：
+<ul>
+<li><code>nodes_label</code>：每个节点在解中是否被选中，选中为 1，未选中为 0，形状为 <code>(B, V)</code></li>
+</ul>
+</li>
+<li><strong>目标值</strong>：覆盖集中顶点的个数，越小越好</li>
+</ul>
+<p>事实上，一个顶点集合 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 是图 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi></mrow><annotation encoding="application/x-tex">G</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">G</span></span></span></span> 的一个顶点覆盖，当且仅当它的补集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo>∖</mo><mi>S</mi></mrow><annotation encoding="application/x-tex">V \setminus S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∖</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 是图 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi></mrow><annotation encoding="application/x-tex">G</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">G</span></span></span></span> 的一个独立集。因此，求解一个图的最小顶点覆盖问题，等价于求解它的最大独立集问题。</p>
+<h3 id="生成方法-8">生成方法</h3>
+<p>和 MIS 一致。</p>
+<h2 id="KP-Knapsack-Problem">KP (Knapsack Problem)</h2>
+<p>背包问题（KP）是著名的组合优化问题。</p>
+<h3 id="问题描述-10">问题描述</h3>
+<p>KP 问题可描述为：给定一系列物品，及每个物品的重量和价值，目标是<strong>挑选一部分物品放入背包，使得其总重量不超过背包容量的条件下，选择物品的总价值尽可能大</strong>。</p>
+<p>KP 问题的输入输出如下：</p>
+<ul>
+<li><strong>输入</strong>：
+<ul>
+<li><code>weights</code>：每个物品的重量，形状为 <code>(B, N)</code></li>
+<li><code>values</code>：每个物品的价值，形状为 <code>(B, N)</code></li>
+<li><code>capacities</code>：背包容量，形状为 <code>(B,)</code></li>
+</ul>
+</li>
+<li><strong>输出</strong>：
+<ul>
+<li><code>items_label</code>：每个物品是否被选中，形状为 <code>(B, N)</code></li>
+</ul>
+</li>
+<li><strong>目标值</strong>：被选中物品的总价值，越大越好</li>
+</ul>
+<h3 id="生成方法-9">生成方法</h3>
+<p>一般采用 uniform 分布，即 <code>weights</code>、<code>values</code> 和 <code>capacities</code> 都在某一范围内随机生成。</p>
+<h2 id="参考资料">参考资料</h2>
+<p>[1] <a target="_blank" rel="noopener" href="https://github.com/Thinklab-SJTU/ML4CO-Kit">https://github.com/Thinklab-SJTU/ML4CO-Kit</a><br>
+[2] W. Kool, H. Van Hoof, and M. Welling, “Attention, learn to solve routing problems!” <em>arXiv preprint arXiv:1803.08475</em>,2018.<br>
+[3] K. Xu, F. Boussemart, F. Hemery, and C. Lecoutre, “A simple model to generate hard satisfiable instances,” <em>arXiv preprint cs/0509032</em>, 2005.<br>
+[4] A.-L. Barabási and R. Albert, “Emergence of scaling in random networks,” <em>science</em>, vol. 286, no. 5439, pp. 509–512, 1999.<br>
+[5] P. Holme and B. J. Kim, “Growing scale-free networks with tunable clustering,” <em>Physical review E</em>, vol. 65, no. 2, p. 026107, 2002.<br>
+[6] D. J. Watts and S. H. Strogatz, “Collective dynamics of ‘small-world’networks,” <em>nature</em>, vol. 393, no. 6684, pp. 440–442, 1998.<br>
+[7] P. Erd6s and A. Rényi, “On the evolution of random graphs,” <em>Publ. Math. Inst. Hungar. Acad. Sci</em>, vol. 5, pp. 17–61, 1960.<br>
+[8] L. Jure, “Snap datasets: Stanford large network dataset collection,” <em>Retrieved December 2021 from <a target="_blank" rel="noopener" href="http://snap.stanford.edu/data">http://snap.stanford.edu/data</a></em>, 2014.<br>
+[9] D. Drakulic, S. Michel, and J.-M. Andreoli, “GOAL: A generalist combinatorial optimization agent learner,” in <em>The Thirteenth International Conference on Learning Representations</em>, 2025.</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/ML4CO/" class="category-chain-item">ML4CO</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/ML4CO/Basics/" class="category-chain-item">Basics</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AI/" class="print-no-link">#AI</a>
+      
+        <a href="/tags/ML4CO/" class="print-no-link">#ML4CO</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Common CO Problems in ML4CO</div>
+      <div>https://cny123222.github.io/2025/07/28/Common-CO-Problems-in-ML4CO/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Nuoyan Chen</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>July 28, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/07/28/Traditional-Solver-Baselines-in-ML4CO/" title="Traditional Solver Baselines in ML4CO">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Traditional Solver Baselines in ML4CO</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/07/27/Paradigm-1-Supervised-GNN-Decoding/" title="Paradigm 1: Supervised GNN + Decoding">
+                        <span class="hidden-mobile">Paradigm 1: Supervised GNN + Decoding</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"cny123222/cny123222.github.io","repo-id":"R_kgDOOFgnVw","category":"Announcements","category-id":"DIC_kwDOOFgnV84CnwXM","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"en"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

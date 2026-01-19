@@ -1,0 +1,954 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Nuoyan Chen">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="代码中看似花哨的 Tensor 操作常常让人摸不着头脑，但是恰恰是理解深度学习代码的关键。本文将详细介绍一些常见、有趣且实用的 Tensor 操作，项目代码（Jupyter Notebook）在这里。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fancy but Useful Tensor Operations">
+<meta property="og:url" content="https://cny123222.github.io/2025/08/14/Fancy-but-Useful-Tensor-Operations/index.html">
+<meta property="og:site_name" content="Nuoyan Chen&#39;s Blog">
+<meta property="og:description" content="代码中看似花哨的 Tensor 操作常常让人摸不着头脑，但是恰恰是理解深度学习代码的关键。本文将详细介绍一些常见、有趣且实用的 Tensor 操作，项目代码（Jupyter Notebook）在这里。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cny123222.github.io/img/ai.png">
+<meta property="article:published_time" content="2025-08-14T15:38:14.000Z">
+<meta property="article:modified_time" content="2025-08-25T02:14:36.739Z">
+<meta property="article:author" content="Nuoyan Chen">
+<meta property="article:tag" content="AI">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cny123222.github.io/img/ai.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Fancy but Useful Tensor Operations - Nuoyan Chen&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"cny123222.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 80vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Nuoyan Chen&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/nanjing.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.4)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Fancy but Useful Tensor Operations"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Nuoyan Chen
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-08-14 23:38" pubdate>
+          August 14, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.4k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          21 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="AI"
+        id="heading-0a40e3c91a3a55c9a37428c6d194d0e5" role="tab" data-toggle="collapse" href="#collapse-0a40e3c91a3a55c9a37428c6d194d0e5"
+        aria-expanded="true"
+      >
+        AI
+        <span class="list-group-count">(6)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-0a40e3c91a3a55c9a37428c6d194d0e5"
+           role="tabpanel" aria-labelledby="heading-0a40e3c91a3a55c9a37428c6d194d0e5">
+        
+        
+          
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/08/25/Batch-Layer-or-Instance-Normalization/" title="Batch, Layer, or Instance Normalization?"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Batch, Layer, or Instance Normalization?</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/08/14/Fancy-but-Useful-Tensor-Operations/" title="Fancy but Useful Tensor Operations"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">Fancy but Useful Tensor Operations</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/08/16/Pytorch-Tensors-A-Beginner-s-Guide/" title="Pytorch Tensors: A Beginner&#39;s Guide"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Pytorch Tensors: A Beginner&#39;s Guide</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/07/11/Reinforcement-Learning-Memo/" title="Reinforcement Learning Memo"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Reinforcement Learning Memo</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/11/%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B-1-%EF%BC%9A%E4%BB%8E%E7%90%86%E8%AE%BA%E5%87%BA%E5%8F%91/" title="扩散模型(1)：从理论出发"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">扩散模型(1)：从理论出发</span>
+        </a>
+      
+    
+  </div>
+
+          
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="自然语言处理"
+        id="heading-f48c43f5fd14bfd8a5057a0131e7aa20" role="tab" data-toggle="collapse" href="#collapse-f48c43f5fd14bfd8a5057a0131e7aa20"
+        aria-expanded="false"
+      >
+        自然语言处理
+        <span class="list-group-count">(1)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse " id="collapse-f48c43f5fd14bfd8a5057a0131e7aa20"
+           role="tabpanel" aria-labelledby="heading-f48c43f5fd14bfd8a5057a0131e7aa20">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2026/01/14/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%EF%BC%9A%E7%AC%94%E8%AE%B0%E6%95%B4%E7%90%86/" title="自然语言处理：笔记整理"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">自然语言处理：笔记整理</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Fancy but Useful Tensor Operations</h1>
+            
+              <p id="updated-time" class="note note-default" style="">
+                
+                  
+                    Last updated on August 25, 2025 am
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>代码中看似花哨的 Tensor 操作常常让人摸不着头脑，但是恰恰是理解深度学习代码的关键。本文将详细介绍一些<strong>常见、有趣且实用的 Tensor 操作</strong>，项目代码（Jupyter Notebook）在<a target="_blank" rel="noopener" href="https://github.com/cny123222/A-Living-Guide-to-ML4CO/blob/main/tensor2.ipynb">这里</a>。</p>
+<span id="more"></span>
+<h2 id="引言">引言</h2>
+<p>笔者之前写过一稿这篇博客，但逐渐写成了 Pytorch Tensor 教程，于是将其放在了 <a href="https://cny123222.github.io/2025/08/16/Pytorch-Tensors-A-Beginner-s-Guide/">Pytorch Tensors: A Beginner’s Guide</a> 这里，其中<strong>系统介绍了 Tensor 的基础操作</strong>，包括高级索引、变形等比较重点的操作。<strong>这篇博客是收集向的</strong>，将会逐步收集我看代码（特别是 ML4CO 代码）的时候碰到的有趣且有用的 Tensor 操作，还有一些之前的博客没放进去的常用操作。</p>
+<h2 id="增减维度：squeeze-unsqueeze">增减维度：squeeze &amp; unsqueeze</h2>
+<p>在 PyTorch 中，我们经常需要调整张量的形状以适应不同函数或神经网络层的输入要求。其中<code>.squeeze()</code> 和 <code>.unsqueeze()</code> 是<strong>用于增减维度</strong>的常用操作，它们分别用于<strong>添加新维度</strong>和<strong>移除多余维度</strong>。</p>
+<p><code>tensor.unsqueeze(dim)</code> 用于<strong>在指定的维度上增加一个大小为 1 的新维度</strong>。参数 <code>dim</code> 指定了新维度的插入位置。该操作返回一个视图 (View)，共享内存。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs python">x0 = torch.tensor([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>])<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Original tensor:&quot;</span>)<br><span class="hljs-built_in">print</span>(x0, x0.shape)<br><br><span class="hljs-comment"># Add a new dimension at position 0</span><br>x1 = x0.unsqueeze(<span class="hljs-number">0</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\nAdd a new dimension at position 0:&quot;</span>)<br><span class="hljs-built_in">print</span>(x1, x1.shape)<br><br><span class="hljs-comment"># Add a new dimension at position 1</span><br>x2 = x0.unsqueeze(<span class="hljs-number">1</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\nAdd a new dimension at position 1:&quot;</span>)<br><span class="hljs-built_in">print</span>(x2, x2.shape)<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Original tensor:<br>tensor([1, 2, 3]) torch.Size([3])<br><br>Add a new dimension at position 0:<br>tensor([[1, 2, 3]]) torch.Size([1, 3])<br><br>Add a new dimension at position 1:<br>tensor([[1],<br>        [2],<br>        [3]]) torch.Size([3, 1])<br></code></pre></td></tr></table></figure>
+<p><code>tensor.squeeze(dim=None)</code> 用于<strong>移除 Tensor 中大小为 1 的维度</strong>。若不提供 <code>dim</code> 参数，会移除所有大小为 1 的维度；若提供 <code>dim</code> 参数，它只会检查并移除指定的维度（如果大小为 1）。该操作返回一个视图 (View)，共享内存。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python">y0 = torch.rand(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">5</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Original tensor shape:&quot;</span>, y0.shape)<br><br><span class="hljs-comment"># Remove all dimensions of size 1</span><br>y1 = y0.squeeze()<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\nShape after removing all dimensions of size 1:&quot;</span>, y1.shape)<br><br><span class="hljs-comment"># Remove dimension at position 0</span><br>y2 = y0.squeeze(<span class="hljs-number">0</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\nShape after removing dim=0:&quot;</span>, y2.shape)<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Original tensor shape: torch.Size([1, 3, 1, 5])<br><br>Shape after removing all dimensions of size 1: torch.Size([3, 5])<br><br>Shape after removing dim=0: torch.Size([3, 1, 5])<br></code></pre></td></tr></table></figure>
+<h2 id="合并张量：cat-stack">合并张量：cat &amp; stack</h2>
+<p>当我们需要<strong>将多个张量合并成一个</strong>时，PyTorch 提供了两个核心函数：<code>torch.cat()</code> (concatenate) 和 <code>torch.stack()</code>。</p>
+<p><code>torch.cat(tensors, dim=0)</code> 用于将一系列 Tensor <strong>沿着一个已经存在的维度</strong>进行连接，其中 <code>tensors</code> 是 Tensor 的列表或元组，<code>dim</code> 指定沿着哪个维度进行拼接。除了被连接的维度可以不同，<strong>其他维度的大小必须保持一致</strong>。注意，<code>cat()</code> 操作<strong>不会增加 Tensor 的维度</strong>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs python">t1 = torch.tensor([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>],<br>                   [<span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>]])<br>t2 = torch.tensor([[<span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>],<br>                   [<span class="hljs-number">10</span>, <span class="hljs-number">11</span>, <span class="hljs-number">12</span>]])<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Original tensors:&quot;</span>)<br><span class="hljs-built_in">print</span>(t1, t1.shape)<br><span class="hljs-built_in">print</span>(t2, t2.shape)<br><br><span class="hljs-comment"># Concatenate t1 and t2 along dimension 0</span><br>t3 = torch.cat((t1, t2), dim=<span class="hljs-number">0</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\nConcatenated on dim=0:&quot;</span>)<br><span class="hljs-built_in">print</span>(t3, t3.shape)<br><br><span class="hljs-comment"># Concatenate t1 and t2 along dimension 1</span><br>t4 = torch.cat((t1, t2), dim=<span class="hljs-number">1</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\nConcatenated on dim=1:&quot;</span>)<br><span class="hljs-built_in">print</span>(t4, t4.shape)<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Original tensors:<br>tensor([[1, 2, 3],<br>        [4, 5, 6]]) torch.Size([2, 3])<br>tensor([[ 7,  8,  9],<br>        [10, 11, 12]]) torch.Size([2, 3])<br><br>Stacked on dim=0:<br>tensor([[[ 1,  2,  3],<br>         [ 4,  5,  6]],<br><br>        [[ 7,  8,  9],<br>         [10, 11, 12]]]) torch.Size([2, 2, 3])<br><br>Stacked on dim=1:<br>tensor([[[ 1,  2,  3],<br>         [ 7,  8,  9]],<br><br>        [[ 4,  5,  6],<br>         [10, 11, 12]]]) torch.Size([2, 2, 3])<br></code></pre></td></tr></table></figure>
+<p>注意到，两个形状 <code>(2, 3)</code> 的 Tensor，在 <code>dim=0</code> 上拼接，第 0 维大小相加，其余维度大小不变，得到形状 <code>(4, 3)</code> 的 Tensor；在 <code>dim=1</code> 上拼接，第 1 维大小相加，其余维度大小不变，得到形状 <code>(2, 6)</code> 的 Tensor。</p>
+<p><code>torch.stack(tensors, dim=0)</code> 用于将一系列 Tensor <strong>沿着一个全新的维度</strong>进行堆叠，其中 <code>tensors</code> 是 Tensor 的列表或元组，<code>dim</code> 指定新维度插入的位置。<code>stack()</code> 要求<strong>所有待堆叠的张量形状必须完全相同</strong>。注意，<code>stack()</code> 操作<strong>会增加一个新的维度</strong>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs python">t1 = torch.tensor([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>],<br>                   [<span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>],<br>                   [<span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>]])<br>t2 = torch.tensor([[<span class="hljs-number">10</span>, <span class="hljs-number">11</span>, <span class="hljs-number">12</span>],<br>                   [<span class="hljs-number">13</span>, <span class="hljs-number">14</span>, <span class="hljs-number">15</span>],<br>                   [<span class="hljs-number">16</span>, <span class="hljs-number">17</span>, <span class="hljs-number">18</span>]])<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Original tensors:&quot;</span>)<br><span class="hljs-built_in">print</span>(t1, t1.shape)<br><span class="hljs-built_in">print</span>(t2, t2.shape)<br><br><span class="hljs-comment"># Stack t1 and t2 along dimension 0</span><br>t3 = torch.stack((t1, t2), dim=<span class="hljs-number">0</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\nStacked on dim=0:&quot;</span>)<br><span class="hljs-built_in">print</span>(t3, t3.shape)<br><br><span class="hljs-comment"># Stack t1 and t2 along dimension 1</span><br>t4 = torch.stack((t1, t2), dim=<span class="hljs-number">1</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\nStacked on dim=1:&quot;</span>)<br><span class="hljs-built_in">print</span>(t4, t4.shape)<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Original tensors:<br>tensor([[1, 2, 3],<br>        [4, 5, 6],<br>        [7, 8, 9]]) torch.Size([3, 3])<br>tensor([[10, 11, 12],<br>        [13, 14, 15],<br>        [16, 17, 18]]) torch.Size([3, 3])<br><br>Stacked on dim=0:<br>tensor([[[ 1,  2,  3],<br>         [ 4,  5,  6],<br>         [ 7,  8,  9]],<br><br>        [[10, 11, 12],<br>         [13, 14, 15],<br>         [16, 17, 18]]]) torch.Size([2, 3, 3])<br><br>Stacked on dim=1:<br>tensor([[[ 1,  2,  3],<br>         [10, 11, 12]],<br><br>        [[ 4,  5,  6],<br>         [13, 14, 15]],<br><br>        [[ 7,  8,  9],<br>         [16, 17, 18]]]) torch.Size([3, 2, 3])<br></code></pre></td></tr></table></figure>
+<p>注意到，两个形状 <code>(3, 3)</code> 的 Tensor，在 <code>dim=0</code> 上堆叠，会在第 0 维插入一个大小为 2 的维度，其余维度不变，得到形状 <code>(2, 3, 3)</code> 的 Tensor；在 <code>dim=1</code> 上堆叠，会在第 1 维插入一个大小为 2 的维度，其余维度不变，得到形状 <code>(3, 2, 3)</code> 的 Tensor。</p>
+<h2 id="扩展张量：expand-repeat">扩展张量：expand &amp; repeat</h2>
+<p>我们经常需要<strong>将一个小 Tensor 复制多次</strong>以匹配另一个大 Tensor 的形状，从而进行逐元素计算。PyTorch 提供了两种主要方法来实现这一目标：<code>expand</code> 和 <code>repeat</code>。它们得到的结果类似，但工作原理和性能开销不同。</p>
+<p><code>tensor.expand(*sizes)</code> <strong>不会分配新内存来存储数据</strong>，而是创建一个视图（View），即输出 Tensor 和原始 Tensor 共享内存。它<strong>只能扩展大小为 1 的维度</strong>，不能扩展大小大于 1 的维度。在目标形状参数中，<code>-1</code> 表示保持该维度的大小不变。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs python">x0 = torch.tensor([[<span class="hljs-number">1</span>], [<span class="hljs-number">2</span>], [<span class="hljs-number">3</span>]]) <span class="hljs-comment"># shape: (3, 1)</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Original tensor:&quot;</span>)<br><span class="hljs-built_in">print</span>(x0, x0.shape)<br><br><span class="hljs-comment"># Expand the dimension of size 1 to size 4.</span><br>x1 = x0.expand(<span class="hljs-number">3</span>, <span class="hljs-number">4</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\nExpanded tensor:&quot;</span>)<br><span class="hljs-built_in">print</span>(x1, x1.shape)<br><br><span class="hljs-comment"># Modify an element in the original tensor</span><br>x0[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">100</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\nExpanded tensor after modifying original tensor:&quot;</span>)<br><span class="hljs-built_in">print</span>(x1, x1.shape)<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Original tensor:<br>tensor([[1],<br>        [2],<br>        [3]]) torch.Size([3, 1])<br><br>Expanded tensor:<br>tensor([[1, 1, 1, 1],<br>        [2, 2, 2, 2],<br>        [3, 3, 3, 3]]) torch.Size([3, 4])<br><br>Expanded tensor after modifying original tensor:<br>tensor([[100, 100, 100, 100],<br>        [  2,   2,   2,   2],<br>        [  3,   3,   3,   3]]) torch.Size([3, 4])<br></code></pre></td></tr></table></figure>
+<p><code>tensor.repeat(*repeats)</code> <strong>会分配新的内存</strong>，即新的 Tensor 拥有自己独立的数据存储。它的参数是重复的次数，而不是目标形状。它可以重复任何大小的维度，不局限于大小为 1 的维度。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs python">x0 = torch.tensor([[<span class="hljs-number">1</span>], [<span class="hljs-number">2</span>], [<span class="hljs-number">3</span>]]) <span class="hljs-comment"># shape: (3, 1)</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Original tensor:&quot;</span>)<br><span class="hljs-built_in">print</span>(x0, x0.shape)<br><br><span class="hljs-comment"># Repeat the tensor 3 times along dimension 1</span><br>x1 = x0.repeat(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\nRepeated tensor:&quot;</span>)<br><span class="hljs-built_in">print</span>(x1, x1.shape)<br><br><span class="hljs-comment"># Modify an element in the original tensor</span><br>x0[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">100</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\nRepeated tensor after modifying original tensor:&quot;</span>)<br><span class="hljs-built_in">print</span>(x1, x1.shape)<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Original tensor:<br>tensor([[1],<br>        [2],<br>        [3]]) torch.Size([3, 1])<br><br>Repeated tensor:<br>tensor([[1, 1, 1],<br>        [2, 2, 2],<br>        [3, 3, 3]]) torch.Size([3, 3])<br><br>Repeated tensor after modifying original tensor:<br>tensor([[1, 1, 1],<br>        [2, 2, 2],<br>        [3, 3, 3]]) torch.Size([3, 3])<br></code></pre></td></tr></table></figure>
+<h2 id="高级索引：gather-scatter">高级索引：gather &amp; scatter_</h2>
+<p><code>gather()</code> 和 <code>scatter_()</code> 属于高级索引操作，它们能让我们<strong>根据一个索引张量（index）来并行地、选择性地从源张量（input 或 src）中取值或放值</strong>。</p>
+<p>首先，形象地理解一下这两个操作：</p>
+<p><code>torch.gather</code> 好比是“<strong>按图索骥</strong>”。想象一个巨大的仓库（<code>input</code>），里面有很多排货架。你手上有一张购物清单（<code>index</code>），清单上的每一项都精确地告诉你“在第几排的第几个位置取一个货物”。<code>gather()</code> 根据这张清单，并行地把所有需要的货物取出来，组成一个新的张量。</p>
+<p><code>tensor.scatter_()</code> 好比是“<strong>对号入座</strong>”。现在反过来，你有一批新货物（<code>src</code>）和一张入库单（<code>index</code>）。入库单告诉你应该把这批货物分别放到仓库的哪些指定位置上。<code>scatter_()</code> 将你手中的货物精准地“散布”到仓库的指定位置，从而更新仓库里的货物。</p>
+<p>接着，我们重新结合例子严谨地解释一下：</p>
+<p><code>torch.gather(input, dim, index)</code> 的作用是：<strong>沿着指定的维度 <code>dim</code>，根据 <code>index</code> 张量中的值，从 <code>input</code> 张量中选取元素</strong>。注意，输出张量 <code>output</code> 的形状与 <code>index</code> 张量的形状完全相同；<code>input</code> 和 <code>index</code> 的维度数量必须相同；除了要操作的维度 <code>dim</code> 之外，<code>input</code> 和 <code>index</code> 在其他维度上的大小必须一致。</p>
+<p>我们以强化学习中的 Q 值查询为例。假设我们有一个模型，它对一个批次（<code>batch_size=2</code>）中的每个状态，都预测了 4 个可能动作的 Q 值。我们想从 <code>q_values</code> 中抽取出我们实际采取的动作对应的 Q 值。这时就轮到 <code>gather()</code> 出场了。注意，我们在 action 维度（即 <code>dim=1</code>）上进行索引。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># Assume batch_size=2, num_actions=4</span><br><span class="hljs-comment"># Each row represents a state, and each column represents the Q-value for an action.</span><br>q_values = torch.tensor([[<span class="hljs-number">0.1</span>, <span class="hljs-number">0.5</span>, <span class="hljs-number">0.2</span>, <span class="hljs-number">0.2</span>],  <span class="hljs-comment"># Q-values for state 1</span><br>                         [<span class="hljs-number">0.8</span>, <span class="hljs-number">0.1</span>, <span class="hljs-number">0.05</span>, <span class="hljs-number">0.05</span>]]) <span class="hljs-comment"># Q-values for state 2</span><br><br><span class="hljs-comment"># Assume these are the actions we actually took for each state</span><br><span class="hljs-comment"># (action 1 for the first state, action 0 for the second state).</span><br><span class="hljs-comment"># Note the shape is (2, 1) to match the dimensions needed for gather.</span><br>actions = torch.tensor([[<span class="hljs-number">1</span>], [<span class="hljs-number">0</span>]])<br><br><span class="hljs-comment"># dim=1 means we are indexing along the action dimension.</span><br><span class="hljs-comment"># index==actions tells gather which column to pick for each row.</span><br><span class="hljs-comment"># For row 0, it will pick the element at index 1 (which is 0.5).</span><br><span class="hljs-comment"># For row 1, it will pick the element at index 0 (which is 0.8).</span><br>selected_q_values = torch.gather(q_values, dim=<span class="hljs-number">1</span>, index=actions)<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Q-Values:&quot;</span>)<br><span class="hljs-built_in">print</span>(q_values, q_values.shape)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Actions:&quot;</span>)<br><span class="hljs-built_in">print</span>(actions, actions.shape)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\nGathered Q-Values:&quot;</span>)<br><span class="hljs-built_in">print</span>(selected_q_values, selected_q_values.shape)<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Q-Values:<br>tensor([[0.1000, 0.5000, 0.2000, 0.2000],<br>        [0.8000, 0.1000, 0.0500, 0.0500]]) torch.Size([2, 4])<br>Actions:<br>tensor([[1],<br>        [0]]) torch.Size([2, 1])<br><br>Gathered Q-Values:<br>tensor([[0.5000],<br>        [0.8000]]) torch.Size([2, 1])<br></code></pre></td></tr></table></figure>
+<p><code>tensor.scatter_(dim, index, src)</code>（<code>src</code> 是张量）或 <code>tensor.scatter_(dim, index, value)</code>（<code>value</code> 是标量） 是 <code>gather()</code> 的逆操作。它使用 <code>index</code> 张量来定位，将源（<code>src</code> 张量或 <code>value</code> 标量）中的数据写入到原张量中。注意，<strong>函数名末尾的下划线 <code>_</code> 表示这是一个 in-place 操作</strong>，即它会直接修改调用它的那个张量。PyTorch 也提供了一个非 in-place 的 scatter 版本，但 scatter_ 在实践中更为普遍。注意，<code>index</code> 张量的维度数量必须和原张量的维度数量相同；如果使用 <code>src</code> 张量，<code>src</code> 的形状必须和 <code>index</code> 的形状完全相同。</p>
+<p>我们以类别标签转换为 One-Hot 编码为例。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># Assume batch_size=4, num_classes=5</span><br><span class="hljs-comment"># Class labels</span><br>labels = torch.tensor([<span class="hljs-number">1</span>, <span class="hljs-number">4</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>])<br><br><span class="hljs-comment"># 1. Create a base tensor of zeros with shape (batch_size, num_classes)</span><br>one_hot = torch.zeros(<span class="hljs-number">4</span>, <span class="hljs-number">5</span>)<br><br><span class="hljs-comment"># 2. Prepare the index and src arguments</span><br><span class="hljs-comment"># The index tensor needs to have the same number of dimensions as the</span><br><span class="hljs-comment"># one_hot tensor, so we use unsqueeze to add a dimension.</span><br><span class="hljs-comment"># labels.unsqueeze(1) gives it the shape (4, 1).</span><br>labels = labels.unsqueeze(<span class="hljs-number">1</span>)<br>value = <span class="hljs-number">1.0</span> <span class="hljs-comment"># The value we want to fill in</span><br><br><span class="hljs-comment"># 3. Use scatter_ to perform the one-hot encoding</span><br><span class="hljs-comment"># dim=1 means we will be scattering values along the columns,</span><br><span class="hljs-comment"># at the positions specified by &#x27;index&#x27;.</span><br>one_hot.scatter_(dim=<span class="hljs-number">1</span>, index=labels, value=value)<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Labels:&quot;</span>)<br><span class="hljs-built_in">print</span>(labels, labels.shape)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\nOne-Hot Encoding:&quot;</span>)<br><span class="hljs-built_in">print</span>(one_hot, one_hot.shape)<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Labels:<br>tensor([[1],<br>        [4],<br>        [2],<br>        [0]]) torch.Size([4, 1])<br><br>One-Hot Encoding:<br>tensor([[0., 1., 0., 0., 0.],<br>        [0., 0., 0., 0., 1.],<br>        [0., 0., 1., 0., 0.],<br>        [1., 0., 0., 0., 0.]]) torch.Size([4, 5])<br></code></pre></td></tr></table></figure>
+<h2 id="持续更新中…">持续更新中…</h2>
+<h2 id="参考资料">参考资料</h2>
+<p>[1] <a target="_blank" rel="noopener" href="https://docs.pytorch.org/docs/stable/index.html">https://docs.pytorch.org/docs/stable/index.html</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/AI/" class="category-chain-item">AI</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AI/" class="print-no-link">#AI</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Fancy but Useful Tensor Operations</div>
+      <div>https://cny123222.github.io/2025/08/14/Fancy-but-Useful-Tensor-Operations/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Nuoyan Chen</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>August 14, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/08/16/Pytorch-Tensors-A-Beginner-s-Guide/" title="Pytorch Tensors: A Beginner&#39;s Guide">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Pytorch Tensors: A Beginner&#39;s Guide</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/08/01/Paradigm-2-Autoregressive-Transformer-RL/" title="Paradigm 2: Autoregressive Transformer + RL">
+                        <span class="hidden-mobile">Paradigm 2: Autoregressive Transformer + RL</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"cny123222/cny123222.github.io","repo-id":"R_kgDOOFgnVw","category":"Announcements","category-id":"DIC_kwDOOFgnV84CnwXM","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"en"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

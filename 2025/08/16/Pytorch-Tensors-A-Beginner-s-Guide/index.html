@@ -1,0 +1,1092 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Nuoyan Chen">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="本文是一篇系统性的 Pytorch Tensor 入门教程，将介绍 Tensor 的基础及核心操作，包含了基础语法、索引操作、变形操作、计算操作等。其中高级索引和变形操作是理解 Tensor 操作的重难点。本文附有项目代码（Jupyter Notebook）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pytorch Tensors: A Beginner&#39;s Guide">
+<meta property="og:url" content="https://cny123222.github.io/2025/08/16/Pytorch-Tensors-A-Beginner-s-Guide/index.html">
+<meta property="og:site_name" content="Nuoyan Chen&#39;s Blog">
+<meta property="og:description" content="本文是一篇系统性的 Pytorch Tensor 入门教程，将介绍 Tensor 的基础及核心操作，包含了基础语法、索引操作、变形操作、计算操作等。其中高级索引和变形操作是理解 Tensor 操作的重难点。本文附有项目代码（Jupyter Notebook）。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cny123222.github.io/img/ai.png">
+<meta property="article:published_time" content="2025-08-16T05:12:38.000Z">
+<meta property="article:modified_time" content="2025-08-25T02:14:42.765Z">
+<meta property="article:author" content="Nuoyan Chen">
+<meta property="article:tag" content="AI">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cny123222.github.io/img/ai.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Pytorch Tensors: A Beginner&#39;s Guide - Nuoyan Chen&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"cny123222.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 80vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Nuoyan Chen&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/nanjing.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.4)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Pytorch Tensors: A Beginner&#39;s Guide"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Nuoyan Chen
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-08-16 13:12" pubdate>
+          August 16, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.4k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          45 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="AI"
+        id="heading-0a40e3c91a3a55c9a37428c6d194d0e5" role="tab" data-toggle="collapse" href="#collapse-0a40e3c91a3a55c9a37428c6d194d0e5"
+        aria-expanded="true"
+      >
+        AI
+        <span class="list-group-count">(6)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-0a40e3c91a3a55c9a37428c6d194d0e5"
+           role="tabpanel" aria-labelledby="heading-0a40e3c91a3a55c9a37428c6d194d0e5">
+        
+        
+          
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/08/25/Batch-Layer-or-Instance-Normalization/" title="Batch, Layer, or Instance Normalization?"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Batch, Layer, or Instance Normalization?</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/08/14/Fancy-but-Useful-Tensor-Operations/" title="Fancy but Useful Tensor Operations"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Fancy but Useful Tensor Operations</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/08/16/Pytorch-Tensors-A-Beginner-s-Guide/" title="Pytorch Tensors: A Beginner&#39;s Guide"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">Pytorch Tensors: A Beginner&#39;s Guide</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/07/11/Reinforcement-Learning-Memo/" title="Reinforcement Learning Memo"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Reinforcement Learning Memo</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/11/%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B-1-%EF%BC%9A%E4%BB%8E%E7%90%86%E8%AE%BA%E5%87%BA%E5%8F%91/" title="扩散模型(1)：从理论出发"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">扩散模型(1)：从理论出发</span>
+        </a>
+      
+    
+  </div>
+
+          
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="自然语言处理"
+        id="heading-f48c43f5fd14bfd8a5057a0131e7aa20" role="tab" data-toggle="collapse" href="#collapse-f48c43f5fd14bfd8a5057a0131e7aa20"
+        aria-expanded="false"
+      >
+        自然语言处理
+        <span class="list-group-count">(1)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse " id="collapse-f48c43f5fd14bfd8a5057a0131e7aa20"
+           role="tabpanel" aria-labelledby="heading-f48c43f5fd14bfd8a5057a0131e7aa20">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2026/01/14/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%EF%BC%9A%E7%AC%94%E8%AE%B0%E6%95%B4%E7%90%86/" title="自然语言处理：笔记整理"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">自然语言处理：笔记整理</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Pytorch Tensors: A Beginner&#39;s Guide</h1>
+            
+              <p id="updated-time" class="note note-default" style="">
+                
+                  
+                    Last updated on August 25, 2025 am
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>本文是一篇系统性的 Pytorch Tensor 入门教程，将介绍 Tensor 的基础及核心操作，包含了基础语法、索引操作、变形操作、计算操作等。其中高级索引和变形操作是理解 Tensor 操作的重难点。本文附有<a target="_blank" rel="noopener" href="https://github.com/cny123222/A-Living-Guide-to-ML4CO/blob/main/tensor.ipynb">项目代码（Jupyter Notebook）</a>。</p>
+<span id="more"></span>
+<h2 id="引言">引言</h2>
+<p>Tensor 是 Pytorch 基础的数据类型，其操作种类繁多，不易想象，但对理解代码逻辑至关重要。本文将从易至难，详细阐释其中较为常用的一些操作，帮助大家理解。</p>
+<p>本文参考了密歇根大学 EECS 498-007 / 598-005: Deep Learning for Computer Vision 课程的 Assignment 1 [2] 中介绍 Pytorch 的部分。</p>
+<h2 id="基础语法">基础语法</h2>
+<p>其实 Pytorch 的 Tensor 和 NumPy 类似，都是表示多维矩阵的，但是增加了 <strong>GPU 加速和自动求梯度</strong>的功能，专为深度学习打造。</p>
+<h3 id="创建操作">创建操作</h3>
+<h4 id="与-NumPy-数组的转换">与 NumPy 数组的转换</h4>
+<p>直接创建 Tensor 通常要<strong>从 Python 列表或 NumPy 数组</strong>转换。这里介绍较为常用的<strong>与 NumPy 数组相互转换</strong>的语法。</p>
+<p>从 NumPy 数组到 Tensor 有两种方法：</p>
+<ul>
+<li><code>torch.from_numpy()</code>：这种方法比较高效，因为避免了数据复制，而是使用内存共享。这意味着，修改其中一个，另一个会跟着改变。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 使用 `torch.from_numpy()` (共享内存)</span><br>a_array = np.array([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>])<br>a_tensor = torch.from_numpy(a_array)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Original PyTorch tensor:&quot;</span>, a_tensor)<br>a_array[<span class="hljs-number">0</span>] = <span class="hljs-number">10</span>  <span class="hljs-comment"># 修改 NumPy 数组</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Tensor after modifying NumPy array:&quot;</span>, a_tensor)<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Original PyTorch tensor: tensor([1, 2, 3])<br>Tensor after modifying NumPy array: tensor([10,  2,  3])<br></code></pre></td></tr></table></figure>
+<ul>
+<li><code>torch.tensor()</code>：这种方法会创建一个新的数据副本，不共享内存。因此，存在数据复制开销，但是安全、独立。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 使用 `torch.tensor()` (复制内存)</span><br>b_array = np.array([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>]])<br>b_tensor = torch.tensor(b_array)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Original PyTorch tensor:&quot;</span>)<br><span class="hljs-built_in">print</span>(b_tensor)<br>b_array[<span class="hljs-number">0</span>, <span class="hljs-number">0</span>] = <span class="hljs-number">10</span>  <span class="hljs-comment"># 修改 NumPy 数组</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Tensor after modifying NumPy array:&quot;</span>)<br><span class="hljs-built_in">print</span>(b_tensor)<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Original PyTorch tensor:<br>tensor([[1, 2],<br>        [3, 4]])<br>Tensor after modifying NumPy array:<br>tensor([[1, 2],<br>        [3, 4]])<br></code></pre></td></tr></table></figure>
+<p>我们顺便介绍从 Tensor 到 NumPy 数组的转换，一般使用 <code>.numpy()</code> 方法。但注意：</p>
+<ul>
+<li><strong>内存共享</strong>：<code>.numpy()</code> 方法会使用共享内存，即指向内存中同一块地址。如果不希望它们相互影响，可以使用 <code>.clone().numpy()</code>。</li>
+<li><strong>必须在 CPU 上</strong>：NumPy 数组是基于 CPU 内存的。如果我们的 Tensor 存储在 GPU 上，直接调用 <code>.numpy()</code> 会报错，必须先用 <code>.cpu()</code> 方法把它移回 CPU。</li>
+</ul>
+<p>还要注意，如果一个 Tensor 需要计算梯度，那么在转换为 NumPy 数组之前，需要<strong>先使用 <code>.detach()</code> 方法</strong>，使得其脱离计算图。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 从 Tensor 转换为 NumPy 数组</span><br>c_tensor = torch.tensor([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>], device=<span class="hljs-string">&#x27;cuda&#x27;</span>)  <span class="hljs-comment"># 创建一个在 GPU 上的 Tensor</span><br><span class="hljs-keyword">try</span>: <span class="hljs-comment"># GPU 上的 Tensor 不能直接转换为 NumPy 数组</span><br>    c_array = c_tensor.numpy()<br><span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:<br>    <span class="hljs-built_in">print</span>(e)<br>c_array = c_tensor.cpu().numpy()<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;NumPy array from CPU tensor:&quot;</span>, c_array)<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">can&#x27;t convert cuda:0 device type tensor to numpy. Use Tensor.cpu() to copy the tensor to host memory first.<br>NumPy array from CPU tensor: [1 2 3]<br></code></pre></td></tr></table></figure>
+<h4 id="特殊-Tensor-构造">特殊 Tensor 构造</h4>
+<p>我们常常需要<strong>构造全 0、全 1、随机</strong>的 Tensor。</p>
+<ul>
+<li><code>torch.zeros()</code>：构造全 0 的 Tensor</li>
+<li><code>torch.ones()</code>：构造全 1 的 Tensor</li>
+<li><code>torch.rand()</code>：构造 [0,1] 均匀随机数的 Tensor</li>
+</ul>
+<p>当然，还可以<strong>由现有的 Tensor 进行类似构造</strong>，如 <code>torch.zeros_like()</code> 可以创建和原 Tensor 形状相同的全 0 Tensor。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python">a = torch.rand(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Random tensor a:&quot;</span>)<br><span class="hljs-built_in">print</span>(a)<br><br>b = torch.zeros_like(a)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\nTensor b with same shape as a:&quot;</span>)<br><span class="hljs-built_in">print</span>(b)<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Random tensor a:<br>tensor([[0.8838, 0.2225, 0.5416],<br>        [0.0396, 0.2708, 0.4012]])<br><br>Tensor b with same shape as a:<br>tensor([[0., 0., 0.],<br>        [0., 0., 0.]])<br></code></pre></td></tr></table></figure>
+<p>还有一些常用的构造函数。</p>
+<ul>
+<li><code>torch.arange()</code>：类似 Python 的 <code>range</code>，返回一个 <code>[start, end)</code>，从 <code>start</code> 开始，步长为 <code>step</code> 的一维 Tensor。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python">a = torch.arange(<span class="hljs-number">1</span>, <span class="hljs-number">6</span>, <span class="hljs-number">2</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Tensor a:&quot;</span>, a)<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Tensor a: tensor([1, 3, 5])<br></code></pre></td></tr></table></figure>
+<h3 id="基本属性">基本属性</h3>
+<ul>
+<li><code>.dim()</code>：返回 Tensor 的维度</li>
+<li><code>.shape</code>：返回 Tensor 的形状</li>
+<li><code>.shape[i]</code>：返回第 i 个维度的大小</li>
+<li><code>.dtype</code>：返回数据类型</li>
+<li><code>.device</code>：返回所在设备</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs python">a = torch.zeros(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, device=<span class="hljs-string">&#x27;cuda&#x27;</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Rank of a:&quot;</span>, a.dim())<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Shape of a:&quot;</span>, a.shape)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Shape of dim 1:&quot;</span>, a.shape[<span class="hljs-number">1</span>])<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Datatype of a:&quot;</span>, a.dtype)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Device of a:&quot;</span>, a.device)<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Rank of a: 3<br>Shape of a: torch.Size([2, 3, 4])<br>Shape of dim 1: 3<br>Datatype of a: torch.float32<br>Device of a: cuda:0<br></code></pre></td></tr></table></figure>
+<h3 id="数据类型及设备">数据类型及设备</h3>
+<p>在创建 Tensor 时，可以用 <code>dtype</code> 参数<strong>指定数据类型</strong>，用 <code>device</code> 参数<strong>指定所在设备</strong>。一般默认的数据类型是 <code>torch.float32</code>，默认的设备是 <code>cpu</code>。</p>
+<p>常用的数据类型有：</p>
+<ul>
+<li><code>torch.float32</code>：标准的浮点类型，<strong>网络参数默认采用</strong>，是 Pytorch 中最常见的数据类型，可以使用 <code>.float()</code> 转换到该数据类型。</li>
+<li><code>torch.int64</code>：通常用于存储索引，可以使用 <code>.long()</code> 转换到该数据类型。</li>
+<li><code>torch.bool</code>：用于存储布尔值，可以使用 <code>.bool()</code> 转换到该数据类型。</li>
+<li><code>torch.float16</code>：用于混合精度训练。</li>
+</ul>
+<p>对于设备转换，可以用 <code>.cpu()</code> 和 <code>.cuda()</code> 在 CPU 和 GPU 之间搬运数据。</p>
+<p>当然，<strong>通用的转化方式是 <code>.to()</code></strong>，可以指定任意的数据类型或设备。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs python">x0 = torch.zeros(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, dtype=torch.float16, device=<span class="hljs-string">&#x27;cpu&#x27;</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;x0.dtype:&quot;</span>, x0.dtype)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;x0.device:&quot;</span>, x0.device)<br>x1 = x0.<span class="hljs-built_in">float</span>()<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;x1.dtype:&quot;</span>, x1.dtype)<br>x2 = x0.long()<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;x2.dtype:&quot;</span>, x2.dtype)<br>x3 = x0.to(torch.int32)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;x3.dtype:&quot;</span>, x3.dtype)<br>x4 = x0.to(<span class="hljs-string">&quot;cuda&quot;</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;x4.device:&quot;</span>, x4.device)<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Datatype of x0: torch.float16<br>Device of x0: cpu<br>Datatype of x1: torch.float32<br>Datatype of x2: torch.int64<br>Datatype of x3: torch.int32<br>Device of x4: cuda:0<br></code></pre></td></tr></table></figure>
+<p>注意，Pytorch 中的创建和计算操作（如使用 <code>torch.zeros_like()</code>、<code>.add()</code> 等），得到的新 Tensor 都会<strong>默认继承原有 Tensor 的数据类型和设备</strong>。</p>
+<h2 id="索引操作">索引操作</h2>
+<h3 id="单元素索引">单元素索引</h3>
+<p>最简单的单元素索引大家都会，但注意直接索引返回的是 Pytorch 标量，要<strong>调用 <code>.item()</code> 方法转换到 Python 标量</strong>。单元素索引可以直接修改元素。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python">a = torch.tensor([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>]])<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;a[0, 1]:&quot;</span>, a[<span class="hljs-number">0</span>, <span class="hljs-number">1</span>])<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;a[0, 1].item():&quot;</span>, a[<span class="hljs-number">0</span>, <span class="hljs-number">1</span>].item())<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">a[0, 1]: tensor(2)<br>a[0, 1].item(): 2<br></code></pre></td></tr></table></figure>
+<h3 id="切片索引">切片索引</h3>
+<p>Tensor 和 Python 列表、NumPy 数组一样，有切片索引语法，语法也是 <code>start:stop</code> 或者 <code>start:stop:step</code>。注意：</p>
+<ul>
+<li>索引包含 <code>start</code> 不包含 <code>stop</code>。</li>
+<li><code>start</code> 和 <code>stop</code> 都可以是负数，表示从后向前的索引。</li>
+<li><code>start</code> 省略表示从 0 开始，<code>stop</code> 省略表示到最后一个元素。</li>
+</ul>
+<p>下面是几个简单但常用的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python">a = torch.tensor([<span class="hljs-number">10</span>, <span class="hljs-number">11</span>, <span class="hljs-number">12</span>, <span class="hljs-number">13</span>, <span class="hljs-number">14</span>, <span class="hljs-number">15</span>, <span class="hljs-number">16</span>])<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;a[2:5] &quot;</span>, a[<span class="hljs-number">2</span>:<span class="hljs-number">5</span>])  <span class="hljs-comment"># Elements between index 2 and 5</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;a[:-1] &quot;</span>, a[:-<span class="hljs-number">1</span>])  <span class="hljs-comment"># All elements except the last one</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;a[::2] &quot;</span>, a[::<span class="hljs-number">2</span>])  <span class="hljs-comment"># Every second element</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;a[:] &quot;</span>, a[:])      <span class="hljs-comment"># All elements</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">a[2:5]  tensor([12, 13, 14])<br>a[:-1]  tensor([10, 11, 12, 13, 14, 15])<br>a[::2]  tensor([10, 12, 14, 16])<br>a[:]  tensor([10, 11, 12, 13, 14, 15, 16])<br></code></pre></td></tr></table></figure>
+<p>对于<strong>多维 Tensor</strong>，可以<strong>在每个维度进行单元素或切片索引</strong>。当某个维度进行单元素索引时，<strong>该维度消失</strong>；当某个维度进行切片索引时，该维度保持（即使该维度大小变为 1）。省略的后续维度默认全选。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs python">b = torch.tensor(<br>    [[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>],<br>     [<span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>],<br>     [<span class="hljs-number">9</span>, <span class="hljs-number">10</span>, <span class="hljs-number">11</span>, <span class="hljs-number">12</span>]]<br>)<br><span class="hljs-comment"># Single row</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Single row:&quot;</span>)<br><span class="hljs-built_in">print</span>(b[<span class="hljs-number">1</span>, :], b[<span class="hljs-number">1</span>, :].shape)  <span class="hljs-comment"># Equivalent to b[1]</span><br><span class="hljs-built_in">print</span>(b[<span class="hljs-number">1</span>:<span class="hljs-number">2</span>, :], b[<span class="hljs-number">1</span>:<span class="hljs-number">2</span>, :].shape)<br><span class="hljs-comment"># Single column</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\nSingle column:&quot;</span>)<br><span class="hljs-built_in">print</span>(b[:, <span class="hljs-number">2</span>], b[:, <span class="hljs-number">2</span>].shape)<br><span class="hljs-built_in">print</span>(b[:, <span class="hljs-number">2</span>:<span class="hljs-number">3</span>], b[:, <span class="hljs-number">2</span>:<span class="hljs-number">3</span>].shape)<br><span class="hljs-comment"># All columns except the last one</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\nAll columns except the last one:&quot;</span>)<br><span class="hljs-built_in">print</span>(b[:, :-<span class="hljs-number">1</span>], b[:, :-<span class="hljs-number">1</span>].shape)<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Single row:<br>tensor([5, 6, 7, 8]) torch.Size([4])<br>tensor([[5, 6, 7, 8]]) torch.Size([1, 4])<br><br>Single column:<br>tensor([ 3,  7, 11]) torch.Size([3])<br>tensor([[ 3],<br>        [ 7],<br>        [11]]) torch.Size([3, 1])<br><br>All columns except the last one:<br>tensor([[ 1,  2,  3],<br>        [ 5,  6,  7],<br>        [ 9, 10, 11]]) torch.Size([3, 3])<br></code></pre></td></tr></table></figure>
+<p>要注意的是，<strong>切片使用内存共享，不会复制数据</strong>。因此修改切片中的数据，原来 Tensor 中的数据也会改变。如果需要避免，使用 <code>.clone()</code> 方法。</p>
+<p><strong>修改</strong> Tensor 切片，可以直接用常数或新 Tensor 赋值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python">c = torch.zeros(<span class="hljs-number">2</span>, <span class="hljs-number">4</span>, dtype=torch.int64)<br>c[:, :<span class="hljs-number">2</span>] = <span class="hljs-number">1</span><br>c[:, <span class="hljs-number">2</span>:] = torch.tensor([[<span class="hljs-number">2</span>, <span class="hljs-number">3</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">5</span>]])<br><span class="hljs-built_in">print</span>(c)<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">tensor([[1, 1, 2, 3],<br>        [1, 1, 4, 5]])<br></code></pre></td></tr></table></figure>
+<h3 id="整数-Tensor-索引">整数 Tensor 索引</h3>
+<div class="note note-info">
+            <p><strong>从这里开始，Tensor 真正奇妙的操作开始了！</strong> 高级索引和变形是 Tensor 的核心操作，但并不好理解，我们尽量详细一些，配合一些例子。</p>
+          </div>
+<p>切片索引有很强的局限性，其得到的 Tensor 只能是原 Tensor 的子矩阵。当我们引入<strong>索引数组</strong>，就会变得更灵活。</p>
+<p>一切索引方式都<strong>从单元素索引演化而来</strong>。单元素索引的每个维度都用一个整数索引，表示该维度上选中某个特定的位置。当把一个维度上的整数换成一个切片 <code>start:stop:step</code>，就成为了切片索引，表示该维度上依次选择某些特定的位置。（对于处在最后的全部选择的维度，可以都省略。）</p>
+<p>而当<strong>把一个维度上的整数换成一个整数数组</strong>时，就得到了整数 Tensor 索引。这个一维整数数组像一张购物清单，<strong>表示了在这个维度上，要依次选择哪些索引</strong>。我们举几个例子说明：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs python">a = torch.arange(<span class="hljs-number">12</span>).reshape(<span class="hljs-number">3</span>, <span class="hljs-number">4</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Original tensor a:&quot;</span>)<br><span class="hljs-built_in">print</span>(a)<br><br>idx = torch.tensor([<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>])<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;\nReordered rows:&#x27;</span>)<br><span class="hljs-built_in">print</span>(a[idx])<br><br>idx = torch.tensor([<span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>])<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;\nReordered columns:&#x27;</span>)<br><span class="hljs-built_in">print</span>(a[:, idx])<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Original tensor a:<br>tensor([[ 0,  1,  2,  3],<br>        [ 4,  5,  6,  7],<br>        [ 8,  9, 10, 11]])<br><br>Reordered rows:<br>tensor([[ 0,  1,  2,  3],<br>        [ 0,  1,  2,  3],<br>        [ 8,  9, 10, 11],<br>        [ 4,  5,  6,  7],<br>        [ 4,  5,  6,  7]])<br><br>Reordered columns:<br>tensor([[ 3,  2,  1,  0],<br>        [ 7,  6,  5,  4],<br>        [11, 10,  9,  8]])<br></code></pre></td></tr></table></figure>
+<p>首先看 Reordered rows 的例子。第一个维度传入了一个列表，表示要按列表挑选；第二个维度默认全选，该维度将保留。在第一个维度上，Python 根据列表 <code>idx = tensor([0, 0, 2, 1, 1])</code> 的指示，依次取出第 0 行、第 0 行、第 2 行、第 1 行、第 1 行（第二个维度都是全选），并按该顺序在第一个维度上排列，形成结果中形状为 <code>(5, 4)</code> 的 Tensor。</p>
+<p>再看 Reordered columns 的例子。第一个维度传入 <code>:</code>，表示全选，即对所有行都要执行操作。第二个维度传入列表 <code>idx = tensor([3, 2, 1, 0])</code>，表示该维度上需要挑选。Python 对于第一个维度中的每个对象（即每行），按第二个维度要求的索引列表进行挑选，即依此挑选该行的第 3 个、第 2 个、第 1 个、第 0 个元素，并按该顺序排列，形成结果中形状为 <code>(3, 4)</code> 的 Tensor。</p>
+<p>当<strong>索引中有多个维度传入一维列表（需长度相同）时</strong>，Pytorch 会将这些列表配对，<strong>在这几个维度上依此同时选中某一位置组合</strong>。</p>
+<p>我们从最简单的二维情况出发，来分析一个处理对角线元素的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs python">b = torch.arange(<span class="hljs-number">1</span>, <span class="hljs-number">10</span>).reshape(<span class="hljs-number">3</span>, <span class="hljs-number">3</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Original tensor b:&quot;</span>)<br><span class="hljs-built_in">print</span>(b)<br><br>idx = torch.tensor([<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>])<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;\nGet the diagonal:&#x27;</span>)<br><span class="hljs-built_in">print</span>(b[idx, idx])<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;\nSet the diagonal to 0:&#x27;</span>)<br>b[idx, idx] = <span class="hljs-number">0</span><br><span class="hljs-built_in">print</span>(b)<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Original tensor b:<br>tensor([[1, 2, 3],<br>        [4, 5, 6],<br>        [7, 8, 9]])<br><br>Get the diagonal:<br>tensor([1, 5, 9])<br><br>Set the diagonal to 0:<br>tensor([[0, 2, 3],<br>        [4, 0, 6],<br>        [7, 8, 0]])<br></code></pre></td></tr></table></figure>
+<p>这时，索引的两个维度都传入了整数列表。Pytorch 对于传入列表（设长度均为 N）的维度，会依次同时取出各维度的索引列表的第 0 个、第 1 个、……、第 N-1 个元素，在各个维度上选中列表中对应元素指明的那一个位置。例如，<code>a[idx0, idx1]</code> 等价于：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">torch.tensor([<br>  a[idx0[0], idx1[0]],<br>  a[idx0[1], idx1[1]],<br>  ...,<br>  a[idx0[N - 1], idx1[N - 1]]<br>])<br></code></pre></td></tr></table></figure>
+<p>这个例子中，由于两个维度的列表均为 <code>idx = tensor([0, 1, 2])</code>，这会依次选中 <code>b[0, 0]</code>、<code>b[1, 1]</code>、<code>b[2, 2]</code>，从而取出对角线元素。</p>
+<p>再看一个从每行选出指定元素的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python">c = torch.arange(<span class="hljs-number">1</span>, <span class="hljs-number">13</span>).reshape(<span class="hljs-number">4</span>, <span class="hljs-number">3</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Original tensor c:&quot;</span>)<br><span class="hljs-built_in">print</span>(c)<br><br>idx0 = torch.arange(c.shape[<span class="hljs-number">0</span>])<br>idx1 = torch.tensor([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>])<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;\nGet elements using index arrays:&#x27;</span>)<br><span class="hljs-built_in">print</span>(c[idx0, idx1])<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Original tensor c:<br>tensor([[ 1,  2,  3],<br>        [ 4,  5,  6],<br>        [ 7,  8,  9],<br>        [10, 11, 12]])<br><br>Get elements using index arrays:<br>tensor([ 2,  6,  8, 10])<br></code></pre></td></tr></table></figure>
+<p>这里，<code>idx0 = tenser([0, 1, 2, 3])</code> 依次选中每一行，<code>idx1</code> 依次指定了第二个维度选中哪个位置，即每行取哪个元素。</p>
+<p>可以这么理解：当整数列表索引和切片索引同时出现时，整数列表索引每次选中一个位置，切片索引每次选中整个切片。</p>
+<h3 id="布尔-Tensor-索引">布尔 Tensor 索引</h3>
+<p>布尔索引<strong>可以更方便地筛选需要的元素</strong>，通常会用于选择或修改 Tensor 中符合某些条件的元素。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs python">a = torch.rand(<span class="hljs-number">3</span>, <span class="hljs-number">4</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Original tensor:&quot;</span>)<br><span class="hljs-built_in">print</span>(a)<br><br>mask = (a &gt; <span class="hljs-number">0.5</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\nMask tensor:&quot;</span>)<br><span class="hljs-built_in">print</span>(mask)<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;\nSelecting elements with the mask:&#x27;</span>)<br><span class="hljs-built_in">print</span>(a[mask])<br><br>a[mask] = <span class="hljs-number">0</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;\nAfter modifying with a mask:&#x27;</span>)<br><span class="hljs-built_in">print</span>(a)<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Original tensor:<br>tensor([[0.3443, 0.5997, 0.8539, 0.3628],<br>        [0.1334, 0.7126, 0.5848, 0.5628],<br>        [0.7731, 0.5251, 0.0347, 0.6972]])<br><br>Mask tensor:<br>tensor([[False,  True,  True, False],<br>        [False,  True,  True,  True],<br>        [ True,  True, False,  True]])<br><br>Selecting elements with the mask:<br>tensor([0.5997, 0.8539, 0.7126, 0.5848, 0.5628, 0.7731, 0.5251, 0.6972])<br><br>After modifying with a mask:<br>tensor([[0.3443, 0.0000, 0.0000, 0.3628],<br>        [0.1334, 0.0000, 0.0000, 0.0000],<br>        [0.0000, 0.0000, 0.0347, 0.0000]])<br></code></pre></td></tr></table></figure>
+<p>这段代码展示并解释了布尔索引的常见用法，其作用是将 <code>a</code> 中所有大于 0.5 的元素修改为 0。</p>
+<p><code>a &gt; 0.5</code> 会生成一个和 <code>a</code> 形状相同的 Tensor，数据类型为 <code>torch.bool</code>。其中大于 0.5 的元素变为 <code>True</code>，其余元素变为 <code>False</code>。对 <code>a</code> 使用这个 mask 进行索引，就能选出其中所有大于 0.5 的元素，并可以统一修改这些元素。</p>
+<h2 id="变形操作">变形操作</h2>
+<p>变形操作也是 Tensor 核心而重要的操作。</p>
+<h3 id="改变逻辑形状">改变逻辑形状</h3>
+<p><code>.view()</code> 和 <code>.reshape()</code> 方法像是在重新解读一块连续的内存，它们可以<strong>改变 Tensor 的形状，但不改变其中元素的排列顺序</strong>。</p>
+<p><code>.view()</code> 和 <code>.reshape()</code> 基本语法相同，传入的参数是改变后的形状，返回一个具有新形状的张量。<strong>可以有一个维度传入 <code>-1</code></strong>：由于改变形状不会使得元素数量变化，Pytorch 会自动推算这个维度的大小。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs python">x0 = torch.arange(<span class="hljs-number">1</span>, <span class="hljs-number">9</span>).reshape(<span class="hljs-number">2</span>, <span class="hljs-number">4</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Original tensor:&#x27;</span>)<br><span class="hljs-built_in">print</span>(x0)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;shape:&#x27;</span>, x0.shape)<br><br>x1 = x0.view(-<span class="hljs-number">1</span>)  <span class="hljs-comment"># Equivalent to x1 = x0.flatten()</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;\nFlattened tensor:&#x27;</span>)<br><span class="hljs-built_in">print</span>(x1)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;shape:&#x27;</span>, x1.shape)<br><br>x2 = x1.reshape(-<span class="hljs-number">1</span>, <span class="hljs-number">1</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;\nColumn vector:&#x27;</span>)<br><span class="hljs-built_in">print</span>(x2)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;shape:&#x27;</span>, x2.shape)<br><br>x3 = x1.view(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;\nRank 3 tensor:&#x27;</span>)<br><span class="hljs-built_in">print</span>(x3)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;shape:&#x27;</span>, x3.shape)<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Original tensor:<br>tensor([[1, 2, 3, 4],<br>        [5, 6, 7, 8]])<br>shape: torch.Size([2, 4])<br><br>Flattened tensor:<br>tensor([1, 2, 3, 4, 5, 6, 7, 8])<br>shape: torch.Size([8])<br><br>Column vector:<br>tensor([[1],<br>        [2],<br>        [3],<br>        [4],<br>        [5],<br>        [6],<br>        [7],<br>        [8]])<br>shape: torch.Size([8, 1])<br><br>Rank 3 tensor:<br>tensor([[[1, 2],<br>         [3, 4]],<br><br>        [[5, 6],<br>         [7, 8]]])<br>shape: torch.Size([2, 2, 2])<br></code></pre></td></tr></table></figure>
+<p>但是，这两个操作也有区别。<code>.view()</code> <strong>保证不复制数据</strong>，其创建的仅仅是一个视图 (View)，也就是说新张量和原张量<strong>共享同一块内存数据</strong>。修改其中一个，另一个会跟着改变。它<strong>只适用于在内存中连续 (Contiguous) 的张量</strong>。</p>
+<p>相比之下，<code>.reshape()</code> <strong>更强大、更安全</strong>。它首先会尝试像 <code>.view()</code> 一样创建一个共享内存的视图。如果因为张量在内存中不连续而无法创建视图，它会<strong>自动创建一个数据副本</strong>，然后改变形状。<strong>在实际应用中，应当优先考虑使用 <code>.reshape()</code>。</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs python">a = torch.arange(<span class="hljs-number">12</span>).reshape(<span class="hljs-number">3</span>, <span class="hljs-number">4</span>)<br>b = a.t() <span class="hljs-comment"># .t() makes the tensor non-contiguous</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Is b contiguous?&quot;</span>, b.is_contiguous())<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\nOriginal tensor b:&quot;</span>)<br><span class="hljs-built_in">print</span>(b)<br><br><span class="hljs-keyword">try</span>:<br>    c = b.view(<span class="hljs-number">2</span>, <span class="hljs-number">6</span>)<br><span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\nview() Failed:&quot;</span>, e)<br><br>d = b.reshape(<span class="hljs-number">2</span>, <span class="hljs-number">6</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\nreshape() Succeeded:&quot;</span>)<br><span class="hljs-built_in">print</span>(d)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\nIs d contiguous?&quot;</span>, d.is_contiguous())<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Is b contiguous? False<br><br>Original tensor b:<br>tensor([[ 0,  4,  8],<br>        [ 1,  5,  9],<br>        [ 2,  6, 10],<br>        [ 3,  7, 11]])<br><br>view() Failed: view size is not compatible with input tensor&#x27;s size and stride (at least one dimension spans across two contiguous subspaces). Use .reshape(...) instead.<br><br>reshape() Succeeded:<br>tensor([[ 0,  4,  8,  1,  5,  9],<br>        [ 2,  6, 10,  3,  7, 11]])<br><br>Is d contiguous? True<br></code></pre></td></tr></table></figure>
+<p>在这里，我们看到 <code>.reshape()</code> 可以处理内存不连续的 Tensor，但 <code>.view()</code> 不可以。</p>
+<h3 id="改变维度顺序">改变维度顺序</h3>
+<p>这类操作不会改变每个维度的大小，而是<strong>改变这些维度的位置</strong>。常见的是 <code>.transpose()</code> 和 <code>.permute()</code>。其区别是，<code>.transpose(dim0, dim1)</code> <strong>交换张量的某两个指定维度</strong>，<code>.permute(*dims)</code> 能<strong>按照指定顺序一次性重排所有维度</strong>（一般用于三个及以上维度的换序）。这两个操作均创建一个视图，不复制数据。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs python">x0 = torch.arange(<span class="hljs-number">1</span>, <span class="hljs-number">25</span>).reshape(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Original tensor:&#x27;</span>)<br><span class="hljs-built_in">print</span>(x0)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;shape:&#x27;</span>, x0.shape)<br><br>x1 = x0.transpose(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;\nSwap axes 0 and 1:&#x27;</span>)<br><span class="hljs-built_in">print</span>(x1)<br><span class="hljs-built_in">print</span>(x1.shape)<br><br>x2 = x0.permute(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;\nPermute axes&#x27;</span>)<br><span class="hljs-built_in">print</span>(x2)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;shape:&#x27;</span>, x2.shape)<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Original tensor:<br>tensor([[[ 1,  2,  3,  4],<br>         [ 5,  6,  7,  8],<br>         [ 9, 10, 11, 12]],<br><br>        [[13, 14, 15, 16],<br>         [17, 18, 19, 20],<br>         [21, 22, 23, 24]]])<br>shape: torch.Size([2, 3, 4])<br><br>Swap axes 0 and 1:<br>tensor([[[ 1,  2,  3,  4],<br>         [13, 14, 15, 16]],<br><br>        [[ 5,  6,  7,  8],<br>         [17, 18, 19, 20]],<br><br>        [[ 9, 10, 11, 12],<br>         [21, 22, 23, 24]]])<br>torch.Size([3, 2, 4])<br><br>Permute axes<br>tensor([[[ 1, 13],<br>         [ 2, 14],<br>         [ 3, 15],<br>         [ 4, 16]],<br><br>        [[ 5, 17],<br>         [ 6, 18],<br>         [ 7, 19],<br>         [ 8, 20]],<br><br>        [[ 9, 21],<br>         [10, 22],<br>         [11, 23],<br>         [12, 24]]])<br>shape: torch.Size([3, 4, 2])<br></code></pre></td></tr></table></figure>
+<p>但是，换维度顺序这件事比较难以理解。很多人大概只能理解到矩阵转置，即二维 Tensor 交换维度顺序的操作。一种理解是，这两个操作不会移动任何元素的位置，而是改变元素的查找和组织方式，也就是查找这个元素所用索引的顺序。例如，当对 <code>a</code> 做 <code>permute(1, 2, 0)</code> 后，原先用 <code>a[i, j, k]</code> 能找到的元素，现在可以用 <code>a[j, k, i]</code> 找到，即我们只需要改变索引的顺序。总的来说，这两个操作<strong>只改变了 Tensor 如何解读自己的数据，而没有进行任何数据的复制或移动</strong>。</p>
+<p>注意，<strong>改变维度后的 Tensor 在内存中不连续，可以调用 <code>.contiguous()</code> 方法使它们连续</strong>，比如紧接着要做 <code>.view()</code> 操作等。</p>
+<h2 id="计算操作">计算操作</h2>
+<h3 id="逐元素操作">逐元素操作</h3>
+<p>这部分比较简单，无非是加减乘除、乘方、开方、三角函数，和 NumPy 语法几乎一致。注意 <strong><code>x * y</code> 是逐元素乘法</strong>就可以，而不是矩阵乘法。以加法为例，<code>torch.add(x, y)</code>、<code>x.add(y)</code>、<code>x + y</code> 效果完全一样，其余运算类似。</p>
+<h3 id="归约操作">归约操作</h3>
+<p>归约操作是指对 Tensor 的某一部分汇总来计算某种数值的操作。常见的有 <code>.sum()</code>、 <code>.min()</code>、 <code>.max()</code>、 <code>.mean()</code>、 <code>.argmax()</code> 等，语法基本一致。这里以 <code>.sum()</code> 为例。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs python">a = torch.arange(<span class="hljs-number">1</span>, <span class="hljs-number">25</span>).reshape(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Original tensor:&quot;</span>)<br><span class="hljs-built_in">print</span>(a, a.shape)<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;\nSum over entire tensor:&#x27;</span>)<br><span class="hljs-built_in">print</span>(a.<span class="hljs-built_in">sum</span>(), a.<span class="hljs-built_in">sum</span>().shape)<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;\nSum over the first dimension:&#x27;</span>)<br><span class="hljs-built_in">print</span>(a.<span class="hljs-built_in">sum</span>(dim=<span class="hljs-number">0</span>), a.<span class="hljs-built_in">sum</span>(dim=<span class="hljs-number">0</span>).shape)<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;\nSum over the second dimension:&#x27;</span>)<br><span class="hljs-built_in">print</span>(a.<span class="hljs-built_in">sum</span>(dim=<span class="hljs-number">1</span>), a.<span class="hljs-built_in">sum</span>(dim=<span class="hljs-number">1</span>).shape)<br><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;\nSum over the last dimension:&#x27;</span>)<br><span class="hljs-built_in">print</span>(a.<span class="hljs-built_in">sum</span>(dim=-<span class="hljs-number">1</span>), a.<span class="hljs-built_in">sum</span>(dim=-<span class="hljs-number">1</span>).shape)<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Original tensor:<br>tensor([[[ 1,  2,  3,  4],<br>         [ 5,  6,  7,  8],<br>         [ 9, 10, 11, 12]],<br><br>        [[13, 14, 15, 16],<br>         [17, 18, 19, 20],<br>         [21, 22, 23, 24]]]) torch.Size([2, 3, 4])<br><br>Sum over entire tensor:<br>tensor(300) torch.Size([])<br><br>Sum over the first dimension:<br>tensor([[14, 16, 18, 20],<br>        [22, 24, 26, 28],<br>        [30, 32, 34, 36]]) torch.Size([3, 4])<br><br>Sum over the second dimension:<br>tensor([[15, 18, 21, 24],<br>        [51, 54, 57, 60]]) torch.Size([2, 4])<br><br>Sum over the last dimension:<br>tensor([[10, 26, 42],<br>        [58, 74, 90]]) torch.Size([2, 3])<br></code></pre></td></tr></table></figure>
+<p>不传递参数时，返回所有元素的和（Pytorch 标量）。传递 <code>dim</code> 参数时，按指定的维度计算元素和，返回的 Tensor 中该维度消失，其余维度不变。若要保留求和维度，可以传递 <code>keepdim=True</code>。</p>
+<h3 id="矩阵操作">矩阵操作</h3>
+<p>Tensor 的矩阵操作也比较简单，建议<strong>直接用 <code>@</code> 或 <code>torch.matmul()</code> 进行矩阵乘法（或向量）</strong>。它会自动根据输入维度，选择进行矩阵乘法、矩阵乘向量、向量内积、带批次维度的矩阵乘法等。</p>
+<h3 id="广播机制">广播机制</h3>
+<p>Pytorch 的 Tensor 与 NumPy 数组类似，也有广播机制。最常见的是<strong>逐元素操作和矩阵乘法的广播机制</strong>。广播机制使得在不实际复制数据的情况下，让 PyTorch 表现得好像它扩展了较小张量的形状，以匹配较大张量的形状。</p>
+<p>使用广播机制需要<strong>检查维度是否匹配</strong>。Pytorch 会先在较低维度 Tensor 的维度前补 1，直到两个 Tensor 维度相等。接着依次检查每个维度的大小是否相等或其中一个为 1。若检查通过，则可以进行广播。<strong>某个维度大小为 1 的 Tensor 会表现得和其沿着该维度复制了一样。</strong></p>
+<p>接下来举几个例子：</p>
+<ol>
+<li><strong>计算向量的外积（张量积）</strong></li>
+</ol>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi mathvariant="bold">a</mi><mo>⊗</mo><mi mathvariant="bold">b</mi><mo>=</mo><mrow><mo fence="true">[</mo><mtable rowspacing="0.16em" columnalign="center" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>a</mi><mn>1</mn></msub></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>a</mi><mn>2</mn></msub></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>a</mi><mn>3</mn></msub></mstyle></mtd></mtr></mtable><mo fence="true">]</mo></mrow><mo>⊗</mo><mrow><mo fence="true">[</mo><mtable rowspacing="0.16em" columnalign="center center" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>b</mi><mn>1</mn></msub></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><msub><mi>b</mi><mn>2</mn></msub></mstyle></mtd></mtr></mtable><mo fence="true">]</mo></mrow><mo>=</mo><mrow><mo fence="true">[</mo><mtable rowspacing="0.16em" columnalign="center center" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msub><mi>a</mi><mn>1</mn></msub><msub><mi>b</mi><mn>1</mn></msub></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msub><mi>a</mi><mn>1</mn></msub><msub><mi>b</mi><mn>2</mn></msub></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msub><mi>a</mi><mn>2</mn></msub><msub><mi>b</mi><mn>1</mn></msub></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msub><mi>a</mi><mn>2</mn></msub><msub><mi>b</mi><mn>2</mn></msub></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msub><mi>a</mi><mn>3</mn></msub><msub><mi>b</mi><mn>1</mn></msub></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msub><mi>a</mi><mn>3</mn></msub><msub><mi>b</mi><mn>2</mn></msub></mrow></mstyle></mtd></mtr></mtable><mo fence="true">]</mo></mrow></mrow><annotation encoding="application/x-tex">\mathbf{a} \otimes \mathbf{b} = \begin{bmatrix}a_1 \\ a_2 \\ a_3\end{bmatrix} \otimes \begin{bmatrix} b_1 &amp; b_2 \end{bmatrix} = \begin{bmatrix} a_1b_1 &amp; a_1b_2 \\ a_2b_1 &amp; a_2b_2 \\ a_3b_1 &amp; a_3b_2\end{bmatrix}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathbf">a</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⊗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathbf">b</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:3.6em;vertical-align:-1.55em;"></span><span class="minner"><span class="mopen"><span class="delimsizing mult"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.05em;"><span style="top:-4.05em;"><span class="pstrut" style="height:5.6em;"></span><span style="width:0.667em;height:3.600em;"><svg xmlns="http://www.w3.org/2000/svg" width="0.667em" height="3.600em" viewBox="0 0 667 3600"><path d="M403 1759 V84 H666 V0 H319 V1759 v0 v1759 h347 v-84
+H403z M403 1759 V0 H319 V1759 v0 v1759 h84z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.55em;"><span></span></span></span></span></span></span><span class="mord"><span class="mtable"><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.05em;"><span style="top:-4.21em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.01em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-1.81em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.55em;"><span></span></span></span></span></span></span></span><span class="mclose"><span class="delimsizing mult"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.05em;"><span style="top:-4.05em;"><span class="pstrut" style="height:5.6em;"></span><span style="width:0.667em;height:3.600em;"><svg xmlns="http://www.w3.org/2000/svg" width="0.667em" height="3.600em" viewBox="0 0 667 3600"><path d="M347 1759 V0 H0 V84 H263 V1759 v0 v1759 H0 v84 H347z
+M347 1759 V0 H263 V1759 v0 v1759 h84z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.55em;"><span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⊗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.2em;vertical-align:-0.35em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size1">[</span></span><span class="mord"><span class="mtable"><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.85em;"><span style="top:-3.01em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.35em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.85em;"><span style="top:-3.01em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.35em;"><span></span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size1">]</span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:3.6em;vertical-align:-1.55em;"></span><span class="minner"><span class="mopen"><span class="delimsizing mult"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.05em;"><span style="top:-4.05em;"><span class="pstrut" style="height:5.6em;"></span><span style="width:0.667em;height:3.600em;"><svg xmlns="http://www.w3.org/2000/svg" width="0.667em" height="3.600em" viewBox="0 0 667 3600"><path d="M403 1759 V84 H666 V0 H319 V1759 v0 v1759 h347 v-84
+H403z M403 1759 V0 H319 V1759 v0 v1759 h84z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.55em;"><span></span></span></span></span></span></span><span class="mord"><span class="mtable"><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.05em;"><span style="top:-4.21em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.01em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-1.81em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.55em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.05em;"><span style="top:-4.21em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.01em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-1.81em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.55em;"><span></span></span></span></span></span></span></span><span class="mclose"><span class="delimsizing mult"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.05em;"><span style="top:-4.05em;"><span class="pstrut" style="height:5.6em;"></span><span style="width:0.667em;height:3.600em;"><svg xmlns="http://www.w3.org/2000/svg" width="0.667em" height="3.600em" viewBox="0 0 667 3600"><path d="M347 1759 V0 H0 V84 H263 V1759 v0 v1759 H0 v84 H347z
+M347 1759 V0 H263 V1759 v0 v1759 h84z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.55em;"><span></span></span></span></span></span></span></span></span></span></span></span></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># Compute outer product of vectors</span><br>v1 = torch.tensor([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>])  <span class="hljs-comment"># shape: (3,)</span><br>v2 = torch.tensor([<span class="hljs-number">4</span>, <span class="hljs-number">5</span>])     <span class="hljs-comment"># shape: (2,)</span><br><span class="hljs-built_in">print</span>(v1.reshape(-<span class="hljs-number">1</span>, <span class="hljs-number">1</span>) * v2)<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">tensor([[ 4,  5],<br>        [ 8, 10],<br>        [12, 15]])<br></code></pre></td></tr></table></figure>
+<p><code>v1.view(-1, 1)</code> 的形状为 <code>(3, 1)</code>，可以和对 <code>v2</code> 广播后相乘，得到的矩阵形状为 <code>(3, 2)</code>，正好是 <code>v1</code> 和 <code>v2</code> 的外积结果。</p>
+<ol start="2">
+<li>对矩阵的每一行加一个向量</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># Add the vector to each row of the matrix</span><br>x = torch.tensor([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>]])  <span class="hljs-comment"># shape: (2, 3)</span><br>v = torch.tensor([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>])               <span class="hljs-comment"># shape: (3,)</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Here is the matrix:&#x27;</span>)<br><span class="hljs-built_in">print</span>(x)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;\nHere is the vector:&#x27;</span>)<br><span class="hljs-built_in">print</span>(v)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;\nAdd the vector to each row of the matrix:&#x27;</span>)<br><span class="hljs-built_in">print</span>(x + v)<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Here is the matrix:<br>tensor([[1, 2, 3],<br>        [4, 5, 6]])<br><br>Here is the vector:<br>tensor([1, 2, 3])<br><br>Add the vector to each row of the matrix:<br>tensor([[2, 4, 6],<br>        [5, 7, 9]])<br></code></pre></td></tr></table></figure>
+<p><code>x</code> 的形状为 <code>(2, 3)</code>，<code>v</code> 的形状为 <code>(3,)</code>。它们会被广播到 <code>(2, 3)</code>，即 <code>v</code> 会复制给 <code>x</code> 的每一行，然后相加，故 <code>x</code> 的每一行都加上了 <code>v</code>。</p>
+<ol start="3">
+<li>对矩阵的每一列加一个向量</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># Add the vector to each column of the matrix</span><br>x = torch.tensor([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>]])  <span class="hljs-comment"># shape: (2, 3)</span><br>w = torch.tensor([<span class="hljs-number">4</span>, <span class="hljs-number">5</span>])                  <span class="hljs-comment"># shape: (2,)</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Here is the matrix:&#x27;</span>)<br><span class="hljs-built_in">print</span>(x)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;\nHere is the vector:&#x27;</span>)<br><span class="hljs-built_in">print</span>(w)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;\nAdd the vector to each column of the matrix:&#x27;</span>)<br><span class="hljs-built_in">print</span>(x + w.reshape(-<span class="hljs-number">1</span>, <span class="hljs-number">1</span>))<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Here is the matrix:<br>tensor([[1, 2, 3],<br>        [4, 5, 6]])<br><br>Here is the vector:<br>tensor([4, 5])<br><br>Add the vector to each column of the matrix:<br>tensor([[ 5,  6,  7],<br>        [ 9, 10, 11]])<br></code></pre></td></tr></table></figure>
+<p>这与刚才类似，不同的是 <code>w.view(-1, 1)</code> 的形状为 <code>(2, 1)</code>，广播机制使得其在第二个维度上复制，形状变为 <code>(2, 3)</code> 后与 <code>v</code> 相加。</p>
+<ol start="4">
+<li>对一个矩阵乘一系列常数</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># Multiply a tensor by a set of constants</span><br>x = torch.tensor([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>]])  <span class="hljs-comment"># shape: (2, 3)</span><br>c = torch.tensor([<span class="hljs-number">1</span>, <span class="hljs-number">10</span>, <span class="hljs-number">11</span>, <span class="hljs-number">100</span>])        <span class="hljs-comment"># shape: (4,)</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Here is the matrix:&#x27;</span>)<br><span class="hljs-built_in">print</span>(x)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;\nHere is the vector:&#x27;</span>)<br><span class="hljs-built_in">print</span>(c)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;\nMultiply x by a set of constants:&#x27;</span>)<br><span class="hljs-built_in">print</span>(c.reshape(-<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>) * x)<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Here is the matrix:<br>tensor([[1, 2, 3],<br>        [4, 5, 6]])<br><br>Here is the vector:<br>tensor([  1,  10,  11, 100])<br><br>Multiply x by a set of constants:<br>tensor([[[  1,   2,   3],<br>         [  4,   5,   6]],<br><br>        [[ 10,  20,  30],<br>         [ 40,  50,  60]],<br><br>        [[ 11,  22,  33],<br>         [ 44,  55,  66]],<br><br>        [[100, 200, 300],<br>         [400, 500, 600]]])<br></code></pre></td></tr></table></figure>
+<p><code>x</code> 的初始维度为 <code>(2, 3)</code>，<code>c</code> 的初始维度为 <code>(4, )</code>。这 4 个常数将分别作用于整个矩阵，<code>4</code> 会最终出现在第一个维度上，因此先将 <code>c</code> 的形状变为 <code>(4, 1, 1)</code>，再进行广播。<code>c</code> 中每个数会对 <code>x</code> 中每个元素复制，<code>x</code> 会对每个 <code>c</code> 中的数复制，最终形状变为 <code>(4, 2, 3)</code>。</p>
+<h2 id="参考资料">参考资料</h2>
+<p>[1] <a target="_blank" rel="noopener" href="https://docs.pytorch.org/docs/stable/index.html">https://docs.pytorch.org/docs/stable/index.html</a><br>
+[2] <a target="_blank" rel="noopener" href="https://web.eecs.umich.edu/~justincj/teaching/eecs498/WI2022/assignment1.html">https://web.eecs.umich.edu/~justincj/teaching/eecs498/WI2022/assignment1.html</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/AI/" class="category-chain-item">AI</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AI/" class="print-no-link">#AI</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Pytorch Tensors: A Beginner&#39;s Guide</div>
+      <div>https://cny123222.github.io/2025/08/16/Pytorch-Tensors-A-Beginner-s-Guide/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Nuoyan Chen</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>August 16, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/08/18/Paper-Reading-3-RL4VRP/" title="Paper Reading #3: RL4VRP">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Paper Reading #3: RL4VRP</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/08/14/Fancy-but-Useful-Tensor-Operations/" title="Fancy but Useful Tensor Operations">
+                        <span class="hidden-mobile">Fancy but Useful Tensor Operations</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"cny123222/cny123222.github.io","repo-id":"R_kgDOOFgnVw","category":"Announcements","category-id":"DIC_kwDOOFgnV84CnwXM","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"en"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

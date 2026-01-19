@@ -1,0 +1,1202 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Nuoyan Chen">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="这是SJTU-CS3611《计算机网络》课程的知识点整理系列。本文整理部分为“第2章：应用层”。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络知识点整理(2)：应用层">
+<meta property="og:url" content="https://cny123222.github.io/2025/03/22/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-2-%EF%BC%9A%E5%BA%94%E7%94%A8%E5%B1%82/index.html">
+<meta property="og:site_name" content="Nuoyan Chen&#39;s Blog">
+<meta property="og:description" content="这是SJTU-CS3611《计算机网络》课程的知识点整理系列。本文整理部分为“第2章：应用层”。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cny123222.github.io/img/%E8%AE%A1%E7%BD%91.png">
+<meta property="article:published_time" content="2025-03-22T09:37:15.000Z">
+<meta property="article:modified_time" content="2025-06-01T07:30:26.808Z">
+<meta property="article:author" content="Nuoyan Chen">
+<meta property="article:tag" content="知识点整理">
+<meta property="article:tag" content="期末复习">
+<meta property="article:tag" content="计算机网络">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cny123222.github.io/img/%E8%AE%A1%E7%BD%91.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>计算机网络知识点整理(2)：应用层 - Nuoyan Chen&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"cny123222.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 80vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Nuoyan Chen&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/nanjing.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.4)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="计算机网络知识点整理(2)：应用层"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Nuoyan Chen
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-22 17:37" pubdate>
+          March 22, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          17 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="计算机网络"
+        id="heading-f75627e742c5ba6fab3c2f3c2abf02a0" role="tab" data-toggle="collapse" href="#collapse-f75627e742c5ba6fab3c2f3c2abf02a0"
+        aria-expanded="true"
+      >
+        计算机网络
+        <span class="list-group-count">(7)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-f75627e742c5ba6fab3c2f3c2abf02a0"
+           role="tabpanel" aria-labelledby="heading-f75627e742c5ba6fab3c2f3c2abf02a0">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/05/28/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0/" title="计算机网络期末复习"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">计算机网络期末复习</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-1-%EF%BC%9A%E6%A6%82%E8%BF%B0/" title="计算机网络知识点整理(1)：概述"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">计算机网络知识点整理(1)：概述</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/22/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-2-%EF%BC%9A%E5%BA%94%E7%94%A8%E5%B1%82/" title="计算机网络知识点整理(2)：应用层"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">计算机网络知识点整理(2)：应用层</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/24/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-3-%EF%BC%9A%E4%BC%A0%E8%BE%93%E5%B1%82/" title="计算机网络知识点整理(3)：传输层"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">计算机网络知识点整理(3)：传输层</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/04/25/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-4-%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%B1%82%E4%B9%8B%E6%95%B0%E6%8D%AE%E5%B9%B3%E9%9D%A2/" title="计算机网络知识点整理(4)：网络层之数据平面"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">计算机网络知识点整理(4)：网络层之数据平面</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/05/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-5-%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%B1%82%E4%B9%8B%E6%8E%A7%E5%88%B6%E5%B9%B3%E9%9D%A2/" title="计算机网络知识点整理(5)：网络层之控制平面"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">计算机网络知识点整理(5)：网络层之控制平面</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/05/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-6-%EF%BC%9A%E9%93%BE%E8%B7%AF%E5%B1%82%E4%B8%8E%E5%B1%80%E5%9F%9F%E7%BD%91/" title="计算机网络知识点整理(6)：链路层与局域网"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">计算机网络知识点整理(6)：链路层与局域网</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">计算机网络知识点整理(2)：应用层</h1>
+            
+              <p id="updated-time" class="note note-default" style="">
+                
+                  
+                    Last updated on June 1, 2025 pm
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>这是SJTU-CS3611《计算机网络》课程的知识点整理系列。本文整理部分为“第2章：应用层”。</p>
+<span id="more"></span>
+<h2 id="2-1-应用层协议基本原理">2.1 应用层协议基本原理</h2>
+<h3 id="2-1-1-网络应用体系结构">2.1.1 网络应用体系结构</h3>
+<ul>
+<li>​<strong>客户-服务器体系结构</strong> （如HTTP/FTP/IMAP）
+<ul>
+<li>服务器：永久在线、固定IP、集中式管理</li>
+<li>客户端：间歇性连接、动态IP、不直接通信</li>
+</ul>
+</li>
+<li>​<strong>P2P体系结构</strong>（如BitTorrent）
+<ul>
+<li>无中心服务器、节点兼具客户端与服务端角色</li>
+<li>优势：自扩展性强、成本低</li>
+<li>挑战：动态IP、管理复杂</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-1-2-进程通信">2.1.2 进程通信</h3>
+<ul>
+<li>​<strong>套接字（Socket）​</strong>：应用层与传输层接口</li>
+<li><strong>进程寻址</strong>：IP地址+端口号（HTTP:80 / SMTP:25）</li>
+</ul>
+<h3 id="2-1-3-运输层服务选择">2.1.3 运输层服务选择</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">特性</th>
+<th style="text-align:center">TCP</th>
+<th style="text-align:center">UDP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">可靠性</td>
+<td style="text-align:center">可靠（重传机制）</td>
+<td style="text-align:center">不可靠</td>
+</tr>
+<tr>
+<td style="text-align:center">连接方式</td>
+<td style="text-align:center">面向连接（三次握手）</td>
+<td style="text-align:center">无连接</td>
+</tr>
+<tr>
+<td style="text-align:center">流量控制</td>
+<td style="text-align:center">有（滑动窗口）</td>
+<td style="text-align:center">无</td>
+</tr>
+<tr>
+<td style="text-align:center">拥塞控制</td>
+<td style="text-align:center">有（慢启动/拥塞避免）</td>
+<td style="text-align:center">无</td>
+</tr>
+<tr>
+<td style="text-align:center">适用场景</td>
+<td style="text-align:center">Web/Email/文件传输/远程终端访问</td>
+<td style="text-align:center">实时音视频</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>TCP 和 UDP 都不提供定时、吞吐量、安全性。</li>
+</ul>
+<hr>
+<h2 id="2-2-HTTP-协议（TCP-C-S架构）">2.2 HTTP 协议（TCP / C-S架构）</h2>
+<h3 id="2-2-1-核心机制">2.2.1 核心机制</h3>
+<ul>
+<li>​<strong>无状态性</strong>
+<ul>
+<li>服务器不保存客户端状态，通过Cookie维持会话</li>
+<li>​<strong>Cookie工作流程</strong>：<code>Set-Cookie</code> 头 → 客户端存储 → 后续请求携带Cookie</li>
+</ul>
+</li>
+<li>​<strong>连接模式</strong>
+<ul>
+<li>非持续连接（HTTP/1.0）：每个对象需单独连接</li>
+<li>持续连接（HTTP/1.1+）：减少TCP握手开销（2RTT → 1RTT优化）
+<ul>
+<li>分为 非流水线 和 流水线 两种</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="img1.png" srcset="/img/loading.gif" lazyload alt="请求并接收一个 HTML 文件所需的时间"></p>
+<h3 id="2-2-2-报文结构">2.2.2 报文结构</h3>
+<ul>
+<li>
+<p>​<strong>请求报文</strong></p>
+<p><img src="img2.png" srcset="/img/loading.gif" lazyload alt=" HTTP 请求报文的通用格式"></p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs http">GET /somedir/index.html HTTP/1.1  // 请求行: 方法、相对URL、HTTP版本<br><span class="hljs-attribute">Host</span><span class="hljs-punctuation">: </span>www.example.com  // 服务器域名<br><span class="hljs-attribute">Connection</span><span class="hljs-punctuation">: </span>close  // 使用非持续连接<br><span class="hljs-attribute">User-agent</span><span class="hljs-punctuation">: </span>Mozilla/5.0  // 用户代理（浏览器）<br><span class="hljs-attribute">Accept-language</span><span class="hljs-punctuation">: </span>cn  // 希望得到的文档语言<br></code></pre></td></tr></table></figure>
+<ul>
+<li>方法：<code>GET</code>（获取资源）/ <code>POST</code>（提交表单）/ <code>HEAD</code>（获取首部）</li>
+</ul>
+</li>
+<li>
+<p><strong>​响应报文</strong></p>
+<p><img src="img3.png" srcset="/img/loading.gif" lazyload alt=" HTTP 响应报文的通用格式"></p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs http"><span class="hljs-meta">HTTP/1.1</span> <span class="hljs-number">200</span> OK  // 状态行: HTTP版本、状态码、状态信息<br><span class="hljs-attribute">Connection</span><span class="hljs-punctuation">: </span>close // 发送完关闭TCP连接<br><span class="hljs-attribute">Date</span><span class="hljs-punctuation">: </span>Tue, 18 Aug 2015 15:44:04 GMT  // 该报文发送时间<br><span class="hljs-attribute">Server</span><span class="hljs-punctuation">: </span>Apache/2.2.3 (CentOS)  // 服务器<br><span class="hljs-attribute">Last-Modified</span><span class="hljs-punctuation">: </span>Tue, 18 Aug 2015 15:11:03 GMT // 对象最后修改时间<br><span class="hljs-attribute">Content-Length</span><span class="hljs-punctuation">: </span>6821  // 被发送对象的字节数<br><span class="hljs-attribute">Content-Type</span><span class="hljs-punctuation">: </span>text/html  // 实体体中对象的类型<br><br><span class="language-haskell">(<span class="hljs-class"><span class="hljs-keyword">data</span> <span class="hljs-keyword">data</span> <span class="hljs-keyword">data</span> <span class="hljs-keyword">data</span> <span class="hljs-keyword">data</span> ...)</span></span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>状态码：<code>200</code>（成功）/ <code>301</code>（重定向）/ <code>400</code>（错误请求）/ <code>404</code>（未找到）</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-2-3-缓存机制">2.2.3 缓存机制</h3>
+<ul>
+<li>
+<p><strong>​Web缓存作用</strong></p>
+<ul>
+<li>​<strong>降低时延</strong>：就近获取资源减少传输时间</li>
+<li>​<strong>减少带宽消耗</strong>：避免重复下载相同内容</li>
+<li>​<strong>缓解服务器压力</strong>：减少直接请求源服务器的次数</li>
+</ul>
+</li>
+<li>
+<p><strong>条件GET验证</strong></p>
+</li>
+</ul>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs http"><span class="hljs-keyword">GET</span> <span class="hljs-string">/file.txt</span> <span class="hljs-meta">HTTP/1.1</span><br><span class="hljs-attribute">Host</span><span class="hljs-punctuation">: </span>www.example.com<br><span class="hljs-attribute">If-Modified-Since</span><span class="hljs-punctuation">: </span>Wed, 9 Sep 2015 09:23:@4<br></code></pre></td></tr></table></figure>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs http"><span class="hljs-meta">HTTP/1.1</span> <span class="hljs-number">304</span> Not Modified<br><span class="hljs-attribute">Date</span><span class="hljs-punctuation">: </span>Sat, 10 Oct 2015 15:39:29<br><span class="hljs-attribute">Server</span><span class="hljs-punctuation">: </span>Apache/1.3.0 (Unix)<br><br><span class="language-clojure">(<span class="hljs-name"><span class="hljs-built_in">empty</span></span> entity body)</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>服务器返回 <code>304</code> 时，客户端使用本地缓存副本</p>
+</li>
+<li>
+<p><strong>​缓存命中率计算</strong>：总延迟 = 命中率×缓存延迟 + (1-命中率)×源服务器延迟</p>
+</li>
+</ul>
+<h3 id="2-2-4-HTTP演进">2.2.4 HTTP演进</h3>
+<ul>
+<li><strong>HTTP/2</strong>：帧调度机制（解决HOL阻塞）、服务器推送、优先级机制</li>
+<li><strong>​HTTP/3</strong>：基于QUIC（UDP实现）</li>
+</ul>
+<h2 id="2-3-电子邮件（TCP-C-S架构）">2.3 电子邮件（TCP / C-S架构）</h2>
+<p><img src="img4.png" srcset="/img/loading.gif" lazyload alt="电子邮件协议及其通信实体"></p>
+<ul>
+<li>
+<p><strong>​SMTP（发件协议）​</strong></p>
+<ul>
+<li>命令交互式（HELO / MAIL FROM / RCPT TO / DATA / QUIT）</li>
+<li>仅限7位ASCII码文本邮件（MIME 支持多媒体附件）</li>
+</ul>
+</li>
+<li>
+<p><strong>POP3 / ​IMAP（收件协议）​</strong></p>
+<ul>
+<li>IMAP：服务器存储状态，支持文件夹管理</li>
+</ul>
+</li>
+<li>
+<p>发件和收件均可使用 HTTP</p>
+</li>
+</ul>
+<h2 id="2-4-DNS（UDP-C-S架构）">2.4 DNS（UDP / C-S架构）</h2>
+<h3 id="2-4-1-分层结构">2.4.1 分层结构</h3>
+<ul>
+<li><code>根DNS</code> <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> <code>顶级域(TLD) DNS</code>（.com/.org） <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> <code>权威DNS</code> <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> <code>本地DNS</code></li>
+</ul>
+<h3 id="2-4-2-查询过程">2.4.2 查询过程</h3>
+<ul>
+<li>​<strong>递归查询</strong>：本地DNS全权代理</li>
+<li><strong>​迭代查询</strong>：每一步返回下一跳地址</li>
+</ul>
+<p><img src="img5.png" srcset="/img/loading.gif" lazyload alt="本地 DNS 的两种查询过程"></p>
+<ul>
+<li><strong>DNS缓存</strong>：
+<ul>
+<li>DNS 服务器能本地存储解析记录，以减少响应时间。</li>
+<li>缓存条目在 TTL 超时后消失。</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-4-3-资源记录（RR）">2.4.3 资源记录（RR）</h3>
+<ul>
+<li><strong>记录格式</strong>：<code>(Name, Value, Type, TTL)</code></li>
+<li><strong>TTL（生存时间）</strong>：该记录应当从缓存中删除的时间</li>
+<li><strong>Type</strong>：
+<ul>
+<li><code>A</code>：主机名 → IP 地址</li>
+<li><code>NS</code>：域名 → 权威 DNS 服务器的主机名</li>
+<li><code>CNAME</code>​：主机别名 → 规范主机名</li>
+<li><code>MX</code>： （邮件服务器）简单别名 → 规范主机名</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-4-4-报文格式">2.4.4 报文格式</h3>
+<p><img src="img6.png" srcset="/img/loading.gif" lazyload alt="DNS 查询和回答报文格式"></p>
+<ul>
+<li>可以用 <code>nslooksup</code> 程序发送 DNS 查询报文</li>
+</ul>
+<h3 id="2-4-5-DNS-安全">2.4.5 DNS 安全</h3>
+<ul>
+<li><strong>​DDoS攻击</strong>：向根域名服务器发送大量流量</li>
+<li><strong>​欺骗攻击</strong>：拦截DNS查询，返回虚假响应</li>
+</ul>
+<h2 id="2-5-P2P文件分发（TCP-P2P架构）">2.5 P2P文件分发（TCP / P2P架构）</h2>
+<h3 id="2-5-1-分发时间公式">2.5.1 分发时间公式</h3>
+<h4 id="C-S模型">C/S模型</h4>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>D</mi><mrow><mi>C</mi><mi>S</mi></mrow></msub><mo>=</mo><mi>max</mi><mo>⁡</mo><mrow><mo fence="true">(</mo><mfrac><mrow><mi>N</mi><mi>F</mi></mrow><msub><mi>u</mi><mi>s</mi></msub></mfrac><mo separator="true">,</mo><mfrac><mi>F</mi><msub><mi>d</mi><mrow><mi>m</mi><mi>i</mi><mi>n</mi></mrow></msub></mfrac><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">D_{CS} = \max\left( \frac{NF}{u_s}, \frac{F}{d_{min}} \right) 
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05764em;">CS</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.4em;vertical-align:-0.95em;"></span><span class="mop">max</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">(</span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">s</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">NF</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">min</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">)</span></span></span></span></span></span></span></p>
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span>：客户端数量</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi></mrow><annotation encoding="application/x-tex">F</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span></span></span></span>：文件总大小</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>u</mi><mi>s</mi></msub></mrow><annotation encoding="application/x-tex">u_s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">s</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>：服务器上传带宽</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>d</mi><mrow><mi>m</mi><mi>i</mi><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">d_{min}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">min</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>：最慢客户端下载带宽</li>
+</ul>
+<h4 id="P2P模型">P2P模型</h4>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>D</mi><mrow><mi>P</mi><mn>2</mn><mi>P</mi></mrow></msub><mo>=</mo><mi>max</mi><mo>⁡</mo><mrow><mo fence="true">(</mo><mfrac><mi>F</mi><msub><mi>u</mi><mi>s</mi></msub></mfrac><mo separator="true">,</mo><mfrac><mi>F</mi><msub><mi>d</mi><mrow><mi>m</mi><mi>i</mi><mi>n</mi></mrow></msub></mfrac><mo separator="true">,</mo><mfrac><mrow><mi>N</mi><mi>F</mi></mrow><mrow><msub><mi>u</mi><mi>s</mi></msub><mo>+</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>N</mi></munderover><msub><mi>u</mi><mi>i</mi></msub></mrow></mfrac><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">D_{P2P} = \max\left( \frac{F}{u_s}, \frac{F}{d_{min}}, \frac{NF}{u_s + \sum_{i=1}^N u_i} \right) 
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">P</span><span class="mord mtight">2</span><span class="mord mathnormal mtight" style="margin-right:0.13889em;">P</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:3em;vertical-align:-1.25em;"></span><span class="mop">max</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size4">(</span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">s</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">min</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.1288em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">s</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:0em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9812em;"><span style="top:-2.4003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.10903em;">N</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2997em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">NF</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.1709em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size4">)</span></span></span></span></span></span></span></p>
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>u</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">u_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>：第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span> 个客户端的上传带宽</li>
+</ul>
+<h4 id="效率对比结论">效率对比结论</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">模型</th>
+<th style="text-align:center">扩展性</th>
+<th style="text-align:center">服务器压力</th>
+<th style="text-align:center">适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">C/S</td>
+<td style="text-align:center">差（随N线性增长）</td>
+<td style="text-align:center">极高</td>
+<td style="text-align:center">小规模、私密文件</td>
+</tr>
+<tr>
+<td style="text-align:center">P2P</td>
+<td style="text-align:center">优（自扩展）</td>
+<td style="text-align:center">极低</td>
+<td style="text-align:center">大规模公开分发</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-5-2-BitTorrent">2.5.2 BitTorrent</h3>
+<h4 id="核心内容">核心内容</h4>
+<ul>
+<li><strong>文件分块</strong></li>
+<li><strong>洪流（torrent）</strong>：一组交换文件块的对等体</li>
+<li>​<strong>追踪器（tracker）</strong>：能追踪参与洪流的对等体</li>
+</ul>
+<h4 id="请求策略——最稀缺优先">请求策略——最稀缺优先</h4>
+<ul>
+<li>优先请求邻居中副本最少的块</li>
+<li>均衡分块的副本数量，加速文件完整传播</li>
+</ul>
+<h4 id="发送策略——​Tit-for-Tat">发送策略——​<strong>Tit-for-Tat</strong></h4>
+<ul>
+<li>优先发送给上传速度最快的4个邻居，每10秒重新评估</li>
+<li>每30秒随机选择另一个节点发送数据块</li>
+<li>能发现潜在高速节点，对等方速率趋于协调</li>
+</ul>
+<h2 id="2-6-视频流与内容分发网（HTTP-TCP-C-S架构）">2.6 视频流与内容分发网（HTTP / TCP / C-S架构）</h2>
+<h3 id="2-6-1-DASH（Dynamic-Adaptive-Streaming-over-HTTP）">2.6.1 DASH（Dynamic Adaptive Streaming over HTTP）</h3>
+<ul>
+<li>​<strong>不同速率编码</strong>：将视频切割为多个片段，每个块以多个不同速率编码</li>
+<li>​<strong>动态码率调整</strong>：
+<ul>
+<li>带宽充足时，请求更高码率分片</li>
+<li>带宽不足时，请求更低码率分片</li>
+</ul>
+</li>
+<li>​<strong>缓冲区管理</strong>：维持5~10秒播放缓冲防止卡顿</li>
+</ul>
+<h3 id="2-6-2-CDN（内容分发网络）">2.6.2 CDN（内容分发网络）</h3>
+<h4 id="核心概念">核心概念</h4>
+<p>CDN通过地理分布的服务器节点缓存内容，将用户请求重定向到最优节点以提升访问速度。主要解决大规模内容分发的带宽压力与延迟问题。</p>
+<h4 id="服务器部署策略">服务器部署策略</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">策略</th>
+<th style="text-align:center">部署方式</th>
+<th style="text-align:center">优点</th>
+<th style="text-align:center">缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Enter Deep</td>
+<td style="text-align:center">边缘节点深入ISP网络</td>
+<td style="text-align:center">低延迟、高吞吐量</td>
+<td style="text-align:center">部署和维护成本高</td>
+</tr>
+<tr>
+<td style="text-align:center">Bring Home</td>
+<td style="text-align:center">集中部署在关键节点（如IXP）</td>
+<td style="text-align:center">管理成本低</td>
+<td style="text-align:center">延迟较高、带宽利用率较低</td>
+</tr>
+</tbody>
+</table>
+<h4 id="关键技术">关键技术</h4>
+<ul>
+<li>​<strong>DNS重定向</strong>：通过修改DNS响应将用户请求导向最近的CDN节点</li>
+<li>​<strong>集群选择策略</strong>：基于时延测量、地理位置等指标选择最优服务节点</li>
+<li>​<strong>内容缓存机制</strong>：使用拉取/推送策略在节点间同步热门内容</li>
+</ul>
+<h2 id="2-7-套接字编程">2.7 套接字编程</h2>
+<h3 id="2-7-1-UDP套接字编程">2.7.1 UDP套接字编程</h3>
+<p><strong>特性</strong>：无连接、不可靠传输、适用于实时应用（如视频会议）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 客户端核心流程</span><br>clientSocket = socket(AF_INET, SOCK_DGRAM)  <span class="hljs-comment"># 创建UDP套接字</span><br>clientSocket.sendto(message.encode(), (serverName, serverPort))  <span class="hljs-comment"># 发送报文</span><br>reponse, serverAddress = clientSocket.recvfrom(<span class="hljs-number">2048</span>)  <span class="hljs-comment"># 接收报文</span><br>reponse = response.decode()<br>clientSocket.close()  <span class="hljs-comment"># 关闭套接字</span><br><br><span class="hljs-comment"># 服务端核心流程</span><br>serverSocket = socket(AF_INET, SOCK_DGRAM)  <span class="hljs-comment"># 创建UDP套接字</span><br>serverSocket.bind((<span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-number">12000</span>))  <span class="hljs-comment"># 绑定端口号</span><br><span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>    message, clientAddress = serverSocket.recvfrom(<span class="hljs-number">2048</span>) <span class="hljs-comment"># 接收报文</span><br>    serverSocket.sendto(reponse.encode(), clientAddress)  <span class="hljs-comment"># 发送报文</span><br></code></pre></td></tr></table></figure>
+<h3 id="2-7-2-TCP套接字编程">2.7.2 TCP套接字编程</h3>
+<p><strong>特性</strong>：面向连接、可靠传输、保证数据顺序</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 客户端核心流程</span><br>clientSocket = socket(AF_INET, SOCK_STREAM)  <span class="hljs-comment"># 创建TCP套接字</span><br>clientSocket.connect((serverName, serverPort))  <span class="hljs-comment"># 建立TCP连接</span><br>clientSocket.send(message.encode())  <span class="hljs-comment"># 发送报文</span><br>reponse = clientSocket.recv(<span class="hljs-number">1024</span>).decode()  <span class="hljs-comment"># 接收报文</span><br>clientSocket.close()  <span class="hljs-comment"># 关闭套接字及连接</span><br><br><span class="hljs-comment"># 服务端核心流程</span><br>serverSocket = socket(AF_INET, SOCK_STREAM)  <span class="hljs-comment"># 创建TCP套接字</span><br>serverSocket.bind((<span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-number">12000</span>)) <span class="hljs-comment"># 绑定端口号</span><br>serverSocket.listen(<span class="hljs-number">1</span>)  <span class="hljs-comment"># 开始监听连接</span><br><span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>    connectionSocket, addr = serverSocket.accept() <span class="hljs-comment"># 接受新连接</span><br>    message = connectionSocket.recv(<span class="hljs-number">1024</span>).decode()  <span class="hljs-comment"># 接收报文</span><br>    connectionSocket.send(reponse.encode())   <span class="hljs-comment"># 发送报文</span><br>    connectionSocket.close()  <span class="hljs-comment"># 关闭该连接</span><br></code></pre></td></tr></table></figure>
+<div class="note note-secondary">
+            <p>注：本文中部分图片来自《计算机网络·自顶向下方法》。</p>
+          </div>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86/" class="print-no-link">#知识点整理</a>
+      
+        <a href="/tags/%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0/" class="print-no-link">#期末复习</a>
+      
+        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="print-no-link">#计算机网络</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>计算机网络知识点整理(2)：应用层</div>
+      <div>https://cny123222.github.io/2025/03/22/计算机网络知识点整理-2-：应用层/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Nuoyan Chen</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>March 22, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/03/24/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-3-%EF%BC%9A%E4%BC%A0%E8%BE%93%E5%B1%82/" title="计算机网络知识点整理(3)：传输层">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">计算机网络知识点整理(3)：传输层</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/03/22/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-1-%EF%BC%9A%E6%A6%82%E8%BF%B0/" title="计算机网络知识点整理(1)：概述">
+                        <span class="hidden-mobile">计算机网络知识点整理(1)：概述</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"cny123222/cny123222.github.io","repo-id":"R_kgDOOFgnVw","category":"Announcements","category-id":"DIC_kwDOOFgnV84CnwXM","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"en"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

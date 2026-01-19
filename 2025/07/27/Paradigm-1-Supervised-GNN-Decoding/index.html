@@ -1,0 +1,1133 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Nuoyan Chen">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="本文将介绍 ML4CO 的第一种范式（GNN 监督学习 + 解码）的代码实现。代码文件可以在 https:&#x2F;&#x2F;github.com&#x2F;cny123222&#x2F;A-Living-Guide-to-ML4CO 中找到。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Paradigm 1: Supervised GNN + Decoding">
+<meta property="og:url" content="https://cny123222.github.io/2025/07/27/Paradigm-1-Supervised-GNN-Decoding/index.html">
+<meta property="og:site_name" content="Nuoyan Chen&#39;s Blog">
+<meta property="og:description" content="本文将介绍 ML4CO 的第一种范式（GNN 监督学习 + 解码）的代码实现。代码文件可以在 https:&#x2F;&#x2F;github.com&#x2F;cny123222&#x2F;A-Living-Guide-to-ML4CO 中找到。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cny123222.github.io/img/ml4co.png">
+<meta property="article:published_time" content="2025-07-27T09:31:37.000Z">
+<meta property="article:modified_time" content="2025-12-17T14:01:25.962Z">
+<meta property="article:author" content="Nuoyan Chen">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="ML4CO">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cny123222.github.io/img/ml4co.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Paradigm 1: Supervised GNN + Decoding - Nuoyan Chen&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"cny123222.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 80vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Nuoyan Chen&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/nanjing.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.4)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Paradigm 1: Supervised GNN + Decoding"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Nuoyan Chen
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-07-27 17:31" pubdate>
+          July 27, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.5k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          21 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="ML4CO"
+        id="heading-f96b490a324eb7ddf9240b3448b5a7a7" role="tab" data-toggle="collapse" href="#collapse-f96b490a324eb7ddf9240b3448b5a7a7"
+        aria-expanded="true"
+      >
+        ML4CO
+        <span class="list-group-count">(17)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-f96b490a324eb7ddf9240b3448b5a7a7"
+           role="tabpanel" aria-labelledby="heading-f96b490a324eb7ddf9240b3448b5a7a7">
+        
+        
+          
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/07/25/A-Living-Guide-to-ML4CO/" title="A Living Guide to ML4CO"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">A Living Guide to ML4CO</span>
+        </a>
+      
+    
+  </div>
+
+          
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="Basics"
+        id="heading-bbc9105ee8508ce6e083a589a351e83a" role="tab" data-toggle="collapse" href="#collapse-bbc9105ee8508ce6e083a589a351e83a"
+        aria-expanded="true"
+      >
+        Basics
+        <span class="list-group-count">(6)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-bbc9105ee8508ce6e083a589a351e83a"
+           role="tabpanel" aria-labelledby="heading-bbc9105ee8508ce6e083a589a351e83a">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/07/28/Common-CO-Problems-in-ML4CO/" title="Common CO Problems in ML4CO"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Common CO Problems in ML4CO</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/07/27/Paradigm-1-Supervised-GNN-Decoding/" title="Paradigm 1: Supervised GNN + Decoding"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">Paradigm 1: Supervised GNN + Decoding</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/08/01/Paradigm-2-Autoregressive-Transformer-RL/" title="Paradigm 2: Autoregressive Transformer + RL"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Paradigm 2: Autoregressive Transformer + RL</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/07/28/Traditional-Solver-Baselines-in-ML4CO/" title="Traditional Solver Baselines in ML4CO"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Traditional Solver Baselines in ML4CO</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/07/26/Understading-GNN-An-ML4CO-perspective/" title="Understading GNN - An ML4CO perspective"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Understading GNN - An ML4CO perspective</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/08/01/Understading-Transformer-An-ML4CO-perspective/" title="Understading Transformer - An ML4CO perspective"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Understading Transformer - An ML4CO perspective</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="Code Reading"
+        id="heading-f77e38c01e2888b0c14a4f2e5ee3be87" role="tab" data-toggle="collapse" href="#collapse-f77e38c01e2888b0c14a4f2e5ee3be87"
+        aria-expanded="false"
+      >
+        Code Reading
+        <span class="list-group-count">(1)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse " id="collapse-f77e38c01e2888b0c14a4f2e5ee3be87"
+           role="tabpanel" aria-labelledby="heading-f77e38c01e2888b0c14a4f2e5ee3be87">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/08/24/Code-Reading-1-GNN4CO/" title="Code Reading #1: GNN4CO"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Code Reading #1: GNN4CO</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="Paper Reading"
+        id="heading-717502770b97d51394e7c55fa4354d40" role="tab" data-toggle="collapse" href="#collapse-717502770b97d51394e7c55fa4354d40"
+        aria-expanded="false"
+      >
+        Paper Reading
+        <span class="list-group-count">(9)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse " id="collapse-717502770b97d51394e7c55fa4354d40"
+           role="tabpanel" aria-labelledby="heading-717502770b97d51394e7c55fa4354d40">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/07/30/Paper-Reading-1-GCN4TSP/" title="Paper Reading #1: GCN4TSP"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Paper Reading #1: GCN4TSP</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/07/30/Paper-Reading-2-AM/" title="Paper Reading #2: AM"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Paper Reading #2: AM</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/08/18/Paper-Reading-3-RL4VRP/" title="Paper Reading #3: RL4VRP"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Paper Reading #3: RL4VRP</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/08/19/Paper-Reading-4-POMO/" title="Paper Reading #4: POMO"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Paper Reading #4: POMO</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/08/23/Paper-Reading-5-MatNet/" title="Paper Reading #5: MatNet"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Paper Reading #5: MatNet</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/08/28/Paper-Reading-6-SymNCO/" title="Paper Reading #6: SymNCO"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Paper Reading #6: SymNCO</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/10/28/Paper-Reading-7-DIMES/" title="Paper Reading #7: DIMES"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Paper Reading #7: DIMES</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/10/28/Paper-Reading-8-DIFUSCO/" title="Paper Reading #8: DIFUSCO"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Paper Reading #8: DIFUSCO</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/10/29/Paper-Reading-9-T2T/" title="Paper Reading #9: T2T"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Paper Reading #9: T2T</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Paradigm 1: Supervised GNN + Decoding</h1>
+            
+              <p id="updated-time" class="note note-default" style="">
+                
+                  
+                    Last updated on December 17, 2025 pm
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>本文将介绍 ML4CO 的第一种范式（GNN 监督学习 + 解码）的代码实现。代码文件可以在 <a target="_blank" rel="noopener" href="https://github.com/cny123222/A-Living-Guide-to-ML4CO">https://github.com/cny123222/A-Living-Guide-to-ML4CO</a> 中找到。</p>
+<span id="more"></span>
+<h2 id="方法概述">方法概述</h2>
+<p>在 <a href="https://cny123222.github.io/2025/07/25/A-Living-Guide-to-ML4CO">A Living Guide to ML4CO</a> 中，我们提到过 ML4CO 的第一种常见范式：<strong>GNN 监督学习 + 解码</strong>。它通过学习问题和解的结构，尝试预测最优解。</p>
+<p>我们还是以 TSP 为例，这种方法的大致过程是：</p>
+<ul>
+<li><strong>数据准备</strong>：既然是监督学习，我们需要给每个问题实例<strong>准备已知最优解</strong>。这些最优解来自传统求解器。</li>
+<li><strong>图的构建</strong>：将每个问题实例构建成一张图，确定顶点和边的特征。</li>
+<li><strong>模型构建</strong>：GNN 输入顶点和边的特征，输出一张<strong>热力图（heatmap）</strong>，每个元素 <code>P(i, j)</code> 代表边 <code>(i, j)</code> 属于最优解的概率。</li>
+<li><strong>训练过程</strong>：GNN 读入问题实例，输出热力图，<strong>与真实标签比较</strong>，计算损失并更新。</li>
+<li><strong>解码过程</strong>：以热力图为指导构建最终解，一般采用贪心搜索或束搜索。</li>
+</ul>
+<p>其中，“<strong>模型构建</strong>”部分由于涉及 GNN 的知识，我们将其放在了 <a href="https://cny123222.github.io/2025/07/26/Understading-GNN-An-ML4CO-perspective/">Understading GNN - An ML4CO perspective</a> 这篇博客中。我们用 Pytorch 搭建了一个包含 Embedding 层、图卷积层和输出层的简单 <strong>Encoder 网络</strong>。</p>
+<p>这篇博客中，我们将直接使用上述 Encoder 网络，并逐一实现<strong>数据准备、图的构建、训练过程、解码过程</strong>这几部分。</p>
+<div class="note note-warning">
+            <p>注意，这里只使用<strong>最简单的模型和最一般的方法</strong>进行演示。效果更好的经典模型及方法见 ML4CO Paper Reading 系列，如 <a href="https://cny123222.github.io/2025/07/30/Paper-Reading-1-GCN4TSP/">Paper Reading #1: GCN4TSP</a>。</p>
+          </div>
+<h2 id="数据准备">数据准备</h2>
+<p>我们在 <a href="https://cny123222.github.io/2025/07/28/Common-CO-Problems-in-ML4CO/">Common CO Problems in ML4CO</a> 中讲过 TSP <strong>数据集的生成算法</strong>，也在 <a href="https://cny123222.github.io/2025/07/28/Traditional-Solver-Baselines-in-ML4CO/">Traditional Solver Baselines in ML4CO</a> 中介绍过 TSP 常用的 <strong>baseline 求解器</strong>。</p>
+<p>在这里我们设置<strong>顶点数为 20、数据分布为 Gaussian、求解器为 LKH</strong>。使用 <strong>ML4CO-Kit</strong> 生成数据集的代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># gnn/data_generator.py</span><br><span class="hljs-keyword">from</span> ml4co_kit <span class="hljs-keyword">import</span> TSPDataGenerator<br><br><span class="hljs-comment"># initialization</span><br>tsp_data_concorde = TSPDataGenerator(<br>    num_threads=<span class="hljs-number">8</span>,<br>    nodes_num=<span class="hljs-number">20</span>,<br>    data_type=<span class="hljs-string">&quot;gaussian&quot;</span>,<br>    solver=<span class="hljs-string">&quot;LKH&quot;</span>,<br>    train_samples_num=<span class="hljs-number">1280</span>,<br>    val_samples_num=<span class="hljs-number">128</span>,<br>    test_samples_num=<span class="hljs-number">128</span>,<br>    save_path=<span class="hljs-string">&quot;data/tsp20&quot;</span><br>)<br><br><span class="hljs-comment"># generate</span><br>tsp_data_concorde.generate()<br></code></pre></td></tr></table></figure>
+<p>生成的训练集、验证集和测试集位于 <code>data/tsp20</code> 路径下，格式为 <code>.txt</code>，且均有 LKH 求解器生成的最优解。具体地说，每一行包含一个 TSP 实例，其<strong>格式</strong>为： 40 个 [0,1] 的浮点数（表示 20 个顶点的坐标）、<code>output</code>、21 个整数（表示最优路径依次访问的顶点编号，含终点）。</p>
+<h2 id="图的构建">图的构建</h2>
+<p>这部分涉及<strong>数据集的读入（Dataset）和加载（DataLoader）</strong>。为了简单起见，我们选择继承 Pytorch 的 <code>Dataset</code> 类并直接在 <code>__getitem__</code> 方法中进行数据的处理。</p>
+<div class="note note-warning">
+            <p>请注意，这<strong>并不是一种很好的处理方式</strong>。首先，<code>Dataset</code> 的 <code>__init__</code> 函数会一次性将所有数据读入内存，在数据集过大的情况下会造成问题。其次，<code>__getitem__</code> 方法每次只处理单个元素，无法进行批处理，效率很低。此处使用只是比较直观清晰，更实际的实现可以参考附录[2]中的代码。</p>
+          </div>
+<p>对于 TSP 来说，我们构建的图会是一个完全图，即任意两点之间都有双向的有向边。下面是简单的代码实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># gnn/env.py</span><br><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><span class="hljs-keyword">import</span> torch<br><span class="hljs-keyword">from</span> torch.utils.data <span class="hljs-keyword">import</span> Dataset<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">TSPDataset</span>(<span class="hljs-title class_ inherited__">Dataset</span>):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, file_path: <span class="hljs-built_in">str</span></span>):<br>        <span class="hljs-comment"># read the data form .txt</span><br>        <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(file_path, <span class="hljs-string">&quot;r&quot;</span>) <span class="hljs-keyword">as</span> file:<br>            points_list = <span class="hljs-built_in">list</span>()<br>            tour_list = <span class="hljs-built_in">list</span>()<br>            <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> file:<br>                line = line.strip()<br>                split_line = line.split(<span class="hljs-string">&quot; output &quot;</span>)<br>                <span class="hljs-comment"># parse points</span><br>                points = split_line[<span class="hljs-number">0</span>].split(<span class="hljs-string">&quot; &quot;</span>)<br>                points = np.array([[<span class="hljs-built_in">float</span>(points[i]), <span class="hljs-built_in">float</span>(points[i + <span class="hljs-number">1</span>])] <br>                                   <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(points), <span class="hljs-number">2</span>)])<br>                points_list.append(points)<br>                <span class="hljs-comment"># parse tour</span><br>                tour = split_line[<span class="hljs-number">1</span>].split(<span class="hljs-string">&quot; &quot;</span>)<br>                tour = np.array([<span class="hljs-built_in">int</span>(t) <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> tour])<br>                tour -= <span class="hljs-number">1</span>  <span class="hljs-comment"># convert to 0-based index</span><br>                tour_list.append(tour)<br>        <span class="hljs-variable language_">self</span>.points = np.array(points_list)<br>        <span class="hljs-variable language_">self</span>.tours = np.array(tour_list)<br>        <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__getitem__</span>(<span class="hljs-params">self, index</span>):<br>        points = <span class="hljs-variable language_">self</span>.points[index]  <span class="hljs-comment"># shape: (V, 2)</span><br>        tour = <span class="hljs-variable language_">self</span>.tours[index]     <span class="hljs-comment"># shape: (V+1,)</span><br><br>        node_num = points.shape[<span class="hljs-number">0</span>]<br>        <span class="hljs-comment"># create edge index</span><br>        src, dst = np.meshgrid(np.arange(node_num), np.arange(node_num))<br>        mask = (src != dst)<br>        src, dst = src[mask], dst[mask]  <span class="hljs-comment"># shape: (E,)</span><br>        edge_index = np.stack([src, dst], axis=<span class="hljs-number">0</span>)  <span class="hljs-comment"># shape: (2, E)</span><br><br>        <span class="hljs-comment"># calculate each edge&#x27;s length</span><br>        edges = np.linalg.norm(points[src] - points[dst], axis=<span class="hljs-number">1</span>)  <span class="hljs-comment"># shape: (E,)</span><br>                <br>        <span class="hljs-comment"># generate the ground truth</span><br>        gt_adj = np.zeros((node_num, node_num), dtype=<span class="hljs-built_in">bool</span>)<br>        gt_adj[tour[:-<span class="hljs-number">1</span>], tour[<span class="hljs-number">1</span>:]] = <span class="hljs-literal">True</span><br>        gt_adj = gt_adj | gt_adj.T  <span class="hljs-comment"># make it undirected</span><br>        ground_truth = gt_adj[src, dst]<br>        <br>        <span class="hljs-comment"># convert into tensors</span><br>        points = torch.tensor(points, dtype=torch.float32)  <span class="hljs-comment"># shape: (V, 2)</span><br>        edges = torch.tensor(edges, dtype=torch.float32)  <span class="hljs-comment"># shape: (E,)</span><br>        edge_index = torch.tensor(edge_index, dtype=torch.long)  <span class="hljs-comment"># shape: (2, E)</span><br>        tour = torch.tensor(tour, dtype=torch.long)  <span class="hljs-comment"># shape: (V+1,)</span><br>        ground_truth = torch.tensor(ground_truth, dtype=torch.long) <span class="hljs-comment"># shape: (E,)</span><br>        <br>        <span class="hljs-keyword">return</span> points, edges, edge_index, ground_truth, tour<br>    <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__len__</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.points.shape[<span class="hljs-number">0</span>]  <span class="hljs-comment"># number of samples</span><br></code></pre></td></tr></table></figure>
+<p>我们创造了一个 <code>TSPDataset</code> 类，它有两个方法：</p>
+<ul>
+<li><code>__init__</code> 方法：完成了数据集从文件中的读取，将点的坐标和参考路径保存。</li>
+<li><code>__getitem__</code> 方法：返回任意一条数据。数据格式按照我们所写 <code>Encoder</code> 的要求构造，返回了 <code>points</code>、<code>edges</code>、<code>edge_index</code>、<code>ground_truth</code> 和 <code>tour</code>。前三个变量的含义我们在 <code>Encoder</code> 搭建的<a href="https://cny123222.github.io/2025/07/26/Understading-GNN-An-ML4CO-perspective/">博客</a> 中已经讲过。 <code>tour</code> 是参考路径，<code>ground_truth</code> 是 heatmap 的目标，即出现在 <code>tour</code> 中的边为 1，其余边为 0，用于计算损失。</li>
+</ul>
+<div class="note note-info">
+            <p>这里的 <code>__getitem__</code> 函数中，用到了几处 Numpy 语法，可能较为难以理解，大家可以参考 Numpy 的官方文档[3]。但这并不是我们的重点，只需要理解 <code>__getitem__</code> 方法的返回值含义即可。</p>
+          </div>
+<p>为了更好地使用 ML4CO-Kit 框架，我们还需要完成一个 <code>GNNEnv</code>，其作用与 <code>DataLoader</code> 类似。我们简单地完成 <code>load_data</code>、<code>train_dataloader</code>、<code>val_dataloader</code> 和 <code>test_dataloader</code> 四个方法，进行数据加载，因为我们的 <code>GNNModel</code> 会默认调用这些函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># gnn/env.py</span><br><span class="hljs-keyword">from</span> ml4co_kit <span class="hljs-keyword">import</span> BaseEnv<br><span class="hljs-keyword">from</span> torch.utils.data <span class="hljs-keyword">import</span> DataLoader<br>    <br>    <br><span class="hljs-keyword">class</span> <span class="hljs-title class_">GNNEnv</span>(<span class="hljs-title class_ inherited__">BaseEnv</span>):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params"></span><br><span class="hljs-params">        self,</span><br><span class="hljs-params">        mode: <span class="hljs-built_in">str</span> = <span class="hljs-string">&quot;train&quot;</span>,</span><br><span class="hljs-params">        train_batch_size: <span class="hljs-built_in">int</span> = <span class="hljs-number">4</span>,</span><br><span class="hljs-params">        val_batch_size: <span class="hljs-built_in">int</span> = <span class="hljs-number">4</span>,</span><br><span class="hljs-params">        train_path: <span class="hljs-built_in">str</span> = <span class="hljs-literal">None</span>,</span><br><span class="hljs-params">        val_path: <span class="hljs-built_in">str</span> = <span class="hljs-literal">None</span>,</span><br><span class="hljs-params">        num_workers: <span class="hljs-built_in">int</span> = <span class="hljs-number">4</span>,</span><br><span class="hljs-params">        device: <span class="hljs-built_in">str</span> = <span class="hljs-string">&quot;cpu&quot;</span>,</span><br><span class="hljs-params">    </span>):<br>        <span class="hljs-built_in">super</span>(GNNEnv, <span class="hljs-variable language_">self</span>).__init__(<br>            name=<span class="hljs-string">&quot;GNNEnv&quot;</span>,<br>            mode=mode,<br>            train_batch_size=train_batch_size,<br>            val_batch_size=val_batch_size,<br>            train_path=train_path,<br>            val_path=val_path,<br>            num_workers=num_workers,<br>            device=device<br>        )<br>        <span class="hljs-keyword">if</span> mode <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:<br>            <span class="hljs-variable language_">self</span>.load_data()<br>        <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">load_data</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-variable language_">self</span>.train_dataset = TSPDataset(<span class="hljs-variable language_">self</span>.train_path) <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.train_path <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span><br>        <span class="hljs-variable language_">self</span>.val_dataset = TSPDataset(<span class="hljs-variable language_">self</span>.val_path) <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.val_path <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span><br>        <span class="hljs-variable language_">self</span>.test_dataset = TSPDataset(<span class="hljs-variable language_">self</span>.test_path) <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.test_path <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span><br>        <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">train_dataloader</span>(<span class="hljs-params">self</span>):<br>        train_dataloader = DataLoader(<br>            <span class="hljs-variable language_">self</span>.train_dataset, <br>            batch_size=<span class="hljs-variable language_">self</span>.train_batch_size, <br>            shuffle=<span class="hljs-literal">True</span>,<br>            num_workers=<span class="hljs-variable language_">self</span>.num_workers,<br>        )<br>        <span class="hljs-keyword">return</span> train_dataloader<br>    <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">val_dataloader</span>(<span class="hljs-params">self</span>):<br>        val_dataloader = DataLoader(<br>            <span class="hljs-variable language_">self</span>.val_dataset, <br>            batch_size=<span class="hljs-variable language_">self</span>.val_batch_size, <br>            shuffle=<span class="hljs-literal">False</span><br>        )<br>        <span class="hljs-keyword">return</span> val_dataloader<br>    <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">test_dataloader</span>(<span class="hljs-params">self</span>):<br>        test_dataloader = DataLoader(<br>            <span class="hljs-variable language_">self</span>.test_dataset,<br>            batch_size=<span class="hljs-variable language_">self</span>.test_batch_size,<br>            shuffle=<span class="hljs-literal">False</span><br>        )<br>        <span class="hljs-keyword">return</span> test_dataloader<br></code></pre></td></tr></table></figure>
+<h2 id="解码过程">解码过程</h2>
+<p>在搭建完整的 <code>GNNModel</code> 之前，我们先完成最后一个模块—— <code>GNNDecoder</code> 的搭建。其任务是输入一张 heatmap，输出最终求解得到的路径。</p>
+<p>由于我们之前一直对边采用<strong>稀疏表示</strong>，heatmap 的形状为 <code>(E,)</code>，此时为了解码的方便，需要将其<strong>转换到稠密表示</strong>，即邻接矩阵表示，形状为 <code>(V, V)</code>。代码中将直接采用 ML4CO-Kit 提供的 <code>np_sparse_to_dense</code> 函数。</p>
+<p>这里，我们只实现最基础的贪心（Greedy）解码逻辑，即每次从剩余的顶点中加入当前概率最大的作为路径的下一个顶点。代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># gnn/decoder.py</span><br><span class="hljs-keyword">from</span> torch <span class="hljs-keyword">import</span> Tensor<br><span class="hljs-keyword">from</span> ml4co_kit <span class="hljs-keyword">import</span> np_sparse_to_dense<br><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">GNNDecoder</span>():<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, decoding_type: <span class="hljs-built_in">str</span> = <span class="hljs-string">&quot;greedy&quot;</span></span>):<br>        <span class="hljs-variable language_">self</span>.decoding_type = decoding_type<br>        <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">decode</span>(<span class="hljs-params">self, heatmap: Tensor, nodes_num: <span class="hljs-built_in">int</span>, edge_index: Tensor</span>):<br>        <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">        Args:</span><br><span class="hljs-string">            heatmap: (B, E) tensor representing edges being selected</span><br><span class="hljs-string">            nodes_num: int, number of nodes</span><br><span class="hljs-string">            edge_index: (B, 2, E) Tensor with edges representing connections from source to target nodes</span><br><span class="hljs-string">        Returns:</span><br><span class="hljs-string">            tour: (B, V) tensor representing the tour</span><br><span class="hljs-string">        &quot;&quot;&quot;</span><br>        <span class="hljs-comment"># Convert to numpy for processing</span><br>        heatmap = heatmap.cpu().numpy()<br>        edge_index = edge_index.cpu().numpy()<br>        <span class="hljs-comment"># Convert heatmap to a dense format</span><br>        batch_size = heatmap.shape[<span class="hljs-number">0</span>]<br>        nodes_num = heatmap.shape[<span class="hljs-number">1</span>]<br>        heatmap_dense = np.zeros((batch_size, nodes_num, nodes_num), dtype=np.float32)<br>        <span class="hljs-keyword">for</span> idx <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(batch_size):<br>            heatmap_dense[idx] = np_sparse_to_dense(<br>                nodes_num=nodes_num, edge_index=edge_index[idx], edge_attr=heatmap[idx]<br>            )  <span class="hljs-comment"># Convert into a real heatmap (V, V)</span><br>        <span class="hljs-comment"># Decode the tour based on the heatmap</span><br>        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.decoding_type == <span class="hljs-string">&quot;greedy&quot;</span>:<br>            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>._greedy_decode(heatmap_dense, batch_size, nodes_num)<br>        <span class="hljs-keyword">else</span>:<br>            <span class="hljs-keyword">raise</span> NotImplementedError(<span class="hljs-string">f&quot;Decoding type &#x27;<span class="hljs-subst">&#123;self.decoding_type&#125;</span>&#x27; is not supported.&quot;</span>)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">_greedy_decode</span>(<span class="hljs-params">self, heatmap: np.ndarray, batch_size: <span class="hljs-built_in">int</span>, nodes_num: <span class="hljs-built_in">int</span></span>):<br>        <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">        Args:</span><br><span class="hljs-string">            heatmap: (B, V, V) numpy array representing the heatmap</span><br><span class="hljs-string">            batch_size: int, number of samples in the batch</span><br><span class="hljs-string">            nodes_num: int, number of nodes</span><br><span class="hljs-string">        Returns:</span><br><span class="hljs-string">            tours: (B, V+1) numpy array representing the decoded tours</span><br><span class="hljs-string">        &quot;&quot;&quot;</span><br>        tours = []<br>        <span class="hljs-comment"># Iterate over each instance</span><br>        <span class="hljs-keyword">for</span> idx <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(batch_size):<br>            tour = []<br>            current = <span class="hljs-literal">None</span><br>            <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(nodes_num):<br>                <span class="hljs-keyword">if</span> current <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:<br>                    <span class="hljs-comment"># Start from the first node</span><br>                    next_node = <span class="hljs-number">0</span><br>                <span class="hljs-keyword">else</span>:<br>                    <span class="hljs-comment"># Select the next node with the highest probability</span><br>                    next_node = np.argmax(heatmap[idx][current]).item()<br>                tour.append(next_node)<br>                heatmap[idx][:, next_node] = <span class="hljs-number">0</span>  <span class="hljs-comment"># Remove the selected node</span><br>                current = next_node<br>            tour.append(<span class="hljs-number">0</span>)  <span class="hljs-comment"># Return to the starting node</span><br>            tours.append(np.array(tour))<br>        <span class="hljs-keyword">return</span> np.array(tours)<br></code></pre></td></tr></table></figure>
+<h2 id="训练过程">训练过程</h2>
+<p>接下来，我们进入核心的训练部分，构建一个完整的 <code>GNNModel</code>。这里，我们选择继承自 ML4CO-Kit 的 <code>BaseModel</code>，只需要完成 <code>shared_step</code> 这一个函数。</p>
+<p>在 <code>shared_step</code> 方法中，我们要分别写好训练（<code>phase == &quot;train&quot;</code>）和验证（<code>phase == &quot;val&quot;</code>）的完整逻辑。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># gnn/model.py</span><br><span class="hljs-keyword">import</span> torch<br><span class="hljs-keyword">from</span> torch <span class="hljs-keyword">import</span> nn, Tensor<br><span class="hljs-keyword">from</span> ml4co_kit <span class="hljs-keyword">import</span> BaseModel, TSPSolver<br><span class="hljs-keyword">from</span> .env <span class="hljs-keyword">import</span> GNNEnv<br><span class="hljs-keyword">from</span> .encoder <span class="hljs-keyword">import</span> GCNEncoder<br><span class="hljs-keyword">from</span> .decoder <span class="hljs-keyword">import</span> GNNDecoder<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">GNNModel</span>(<span class="hljs-title class_ inherited__">BaseModel</span>):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params"></span><br><span class="hljs-params">        self,</span><br><span class="hljs-params">        env: GNNEnv,</span><br><span class="hljs-params">        encoder: GCNEncoder,</span><br><span class="hljs-params">        decoder: GNNDecoder,</span><br><span class="hljs-params">        lr_scheduler: <span class="hljs-built_in">str</span> = <span class="hljs-string">&quot;cosine-decay&quot;</span>,</span><br><span class="hljs-params">        learning_rate: <span class="hljs-built_in">float</span> = <span class="hljs-number">2e-4</span>,</span><br><span class="hljs-params">        weight_decay: <span class="hljs-built_in">float</span> = <span class="hljs-number">1e-4</span>,</span><br><span class="hljs-params">    </span>):<br>        <span class="hljs-built_in">super</span>(GNNModel, <span class="hljs-variable language_">self</span>).__init__(<br>            env=env,<br>            model=encoder,<br>            lr_scheduler=lr_scheduler,<br>            learning_rate=learning_rate,<br>            weight_decay=weight_decay<br>        )<br>        <span class="hljs-variable language_">self</span>.env = env<br>        <span class="hljs-variable language_">self</span>.model = encoder<br>        <span class="hljs-variable language_">self</span>.decoder = decoder<br>        <span class="hljs-variable language_">self</span>.to(<span class="hljs-variable language_">self</span>.env.device)<br>        <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">shared_step</span>(<span class="hljs-params">self, batch, batch_idx, phase</span>):<br>        <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">        Shared step for training, validation, and testing.</span><br><span class="hljs-string">        &quot;&quot;&quot;</span><br>        <span class="hljs-variable language_">self</span>.env.mode = phase<br>        <span class="hljs-comment"># unpack batch data</span><br>        x, e, edge_index, ground_truth, ref_tour = batch<br>        <span class="hljs-comment"># x: (B, V, H), e: (B, E, H)</span><br>        <span class="hljs-comment"># edge_index: (B, 2, E), ground_truth: (B, E)</span><br>        <span class="hljs-comment"># ref_tour: (B, V+1)</span><br>        e_pred = <span class="hljs-variable language_">self</span>.model(x, e, edge_index)  <span class="hljs-comment"># shape: (B, E, 2)</span><br>        loss = nn.CrossEntropyLoss()(e_pred.view(-<span class="hljs-number">1</span>, <span class="hljs-number">2</span>), ground_truth.view(-<span class="hljs-number">1</span>))<br>        <span class="hljs-keyword">if</span> phase == <span class="hljs-string">&quot;val&quot;</span>:<br>            e_prob = torch.softmax(e_pred, dim=-<span class="hljs-number">1</span>) <span class="hljs-comment"># shape: (B, E, 2)</span><br>            heatmap = e_prob[:, :, <span class="hljs-number">1</span>]  <span class="hljs-comment"># shape: (B, E)</span><br>            tours = <span class="hljs-variable language_">self</span>.decoder.decode(heatmap, x.shape[<span class="hljs-number">1</span>], edge_index)  <span class="hljs-comment"># shape: (B, V+1)</span><br>            costs_avg, _, gap_avg, _ = <span class="hljs-variable language_">self</span>.evaluate(x, tours, ref_tour)<br>        <span class="hljs-comment"># log</span><br>        metrics = &#123;<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;phase&#125;</span>/loss&quot;</span>: loss&#125;<br>        <span class="hljs-comment"># print(f&quot;&#123;phase&#125; loss: &#123;loss.item()&#125;&quot;)</span><br>        <span class="hljs-keyword">if</span> phase == <span class="hljs-string">&quot;val&quot;</span>:<br>            metrics.update(&#123;<span class="hljs-string">&quot;val/costs_avg&quot;</span>: costs_avg, <span class="hljs-string">&quot;val/gap_avg&quot;</span>: gap_avg&#125;)<br>        <span class="hljs-keyword">for</span> k, v <span class="hljs-keyword">in</span> metrics.items():<br>            <span class="hljs-variable language_">self</span>.log(k, <span class="hljs-built_in">float</span>(v), prog_bar=<span class="hljs-literal">True</span>, on_epoch=<span class="hljs-literal">True</span>, sync_dist=<span class="hljs-literal">True</span>)<br>        <span class="hljs-comment"># return</span><br>        <span class="hljs-keyword">return</span> loss <span class="hljs-keyword">if</span> phase == <span class="hljs-string">&quot;train&quot;</span> <span class="hljs-keyword">else</span> metrics   <br>            <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">evaluate</span>(<span class="hljs-params">self, x: Tensor, tours: Tensor, ref_tour: Tensor</span>):<br>        <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">        Evaluate the model&#x27;s performance on a given set of tours.</span><br><span class="hljs-string">        </span><br><span class="hljs-string">        Args:</span><br><span class="hljs-string">            x: (B, V, H) tensor representing node features.</span><br><span class="hljs-string">            tours: (B, V+1) tensor representing predicted tours.</span><br><span class="hljs-string">            ref_tour: (B, V+1) tensor representing reference tours.</span><br><span class="hljs-string">        </span><br><span class="hljs-string">        Returns:</span><br><span class="hljs-string">            costs_avg: Average cost of the predicted tours.</span><br><span class="hljs-string">            ref_costs_avg: Average cost of the reference tours.</span><br><span class="hljs-string">            gap_avg: Average gap between predicted and reference tours.</span><br><span class="hljs-string">            gap_std: Standard deviation of the gap.</span><br><span class="hljs-string">        &quot;&quot;&quot;</span><br>        x = x.cpu().numpy()<br>        ref_tour = ref_tour.cpu().numpy()<br>            <br>        solver = TSPSolver()<br>        solver.from_data(points=x, tours=tours, ref=<span class="hljs-literal">False</span>)<br>        solver.from_data(tours=ref_tour, ref=<span class="hljs-literal">True</span>)<br>        costs_avg, ref_costs_avg, gap_avg, gap_std = solver.evaluate(calculate_gap=<span class="hljs-literal">True</span>)<br>        <span class="hljs-keyword">return</span> costs_avg, ref_costs_avg, gap_avg, gap_std<br></code></pre></td></tr></table></figure>
+<p><code>evaluate</code> 方法对得到的路径做评估，返回路径平均长度、参考路径平均长度、gap 的均值和标准差。其实现是调用了 ML4CO-Kit 的 <code>TSPSolver</code> 求解器的 <code>evaluate</code> 方法。</p>
+<p>核心部分是 <code>shared_step</code> 方法。在这里，模型收到 dataloader 传来的一个 batch，将顶点和边的特征通过 Encoder，再将得到的结果与 <code>ground_truth</code> 计算损失。如果是验证，还会进行 tour 的 decoding 和评估。</p>
+<h2 id="实战训练及验证">实战训练及验证</h2>
+<p>最后，我们可以对模型进行训练。这里，我们使用 ML4CO-Kit 提供的 <code>Trainer</code>（它继承自 Pytorch Lightning 中的 <code>Trainer</code>）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># gnn/train.py</span><br><span class="hljs-keyword">from</span> .env <span class="hljs-keyword">import</span> GNNEnv<br><span class="hljs-keyword">from</span> .encoder <span class="hljs-keyword">import</span> GCNEncoder<br><span class="hljs-keyword">from</span> .decoder <span class="hljs-keyword">import</span> GNNDecoder<br><span class="hljs-keyword">from</span> .model <span class="hljs-keyword">import</span> GNNModel<br><span class="hljs-keyword">from</span> ml4co_kit <span class="hljs-keyword">import</span> Trainer<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:<br>    model = GNNModel(<br>        env=GNNEnv(<br>            mode=<span class="hljs-string">&quot;train&quot;</span>,<br>            train_batch_size=<span class="hljs-number">32</span>,<br>            val_batch_size=<span class="hljs-number">4</span>,<br>            train_path=<span class="hljs-string">&quot;data/tsp20/tsp20_gaussian_train.txt&quot;</span>,<br>            val_path=<span class="hljs-string">&quot;data/tsp20/tsp20_gaussian_val.txt&quot;</span>,<br>            device=<span class="hljs-string">&quot;cuda&quot;</span>,<br>        ),<br>        encoder=GCNEncoder(<br>            hidden_dim=<span class="hljs-number">64</span>,<br>            gcn_layer_num=<span class="hljs-number">10</span>,<br>            out_layer_num=<span class="hljs-number">3</span>,<br>        ),<br>        decoder=GNNDecoder(<br>            decoding_type=<span class="hljs-string">&quot;greedy&quot;</span>,<br>        ),<br>    )<br>    <br>    trainer = Trainer(model=model, devices=[<span class="hljs-number">0</span>], max_epochs=<span class="hljs-number">20</span>)<br>    trainer.model_train()<br></code></pre></td></tr></table></figure>
+<p>运行该 Python 文件，即可在 Wandb 中看到我们的实验结果。</p>
+<p><img src="img1.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>可以看到，经过大约 10 个 epoch，<code>val/loss</code> 收敛在 0.13 左右，<code>val/gap_avg</code> 收敛在 9% 左右，模型效果比较一般。当然，因为这只是随手写的基础模型。</p>
+<p>至此，ML4CO 的第一种范式（GNN 监督学习 + 解码）实现完毕。这是目前 ML4CO 中<strong>监督学习</strong>模型的基础。</p>
+<h2 id="参考资料">参考资料</h2>
+<p>[1] <a target="_blank" rel="noopener" href="https://github.com/Thinklab-SJTU/ML4CO-Kit">https://github.com/Thinklab-SJTU/ML4CO-Kit</a><br>
+[2] <a target="_blank" rel="noopener" href="https://github.com/Thinklab-SJTU/ML4CO-Bench-101">https://github.com/Thinklab-SJTU/ML4CO-Bench-101</a><br>
+[3] <a target="_blank" rel="noopener" href="https://numpy.org/doc/stable/reference/index.html">https://numpy.org/doc/stable/reference/index.html</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/ML4CO/" class="category-chain-item">ML4CO</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/ML4CO/Basics/" class="category-chain-item">Basics</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AI/" class="print-no-link">#AI</a>
+      
+        <a href="/tags/ML4CO/" class="print-no-link">#ML4CO</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Paradigm 1: Supervised GNN + Decoding</div>
+      <div>https://cny123222.github.io/2025/07/27/Paradigm-1-Supervised-GNN-Decoding/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Nuoyan Chen</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>July 27, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/07/28/Common-CO-Problems-in-ML4CO/" title="Common CO Problems in ML4CO">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Common CO Problems in ML4CO</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/07/26/Understading-GNN-An-ML4CO-perspective/" title="Understading GNN - An ML4CO perspective">
+                        <span class="hidden-mobile">Understading GNN - An ML4CO perspective</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"cny123222/cny123222.github.io","repo-id":"R_kgDOOFgnVw","category":"Announcements","category-id":"DIC_kwDOOFgnV84CnwXM","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"en"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

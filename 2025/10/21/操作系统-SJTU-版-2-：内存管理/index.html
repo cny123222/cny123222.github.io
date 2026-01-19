@@ -1,0 +1,1720 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Nuoyan Chen">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="这是《操作系统》SJTU-CS3601 课程的课程笔记系列。本文整理部分为“第 2 部分：内存管理”。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统 SJTU 版(2)：内存管理">
+<meta property="og:url" content="https://cny123222.github.io/2025/10/21/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-SJTU-%E7%89%88-2-%EF%BC%9A%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/index.html">
+<meta property="og:site_name" content="Nuoyan Chen&#39;s Blog">
+<meta property="og:description" content="这是《操作系统》SJTU-CS3601 课程的课程笔记系列。本文整理部分为“第 2 部分：内存管理”。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
+<meta property="article:published_time" content="2025-10-21T15:48:21.000Z">
+<meta property="article:modified_time" content="2025-11-20T02:30:05.986Z">
+<meta property="article:author" content="Nuoyan Chen">
+<meta property="article:tag" content="操作系统">
+<meta property="article:tag" content="课程笔记">
+<meta property="article:tag" content="知识点整理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cny123222.github.io/img/os-new.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>操作系统 SJTU 版(2)：内存管理 - Nuoyan Chen&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"cny123222.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 80vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Nuoyan Chen&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/nanjing.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.4)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="操作系统 SJTU 版(2)：内存管理"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Nuoyan Chen
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-10-21 23:48" pubdate>
+          October 21, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.9k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          50 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="操作系统"
+        id="heading-30d23ef4f49e85f37f54786ff984032c" role="tab" data-toggle="collapse" href="#collapse-30d23ef4f49e85f37f54786ff984032c"
+        aria-expanded="true"
+      >
+        操作系统
+        <span class="list-group-count">(12)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-30d23ef4f49e85f37f54786ff984032c"
+           role="tabpanel" aria-labelledby="heading-30d23ef4f49e85f37f54786ff984032c">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/10/02/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-SJTU-%E7%89%88-1-%EF%BC%9A%E6%A6%82%E8%BF%B0/" title="操作系统 SJTU 版(1)：概述"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">操作系统 SJTU 版(1)：概述</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/10/21/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-SJTU-%E7%89%88-2-%EF%BC%9A%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" title="操作系统 SJTU 版(2)：内存管理"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">操作系统 SJTU 版(2)：内存管理</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/10/24/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-SJTU-%E7%89%88-3-%EF%BC%9A%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/" title="操作系统 SJTU 版(3)：进程管理"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">操作系统 SJTU 版(3)：进程管理</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/12/09/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-SJTU-%E7%89%88-4-%EF%BC%9A%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/" title="操作系统 SJTU 版(4)：文件管理"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">操作系统 SJTU 版(4)：文件管理</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/06/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-1-%EF%BC%9A%E6%A6%82%E8%BF%B0/" title="操作系统(1)：概述"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">操作系统(1)：概述</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/06/18/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-2-%EF%BC%9A%E5%A4%84%E7%90%86%E6%9C%BA%E7%AE%A1%E7%90%86/" title="操作系统(2)：处理机管理"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">操作系统(2)：处理机管理</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/07/11/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-3-%EF%BC%9A%E5%AD%98%E5%82%A8%E5%99%A8%E7%AE%A1%E7%90%86/" title="操作系统(3)：存储器管理"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">操作系统(3)：存储器管理</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/07/17/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-4-%EF%BC%9A%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/" title="操作系统(4)：文件管理"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">操作系统(4)：文件管理</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/07/18/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-5-%EF%BC%9AI-O%E7%AE%A1%E7%90%86/" title="操作系统(5)：I/O管理"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">操作系统(5)：I/O管理</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/11/14/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%EF%BC%9A2024-%E6%9C%9F%E4%B8%AD%E7%9C%9F%E9%A2%98/" title="操作系统：2024 期中真题"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">操作系统：2024 期中真题</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/11/05/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%EF%BC%9A%E6%9C%9F%E4%B8%AD%E5%A4%8D%E4%B9%A0/" title="操作系统：期中复习"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">操作系统：期中复习</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/12/11/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%EF%BC%9A%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0/" title="操作系统：期末复习"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">操作系统：期末复习</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">操作系统 SJTU 版(2)：内存管理</h1>
+            
+              <p id="updated-time" class="note note-default" style="">
+                
+                  
+                    Last updated on November 20, 2025 am
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>这是《操作系统》SJTU-CS3601 课程的课程笔记系列。本文整理部分为“第 2 部分：内存管理”。</p>
+<span id="more"></span>
+<h2 id="Lecture-5-内存地址翻译">Lecture 5: 内存地址翻译</h2>
+<h3 id="内存管理">内存管理</h3>
+<ul>
+<li><strong>地址映射</strong>：由 CPU 中的 <strong>MMU</strong>（Memory Management Unit）将虚拟地址翻译为物理地址，由操作系统配置如何翻译</li>
+<li><strong>分页机制</strong>：虚拟页和物理页的页长相等
+<ul>
+<li><strong>虚拟地址（VA）</strong>：虚拟页偏移（VPO）+ 虚拟页号（VPN）</li>
+<li><strong>物理地址（PA）</strong>：物理页偏移（PPO）+ 物理页号（PPN）</li>
+</ul>
+</li>
+<li><strong>页表</strong>：记录虚拟页号到物理页号的映射
+<ul>
+<li>每个进程一张页表，操作系统也有一张页表</li>
+<li>包含多个页表项，存储物理页的页号（虚拟页号为索引）</li>
+<li>存储在物理内存中，由 OS 负责维护</li>
+<li>其起始地址存放在页表基地址寄存器中</li>
+</ul>
+</li>
+<li><strong>分页机制的特点</strong>：
+<ul>
+<li>物理内存离散分配
+<ul>
+<li>任意虚拟页可以映射到任意物理页</li>
+<li>大大降低对物理内存连续性的要求</li>
+</ul>
+</li>
+<li>主存资源易于管理，利用率更高
+<ul>
+<li>按照固定页大小分配物理内存</li>
+<li>能大大降低外部碎片和内部碎片</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="多级页表">多级页表</h3>
+<ul>
+<li><strong>多级页表的优点</strong>：能有效压缩页表的大小
+<ul>
+<li><strong>原因</strong>：允许页表中出现空洞
+<ul>
+<li>若某个页表页中的某个页表项为空，那么其对应的下一级页表页便无需存在</li>
+<li>应用程序的虚拟地址空间大部分都未分配</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>页表格式</strong>：AARCH64 体系结构下 4 级页表
+<ul>
+<li>每个页表页占用一个 4K 物理页</li>
+<li>每个页表项占用 8 个字节，每个页表页有 512 个页表项</li>
+</ul>
+</li>
+</ul>
+<p><img src="multi_page_table.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>64 位虚拟地址解析</strong>:
+<ul>
+<li>[63:48] 16-bit：必须全 0 或全 1
+<ul>
+<li>一般应用程序地址是 0，内核地址是 1</li>
+<li>意味着虚拟地址空间大小最大是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>48</mn></msup></mrow><annotation encoding="application/x-tex">2^{48}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">48</span></span></span></span></span></span></span></span></span></span></span></span> Byte，即 256 TB</li>
+</ul>
+</li>
+<li>[47:39] 9-bit：0 级页表索引</li>
+<li>[38:30] 9-bit：1 级页表索引</li>
+<li>[29:21] 9-bit：2 级页表索引</li>
+<li>[20:12] 9-bit：3 级页表索引</li>
+<li>[11:0] 12-bit：页内偏移</li>
+</ul>
+</li>
+<li><strong>页表基地址寄存器</strong>：AARCH64 有两个页表基地址寄存器：TTBR0_EL1 和 TTBR1_EL1
+<ul>
+<li>MMU 根据虚拟地址第 63 位选择使用哪一个</li>
+<li>以 Linux 为例，应用程序（地址首位为 0）使用 TTBR0_EL1，操作系统（地址首位为 1）使用 TTBR1_EL1</li>
+</ul>
+</li>
+<li><strong>页表使能</strong>：
+<ul>
+<li>机器上电会先进入物理寻址模式，系统软件需配置控制寄存器使能页表从而进入虚拟寻址模式</li>
+<li>AARCH64 在 SCTLR_EL1 第 0 位（M 位）置 1，即在 EL0 和 EL1 权限级使能页表</li>
+</ul>
+</li>
+</ul>
+<h3 id="页表项">页表项</h3>
+<ul>
+<li><strong>页表页</strong>：
+<ul>
+<li>每级页表有若干离散的页表页，每个页表页占用一个物理页</li>
+<li>第 0 级页表有且仅有一个页表页，页表基地址寄存器存储的就是该页的物理地址</li>
+<li>每个页表页中有 512 个页表项，每项为 8 个字节，用于存储物理地址和权限</li>
+</ul>
+</li>
+<li><strong>页表项中的属性位</strong>：
+<ul>
+<li><strong>页描述符 / 表描述符</strong>：PFN，即物理页号
+<ul>
+<li>页描述符指向 4K 页，表描述符指向下一级页表</li>
+</ul>
+</li>
+<li><strong>有效位(V)</strong>：有效位，当访问时 V=0，则触发缺页异常</li>
+<li>对于 3 级页表项，还有各种权限位、访问位、脏位等</li>
+</ul>
+</li>
+<li><strong>大页</strong>：中间级的页表项也能够直接指向物理页
+<ul>
+<li><strong>块描述符</strong>：指向大页</li>
+<li>有效的 0-2 级页表项，第 1 位为 0 表示 PFN 指向大页，第 1 位为 1 表示 PFN 指向下一级页表</li>
+</ul>
+</li>
+</ul>
+<p><img src="big_page.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h3 id="TLB：缓存页表项">TLB：缓存页表项</h3>
+<ul>
+<li><strong>多级页表的优缺点</strong>：用时间换空间
+<ul>
+<li><strong>优点</strong>：压缩页表大小</li>
+<li><strong>缺点</strong>：增加了访存次数（逐级查询）</li>
+</ul>
+</li>
+<li><strong>TLB</strong>：Translation Lookaside Buffer
+<ul>
+<li>位于 CPU 内部，是页表的缓存</li>
+<li>缓存了虚拟页号到物理页号的映射关系</li>
+<li>在地址翻译过程中，MMU 首先查询 TLB</li>
+</ul>
+</li>
+<li><strong>TLB 命中</strong>：不再查询页表，可以减少查询页表带来的访存次数</li>
+<li><strong>TLB 不命中</strong>：再查询页表，会导致额外的访存</li>
+<li><strong>TLB 查询</strong>：
+<ul>
+<li>虚拟页号分为 TLBI（TLB index）+ TLBT（TLB tag）</li>
+<li>先用 index 找到一个 set，再对比其中 entry 的 tag</li>
+</ul>
+</li>
+<li><strong>TLB 刷新</strong>：当 OS 切换进程页表时，TLB 需要全部刷新
+<ul>
+<li>在用户和内核之间切换时，不需要刷新 TLB</li>
+</ul>
+</li>
+<li><strong>降低 TLB 刷新的开销</strong>：ASID（Address Space ID）
+<ul>
+<li>OS 为不同进程分配 8 位或 16 位 ASID
+<ul>
+<li>OS 负责将 ASID 填写在 TTBR0_EL1 的高 8 位或高 16 位</li>
+</ul>
+</li>
+<li>TLB 的每一项也会缓存 ASID
+<ul>
+<li>地址翻译时，硬件会将 TLB 项的 ASID 与 TTBR0_EL1 的 ASID 对比</li>
+<li>使用了 ASID 之后，切换页表（即切换进程）后，不再需要刷新 TLB，提高性能</li>
+<li>修改页表映射后，仍需刷新 TLB</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>TLB 与多核</strong>：OS 修改页表后，需要根据进程调度信息，刷新其它核的 TLB</li>
+</ul>
+<h3 id="小结：虚拟内存机制的优势">小结：虚拟内存机制的优势</h3>
+<ul>
+<li><strong>高效使用物理内存</strong>：使用 DRAM 作为虚拟地址空间的缓存</li>
+<li><strong>简化内存管理</strong>：每个进程看到的是统一的线性地址空间</li>
+<li><strong>更强的隔离与更细的权限控制</strong>：
+<ul>
+<li>一个进程不能访问属于其他进程的内存</li>
+<li>用户程序不能够访问特权更高的内核信息</li>
+<li>不同内存页的读、写、执行权限可以不同</li>
+<li>可在不同进程之间共享内存（不同虚拟地址空间的虚拟内存页映射到相同的物理页）</li>
+</ul>
+</li>
+</ul>
+<h2 id="Lecture-6-系统初始化">Lecture 6: 系统初始化</h2>
+<h3 id="启动过程与系统初始化">启动过程与系统初始化</h3>
+<p><img src="init.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>从计算机上电到内核开始运行</strong>：
+<ul>
+<li>
+<ol>
+<li>上电后，开始执行 BIOS ROM 中的代码（早期设备）</li>
+</ol>
+<ul>
+<li>自检，然后找到第一个可启动设备（如第一块磁盘）</li>
+<li>将可启动设备的第一个块加载到内存固定地址中</li>
+<li>跳转到 bootloader 的内存地址并继续执行</li>
+</ul>
+</li>
+<li>
+<ol start="2">
+<li>bootloader 开始执行</li>
+</ol>
+<ul>
+<li>将内核的二进制文件从启动设备加载到内存中</li>
+<li>若内核文件是压缩包，则对其进行解压</li>
+<li>跳转到（解压后的）内核加载地址（物理地址）并继续执行</li>
+</ul>
+</li>
+<li>
+<ol start="3">
+<li>内核代码开始执行</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><strong>内核启动的 3 个主要任务</strong>：
+<ul>
+<li>设置 CPU 异常级别（特权级别）为 EL1</li>
+<li>设置页表并开启虚拟内存机制</li>
+<li>设置异常向量表</li>
+</ul>
+</li>
+</ul>
+<h3 id="物理地址空间">物理地址空间</h3>
+<ul>
+<li><strong>物理地址空间</strong>：系统总线地址空间
+<ul>
+<li>系统总线连接内存，也连接其他设备，每个设备都占一块地址空间</li>
+</ul>
+</li>
+</ul>
+<h3 id="课程实验内核启动">课程实验内核启动</h3>
+<ul>
+<li>
+<p><strong>内核的加载</strong>：bootloader 将内核代码放在某一低地址处，该地址由内核在编译时显式给出</p>
+</li>
+<li>
+<p><strong>内核运行的初始代码</strong>：</p>
+<ul>
+<li>设置当前 EL 为 EL1</li>
+<li>设置启动时用的栈，跳转到 C 代码</li>
+<li>初始化页表…</li>
+</ul>
+</li>
+</ul>
+<p><img src="init_code.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>由 EL3 进入 EL1</strong>：由 <code>eret</code> 返回，同时写入 ELR 及 SPSR 中准备好的 PC 及特权级</li>
+</ul>
+<p><img src="el1.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h3 id="页表初始化">页表初始化</h3>
+<ul>
+<li><strong>页表初始化的过程</strong>：
+<ul>
+<li>设置 TTBR0 页表：将低地址虚拟内存映射到物理内存，使当前低地址代码能正常运行</li>
+<li>设置 TTBR1 页表：将高地址虚拟内存映射到物理内存，使得内核能切换到高地址运行</li>
+<li>将页表的物理地址写入 TTBR0 和 TTBR1
+<ul>
+<li>TTBR0_EL1：虚拟地址 = 物理地址</li>
+<li>TTBR1_EL1：虚拟地址 = 物理地址 + OFFSET</li>
+</ul>
+</li>
+<li>将 SCTLR_EL1 的某些位置 1，开启页表</li>
+</ul>
+</li>
+</ul>
+<p><img src="memory.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h3 id="异常向量表初始化">异常向量表初始化</h3>
+<ul>
+<li><strong>异常向量表初始化的过程</strong>：将异常向量表基地址写入 VBAR_EL1</li>
+<li><strong>异常向量表</strong>：每个异常向量表项跳转到对应的异常处理函数</li>
+<li><strong>异常处理函数</strong>：处理异常前保存进程上下文，返回进程前恢复其上下文</li>
+</ul>
+<h2 id="Lecture-7-操作系统管理页表映射">Lecture 7: 操作系统管理页表映射</h2>
+<ul>
+<li><strong>设置页表映射的时机</strong>：
+<ul>
+<li><strong>操作系统自己使用的页表</strong>：在启动时填写，映射全部物理内存
+<ul>
+<li><strong>直接映射</strong>：虚拟地址 = 物理地址 + 固定偏移</li>
+</ul>
+</li>
+<li><strong>应用进程的页表</strong>：操作系统填写进程页表的一种策略
+<ul>
+<li><strong>立即映射</strong>：创建进程时，OS 按照虚拟内存区域填写进程页表
+<ul>
+<li>步骤1：分配物理页（alloc_page）</li>
+<li>步骤2：把应用代码/数据从磁盘加载到物理页中</li>
+<li>步骤3：添加虚拟页到物理页的映射（add_mapping）</li>
+<li>步骤4：未加载完毕，回到步骤1</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>分配物理页的简单实现</strong>：操作系统用位图（Bitmap）记录物理页是否空闲
+<ul>
+<li>0：空闲；1：已分配</li>
+</ul>
+</li>
+<li><strong>操作系统填写进程页表</strong>：在进程结构体中保存页表基地址</li>
+</ul>
+<p><img src="add_mapping.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="get_next_pt.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>立即映射的弊端</strong>：物理内存资源浪费、非必要时延</li>
+</ul>
+<h3 id="延迟映射">延迟映射</h3>
+<ul>
+<li><strong>解决立即映射弊端的思路</strong>：操作系统<strong>按进程实际需要</strong>分配物理页和填写页表，避免分配的物理页实际不被用到的情况</li>
+<li><strong>延迟映射的主要思路</strong>：解耦虚拟内存分配与物理内存分配
+<ul>
+<li>先记录下为进程分配的虚拟内存区域</li>
+<li>当进程实际访问某个虚拟页时，CPU 会触发缺页异常</li>
+<li>操作系统在缺页异常处理函数中添加映射</li>
+</ul>
+</li>
+<li><strong>OS 区分合法/非法缺页异常</strong>：操作系统记录为进程分配的虚拟内存区域
+<ul>
+<li>访问非法虚拟地址，会触发 CPU 异常；操作系统处理该异常时，选择报错：segfault</li>
+<li><strong>合法虚拟地址信息的记录方式</strong>：Linux 中对应 vm_area_struct（VMA）结构体</li>
+</ul>
+</li>
+</ul>
+<p><img src="vma.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>VMA 的添加方式</strong>：
+<ul>
+<li><strong>途径1</strong>：OS 在创建进程时分配
+<ul>
+<li>数据（对应 ELF 文件的数据段）</li>
+<li>代码（对应 ELF 文件的代码段）</li>
+<li>栈（初始无内容）</li>
+</ul>
+</li>
+<li><strong>途径2</strong>：进程运行时添加 / 应用程序主动向 OS 发起系统调用
+<ul>
+<li>堆、栈</li>
+<li><strong><code>mmap</code></strong>：
+<ul>
+<li>申请空的虚拟内存区域</li>
+<li>申请映射文件数据的虚拟内存区域</li>
+</ul>
+</li>
+<li><strong><code>brk()</code></strong>：扩大、缩小堆区域</li>
+<li><strong>栈 VMA 的可选策略</strong>：OS 为进程初始分配固定大小的栈 VMA，在发现 stackoverflow 之后自动扩大栈 VMA</li>
+<li><strong>用户态的 <code>malloc</code>（API）也可能改变 VMA</strong>：
+<ul>
+<li>调用 <code>brk</code> 在堆中分配新的内存</li>
+<li>调用 <code>mmap</code> 分配较大区域</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong><code>mmap</code></strong>：分配一段虚拟内存区域
+<ul>
+<li>通常用于把一个文件（或一部分）映射到内存</li>
+<li>也可以不映射任何文件，仅仅新建虚拟内存区域（匿名映射）</li>
+</ul>
+</li>
+<li><strong>根据 VMA 判断缺页异常的合法性</strong>:
+<ul>
+<li><strong>缺页异常</strong>：触发同步异常
+<ul>
+<li>根据 ESR 信息判断是否为缺页异常</li>
+<li>访问的虚拟地址存放在 FAR_EL1</li>
+</ul>
+</li>
+<li><strong>操作系统的缺页处理函数</strong>：
+<ul>
+<li>FAR_EL1 中的值不落在 VMA 区域内，则为非法</li>
+<li>反之，则分配物理页，并在页表中添加映射</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>延迟映射的优缺点</strong>：
+<ul>
+<li><strong>优势</strong>：节约内存资源</li>
+<li><strong>劣势</strong>：缺页异常导致访问延迟增加</li>
+<li><strong>取得平衡的方式</strong>：
+<ul>
+<li>应用程序访存具有时空局部性（Locality）</li>
+<li>在缺页异常处理函数中采用<strong>预先映射</strong>的策略，即节约内存又能减少缺页异常次数</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>OS 可向应用提供灵活的内存管理系统调用</strong>：
+<ul>
+<li><strong><code>madvise</code></strong>：将用户态的一些语义信息发给内核以便于优化
+<ul>
+<li>将 <code>madvise</code> 和 <code>mmap</code> 搭配，在使用数据前告诉内核这一段数据需要使用，建议 OS 提前分配物理页，减少缺页异常开销</li>
+</ul>
+</li>
+<li><strong><code>mprotect</code></strong>：改变一段内存的权限</li>
+</ul>
+</li>
+</ul>
+<h3 id="虚拟内存的扩展功能">虚拟内存的扩展功能</h3>
+<ul>
+<li><strong>共享内存</strong>：
+<ul>
+<li>节约内存，如共享库</li>
+<li>进程通信，传递数据</li>
+</ul>
+</li>
+</ul>
+<p><img src="share_memory.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>写时拷贝（copy-on-write）</strong>：
+<ul>
+<li><strong>实现</strong>：修改页表项权限，在缺页时拷贝、恢复</li>
+<li><strong>典型场景 fork</strong>：节约物理内存、性能加速</li>
+</ul>
+</li>
+</ul>
+<p><img src="copy_on_write.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>内存去重</strong>：
+<ul>
+<li>基于写时拷贝机制</li>
+<li>在内存中扫描发现具有相同内容的物理页面</li>
+<li>执行去重</li>
+<li>操作系统发起，对用户态透明</li>
+</ul>
+</li>
+</ul>
+<h3 id="小结">小结</h3>
+<ul>
+<li><strong>填写页表的策略</strong>：立即映射、延迟映射</li>
+<li><strong>延迟映射实现原理</strong>：
+<ul>
+<li>硬件基础：缺页异常</li>
+<li>软件设计：VMA 数据结构</li>
+</ul>
+</li>
+<li><strong>虚拟内存的扩展功能</strong></li>
+</ul>
+<h2 id="Lecture-8-物理内存管理">Lecture 8: 物理内存管理</h2>
+<ul>
+<li><strong>OS 分配物理内存资源的四个场景</strong>：
+<ul>
+<li>
+<ol>
+<li>用户态应用程序触发 on-demand paging（延迟映射）时</li>
+</ol>
+<ul>
+<li>此时内核需要分配物理内存页，映射到对应的虚拟页</li>
+</ul>
+</li>
+<li>
+<ol start="2">
+<li>内核自己申请内存并使用时</li>
+</ol>
+<ul>
+<li>如用于内核自身的数据结构，通常通过 <code>kmalloc()</code> 完成</li>
+</ul>
+</li>
+<li>
+<ol start="3">
+<li>发生换页时</li>
+</ol>
+<ul>
+<li>通过磁盘来扩展物理内存的容量</li>
+</ul>
+</li>
+<li>
+<ol start="4">
+<li>内核申请用于设备的 DMA 内存时</li>
+</ol>
+<ul>
+<li>DMA 内存通常需要<strong>连续的物理页</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="伙伴系统-以页为粒度的物理内存管理">伙伴系统: 以页为粒度的物理内存管理</h3>
+<p>对应<strong>场景1: 应用触发 on-demand paging</strong></p>
+<ul>
+<li><strong>当应用调用 <code>malloc</code> 时</strong>：
+<ul>
+<li>应用调用 <code>malloc</code> 后，返回的虚拟地址属于某个 VMA</li>
+<li>但虚拟地址对应的页表项的 valid bit 可能为 0</li>
+<li>当第一次访问新分配的虚拟地址时，CPU 会触发 page fault</li>
+</ul>
+</li>
+<li><strong>操作系统需要做（即 page-fault handler）</strong>：
+<ul>
+<li>找到一块空闲的物理内存页（物理内存管理，页粒度）</li>
+<li>修改页表，将该物理页映射到触发 page-fault 的虚地址所在虚拟页</li>
+<li>恢复应用，重复执行触发 page-fault 的那行代码</li>
+</ul>
+</li>
+<li><strong>物理内存分配需求</strong>：需要能够分配连续的4K物理页（如大页、场景3: DMA）</li>
+<li><strong>简单管理方法的问题</strong>：导致外部碎片问题</li>
+<li><strong>物理内存分配器的指标</strong>：资源利用率；分配性能
+<ul>
+<li><strong>外部碎片与内部碎片</strong></li>
+</ul>
+</li>
+</ul>
+<p><img src="fragment.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>伙伴系统</strong>：以页为粒度的物理内存管理
+<ul>
+<li><strong>分配物理页/连续物理页</strong>（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">2^n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6644em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span></span></span></span></span></span></span>）：直接映射物理页的物理地址与虚拟地址</li>
+<li><strong>资源利用率</strong>：外部碎片程度降低；内部碎片依然存在</li>
+<li><strong>分配性能</strong>：分配和合并的时间复杂度均为常数时间</li>
+</ul>
+</li>
+<li><strong>伙伴系统的操作</strong>：分裂与合并
+<ul>
+<li>把空闲块按照大小放在相应的链表中</li>
+<li><strong>分裂</strong>：当一个请求需要分配 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span></span></span></span> 个物理页时，伙伴系统将寻找一个大小合适的块， 该块包含 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">2^n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6644em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span></span></span></span></span></span></span> 个物理页，且满足 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>&lt;</mo><mi>m</mi><mo>≤</mo><msup><mn>2</mn><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">2^{n−1} &lt; m \le 2^n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8532em;vertical-align:-0.0391em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mord mathnormal">m</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6644em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span></span></span></span></span></span></span></li>
+<li><strong>合并</strong>：高效地找到伙伴块
+<ul>
+<li>互为伙伴的两个块的物理地址仅有一位不同</li>
+<li>而且块的大小决定是哪一位</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="buddy.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="buddy2.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>伙伴系统的代码实现</strong>：内核为每个物理页维护一个结构体</li>
+</ul>
+<h3 id="SLAB-SLUB-SLOB：细粒度内存管理">SLAB/SLUB/SLOB：细粒度内存管理</h3>
+<p>对应<strong>场景2: 内核运行中需要进行动态内存分配</strong></p>
+<ul>
+<li><strong>直接映射</strong>：OS 一次性将所有物理内存映射到一段虚拟地址空间
+<ul>
+<li>任一物理地址和虚拟地址仅相差一个偏移量</li>
+<li>OS 可迅速根据物理地址或虚拟地址互相计算</li>
+</ul>
+</li>
+<li><strong>直接映射机制的特点</strong>：
+<ul>
+<li>内核使用直接映射的虚拟地址，不会触发 page fault</li>
+<li>更方便找到连续的物理页：只要寻找连续的虚拟页</li>
+</ul>
+</li>
+</ul>
+<div class="note note-warning">
+            <ul><li><strong>对内核来说</strong>：<ul><li>已映射的地址不一定正在使用（需要通过 <code>kmalloc</code> 才能用）</li><li>正在使用的地址通常已映射（例外：<code>vmalloc</code>）</li></ul></li><li><strong>对应用来说</strong>：<ul><li>正在使用的地址不一定已映射（on-demand paging）</li><li>已映射的地址一定正在使用（否则不会被映射）</li></ul></li><li><strong>同一个物理地址可以有多个虚拟地址</strong><ul><li>如应用任一已映射的虚拟地址，在内核的直接映射下也有一个虚拟地址</li></ul></li></ul>
+          </div>
+<ul>
+<li><strong>内核自身用到的数据结构</strong>：
+<ul>
+<li>为每个进程创建的 process，VMA 等数据结构</li>
+<li>动态性：用时分配，用完释放，类似用户态的 <code>malloc</code></li>
+<li>数据结构大小往往小于页粒度</li>
+</ul>
+</li>
+<li><strong>SLAB 分配器家族</strong>：建立在伙伴系统之上的分配器
+<ul>
+<li><strong>目标</strong>：快速分配小内存对象
+<ul>
+<li>内核中的数据结构大小远小于 4K（例如 VMA）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>SLUB 分配器的思路</strong>：
+<ul>
+<li><strong>观察</strong>：操作系统频繁分配的对象大小相对比较固定</li>
+<li><strong>基本思想</strong>：
+<ul>
+<li>从伙伴系统获得大块内存（名为 slab）</li>
+<li>对每份大块内存进一步细分成固定大小的小块内存进行管理</li>
+<li>块的大小通常是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">2^n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6644em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span></span></span></span></span></span></span> 个字节（一般来说，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mo>≤</mo><mi>n</mi><mo>&lt;</mo><mn>12</mn></mrow><annotation encoding="application/x-tex">3 \le n &lt; 12</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7804em;vertical-align:-0.136em;"></span><span class="mord">3</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">12</span></span></span></span>）</li>
+<li>也可为特定数据结构增加特殊大小的块，从而减小内部碎片</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>SLUB 设计</strong>：
+<ul>
+<li><strong>只分配固定大小块</strong>：对于每个固定块大小，SLUB 分配器都会使用独立的内存资源池进行分配
+<ul>
+<li>采用 best fit 定位资源池</li>
+</ul>
+</li>
+<li><strong>1. 初始化资源池</strong>：把从伙伴系统得到的连续物理页划分成若干等份（slot）</li>
+<li><strong>2. 空闲链表</strong>：采用空闲链表区分是否空闲，当分配时直接分配一个空闲 slot</li>
+<li><strong>3. 分配与释放</strong>：
+<ul>
+<li><strong>分配 N 字节</strong>：
+<ul>
+<li>
+<ol>
+<li>定位到大小最合适的资源池</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>从 slab 中取走 Next_Free 指向的第一个 slot</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><strong>释放</strong>：将 Next_Free 指针指向待释放内存（slot）
+<ul>
+<li><strong>如何找到 Next_Free</strong>：根据待释放内存地址计算 slab 起始地址</li>
+<li>在物理页结构体中要记录所属 slab 信息</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>4. 新增 slab</strong>：当某个资源池中的 slab 已经分配完怎么办，再从伙伴系统分配一个slab</li>
+<li><strong>5. 资源池内组织多个 slab</strong>：引入两个指针
+<ul>
+<li>Current 指向一个 slab，并从其中分配</li>
+<li>当 Current slab 全满，则从 Partial 链表中取出一个放入 Current</li>
+<li>释放后，若某个 slab 不再全满，则加入 partial</li>
+<li>释放后，若某个 slab 全空则可还给伙伴系统</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="slab.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>SLUB 的优势</strong>：
+<ul>
+<li><strong>减少内部碎片</strong>：可根据开发需求</li>
+<li><strong>分配效率高</strong>：常数时间</li>
+</ul>
+</li>
+</ul>
+<h3 id="突破物理内存容量限制">突破物理内存容量限制</h3>
+<p>对应<strong>场景3: 物理内存容量 &lt; 应用进程需求</strong></p>
+<ul>
+<li><strong>换页（Swapping）的基本思想</strong>：
+<ul>
+<li>用磁盘作为物理内存的补充，且对上层应用透明</li>
+<li>应用对虚拟内存的使用，不受物理内存大小限制</li>
+</ul>
+</li>
+<li><strong>换页的实现</strong>：
+<ul>
+<li>磁盘上划分专门的 Swap 分区，或专门的 Swap 文件</li>
+<li>在处理缺页异常时，触发物理内存页的换入换出</li>
+</ul>
+</li>
+<li><strong>如何判断缺页异常是由于换页引起的</strong>：
+<ul>
+<li><strong>导致缺页异常的三种可能</strong>：
+<ul>
+<li>访问非法虚拟地址</li>
+<li>按需分配（尚未分配真正的物理页）</li>
+<li>内存页数据被换出到磁盘上</li>
+</ul>
+</li>
+<li><strong>OS 的区分方法</strong>：
+<ul>
+<li>利用 VMA 区分是否为合法虚拟地址（合法缺页异常）</li>
+<li>利用页表项内容区分是按需分配还是需要换入</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>何时进行换出操作</strong>：
+<ul>
+<li><strong>策略 A</strong>：当用完所有物理页后，再按需换出
+<ul>
+<li><strong>问题</strong>：当内存资源紧张时，大部分物理页分配操作都需要触发换出，造成分配时延高</li>
+</ul>
+</li>
+<li><strong>策略 B</strong>：设立阈值，在空闲的物理页数量低于阈值时，操作系统择机（如系统空闲时）换出部分页，直到空闲页数量超过阈值</li>
+</ul>
+</li>
+<li><strong>换页机制的代价</strong>：
+<ul>
+<li><strong>优势</strong>：突破物理内存容量限制</li>
+<li><strong>劣势</strong>：缺页异常+磁盘操作导致访问延迟增加</li>
+<li><strong>如何取得平衡</strong>：预取机制 （Prefetching）
+<ul>
+<li>预测接下来进程要使用的页，提前换入</li>
+<li>在缺页异常处理函数中，根据应用程序访存具有的空间本地性进行预取</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>如何选择换出的页</strong>：页替换策略
+<ul>
+<li>选择一些物理页换出到磁盘</li>
+<li>猜测哪些页面应该被换出（短期内大概率不会被访问）</li>
+<li>策略实现的开销</li>
+</ul>
+</li>
+<li><strong>理想的换页策略（OPT 策略）</strong>：优先换出未来最长时间内不会再访问的页面</li>
+<li><strong>FIFO 策略</strong>：操作系统维护一个队列用于记录换入内存的物理页号，每换入一个物理页就把其页号加到队尾，因此最先换进的物理页号总是处于队头位置
+<ul>
+<li><strong>Belady 异常</strong>：使用 FIFO 策略，物理资源增加反而导致了性能下降</li>
+</ul>
+</li>
+<li><strong>Second Chance 策略</strong>：FIFO 策略的一种改进版本，为每一个物理页号维护一个访问标志位
+<ul>
+<li>如果访问的页面号已经处在队列中，则置上其访问标志位</li>
+<li>换页时查看队头：1）无标志则换出；2）有标志则去除并放入队尾，继续寻找</li>
+</ul>
+</li>
+<li><strong>LRU 策略</strong>：OS 维护一个链表，在每次内存访问后，OS 把刚刚访问的内存页调整到链表尾端；每次都选择换出位于链表头部的页面
+<ul>
+<li><strong>缺点1</strong>：对于特定的序列，效果可能非常差，如循环访问内存</li>
+<li><strong>缺点2</strong>：需要排序的内存页可能非常多，导致很高的额外负载</li>
+</ul>
+</li>
+<li><strong>时钟算法策略</strong>：物理页环形排列（类似时钟），为每个物理页维护一个访问位
+<ul>
+<li>当物理页被访问时， 把访问位设成 T</li>
+<li>OS 依次（如顺时针）查看每个页的“访问位”
+<ul>
+<li>如果是 T，则置成 F</li>
+<li>如果是 F，则驱逐该页</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>时钟算法的实现</strong>：每个物理页需要有一个“访问位”，MMU 在页表项里面为虚拟页打上“访问位”（页表项中的 Access Flag）
+<ul>
+<li><strong>实现方法</strong>：OS 在描述物理页的结构体里面记录页表项位置
+<ul>
+<li>当物理页被填写到某张页表中时，把页表项的位置记录在元数据中（反向映射，reverse mapping）</li>
+<li>根据物理页对应的页表项中的“访问位”判断是否驱逐</li>
+<li>驱逐某页时应该清空其对应的所有页表项（例如共享内存）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>替换策略评价标准</strong>：
+<ul>
+<li><strong>缺页发生的概率</strong>：参照理想但不能实现的 OPT 策略</li>
+<li><strong>策略本身的性能开销</strong>：通过页表项中 Access / Dirty Bits 高效地记录物理页的使用情况</li>
+</ul>
+</li>
+<li><strong>颠簸现象（Thrashing Problem）</strong>：
+<ul>
+<li><strong>直接原因</strong>：过于频繁的缺页异常（物理内存总需求过大）</li>
+<li>大部分 CPU 时间都被用来处理缺页异常</li>
+<li>调度器造成问题加剧
+<ul>
+<li>等待磁盘 I/O 导致 CPU 利用率下降</li>
+<li>调度器载入更多的进程以期提高 CPU 利用率</li>
+<li>触发更多的缺页异常，进一步降低 CPU 利用率，导致连锁反应</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>工作集模型</strong>：有效避免 Thrashing
+<ul>
+<li>一个进程在时间 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6151em;"></span><span class="mord mathnormal">t</span></span></span></span> 的工作集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi><mo stretchy="false">(</mo><mi>t</mi><mo separator="true">,</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">W(t, x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="mopen">(</span><span class="mord mathnormal">t</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">x</span><span class="mclose">)</span></span></span></span>，是其在时间段 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>t</mi><mo>−</mo><mi>x</mi><mo separator="true">,</mo><mi>t</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(t - x, t)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">t</span><span class="mclose">)</span></span></span></span> 内使用的内存页集合
+<ul>
+<li>也被视为其在未来（下一个 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span> 时间内）会访问的页集合</li>
+<li>如果希望进程能够顺利进展，则需要将该集合保持在内存中</li>
+</ul>
+</li>
+<li><strong>All-or-nothing</strong>：进程工作集要么都在内存中，要么全都换出
+<ul>
+<li>避免thrashing，提高系统整体性能表现</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>换页</strong>：
+<ul>
+<li><strong>换出操作</strong>：物理内存不够时
+<ul>
+<li>OS 选择不常用的物理内存（不同的选择策略）</li>
+<li>OS 将内存中的数据写入磁盘块，并记录磁盘块与内存的关联</li>
+<li>OS 更新页表，将对应页表项的 valid bit 设置为 0</li>
+</ul>
+</li>
+<li><strong>换入操作</strong>：当换出的页被访问时，触发 page fault
+<ul>
+<li>OS 判断该地址所在页被换出，找到对应的磁盘块</li>
+<li>OS 分配空闲的物理内存页；若没有空闲页，则再次进行换出操作</li>
+<li>OS 将磁盘块中的数据读入前一步找到的内存页</li>
+<li>OS 更新页表，将对应页表项的 valid bit 设置为 1</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="参考资料">参考资料</h2>
+<p>本文参考上海交通大学并行与分布式系统研究所（IPADS）操作系统课程 CS3601 华志超老师的 PPT 课件整理。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="category-chain-item">操作系统</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="print-no-link">#操作系统</a>
+      
+        <a href="/tags/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/" class="print-no-link">#课程笔记</a>
+      
+        <a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86/" class="print-no-link">#知识点整理</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>操作系统 SJTU 版(2)：内存管理</div>
+      <div>https://cny123222.github.io/2025/10/21/操作系统-SJTU-版-2-：内存管理/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Nuoyan Chen</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>October 21, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/10/24/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-SJTU-%E7%89%88-3-%EF%BC%9A%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/" title="操作系统 SJTU 版(3)：进程管理">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">操作系统 SJTU 版(3)：进程管理</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/10/02/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-SJTU-%E7%89%88-1-%EF%BC%9A%E6%A6%82%E8%BF%B0/" title="操作系统 SJTU 版(1)：概述">
+                        <span class="hidden-mobile">操作系统 SJTU 版(1)：概述</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"cny123222/cny123222.github.io","repo-id":"R_kgDOOFgnVw","category":"Announcements","category-id":"DIC_kwDOOFgnV84CnwXM","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"en"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

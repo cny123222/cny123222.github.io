@@ -1,0 +1,1355 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Nuoyan Chen">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="与 C++ 和 Python 不同，Verilog 是一种硬件描述语言，主要用于描述和设计电数字电路。本文是一篇从零开始的 Verilog 入门指南。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Verilog编程入门">
+<meta property="og:url" content="https://cny123222.github.io/2025/03/24/Verilog%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:site_name" content="Nuoyan Chen&#39;s Blog">
+<meta property="og:description" content="与 C++ 和 Python 不同，Verilog 是一种硬件描述语言，主要用于描述和设计电数字电路。本文是一篇从零开始的 Verilog 入门指南。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cny123222.github.io/img/%E8%AE%A1%E7%BB%84.png">
+<meta property="article:published_time" content="2025-03-24T01:08:06.000Z">
+<meta property="article:modified_time" content="2025-05-05T07:33:57.062Z">
+<meta property="article:author" content="Nuoyan Chen">
+<meta property="article:tag" content="计算机组成">
+<meta property="article:tag" content="Verilog">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cny123222.github.io/img/%E8%AE%A1%E7%BB%84.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Verilog编程入门 - Nuoyan Chen&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"cny123222.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 80vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Nuoyan Chen&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/nanjing.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.4)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Verilog编程入门"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Nuoyan Chen
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-24 09:08" pubdate>
+          March 24, 2025 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.8k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          15 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="计算机组成"
+        id="heading-e64a83de4627390b1e9bb9ab855b7284" role="tab" data-toggle="collapse" href="#collapse-e64a83de4627390b1e9bb9ab855b7284"
+        aria-expanded="true"
+      >
+        计算机组成
+        <span class="list-group-count">(8)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-e64a83de4627390b1e9bb9ab855b7284"
+           role="tabpanel" aria-labelledby="heading-e64a83de4627390b1e9bb9ab855b7284">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/03/24/Verilog%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/" title="Verilog编程入门"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">Verilog编程入门</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/06/06/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0/" title="计算机组成期末复习"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">计算机组成期末复习</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/31/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-1-%EF%BC%9A%E6%A6%82%E8%BF%B0/" title="计算机组成知识点整理(1)：概述"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">计算机组成知识点整理(1)：概述</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/04/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-2-%EF%BC%9A%E6%8C%87%E4%BB%A4%E7%B3%BB%E7%BB%9F/" title="计算机组成知识点整理(2)：指令系统"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">计算机组成知识点整理(2)：指令系统</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/04/07/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-3-%EF%BC%9A%E7%AE%97%E6%9C%AF%E8%BF%90%E7%AE%97/" title="计算机组成知识点整理(3)：算术运算"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">计算机组成知识点整理(3)：算术运算</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/04/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-4-%EF%BC%9A%E5%A4%84%E7%90%86%E5%99%A8/" title="计算机组成知识点整理(4)：处理器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">计算机组成知识点整理(4)：处理器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/05/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-5-%EF%BC%9A%E5%AD%98%E5%82%A8%E5%99%A8/" title="计算机组成知识点整理(5)：存储器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">计算机组成知识点整理(5)：存储器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/05/28/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-6-%EF%BC%9A%E5%B9%B6%E8%A1%8C%E5%A4%84%E7%90%86%E5%99%A8/" title="计算机组成知识点整理(6)：并行处理器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">计算机组成知识点整理(6)：并行处理器</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Verilog编程入门</h1>
+            
+              <p id="updated-time" class="note note-default" style="">
+                
+                  
+                    Last updated on May 5, 2025 pm
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>与 C++ 和 Python 不同，Verilog 是一种硬件描述语言，主要用于描述和设计电数字电路。本文是一篇从零开始的 Verilog 入门指南。</p>
+<span id="more"></span>
+<h2 id="数字的表示">数字的表示</h2>
+<ul>
+<li><strong>无符号数表示</strong>： <code>&lt;位宽&gt;' &lt;进制&gt;&lt;数字&gt;</code></li>
+</ul>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-number">4&#x27;b1010</span>    <span class="hljs-comment">// 4位二进制数1010（十进制10）</span><br><span class="hljs-number">8&#x27;d255</span>     <span class="hljs-comment">// 8位十进制数255（二进制1111111）</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>有符号数表示</strong>： <code>&lt;位宽&gt;' &lt;sb&gt;&lt;数字&gt;</code>（数字以补码表示）</li>
+</ul>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-number">4</span>&#x27;sb1010    <span class="hljs-comment">// 4位有符号二进制数1010（十进制-6）</span><br></code></pre></td></tr></table></figure>
+<h2 id="逻辑值">逻辑值</h2>
+<p>Verilog 中有 4 种逻辑值：</p>
+<ul>
+<li><code>1</code>：逻辑1，高电平</li>
+<li><code>0</code>：逻辑0，低电平</li>
+<li><code>x</code>：未知值</li>
+<li><code>z</code>：高阻态</li>
+</ul>
+<h2 id="运算符">运算符</h2>
+<ol>
+<li>算数运算</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">运算符</th>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">运算符</th>
+<th style="text-align:center">名称</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>*</code></td>
+<td style="text-align:center">乘法</td>
+<td style="text-align:center"><code>/</code></td>
+<td style="text-align:center">除法</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>+</code></td>
+<td style="text-align:center">加法</td>
+<td style="text-align:center"><code>-</code></td>
+<td style="text-align:center">减法</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>%</code></td>
+<td style="text-align:center">求余</td>
+<td style="text-align:center"><code>**</code></td>
+<td style="text-align:center">求幂</td>
+</tr>
+</tbody>
+</table>
+<ol start="2">
+<li>逻辑运算</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">运算符</th>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">运算符</th>
+<th style="text-align:center">名称</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>&amp;&amp;</code></td>
+<td style="text-align:center">逻辑与</td>
+<td style="text-align:center"><code>||</code></td>
+<td style="text-align:center">逻辑或</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>!</code></td>
+<td style="text-align:center">逻辑非</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>逻辑型运算的结果可能是<code>1</code>、<code>0</code>、<code>x</code>。</li>
+</ul>
+<ol start="3">
+<li>关系运算</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">运算符</th>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">运算符</th>
+<th style="text-align:center">名称</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>&gt;</code></td>
+<td style="text-align:center">大于</td>
+<td style="text-align:center"><code>&lt;</code></td>
+<td style="text-align:center">小于</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>&gt;=</code></td>
+<td style="text-align:center">大于等于</td>
+<td style="text-align:center"><code>&lt;=</code></td>
+<td style="text-align:center">小于等于</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>关系型运算的结果可能是<code>1</code>、<code>0</code>、<code>x</code>。</li>
+</ul>
+<ol start="4">
+<li>等价运算</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">运算符</th>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">运算符</th>
+<th style="text-align:center">名称</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>==</code></td>
+<td style="text-align:center">等于</td>
+<td style="text-align:center"><code>!=</code></td>
+<td style="text-align:center">不等于</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>===</code></td>
+<td style="text-align:center">case等于</td>
+<td style="text-align:center"><code>!==</code></td>
+<td style="text-align:center">case不等</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>等于和不等于运算的结果可能是<code>1</code>、<code>0</code>、<code>x</code>。对于<code>x</code>或<code>z</code>认为是不确定的值，比较结果为<code>x</code>。</li>
+<li>case等于和case不等的结果只能是<code>1</code>或<code>O</code>，对于<code>x</code>、<code>z</code>认为是确定的值，参加比较。</li>
+</ul>
+<ol start="5">
+<li>按位运算</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">运算符</th>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">运算符</th>
+<th style="text-align:center">名称</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>&amp;</code></td>
+<td style="text-align:center">按位与</td>
+<td style="text-align:center"><code>|</code></td>
+<td style="text-align:center">按位或</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>~</code></td>
+<td style="text-align:center">按位非</td>
+<td style="text-align:center"><code>^</code></td>
+<td style="text-align:center">按位异或</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>^~</code> / <code>~^</code></td>
+<td style="text-align:center">按位同或</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>如操作数位宽不同，位宽小的左侧补0，运算结果位宽与操作数相同。</li>
+</ul>
+<ol start="6">
+<li>缩减运算</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">运算符</th>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">运算符</th>
+<th style="text-align:center">名称</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>&amp;</code></td>
+<td style="text-align:center">缩减与</td>
+<td style="text-align:center"><code>~&amp;</code></td>
+<td style="text-align:center">缩减与非</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>|</code></td>
+<td style="text-align:center">缩减或</td>
+<td style="text-align:center"><code>~|</code></td>
+<td style="text-align:center">缩减或非</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>^</code></td>
+<td style="text-align:center">缩减异或</td>
+<td style="text-align:center"><code>^~</code> / <code>~^</code></td>
+<td style="text-align:center">缩减同或</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>缩减运算的操作数是 1 个二进制数。</li>
+<li>将操作数的各位自左向右进行逻辑运算，运算结果为 1 位。</li>
+</ul>
+<ol start="7">
+<li>移位运算</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">运算符</th>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">运算符</th>
+<th style="text-align:center">名称</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>&gt;&gt;</code></td>
+<td style="text-align:center">逻辑右移</td>
+<td style="text-align:center"><code>&lt;&lt;</code></td>
+<td style="text-align:center">逻辑左移</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>&gt;&gt;&gt;</code></td>
+<td style="text-align:center">算数右移</td>
+<td style="text-align:center"><code>&lt;&lt;&lt;</code></td>
+<td style="text-align:center">算数左移</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>格式：<code>&lt;操作数&gt;&lt;移位符&gt;&lt;移动位数&gt;</code></li>
+<li>逻辑右移动补0，有符号数算数右移动补符号位。</li>
+</ul>
+<ol start="8">
+<li>拼接复制运算</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">运算符</th>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">格式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>&#123;&#125;</code></td>
+<td style="text-align:center">拼接</td>
+<td style="text-align:center"><code>&#123;&lt;操作数1&gt;, &lt;操作数2&gt;, ...&#125;</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>&#123;&#123;&#125;&#125;</code></td>
+<td style="text-align:center">复制拼接</td>
+<td style="text-align:center"><code>&#123;&lt;复制次数&gt;&#123;&lt;操作数1&gt;, &lt;操作数2&gt;, ...&#125;&#125;</code></td>
+</tr>
+</tbody>
+</table>
+<ol start="9">
+<li>条件运算</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">运算符</th>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">格式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>?:</code></td>
+<td style="text-align:center">条件赋值</td>
+<td style="text-align:center"><code>&lt;表达式1&gt;?&lt;表达式2&gt;:&lt;表达式3&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>若表达式1的值为<code>x</code>，则结果为<code>x</code>，其余同C语言。</li>
+</ul>
+<h2 id="基本数据类型">基本数据类型</h2>
+<p>Verilog 中最常见的数据类型是 <code>wire</code> 和 <code>reg</code>。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">特性</th>
+<th style="text-align:center"><code>wire</code>（线型）</th>
+<th style="text-align:center"><code>reg</code>（寄存器型）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">​<strong>存储能力</strong></td>
+<td style="text-align:center">无存储能力（实时反映输入变化）</td>
+<td style="text-align:center">可存储值（直到下次赋值）</td>
+</tr>
+<tr>
+<td style="text-align:center">​<strong>赋值方式</strong></td>
+<td style="text-align:center">使用<code>assign</code><strong>连续赋值</strong>或模块端口驱动</td>
+<td style="text-align:center">使用<code>=</code>或<code>&lt;=</code><strong>过程赋值</strong></td>
+</tr>
+<tr>
+<td style="text-align:center">​<strong>典型应用场景</strong></td>
+<td style="text-align:center">模块间信号连接、组合逻辑输出</td>
+<td style="text-align:center">时序逻辑存储</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>对端口信号，输入信号一般是<code>wire</code>型，输出信号可以是<code>wire</code>型或<code>reg</code>型。</li>
+</ul>
+<h2 id="assign（连续赋值）语句">assign（连续赋值）语句</h2>
+<ul>
+<li>格式：</li>
+</ul>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">assign</span> &lt;赋值目标&gt; = &lt;表达式&gt;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>特点：<strong>始终处于激活状态</strong>，即只要表达式中的操作数有变化，立即进行计算和赋值。</li>
+<li>赋值目标：必须是<code>wire</code>型。</li>
+<li>例：</li>
+</ul>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">assign</span> y = a &amp; b;<br></code></pre></td></tr></table></figure>
+<h2 id="always-语句块-与-过程赋值">always 语句块 与 过程赋值</h2>
+<h3 id="always-语句块">always 语句块</h3>
+<ul>
+<li>格式：</li>
+</ul>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">always</span> @(敏感信号条件表)<br>    各类顺序语句;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>特点：<strong>不总是处于激活状态</strong>，只有当满足激活条件时才会被激活。</li>
+</ul>
+<h3 id="过程赋值">过程赋值</h3>
+<p>在 <code>always</code> 语句块中的赋值称为过程赋值。</p>
+<ul>
+<li>特点：只有激活该过程时，才会进行计算和赋值。而未激活时，即使操作数有变化，也不执行计算和赋值，</li>
+<li>赋值目标：必须是<code>reg</code>型。</li>
+<li>例：</li>
+</ul>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> CLK)<br>    Q = D;<br></code></pre></td></tr></table></figure>
+<h3 id="激活条件">激活条件</h3>
+<ol>
+<li>边沿敏感</li>
+</ol>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs verilog">(<span class="hljs-keyword">posedge</span> &lt;信号名&gt;)  <span class="hljs-comment">// 信号上升沿到来</span><br>(<span class="hljs-keyword">negedge</span> &lt;信号名&gt;)  <span class="hljs-comment">// 信号下降沿到来</span><br></code></pre></td></tr></table></figure>
+<ol start="2">
+<li>电平敏感</li>
+</ol>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs verilog">(&lt;信号名<span class="hljs-number">1</span>&gt;, &lt;信号名<span class="hljs-number">2</span>&gt;, ...)  <span class="hljs-comment">// 其中任何一个信号变化</span><br>(&lt;信号名<span class="hljs-number">1</span>&gt; <span class="hljs-keyword">or</span> &lt;信号名<span class="hljs-number">2</span>&gt; <span class="hljs-keyword">or</span> ...)  <span class="hljs-comment">// &quot;,&quot; 可以换成 &quot;or&quot;</span><br></code></pre></td></tr></table></figure>
+<h3 id="多条语句">多条语句</h3>
+<ul>
+<li><code>always</code> 语句块中可以使用<code>if</code>、<code>case</code>、<code>for</code>等语句。</li>
+<li>语句块中有多条语句，需要用<code>begin</code> <code>end</code>包裹。</li>
+</ul>
+<h3 id="阻塞赋值-与-非阻塞赋值">阻塞赋值 与 非阻塞赋值</h3>
+<h4 id="阻塞赋值">阻塞赋值</h4>
+<ul>
+<li>格式：</li>
+</ul>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs verilog">&lt;赋值目标<span class="hljs-number">1</span>&gt; = &lt;表达式<span class="hljs-number">1</span>&gt;<br>&lt;赋值目标<span class="hljs-number">2</span>&gt; = &lt;表达式<span class="hljs-number">2</span>&gt;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>特点：计算表达式后立即完成赋值，中间无其他操作。</li>
+<li>常用于设计组合逻辑电路。</li>
+</ul>
+<h4 id="非阻塞赋值">非阻塞赋值</h4>
+<ul>
+<li>格式：</li>
+</ul>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs verilog">&lt;赋值目标<span class="hljs-number">1</span>&gt; &lt;= &lt;表达式<span class="hljs-number">1</span>&gt;<br>&lt;赋值目标<span class="hljs-number">2</span>&gt; &lt;= &lt;表达式<span class="hljs-number">2</span>&gt;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>特点：先按顺序计算右侧表达式的值，全部计算完后按顺序赋值。</li>
+<li>常用于设计时序逻辑电路。</li>
+</ul>
+<h2 id="if-语句和-case-语句">if 语句和 case 语句</h2>
+<h3 id="if-语句">if 语句</h3>
+<ul>
+<li>格式：与 C++ 一致。</li>
+<li>条件表达式如果值为 <code>x</code>，当作 <code>0</code> 处理。</li>
+</ul>
+<h3 id="case-语句">case 语句</h3>
+<ul>
+<li>格式：</li>
+</ul>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">case</span> (&lt;表达式&gt;)<br>    &lt;取值<span class="hljs-number">1</span>&gt;: &lt;语句<span class="hljs-number">1</span>&gt;;<br>    &lt;取值<span class="hljs-number">2</span>&gt;: &lt;语句<span class="hljs-number">2</span>&gt;;<br>    ...<br>    <span class="hljs-keyword">default</span>: &lt;默认语句&gt;;  <span class="hljs-comment">// 可以没有 default</span><br><span class="hljs-keyword">endcase</span><br></code></pre></td></tr></table></figure>
+<h2 id="模块结构">模块结构</h2>
+<ul>
+<li>格式：</li>
+</ul>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">module</span> &lt;模块名&gt;([端口列表]);<br>    [端口信号声明];<br>    [参数声明];<br>    [内部信号声明] / [<span class="hljs-keyword">assign</span>语句] / [<span class="hljs-keyword">always</span>语句块] / [门原语或模块调用]<br><span class="hljs-keyword">endmodule</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>端口列表：指电路的输入 / 输出信号名称列表，用逗号隔开。</li>
+<li>端口信号声明格式：</li>
+</ul>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs verilog">&lt;输入输出属性&gt; &lt;数据类型&gt; &lt;位宽&gt; &lt;名称&gt;;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>内部信号声明格式：</li>
+</ul>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs verilog">&lt;数据类型&gt; &lt;位宽&gt; &lt;名称&gt;;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>数据类型不说明则默认为<code>wire</code>型。</li>
+<li>位宽用 <code>[n1:n2]</code> 表示，不说明则默认是 1 位。</li>
+</ul>
+<h3 id="例1：多路复用器">例1：多路复用器</h3>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">module</span> MUX(a, b, s, y);<br>    <span class="hljs-keyword">input</span> a, b, s;<br>    <span class="hljs-keyword">output</span> y;<br>    <span class="hljs-keyword">assign</span> y = (s ? a : b);<br><span class="hljs-keyword">endmodule</span><br></code></pre></td></tr></table></figure>
+<h3 id="例2：D-触发器">例2：D 触发器</h3>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">module</span> DFF(CLK, D, Q);<br>    <span class="hljs-keyword">input</span> CLK, D;<br>    <span class="hljs-keyword">output</span> <span class="hljs-keyword">reg</span> Q;<br>    <span class="hljs-keyword">always</span> @(<span class="hljs-keyword">posedge</span> CLK)<br>        Q &lt;= D;<br><span class="hljs-keyword">endmodule</span><br></code></pre></td></tr></table></figure>
+<h3 id="例3：全加器">例3：全加器</h3>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">module</span> full_adder(A, B, CIN, S, COUT);<br>    <span class="hljs-keyword">input</span> [<span class="hljs-number">3</span>:<span class="hljs-number">0</span>] A, B;<br>    <span class="hljs-keyword">input</span> CIN;<br>    <span class="hljs-keyword">output</span> <span class="hljs-keyword">reg</span> [<span class="hljs-number">3</span>:<span class="hljs-number">0</span>] S;<br>    <span class="hljs-keyword">output</span> COUT;<br>    ...<br><span class="hljs-keyword">endmodule</span><br></code></pre></td></tr></table></figure>
+<h2 id="底层模块和门原语调用">底层模块和门原语调用</h2>
+<h3 id="底层模块调用">底层模块调用</h3>
+<ol>
+<li>命名法</li>
+</ol>
+<ul>
+<li>格式：</li>
+</ul>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs verilog">&lt;模块名&gt; &lt;实例名&gt;(.&lt;底层端口名<span class="hljs-number">1</span>&gt;(&lt;外接信号名<span class="hljs-number">1</span>&gt;), .&lt;底层端口名<span class="hljs-number">2</span>&gt;(&lt;外接信号名<span class="hljs-number">2</span>&gt;), ...)<br></code></pre></td></tr></table></figure>
+<ul>
+<li>例：</li>
+</ul>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs verilog">DFF dff1(<span class="hljs-variable">.CLK</span>(clk), <span class="hljs-variable">.D</span>(d1), <span class="hljs-variable">.Q</span>(q1));<br></code></pre></td></tr></table></figure>
+<ol start="2">
+<li>顺序法</li>
+</ol>
+<ul>
+<li>格式：</li>
+</ul>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs verilog">&lt;模块名&gt; &lt;实例名&gt;(&lt;外接信号名<span class="hljs-number">1</span>&gt;, &lt;外接信号名<span class="hljs-number">2</span>&gt;, ...)<br></code></pre></td></tr></table></figure>
+<ul>
+<li>例：</li>
+</ul>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs verilog">DFF dff1(clk, d1, q1);<br></code></pre></td></tr></table></figure>
+<h3 id="门原语">门原语</h3>
+<ul>
+<li>Verilog 语言提供的逻辑门，可以直接调用。</li>
+<li>格式：</li>
+</ul>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs verilog">&lt;门原语名&gt; &lt;实例名&gt;(&lt;外接信号名<span class="hljs-number">1</span>&gt;, &lt;外接信号名<span class="hljs-number">2</span>&gt;, ...)<br></code></pre></td></tr></table></figure>
+<ul>
+<li>实例名可省略，输出在前，输入在后。</li>
+<li>例：</li>
+</ul>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs verilog"><span class="hljs-keyword">and</span> (out, in1, in2);<br></code></pre></td></tr></table></figure>
+<h2 id="Reference">Reference</h2>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1iv4y1F7Km">https://www.bilibili.com/video/BV1iv4y1F7Km</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90/" class="category-chain-item">计算机组成</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90/" class="print-no-link">#计算机组成</a>
+      
+        <a href="/tags/Verilog/" class="print-no-link">#Verilog</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Verilog编程入门</div>
+      <div>https://cny123222.github.io/2025/03/24/Verilog编程入门/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Nuoyan Chen</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>March 24, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/03/27/%E5%9B%BE-3-%EF%BC%9A%E5%90%AB%E8%B4%9F%E8%BE%B9%E7%9A%84%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E7%AE%97%E6%B3%95/" title="图(3)：含负边的最短路径算法">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">图(3)：含负边的最短路径算法</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/03/24/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-3-%EF%BC%9A%E4%BC%A0%E8%BE%93%E5%B1%82/" title="计算机网络知识点整理(3)：传输层">
+                        <span class="hidden-mobile">计算机网络知识点整理(3)：传输层</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"cny123222/cny123222.github.io","repo-id":"R_kgDOOFgnVw","category":"Announcements","category-id":"DIC_kwDOOFgnV84CnwXM","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"en"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

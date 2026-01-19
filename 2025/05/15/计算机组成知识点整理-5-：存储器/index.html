@@ -1,0 +1,1438 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Nuoyan Chen">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="这是SJTU-ICE2603《计算机组成》课程的知识点整理系列。本文整理部分为“第5章：存储器”。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机组成知识点整理(5)：存储器">
+<meta property="og:url" content="https://cny123222.github.io/2025/05/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-5-%EF%BC%9A%E5%AD%98%E5%82%A8%E5%99%A8/index.html">
+<meta property="og:site_name" content="Nuoyan Chen&#39;s Blog">
+<meta property="og:description" content="这是SJTU-ICE2603《计算机组成》课程的知识点整理系列。本文整理部分为“第5章：存储器”。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cny123222.github.io/img/%E8%AE%A1%E7%BB%84.png">
+<meta property="article:published_time" content="2025-05-15T08:49:32.000Z">
+<meta property="article:modified_time" content="2025-06-07T07:52:19.258Z">
+<meta property="article:author" content="Nuoyan Chen">
+<meta property="article:tag" content="计算机组成">
+<meta property="article:tag" content="知识点整理">
+<meta property="article:tag" content="期末复习">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cny123222.github.io/img/%E8%AE%A1%E7%BB%84.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>计算机组成知识点整理(5)：存储器 - Nuoyan Chen&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"cny123222.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 80vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Nuoyan Chen&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/nanjing.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.4)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="计算机组成知识点整理(5)：存储器"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Nuoyan Chen
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-15 16:49" pubdate>
+          May 15, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.3k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          36 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="计算机组成"
+        id="heading-e64a83de4627390b1e9bb9ab855b7284" role="tab" data-toggle="collapse" href="#collapse-e64a83de4627390b1e9bb9ab855b7284"
+        aria-expanded="true"
+      >
+        计算机组成
+        <span class="list-group-count">(8)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-e64a83de4627390b1e9bb9ab855b7284"
+           role="tabpanel" aria-labelledby="heading-e64a83de4627390b1e9bb9ab855b7284">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/03/24/Verilog%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/" title="Verilog编程入门"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Verilog编程入门</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/06/06/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0/" title="计算机组成期末复习"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">计算机组成期末复习</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/31/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-1-%EF%BC%9A%E6%A6%82%E8%BF%B0/" title="计算机组成知识点整理(1)：概述"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">计算机组成知识点整理(1)：概述</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/04/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-2-%EF%BC%9A%E6%8C%87%E4%BB%A4%E7%B3%BB%E7%BB%9F/" title="计算机组成知识点整理(2)：指令系统"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">计算机组成知识点整理(2)：指令系统</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/04/07/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-3-%EF%BC%9A%E7%AE%97%E6%9C%AF%E8%BF%90%E7%AE%97/" title="计算机组成知识点整理(3)：算术运算"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">计算机组成知识点整理(3)：算术运算</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/04/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-4-%EF%BC%9A%E5%A4%84%E7%90%86%E5%99%A8/" title="计算机组成知识点整理(4)：处理器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">计算机组成知识点整理(4)：处理器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/05/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-5-%EF%BC%9A%E5%AD%98%E5%82%A8%E5%99%A8/" title="计算机组成知识点整理(5)：存储器"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">计算机组成知识点整理(5)：存储器</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/05/28/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-6-%EF%BC%9A%E5%B9%B6%E8%A1%8C%E5%A4%84%E7%90%86%E5%99%A8/" title="计算机组成知识点整理(6)：并行处理器"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">计算机组成知识点整理(6)：并行处理器</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">计算机组成知识点整理(5)：存储器</h1>
+            
+              <p id="updated-time" class="note note-default" style="">
+                
+                  
+                    Last updated on June 7, 2025 pm
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>这是SJTU-ICE2603《计算机组成》课程的知识点整理系列。本文整理部分为“第5章：存储器”。</p>
+<span id="more"></span>
+<h2 id="5-1-引言">5.1 引言</h2>
+<h2 id="5-1-1-局部性原理">5.1.1 局部性原理</h2>
+<ul>
+<li><strong>时间局部性</strong>：
+<ul>
+<li><strong>定义</strong>：如果某个数据项被访问，那么在不久的将来它可能再次被访问</li>
+<li><strong>举例</strong>：循环体中的指令、归纳变量</li>
+</ul>
+</li>
+<li><strong>空间局部性</strong>：
+<ul>
+<li><strong>定义</strong>：如果某个数据项被访问，与它地址相邻的数据项可能很快也将被访问</li>
+<li><strong>举例</strong>：顺序访问指令、数组元素</li>
+</ul>
+</li>
+</ul>
+<h2 id="5-1-2-存储层次结构">5.1.2 存储层次结构</h2>
+<ul>
+<li><strong>特点</strong>：离处理器越近，访问速度越快，价格越昂贵，容量越小</li>
+<li><strong>目的</strong>：以最低的价格为用户提供最大容量的存储，同时访问速度与最快的存储相当</li>
+<li><strong>层次结构</strong>：磁盘 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> 主存储器 (DRAM) <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> cache (SRAM)</li>
+<li><strong>基本概念</strong>：
+<ul>
+<li><strong>块</strong>（行）：相邻两层之间进行信息交换的最小单元</li>
+<li><strong>命中率</strong>：命中次数 / 总访问次数</li>
+<li><strong>缺失损失</strong>：将数据块从下层存储复制至某层所需的时间</li>
+</ul>
+</li>
+</ul>
+<h2 id="5-2-存储技术">5.2 存储技术</h2>
+<h3 id="5-2-1-SRAM">5.2.1 SRAM</h3>
+<ul>
+<li><strong>存储原理</strong>：每比特采用多个晶体管（读操作时信息不会丢失）</li>
+<li><strong>刷新机制</strong>：不需要刷新，访问时间和处理器的时钟周期接近</li>
+</ul>
+<h3 id="5-2-2-DRAM">5.2.2 DRAM</h3>
+<ul>
+<li><strong>存储原理</strong>：电荷存储在电容中，通过单个晶体管访问（比 SRAM 密度高）</li>
+<li><strong>刷新机制</strong>：不能长久保持数据，必须进行周期性刷新，即读出一行内容后重新写回</li>
+<li><strong>优化技术</strong>：
+<ul>
+<li><strong>行缓冲器</strong>：允许并行地读取或刷新多个字</li>
+<li><strong>同步 DRAM</strong>：使用时钟消除了内存和处理器之间的同步问题
+<ul>
+<li><strong>突发传输</strong>：允许以突发方式连续访问而无需发送每个地址，提高带宽</li>
+<li><strong>DDR</strong>：在时钟的上升沿和下降沿都传输，双倍数据带宽</li>
+</ul>
+</li>
+<li><strong>多体 DRAM</strong>：允许同时访问多个 DRAM，提高带宽</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-2-3-闪存">5.2.3 闪存</h3>
+<ul>
+<li><strong>属性</strong>：非易失性的半导体存储器</li>
+<li><strong>与磁盘相比</strong>：更快、更小、更坚固、功耗更低、单位成本更高</li>
+<li><strong>特点</strong>：写操作会对器件本身产生磨损
+<ul>
+<li><strong>耗损均衡</strong>：将数据重新映射到较少使用的块中，使得写操作尽量分散</li>
+</ul>
+</li>
+<li><strong>分类</strong>：
+<ul>
+<li><strong>NOR 闪存</strong>：随机读/写访问，如嵌入式系统中的指令存储器</li>
+<li><strong>NAND 闪存</strong>：每次只能访问一个块，如 U 盘、媒体存储器</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-2-4-磁盘">5.2.4 磁盘</h3>
+<ul>
+<li><strong>属性</strong>：非易失、转动的磁介质存储器</li>
+<li><strong>基本概念</strong>：
+<ul>
+<li><strong>磁道</strong>：磁盘表面上千同心圆中的一个</li>
+<li><strong>扇区</strong>：磁盘磁道上的一段，是读写磁盘信息的最小单位</li>
+</ul>
+</li>
+<li><strong>数据访问过程（访问时间）</strong>：
+<ol>
+<li>磁头移动到正确的磁道上方（寻道时间）</li>
+<li>所需扇区旋转到读写磁头下（旋转延时）</li>
+<li>传输数据块（传输时间）</li>
+</ol>
+</li>
+</ul>
+<h2 id="5-3-cache">5.3 cache</h2>
+<div class="note note-primary">
+            <p>众所周知，cache 是第五章的重点。</p>
+          </div>
+<h3 id="5-3-1-cache-基础">5.3.1 cache 基础</h3>
+<ul>
+<li><strong>cache 数据块</strong>：索引 + 有效位 + 标记 + 数据
+<ul>
+<li><strong>索引</strong>：用来选择数据块（块地址低位）</li>
+<li><strong>标记</strong>：记录块地址信息（块地址高位），用于确定所需数据块是否在 cache 中</li>
+<li><strong>有效位</strong>：表示该表项中是否保存了有效数据</li>
+</ul>
+</li>
+<li><strong>地址分解</strong>：<code>标记 | 索引 | 偏移</code></li>
+<li><strong>cache 缺失处理</strong>：阻塞 CPU 流水线，从下一层级取块</li>
+<li><strong>增大块容量</strong>：缺失率先降低后升高、失效损失更大</li>
+<li><strong>提高主存储器带宽</strong>：更高效地传输 cache 块，减小缺失损失
+<ul>
+<li><strong>方法</strong>：加宽主存、交叉访问</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-3-2-地址映射方式">5.3.2 地址映射方式</h3>
+<ul>
+<li><strong>直接映射</strong>：每个存储地址都被直接映射到 cache 中的确定位置
+<ul>
+<li><strong>cache 块号</strong>：由 <code>块地址 % cache块数</code> 决定</li>
+</ul>
+</li>
+<li><strong>全相连映射</strong>：数据块可以存放在 cache 的任意位置
+<ul>
+<li><strong>比对方式</strong>：每次搜索所有的项，每项用一个比较器，硬件开销大</li>
+</ul>
+</li>
+<li><strong>组相连映射</strong>：每个数据块在 cache 中有 n 个位置可放
+<ul>
+<li><strong>cache 组号</strong>：<code>块地址 % cache组数</code></li>
+<li><strong>比对方式</strong>：每次搜索给定组的所有项，n 个比较器</li>
+<li><strong>缺失率</strong>：相连度 n 增大，缺失率先下降后几乎不变
+<ul>
+<li>缺失率高于全相连，但访问速度更快</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-3-3-替换策略">5.3.3 替换策略</h3>
+<ul>
+<li><strong>最近最少使用（LRU）</strong>：优先替换最久未访问的块</li>
+<li><strong>随机替换</strong>：高相连度下性能接近LRU</li>
+</ul>
+<h3 id="5-3-4-写策略">5.3.4 写策略</h3>
+<ol>
+<li><strong>写直达</strong>：同时更新 cache 和主存，需写缓冲降低延迟
+<ul>
+<li><strong>写缺失处理</strong>：写分配（取入 cache 并更新）、写不分配（只更新主存）</li>
+</ul>
+</li>
+<li><strong>写回</strong>：仅更新 cache，替换时写回主存，需脏位标记修改过的块
+<ul>
+<li><strong>写缺失处理</strong>：通常写分配（取入 cache 并更新）</li>
+</ul>
+</li>
+</ol>
+<h3 id="5-3-5-cache-的性能评估">5.3.5 cache 的性能评估</h3>
+<ul>
+<li>
+<p><strong>CPU 时间</strong>：</p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>CPU 实际周期数</mtext><mo>=</mo><mtext>CPU 执行周期数</mtext><mo>+</mo><mtext>存储器阻塞周期数</mtext></mrow><annotation encoding="application/x-tex">\text{CPU 实际周期数} = \text{CPU 执行周期数} + \text{存储器阻塞周期数} 
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord">CPU </span><span class="mord cjk_fallback">实际周期数</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord text"><span class="mord">CPU </span><span class="mord cjk_fallback">执行周期数</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord cjk_fallback">存储器阻塞周期数</span></span></span></span></span></span></p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>存储器阻塞周期数</mtext><mo>=</mo><mfrac><mtext>存储器访问次数</mtext><mtext>程序</mtext></mfrac><mo>×</mo><mtext>缺失率</mtext><mo>×</mo><mtext>缺失代价</mtext></mrow><annotation encoding="application/x-tex">\text{存储器阻塞周期数} = \frac{\text{存储器访问次数}}{\text{程序}} \times \text{缺失率} \times \text{缺失代价}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord cjk_fallback">存储器阻塞周期数</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0463em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord cjk_fallback">程序</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord cjk_fallback">存储器访问次数</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord text"><span class="mord cjk_fallback">缺失率</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord cjk_fallback">缺失代价</span></span></span></span></span></span></p>
+<ul>
+<li>当 CPU 性能提升时，缺失代价更为显著</li>
+<li>减小基本 CPI，内存阻塞耗时的比例更大</li>
+<li>增加时钟速率，存储器阻塞占用更多的 CPU 周期</li>
+</ul>
+</li>
+<li>
+<p><strong>平均存储器访问时间</strong>：</p>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>AMAT</mtext><mo>=</mo><mtext>命中时间</mtext><mo>+</mo><mtext>缺失率</mtext><mo>×</mo><mtext>缺失代价</mtext></mrow><annotation encoding="application/x-tex">\text{AMAT} = \text{命中时间} + \text{缺失率} × \text{缺失代价}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord">AMAT</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord text"><span class="mord cjk_fallback">命中时间</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord text"><span class="mord cjk_fallback">缺失率</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord cjk_fallback">缺失代价</span></span></span></span></span></span></p>
+</li>
+</ul>
+<h3 id="5-3-6-多级-cache">5.3.6 多级 cache</h3>
+<ul>
+<li><strong>目的</strong>：降低缺失代价</li>
+<li><strong>设计考虑</strong>：
+<ul>
+<li><strong>一级 cache</strong>：侧重于最小命中时间</li>
+<li><strong>二级 cache</strong>：侧重于低缺失率，避免访问主存储器</li>
+</ul>
+</li>
+<li><strong>结果</strong>：一级 cache 通常容量更小、数据块大小更小</li>
+</ul>
+<h3 id="5-3-7-软件优化">5.3.7 软件优化</h3>
+<ul>
+<li>缺失取决于存储器访问模式（算法行为、编译器对存储器访问的优化）</li>
+<li><strong>目标</strong>：在数据被替换之前尽量多用到</li>
+<li><strong>方法</strong>：分块放入 cache 运算（矩阵乘法）</li>
+</ul>
+<h2 id="5-4-可靠性与虚拟机">5.4 可靠性与虚拟机</h2>
+<h3 id="5-4-1-可信性">5.4.1 可信性</h3>
+<ul>
+<li><strong>可靠性</strong>：系统能够持续提供用户需求的服务的度量
+<ul>
+<li><strong>度量方法</strong>：平均无故障时间（MTTF，mean time to failure）</li>
+<li>平均修复时间（MTTR，mean time to repair）</li>
+<li>平均失效间隔时间（MTBF，mean time between failures）</li>
+</ul>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>MTBF</mtext><mo>=</mo><mtext>MTTF</mtext><mo>+</mo><mtext>MTTR</mtext></mrow><annotation encoding="application/x-tex">\text{MTBF} = \text{MTTF} + \text{MTTR}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord">MTBF</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord text"><span class="mord">MTTF</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord">MTTR</span></span></span></span></span></span></p>
+</li>
+<li><strong>可用性</strong>：系统正常工作时间在连续两次服务中断间隔时间中所占的比例<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>可用性</mtext><mo>=</mo><mfrac><mtext>MTTF</mtext><mrow><mtext>MTTF</mtext><mo>+</mo><mtext>MTTR</mtext></mrow></mfrac></mrow><annotation encoding="application/x-tex">\text{可用性} = \frac{\text{MTTF}}{\text{MTTF} + \text{MTTR}}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord cjk_fallback">可用性</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.1297em;vertical-align:-0.7693em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord">MTTF</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord text"><span class="mord">MTTR</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord">MTTF</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+</li>
+<li><strong>提高可用性</strong>：
+<ul>
+<li><strong>增大 MTTF</strong>：故障避免技术、故障容忍技术、故障预报技术</li>
+<li><strong>减小 MTTR</strong>：改进用于诊断和修复的工具与流程</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-4-2-汉明编码">5.4.2 汉明编码</h3>
+<ul>
+<li><strong>汉明距离</strong>：两个二进制数的相异位数</li>
+<li><strong>1 位奇偶校验</strong>：仅用于检测 1 位错误</li>
+<li><strong>汉明纠错码</strong>：纠正 1 位错并检测 2 位错
+<ul>
+<li><strong>计算步骤</strong>：
+<ol>
+<li>从左侧由 1 开始逐位编号</li>
+<li>所有位于 2 的幂的数位是奇偶校验位，剩余其他位用于数据位</li>
+<li>奇偶校验位的位置决定了其对应的数据位（校验位 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">2^n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6644em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span></span></span></span></span></span></span> 检查编号最右第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n + 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> 位为 1）</li>
+<li>设置奇偶校验位，为各组进行偶校验</li>
+</ol>
+</li>
+<li><strong>校验位数</strong>：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mi>p</mi></msup><mo>≥</mo><mi>p</mi><mo>+</mo><mi>d</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">2^p \ge p + d + 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8004em;vertical-align:-0.136em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">p</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">d</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>，其中 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span> 表示校验位的位数，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi></mrow><annotation encoding="application/x-tex">d</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">d</span></span></span></span> 表示数据位的位数</li>
+<li><strong>校验步骤</strong>：奇偶校验位的值指出了出错的位，可纠 1 位错</li>
+<li><strong>检测 2 位错</strong>：为整个字附加一个奇偶校验位</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-4-3-虚拟机">5.4.3 虚拟机</h3>
+<ul>
+<li><strong>作用</strong>：更好地隔离多客户、避免安全性和可靠性问题、有助于资源共享</li>
+<li><strong>虚拟机监视器</strong>：支持虚拟机的软件
+<ul>
+<li>将虚拟资源映射到物理资源、隔离客户端状态</li>
+<li>控制特权态的访问、I/O、例外和中断等</li>
+</ul>
+</li>
+<li><strong>指令集支持</strong>：分为用户模式和系统模式
+<ul>
+<li>特权指令仅在系统模式下可用</li>
+<li>所有物理资源只允许用特权指令访问</li>
+</ul>
+</li>
+</ul>
+<h2 id="5-5-虚拟存储器">5.5 虚拟存储器</h2>
+<h3 id="5-5-1-基本概念">5.5.1 基本概念</h3>
+<ul>
+<li><strong>虚拟存储</strong>：将主存储器作为辅存的 cache 使用</li>
+<li><strong>动机</strong>：允许多个程序高效安全地共享内存、允许单用户程序使用超出内存容量的内存</li>
+<li><strong>页</strong>：虚拟存储器的基本单位</li>
+<li><strong>地址转换</strong>：CPU 和 OS 将虚拟地址转换为物理地址
+<ul>
+<li><strong>虚拟地址</strong>：高位为虚拟页号，低位为页内偏移</li>
+<li><strong>物理地址</strong>：高位为物理页号，低位为页内偏移</li>
+<li><strong>页表</strong>：位于内存中，保存着虚拟页号和物理页号之间的转换关系</li>
+</ul>
+</li>
+<li><strong>缺页代价</strong>：缺页时必须从磁盘取这一页
+<ul>
+<li><strong>降低缺页率</strong>：以全相联方式放置、智能的替换算法</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-5-2-页表">5.5.2 页表</h3>
+<ul>
+<li><strong>页表</strong>：页表项构成的数组，按虚页号索引
+<ul>
+<li><strong>有效位为有效</strong>：页表项存储物理页号及其他状态位（引用位、脏位等）</li>
+<li><strong>有效位为无效</strong>：页表项指向它在磁盘交换区中的位置</li>
+</ul>
+</li>
+<li><strong>页表寄存器</strong>：位于 CPU 中，指向页表首地址</li>
+</ul>
+<h3 id="5-5-3-替换与写">5.5.3 替换与写</h3>
+<ul>
+<li><strong>替换策略</strong>：最近最少使用（LRU）</li>
+<li><strong>写策略</strong>：写回策略，原因是写磁盘时间开销大</li>
+</ul>
+<h3 id="5-5-4-TLB">5.5.4 TLB</h3>
+<ul>
+<li><strong>快表（TLB）</strong>：页表的 cache，记录最近使用的地址映射信息，避免每次访问页表</li>
+<li><strong>TLB 缺失</strong>：
+<ul>
+<li><strong>页在内存中</strong>：从内存读页表项，更新 TLB，然后重试</li>
+<li><strong>页不在内存中</strong>：OS 进行取页并更新页表，然后重启引起缺页的指令</li>
+</ul>
+</li>
+</ul>
+<pre><code class=" mermaid">graph TD
+    A[虚拟地址] --&gt; B&#123;TLB命中?&#125;
+    B -- 是 --&gt; C[获取物理地址]
+    B -- 否 --&gt; D[查页表]
+    D --&gt; E&#123;页在内存?&#125;
+    E -- 是 --&gt; F[更新TLB并获取物理地址]
+    E -- 否 --&gt; G&#123;主存有空闲页?&#125;
+    G -- 否 --&gt; H[磁盘页读入主存]
+    G -- 否 --&gt; I[选一页替换]
+    I --&gt; H[页读入主存]
+    H --&gt; J[更新页表和TLB]
+    C --&gt; K[cache命中?]
+    F --&gt; K[cache命中?]
+    K -- 是 --&gt; L[读cache数据]
+    K -- 否 --&gt; M&#123;cache有空闲块?&#125;
+    M -- 是 --&gt; N[主存块读入cache]
+    M -- 否 --&gt; O[选一块替换]
+    O --&gt; N[主存块读入cache]
+    N --&gt; L[读cache数据]
+</code></pre>
+<h3 id="5-5-5-存储器保护">5.5.5 存储器保护</h3>
+<ul>
+<li><strong>共享内存</strong>：不同任务可以共享其部分虚拟地址空间，但要防止不当访问</li>
+<li><strong>保护方式</strong>：页表和其他状态信息只在超级用户模式下可访问</li>
+</ul>
+<h2 id="5-6-存储层次结构的一般框架">5.6 存储层次结构的一般框架</h2>
+<h3 id="5-6-1-块的放置">5.6.1 块的放置</h3>
+<ul>
+<li><strong>放置方式</strong>：取决于相连度
+<ul>
+<li><strong>直接相连</strong>：1 个放置选择</li>
+<li><strong>n 路组相连</strong>：1 组中有 n 种选择</li>
+<li><strong>全相连</strong>：任意位置</li>
+</ul>
+</li>
+<li><strong>增加相连度</strong>：
+<ul>
+<li><strong>好处</strong>：降低失效率</li>
+<li><strong>坏处</strong>：增加了复杂度、成本和访问时间</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-6-2-块的查找">5.6.2 块的查找</h3>
+<ul>
+<li><strong>查找方式</strong>：取决于放置方式</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">相联度</th>
+<th style="text-align:center">定位方法</th>
+<th style="text-align:center">比较标记的次数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">直接映射</td>
+<td style="text-align:center">索引</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">n 路组相联</td>
+<td style="text-align:center">组索引，然后查找组内的项</td>
+<td style="text-align:center">n</td>
+</tr>
+<tr>
+<td style="text-align:center">全相联</td>
+<td style="text-align:center">查找所有的项</td>
+<td style="text-align:center">项数</td>
+</tr>
+<tr>
+<td style="text-align:center">全相连</td>
+<td style="text-align:center">整个查找表</td>
+<td style="text-align:center">0</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>cache</strong>：减少比较的次数以降低成本</li>
+<li><strong>虚拟存储器</strong>：全相联有利于降低缺失率</li>
+</ul>
+<h3 id="5-6-3-替换策略">5.6.3 替换策略</h3>
+<ul>
+<li><strong>最近最少使用（LRU）</strong>：对于高相联度，硬件复杂而且成本高
+<ul>
+<li><strong>虚拟存储器</strong>：硬件支持近似 LRU 算法</li>
+</ul>
+</li>
+<li><strong>随机</strong>：接近LRU，容易实现</li>
+</ul>
+<h3 id="5-6-4-写策略">5.6.4 写策略</h3>
+<ul>
+<li><strong>写直达</strong>：简化了替换，但可能需要写缓冲</li>
+<li><strong>写回</strong>：需要保存更多状态信息
+<ul>
+<li><strong>虚拟存储器</strong>：写磁盘高延迟，只能写回</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-6-5-缺失的来源">5.6.5 缺失的来源</h3>
+<ul>
+<li><strong>强制缺失</strong>：首次访问一个块时</li>
+<li><strong>容量缺失</strong>：由于 cache 的大小有限，被替换掉的块随后又被访问到</li>
+<li><strong>冲突缺失</strong>：在非全相连 cache 中，很多块为了竞争同一个组导致的缺失</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">设计变化</th>
+<th style="text-align:center">对缺失率的影响</th>
+<th style="text-align:center">对性能的负面影响</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">增加 cache 容量</td>
+<td style="text-align:center">减少了容量缺失</td>
+<td style="text-align:center">可能增加访问时间</td>
+</tr>
+<tr>
+<td style="text-align:center">提高相联度</td>
+<td style="text-align:center">减少了冲突缺失</td>
+<td style="text-align:center">可能增加访问时间</td>
+</tr>
+<tr>
+<td style="text-align:center">增加块大小</td>
+<td style="text-align:center">减少了强制缺失</td>
+<td style="text-align:center">增加缺失代价，块太大会增加缺失率</td>
+</tr>
+</tbody>
+</table>
+<h2 id="5-7-cache-一致性">5.7 cache 一致性</h2>
+<ul>
+<li><strong>基本操作</strong>：
+<ul>
+<li><strong>迁移</strong>：数据到本地 cache 的迁移，减少对共享存储器带宽的需求</li>
+<li><strong>复制</strong>：读共享数据的复制，减少由访问导致的竞争</li>
+</ul>
+</li>
+<li><strong>监听协议</strong>：每个 cache 监视总线的读/写
+<ul>
+<li><strong>写无效协议</strong>：cache 要写一个块时，获得独占访问
+<ul>
+<li>写入时使得其他 cache 中的副本无效</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="历年真题">历年真题</h2>
+<ol>
+<li>下列对于 Cache 的性能或作用的描述不正确的是</li>
+</ol>
+<ul>
+<li>A：Cache 的设计是利用了指令和数据的时间局部性和空间局部性原理</li>
+<li>B：对于分体 Cache，指令 Cache 的缺失率要小于数据 Cache 的缺失率</li>
+<li>C：对于分体 Cache，指令 Cache的局部性要强于数据 Cache的局部性</li>
+<li>D：设计巧妙的 Cache，可以让 CPU 的所有访问都在 Cache 中命中</li>
+</ul>
+<ol start="2">
+<li>下列关于 Cache 和虚拟存储器的表述，不正确的是</li>
+</ol>
+<ul>
+<li>A：虚拟存储器的内容替换是由硬件产生的缺页异常引发操作系统控制完成的</li>
+<li>B：Cache 缺失时的内容替换是由硬件控制自动完成的</li>
+<li>C：Cache 和主存统一编址，Cache 的地址空间是主存地址空间的一部分</li>
+<li>D：处理器的地址大小决定了虚拟存储器空间的大小，但与 Cache 的大小无关</li>
+</ul>
+<ol start="3">
+<li>CPU从下列存储器中访问数据速度最快的是</li>
+</ol>
+<ul>
+<li>A：高速缓存</li>
+<li>B：磁带</li>
+<li>C：磁盘</li>
+<li>D：内存</li>
+</ul>
+<ol start="4">
+<li>关于虚拟存储器中进行虚拟地址变换的快表 TLB/TB，下述不正确的表述是</li>
+</ol>
+<ul>
+<li>A：TLB 是一块专门用来快速变换虚存地址的专用地址变换 Cache</li>
+<li>B：快表 TLB 中缓存经常使用的程序指令及其存储地址</li>
+<li>C：这块特殊专用的 TLB 中缓存的是经常需要访问的页表项</li>
+<li>D：TLB 一般采用全相联映射，需要并行比较所有表项，所以表项不易做的很大</li>
+</ul>
+<ol start="5">
+<li>组成常用的虚拟存储器寻址系统的两级存储器是</li>
+</ol>
+<ul>
+<li>A：主存和辅存</li>
+<li>B：缓存和主存</li>
+<li>C：以上都不对</li>
+<li>D：缓存和辅存</li>
+</ul>
+<ol start="6">
+<li>以下说法不正确的是</li>
+</ol>
+<ul>
+<li>A：虚拟内存的主要目的是允许多个程序之间有效而安全的共享主存，并且消除一个小而受限的主存对程序的影响；</li>
+<li>B：处理器的地址空间大小决定了虚拟存储器空间的大小，与 cache 的大小无关</li>
+<li>C：主频是 2GHz 的一款处理器一定比另一款主频为 1.2GHz 的处理器运行速度快</li>
+<li>D：硬件层次的指令级并行执行不需要编程者的干预</li>
+</ul>
+<ol start="7">
+<li>在虚拟存储器中，程序正在执行时，完成地址映射的是</li>
+</ol>
+<ul>
+<li>A：编译器</li>
+<li>B：Cache 控制器</li>
+<li>C：操作系统</li>
+<li>D：程序员</li>
+</ul>
+<ol start="8">
+<li>下列说法正确的是</li>
+</ol>
+<ul>
+<li>A：Cache 技术应用带来了 CPU 数据存取性能提升，因此可以加速 CPU 与 I/O 设备的通信速度</li>
+<li>B：CPU 的字长与其外部数据总线宽度不一定相等</li>
+<li>C：由于二进制计算在实现技术上的优势，因此所有的计算机都是采用此方式来运作</li>
+<li>D：在不支持浮点运算的 CPU 组成的计算机上无法运行带有浮点运算的程序</li>
+</ul>
+<ol start="9">
+<li>RAID（Redundant Arrays of Inexpensive Disks，廉价磁盘冗余阵列）技术特点不正确的是</li>
+</ol>
+<ul>
+<li>A：RAID 技术能够提供高可靠性的存储能力，但不是任何磁盘故障引起的数据损失都可以修复</li>
+<li>B：提升 I/O 带宽</li>
+<li>C：RAID 技术让用户在 I/O 性能和可靠性之间二选一，二者不可兼得</li>
+<li>D：通过增加冗余，使系统能够在不丢失信息的情况下一定程度上容忍磁盘故障</li>
+</ul>
+<ol start="10">
+<li>（大题）cache</li>
+</ol>
+<ul>
+<li>给参数算 tag、index、offset 长度</li>
+<li>给定策略模拟访问，算缺失命中情况</li>
+<li>该 cache 所需要空间和实际存储空间的位数比</li>
+</ul>
+<ol start="11">
+<li>（大题）一个多核处理器，其每个核都有 L1、L2 cache，所有核的 L2 cache 连接到一个统一的 L3 cache，L3 cache 连接内存，只有 L1 分为指令 cache 和数据 cache</li>
+</ol>
+<ul>
+<li>问这种设计如何结合了普林斯顿结构和哈佛结构</li>
+<li>多核情况下 cache 一致性问题的产生和解决方法</li>
+</ul>
+<h2 id="Reference">Reference</h2>
+<p><a target="_blank" rel="noopener" href="https://gist.github.com/smallaccount101/6324d7c82d103783f21b7cc6da7d0f7c">https://gist.github.com/smallaccount101/6324d7c82d103783f21b7cc6da7d0f7c</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90/" class="category-chain-item">计算机组成</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90/" class="print-no-link">#计算机组成</a>
+      
+        <a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86/" class="print-no-link">#知识点整理</a>
+      
+        <a href="/tags/%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0/" class="print-no-link">#期末复习</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>计算机组成知识点整理(5)：存储器</div>
+      <div>https://cny123222.github.io/2025/05/15/计算机组成知识点整理-5-：存储器/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Nuoyan Chen</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>May 15, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/05/28/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-6-%EF%BC%9A%E5%B9%B6%E8%A1%8C%E5%A4%84%E7%90%86%E5%99%A8/" title="计算机组成知识点整理(6)：并行处理器">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">计算机组成知识点整理(6)：并行处理器</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/05/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86-6-%EF%BC%9A%E9%93%BE%E8%B7%AF%E5%B1%82%E4%B8%8E%E5%B1%80%E5%9F%9F%E7%BD%91/" title="计算机网络知识点整理(6)：链路层与局域网">
+                        <span class="hidden-mobile">计算机网络知识点整理(6)：链路层与局域网</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"cny123222/cny123222.github.io","repo-id":"R_kgDOOFgnVw","category":"Announcements","category-id":"DIC_kwDOOFgnV84CnwXM","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"en"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

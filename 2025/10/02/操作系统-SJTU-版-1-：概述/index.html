@@ -1,0 +1,1541 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Nuoyan Chen">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="这是《操作系统》SJTU-CS3601 课程的课程笔记系列。本文整理部分为“第 1 部分：操作系统概述”。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统 SJTU 版(1)：概述">
+<meta property="og:url" content="https://cny123222.github.io/2025/10/02/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-SJTU-%E7%89%88-1-%EF%BC%9A%E6%A6%82%E8%BF%B0/index.html">
+<meta property="og:site_name" content="Nuoyan Chen&#39;s Blog">
+<meta property="og:description" content="这是《操作系统》SJTU-CS3601 课程的课程笔记系列。本文整理部分为“第 1 部分：操作系统概述”。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
+<meta property="article:published_time" content="2025-10-02T05:34:54.000Z">
+<meta property="article:modified_time" content="2025-11-20T02:30:02.406Z">
+<meta property="article:author" content="Nuoyan Chen">
+<meta property="article:tag" content="操作系统">
+<meta property="article:tag" content="课程笔记">
+<meta property="article:tag" content="知识点整理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cny123222.github.io/img/os-new.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>操作系统 SJTU 版(1)：概述 - Nuoyan Chen&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"cny123222.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 80vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Nuoyan Chen&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/nanjing.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.4)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="操作系统 SJTU 版(1)：概述"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Nuoyan Chen
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-10-02 13:34" pubdate>
+          October 2, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.7k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          40 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="操作系统"
+        id="heading-30d23ef4f49e85f37f54786ff984032c" role="tab" data-toggle="collapse" href="#collapse-30d23ef4f49e85f37f54786ff984032c"
+        aria-expanded="true"
+      >
+        操作系统
+        <span class="list-group-count">(12)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-30d23ef4f49e85f37f54786ff984032c"
+           role="tabpanel" aria-labelledby="heading-30d23ef4f49e85f37f54786ff984032c">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/10/02/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-SJTU-%E7%89%88-1-%EF%BC%9A%E6%A6%82%E8%BF%B0/" title="操作系统 SJTU 版(1)：概述"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">操作系统 SJTU 版(1)：概述</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/10/21/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-SJTU-%E7%89%88-2-%EF%BC%9A%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" title="操作系统 SJTU 版(2)：内存管理"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">操作系统 SJTU 版(2)：内存管理</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/10/24/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-SJTU-%E7%89%88-3-%EF%BC%9A%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/" title="操作系统 SJTU 版(3)：进程管理"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">操作系统 SJTU 版(3)：进程管理</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/12/09/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-SJTU-%E7%89%88-4-%EF%BC%9A%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/" title="操作系统 SJTU 版(4)：文件管理"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">操作系统 SJTU 版(4)：文件管理</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/06/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-1-%EF%BC%9A%E6%A6%82%E8%BF%B0/" title="操作系统(1)：概述"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">操作系统(1)：概述</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/06/18/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-2-%EF%BC%9A%E5%A4%84%E7%90%86%E6%9C%BA%E7%AE%A1%E7%90%86/" title="操作系统(2)：处理机管理"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">操作系统(2)：处理机管理</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/07/11/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-3-%EF%BC%9A%E5%AD%98%E5%82%A8%E5%99%A8%E7%AE%A1%E7%90%86/" title="操作系统(3)：存储器管理"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">操作系统(3)：存储器管理</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/07/17/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-4-%EF%BC%9A%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/" title="操作系统(4)：文件管理"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">操作系统(4)：文件管理</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/07/18/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-5-%EF%BC%9AI-O%E7%AE%A1%E7%90%86/" title="操作系统(5)：I/O管理"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">操作系统(5)：I/O管理</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/11/14/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%EF%BC%9A2024-%E6%9C%9F%E4%B8%AD%E7%9C%9F%E9%A2%98/" title="操作系统：2024 期中真题"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">操作系统：2024 期中真题</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/11/05/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%EF%BC%9A%E6%9C%9F%E4%B8%AD%E5%A4%8D%E4%B9%A0/" title="操作系统：期中复习"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">操作系统：期中复习</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/12/11/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%EF%BC%9A%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0/" title="操作系统：期末复习"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">操作系统：期末复习</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">操作系统 SJTU 版(1)：概述</h1>
+            
+              <p id="updated-time" class="note note-default" style="">
+                
+                  
+                    Last updated on November 20, 2025 am
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>这是《操作系统》SJTU-CS3601 课程的课程笔记系列。本文整理部分为“第 1 部分：操作系统概述”。</p>
+<span id="more"></span>
+<h2 id="Lecture-1-操作系统的演化">Lecture 1: 操作系统的演化</h2>
+<h3 id="操作系统的定义">操作系统的定义</h3>
+<ul>
+<li><strong>操作系统与应用的关系</strong>：
+<ul>
+<li><strong>服务应用</strong>：如提供硬件操作
+<ul>
+<li><strong>为应用提供计算资源的抽象</strong>：进程与线程、虚拟内存、I/O 设备抽象为文件</li>
+<li><strong>为应用提供线程间的同步</strong>：同步原语</li>
+<li><strong>为应用提供进程间的通信</strong>：本地通信机制</li>
+</ul>
+</li>
+<li><strong>管理应用</strong>：如加载、调度等
+<ul>
+<li><strong>应用生命周期的管理</strong>：应用的加载、迁移、销毁等操作</li>
+<li><strong>计算资源的分配</strong>：线程的调度机制、物理内存的分配、设备的复用和分配</li>
+<li><strong>安全与隔离</strong>：应用程序内部的访问控制机制、应用程序之间的隔离机制</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>操作系统和硬件的关系</strong>：
+<ul>
+<li><strong>管理硬件</strong>：操作硬件以完成功能</li>
+<li><strong>抽象硬件</strong>：应用不关心硬件差异</li>
+</ul>
+</li>
+</ul>
+<h3 id="操作系统的分化">操作系统的分化</h3>
+<ul>
+<li>CPU 分化出两个模式：<strong>非特权模式和特权模式</strong>
+<ul>
+<li><strong>非特权模式 ISA</strong>：应用可使用的指令和寄存器，包括各种运算指令、通用寄存器等</li>
+<li><strong>特权模式 ISA</strong>：只有操作系统才可使用的指令和寄存器，包括各种特权指令、系统寄存器等</li>
+<li>从上到下的切换过程通常称为<strong>陷入</strong>（trap）</li>
+</ul>
+</li>
+<li><strong>系统调用</strong>：应用调用操作系统的机制，实现应用不能实现的功能
+<ul>
+<li>应用通过 CPU 的陷入机制进行模式切换（非特权→特权）</li>
+<li>操作系统内核通过特定的硬件指令返回应用（特权→非特权）</li>
+</ul>
+</li>
+</ul>
+<h3 id="操作系统的不同架构">操作系统的不同架构</h3>
+<h4 id="1-宏内核">1. 宏内核</h4>
+<ul>
+<li>整个系统分为内核与应用两层
+<ul>
+<li><strong>内核</strong>：运行在特权级，集中控制所有计算资源</li>
+<li><strong>应用</strong>：运行在非特权级，受内核管理，使用内核服务</li>
+</ul>
+</li>
+<li><strong>优点</strong>：拥有丰富的沉淀和积累</li>
+<li><strong>缺点</strong>：具有结构性缺陷
+<ul>
+<li>安全性与可靠性问题：模块之间没有很强的隔离机制</li>
+<li>实时性支持：系统太复杂导致无法做最坏情况时延分析</li>
+<li>系统过于庞大而阻碍创新：Linux代码行数已经过 2800 万</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-微内核">2. 微内核</h4>
+<ul>
+<li><strong>设计原则</strong>：最小化内核功能
+<ul>
+<li>将操作系统功能移到用户态，称为&quot;服务&quot;（Server）</li>
+<li>在用户模块之间，使用消息传递机制通信</li>
+</ul>
+</li>
+<li><strong>优点</strong>：
+<ul>
+<li>易于扩展：直接添加一个用户进程即可为操作系统增加服务</li>
+<li>易于移植：大部分模块与底层硬件无关</li>
+<li>更加可靠：在内核模式运行的代码量大大减少</li>
+<li>更加安全：即使存在漏洞，服务与服务之间存在进程粒度隔离</li>
+<li>更加健壮：单个模块出现问题不会影响到系统整体</li>
+</ul>
+</li>
+<li><strong>缺点</strong>：
+<ul>
+<li>性能较差：内核中的模块交互由函数调用变成了进程间通信</li>
+<li>生态欠缺：尚未形成像 Linux 一样具有广泛开发者的社区</li>
+<li>重用问题：重用宏内核操作系统提供兼容性，带来新问题</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-外核">3. 外核</h4>
+<ul>
+<li><strong>不提供硬件抽象</strong>：
+<ul>
+<li>只要内核提供抽象，就不能实现性能最大化</li>
+<li>只有应用才知道最适合的抽象（end-to-end 原则）</li>
+</ul>
+</li>
+<li><strong>不管理资源，只管理应用</strong>：
+<ul>
+<li>负责将计算资源与应用的绑定，以及资源的回收</li>
+<li>保证多个应用之间的隔离</li>
+</ul>
+</li>
+<li><strong>库 OS（LibOS）</strong>：
+<ul>
+<li>策略与机制分离：将对硬件的抽象以库的形式提供</li>
+<li>高度定制化：不同应用可使用不同的 LibOS，或完全自定义</li>
+<li>更高性能：LibOS 与应用其他代码之间通过函数调用直接交互</li>
+</ul>
+</li>
+<li><strong>优点</strong>：
+<ul>
+<li>OS 无抽象，能在理论上提供最优性能</li>
+<li>应用对计算有更精确的实时等控制</li>
+<li>LibOS 在用户态更易调试，调试周期更短</li>
+</ul>
+</li>
+<li><strong>缺点</strong>：
+<ul>
+<li>对计算资源的利用效率主要由应用决定</li>
+<li>定制化过多，导致维护难度增加</li>
+</ul>
+</li>
+</ul>
+<h4 id="4-多内核-复内核">4. 多内核/复内核</h4>
+<ul>
+<li><strong>多内核的背景</strong>：多核（OS 内部维护很多共享状态）、异构（GPU 等设备越来越多）</li>
+<li><strong>多内核的思路</strong>：
+<ul>
+<li>默认的状态是划分而不是共享</li>
+<li>维持多份状态的 copy 而不是共享一份状态</li>
+<li>显式的核间通信机制</li>
+</ul>
+</li>
+<li><strong>多内核的设计</strong>：
+<ul>
+<li>在每个 core 上运行一个小内核（包括CPU、GPU等）</li>
+<li>OS 整体是一个分布式系统</li>
+<li>应用程序依然运行在OS之上</li>
+</ul>
+</li>
+</ul>
+<h2 id="Lecture-2-ARM-汇编基础">Lecture 2: ARM 汇编基础</h2>
+<ul>
+<li><strong>寄存器</strong>：x1 - x30 是 31 个 64 位寄存器，w0 - w30 是其低位的 31 个 32 位寄存器</li>
+</ul>
+<h3 id="常用汇编指令">常用汇编指令</h3>
+<ul>
+<li><strong>寄存器之间的数据搬移</strong>：mov dst, src
+<ul>
+<li>源操作数 src 可以是立即数或寄存器</li>
+<li>目的操作数 dst 必须是寄存器</li>
+</ul>
+</li>
+<li><strong>算术指令</strong>：</li>
+</ul>
+<p><img src="arith.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>移位指令</strong>：</li>
+</ul>
+<p><img src="shift.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>逻辑运算指令</strong>：</li>
+</ul>
+<p><img src="logic.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>Modified Register</strong>：如 add  x2, x2, x2, lsl #1
+<ul>
+<li>对操作数进行移位：如 eor w0, w8, w8, asr #16</li>
+<li>对操作数进行位扩展：如 add x19, x19, w0, sxtw
+<ul>
+<li><strong>无符号扩展</strong>：uxtb, uxth, uxtw</li>
+<li><strong>符号扩展</strong>：sxtb, sxth, sxtw</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>访存指令</strong>：</li>
+</ul>
+<p><img src="mem.png" srcset="/img/loading.gif" lazyload alt=""><br>
+<img src="mem4.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>寻址模式</strong>：</li>
+</ul>
+<p><img src="mem2.png" srcset="/img/loading.gif" lazyload alt=""><br>
+<img src="mem3.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h3 id="条件码与分支指令">条件码与分支指令</h3>
+<ul>
+<li><strong>条件码</strong>：一组标志位的统称，由 PSTATE 寄存器维护
+<ul>
+<li>N（Negative）、Z（Zero）、C（Carry）、V（Overﬂow）</li>
+</ul>
+</li>
+<li><strong>条件码的设置</strong>：
+<ul>
+<li>带有 s 后缀的算术或逻辑运算指令（如subs、adds）</li>
+<li>比较指令：
+<ul>
+<li>cmp：操作数之差；如 cmp x0, x1</li>
+<li>cmn：操作数之和；如 cmn x0, x1</li>
+<li>tst：操作数相与；如 tst x0, x1</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>跳转条件</strong>：</li>
+</ul>
+<p><img src="condition.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>跳转指令</strong>：
+<ul>
+<li><strong>直接分支指令</strong>：以标签对应的地址作为跳转目标
+<ul>
+<li>无条件分支指令：b &lt;label&gt;</li>
+<li>有条件分支指令：bcond &lt;label&gt;，如 beq，bne，ble</li>
+</ul>
+</li>
+<li><strong>间接分支指令</strong>：以寄存器中的地址作为跳转目标
+<ul>
+<li>br reg，如 br x0</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="函数调用">函数调用</h3>
+<ul>
+<li><strong>函数调用指令</strong>：
+<ul>
+<li>bl  label (直接调用，调用函数)</li>
+<li>blr  Rn    (间接调用，调用函数指针)</li>
+<li><strong>功能</strong>：将返回地址存储在链接寄存器 LR (即 x30 寄存器)，并跳转到被调用者的入口地址</li>
+</ul>
+</li>
+<li><strong>函数返回指令</strong>：
+<ul>
+<li>ret (不区分直接调用与间接调用)</li>
+<li><strong>功能</strong>：跳转到返回地址（链接寄存器 LR）</li>
+</ul>
+</li>
+<li><strong>函数栈桢</strong>：函数在运行期间使用的一段内存
+<ul>
+<li><strong>作用</strong>：存放其局部状态，包括<strong>返回地址、上一个栈桢的位置、局部变量</strong></li>
+</ul>
+</li>
+<li><strong>SP（Stack Pointer）寄存器</strong>：CPU 中的另一个特殊寄存器，指向栈顶（低地址）</li>
+<li><strong>帧指针 FP</strong>：保存在 x29 寄存器中</li>
+</ul>
+<figure class="highlight arm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs ARM"><span class="hljs-symbol">stp</span> <span class="hljs-built_in">x29</span>, <span class="hljs-built_in">x30</span>, [<span class="hljs-built_in">sp</span>, #-<span class="hljs-number">32</span>]!<br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">x29</span>, <span class="hljs-built_in">sp</span><br><span class="hljs-symbol">...</span><br><span class="hljs-symbol">ldp</span> <span class="hljs-built_in">x29</span>, <span class="hljs-built_in">x30</span>, [<span class="hljs-built_in">sp</span>], <span class="hljs-number">#32</span><br><span class="hljs-symbol">ret</span><br></code></pre></td></tr></table></figure>
+<h4 id="函数参数与返回值">函数参数与返回值</h4>
+<ul>
+<li>调用者使用 x0 ~ x7 寄存器传递<strong>前 8 个参数</strong></li>
+<li><strong>第 8 个之后的参数</strong>，按声明顺序从右到左压到栈上，被调用者通过 SP + 偏移量访问</li>
+<li>被调用者<strong>使用 x0 寄存器传递返回值</strong></li>
+</ul>
+<p><img src="param.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h4 id="寄存器保存">寄存器保存</h4>
+<p><img src="reg.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>调用者保存的寄存器包括 x9 ~ x15
+<ul>
+<li>调用者在调用前按需进行保存，在被调用者返回后恢复这些寄存器的值</li>
+<li>被调用者可以随意使用（这些寄存器调用后的值可能发生改变）</li>
+</ul>
+</li>
+<li>被调用者保存的寄存器包括 x19 ~ x28
+<ul>
+<li>被调用者在使用前进行保存，在返回前进行恢复</li>
+<li>调用者视角下，这些寄存器的值在函数调用前后不会改变</li>
+</ul>
+</li>
+</ul>
+<h4 id="局部变量">局部变量</h4>
+<ul>
+<li><strong>局部变量存放在函数栈桢中</strong>：在分配栈帧时被一起分配，在返回前释放栈帧时释放，通过 SP 相对地址引用</li>
+</ul>
+<h2 id="Lecture-3-ARM-汇编-系统-ISA">Lecture 3: ARM 汇编 - 系统 ISA</h2>
+<h3 id="特权级别">特权级别</h3>
+<ul>
+<li><strong>ARM 特权级</strong>：EL0（应用程序）、EL1（操作系统）</li>
+<li><strong>CurrentEL 寄存器</strong>：CPU 当前特权级别，属于 PSTATE（状态寄存器）</li>
+<li><strong>用户态与内核态</strong>：
+<ul>
+<li><strong>用户态</strong>：只能使用用户 ISA</li>
+<li><strong>内核态</strong>：可以同时使用系统 ISA 和用户ISA</li>
+<li>操作系统往往同时包含内核态与用户态的代码</li>
+</ul>
+</li>
+<li><strong>常见寄存器在不同特权级的可见情况</strong>：</li>
+</ul>
+<p><img src="el_reg.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h3 id="特权级切换">特权级切换</h3>
+<ul>
+<li><strong><code>svc/eret</code> 指令</strong>：在控制流跳转的同时进行特权级切换</li>
+<li><strong>同步异常</strong>：执行当前指令触发异常
+<ul>
+<li>第一类：用户程序主动发起：<code>svc</code> 指令（OS 利用 <code>eret</code> 指令返回）</li>
+<li>第二类：非主动，例如用户程序意外访问空指针：普通 <code>ldr</code> 指令（OS “杀死”出错程序）</li>
+</ul>
+</li>
+<li><strong>异步异常</strong>：CPU 收到中断信号
+<ul>
+<li>从外设发来的中断，例如屏幕点击、鼠标、收到网络包</li>
+<li>CPU 时钟中断，例如定时器超时</li>
+</ul>
+</li>
+<li><strong>异常处理函数</strong>：运行在内核态，完成异常处理后可能会：
+<ul>
+<li>回到发生异常时正在执行的指令（如：缺页异常）</li>
+<li>回到发生异常时的下一条指令（如：系统调用）</li>
+<li>切换到其它进程执行（如：除零、访问空指针）</li>
+</ul>
+</li>
+<li><strong>异常向量表</strong>：CPU 找到异常处理函数
+<ul>
+<li>OS 内核预先在一张表中准备好不同类型异常的处理函数，基地址存储在 VBAR_EL1 寄存器中</li>
+<li>CPU 在异常发生时自动跳转到相应处理函数</li>
+</ul>
+</li>
+<li><strong>实现异常向量表的设置</strong>：是系统初始化的重要工作之一
+<ul>
+<li>在开启中断和启动第一个应用之前</li>
+<li><code>msr vbar_el1, x0</code>，是内核态才能使用的指令，内核才能访问的寄存器</li>
+</ul>
+</li>
+<li><strong>实现对不同异常的处理函数</strong>：<code>mrs x1, esr_el1</code>，内核通过 ESR_EL1 寄存器读取陷入内核的原因</li>
+</ul>
+<h3 id="内核态与用户态的切换">内核态与用户态的切换</h3>
+<p><img src="switch.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>处理器在切换过程中的任务</strong>：
+<ol>
+<li>将发生异常事件的指令地址保存在 ELR_EL1 中</li>
+<li>将异常事件的原因保存在 ESR_EL1</li>
+<li>将处理器的当前状态（即 PSTATE）保存在 SPSR_EL1</li>
+<li>栈寄存器不再使用 SP_EL0（用户态栈寄存器），开始使用 SP_EL1</li>
+<li>修改 PSTATE 寄存器中的特权级标志位，设置为内核态</li>
+<li>找到异常处理函数的入口地址，并将该地址写入 PC，开始运行操作系统</li>
+</ol>
+</li>
+<li><strong>从内核态返回到用户态</strong>：
+<ol>
+<li>将 SPSR_EL1 中的处理器状态写入 PSTATE 中，处理器状态也从 EL1 切换到 EL0</li>
+<li>栈寄存器不再使用 SP_EL1，开始使用 SP_EL0</li>
+<li>将 ELR_EL1 中的地址写入 PC，并执行应用程序代码</li>
+</ol>
+</li>
+<li><strong>操作系统在切换过程中的任务</strong>：将属于应用程序的 CPU 状态保存到内存中
+<ul>
+<li>用于之后恢复应用程序继续运行</li>
+<li><strong>处理器上下文</strong>：应用程序需要保存的运行状态，即应用程序在完成切换后恢复执行所需的最小处理器状态集合，包括：
+<ul>
+<li>通用寄存器 x0 - x30</li>
+<li>特殊寄存器，主要包括 PC、SP 和 PSTATE</li>
+<li>系统寄存器，包括页表基地址寄存器等</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="系统调用">系统调用</h3>
+<ul>
+<li>硬件提供了一对指令 <code>svc/eret</code> 指令在用户态/内核态间切换</li>
+<li><strong>系统调用</strong>：用户与操作系统之间，类似于过程调用的接口；通过受限的方式访问内核提供的服务</li>
+<li><strong>参数传递</strong>：最多允许 8 个参数（x0-x7 寄存器），x8 用于存放系统调用编号
+<ul>
+<li>若寄存器放不下，只能通过内存传参，将指针放在寄存器中传给内核（存在安全的隐患）</li>
+</ul>
+</li>
+<li><strong>返回值</strong>：通过寄存器向应用传递返回值，存放于 x0 寄存器中，一般设置为 -errno</li>
+</ul>
+<h3 id="系统调用优化：VDSO（Virtual-Dynamic-Shared-Object）">系统调用优化：VDSO（Virtual Dynamic Shared Object）</h3>
+<ul>
+<li><strong>动机</strong>：系统调用的时延不可忽略；系统调用实际执行逻辑很简单
+<ul>
+<li>特权级切换造成的时间开销；如果没有特权级切换，那么就不需要保存恢复状态</li>
+</ul>
+</li>
+<li><strong>方法</strong>：内核将一部分数据通过只读的形式共享给应用
+<ul>
+<li><strong>例子</strong>：将 gettimeofday 的代码加载到一块与应用共享的内存页，Time 的值同样映射到用户态空间（只读）</li>
+</ul>
+</li>
+</ul>
+<h3 id="系统调用优化：Flex-SC（Flexible-System-Call-Scheduling-with-Exception-Less-System-Calls）">系统调用优化：Flex-SC（Flexible System Call Scheduling with Exception-Less System Calls）</h3>
+<ul>
+<li><strong>动机</strong>：进一步降低系统调用的时延，在不切换状态的情况下实现系统调用</li>
+<li><strong>方法</strong>：允许应用以“向某一块内存页写入请求”的方式发起系统调用，并通过轮询来等待系统调用完成
+<ul>
+<li>内核独占一个 CPU 核心，通过轮询来等待用户的请求，然后执行系统调用，并将返回值写入同一块内存页</li>
+</ul>
+</li>
+</ul>
+<h2 id="Lecture-4-从应用视角看操作系统抽象">Lecture 4: 从应用视角看操作系统抽象</h2>
+<p><img src="overview.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h3 id="进程">进程</h3>
+<ul>
+<li><strong>分时复用有限的 CPU 资源</strong>
+<ul>
+<li>让多个应用程序轮流使用处理器核心</li>
+<li>何时切换：操作系统决定（运行时间片）</li>
+<li>高频切换：看起来是多个应用“同时”执行</li>
+</ul>
+</li>
+<li><strong>应用程序与进程</strong>：
+<ul>
+<li>通常一个应用程序对应一个进程：</li>
+<li>多进程程序：应用程序亦可自行创建新进程</li>
+</ul>
+</li>
+<li><strong>进程的状态数据</strong>：
+<ul>
+<li>进程标识号（Process ID， PID）</li>
+<li>运行状态：处理器上下文（CPU Context）</li>
+<li>地址空间</li>
+<li>打开的文件</li>
+</ul>
+</li>
+</ul>
+<h4 id="进程切换">进程切换</h4>
+<ul>
+<li><strong>处理器上下文</strong>：操作系统为每个进程维护处理器上下文
+<ul>
+<li>具体包括：PC 寄存器值，栈寄存器值，通用寄存器值，状态寄存器值</li>
+</ul>
+</li>
+<li><strong>进程切换的时机</strong>：异常导致的上下文切换、用户执行系统调用并进入内核</li>
+</ul>
+<h4 id="常见的进程相关的接口">常见的进程相关的接口</h4>
+<ul>
+<li><strong><code>getpid()</code></strong>：返回调用进程的 PID</li>
+<li><strong><code>getppid()</code></strong>：返回调用进程父进程（创建该进程的进程）的 PID</li>
+<li><strong><code>exit()</code></strong>：终止进程并带上一个 status 状态，无返回值</li>
+<li><strong><code>fork()</code></strong>：父进程创建新的子进程，调用一次返回两次
+<ul>
+<li>返回值：子进程为 0，父进程为子进程 PID，出错为 -1</li>
+</ul>
+</li>
+<li><strong><code>execve()</code></strong>：加载和运行，只调用一次，且永远不会返回
+<ul>
+<li>filename:可执行文件名，argv:参数列表，envp:环境变量列表</li>
+<li>仅仅在运行报错的时候，返回调用程序</li>
+</ul>
+</li>
+<li><strong><code>waitpid()</code></strong>：等待子进程终止后，内核回收子进程</li>
+<li><strong>进程的终止</strong>：进程终止后，内核不会立刻销毁该进程
+<ul>
+<li>进程以终止态存在，等待父进程回收</li>
+<li>当父进程回收终止的子进程：
+<ul>
+<li>内核把子进程的 exit 状态传递给父进程</li>
+<li>内核移除子进程，此时子进程才被真正回收</li>
+</ul>
+</li>
+<li>终止状态下还未被回收的进程就是僵尸进程</li>
+<li>如果父进程在自己终止前没有回收僵尸子进程：
+<ul>
+<li>内核会安排 init 进程回收这些子进程</li>
+<li>init 进程：PID 为 1，在系统初始化时由内核创建</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="内存">内存</h3>
+<p><img src="mem_config.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>虚拟地址空间</strong>：
+<ul>
+<li>应用进程使用虚拟地址访问内存</li>
+<li>所有应用进程的虚拟地址空间都是统一的（方便开发）</li>
+</ul>
+</li>
+<li><strong>地址翻译</strong>：
+<ul>
+<li>CPU 按照 OS 配置的规则把虚拟地址翻译成物理地址</li>
+<li>翻译对于应用进程是不可见的（无需关心）</li>
+</ul>
+</li>
+<li><strong>虚拟内存的优势</strong>：
+<ul>
+<li>独立而统一的地址空间</li>
+<li>提高内存资源利用率、突破物理内存容量限制</li>
+</ul>
+</li>
+</ul>
+<h4 id="ELF-文件格式">ELF 文件格式</h4>
+<ul>
+<li><strong>目标文件</strong>：可执行目标文件、可重定位目标文件（.o）、共享目标文件（.so）</li>
+<li><strong>ELF</strong>：可执行可链接格式，目标文件的标准二进制格式</li>
+</ul>
+<p><img src="elf.png" srcset="/img/loading.gif" lazyload alt="ELF 格式"></p>
+<ul>
+<li><strong>ELF 头部</strong>：通常用于存元数据，包括 Magic number、类型（.o, .so, 可执行）、机器架构、字节顺序（大小端）、节头部表的位置（文件内偏移）等</li>
+<li><strong>节头部表</strong>：每一个节都有一个节头部（节头部表的一项）描述
+<ul>
+<li><strong>节</strong>：ELF 文件中除了头部和头部表划分为若干区域，每一个节在文件中是一块连续的字节（可能为空），互不重叠</li>
+</ul>
+</li>
+<li><strong>用以调试的节</strong>：
+<ul>
+<li><strong>ELF 字符串表（.strtab）</strong>：记录一系列 C 风格字符串，表示符号名或节名</li>
+<li><strong>.debug</strong>：调试符号表，包括变量（全局、局部）、typedef、C 源文件</li>
+<li><strong>.line</strong>：C 源文件的行数与 .text 节中指令的映射</li>
+</ul>
+</li>
+<li><strong>代码和数据节</strong>：
+<ul>
+<li><strong>.text</strong>：代码</li>
+<li><strong>.rodata</strong>：只读数据</li>
+<li><strong>.data</strong>：初始化的全局变量和静态变量</li>
+<li><strong>.bss</strong>：未初始化的全局变量和静态变量（不占文件空间，运行时分配内存）</li>
+</ul>
+</li>
+</ul>
+<p><img src="exe.png" srcset="/img/loading.gif" lazyload alt="可执行目标文件"></p>
+<ul>
+<li><strong>可执行目标文件的 ELF 头部</strong>：包含整体信息、程序入口 (e_entry)、程序头部表信息</li>
+</ul>
+<h3 id="文件">文件</h3>
+<ul>
+<li>
+<p><strong>Unix 文件</strong>：是一串字节序列</p>
+<ul>
+<li>所有 IO 设备都被抽象成文件</li>
+<li>Unix 提供一个基于文件的底层应用接口，即 Unix IO</li>
+<li>所有输入/输出都是通过读/写文件完成，让所有输入输出都有统一的表现方式</li>
+</ul>
+</li>
+<li>
+<p><strong>普通文件（文件类型1）</strong>：包含任意数据</p>
+<ul>
+<li>从应用程序的角度来看，有文本文件和二进制文件</li>
+<li>从内核的角度来看，没有区别</li>
+</ul>
+</li>
+<li>
+<p><strong>目录（文件类型2）</strong>：由一组链接构成，每个链接将一个文件名映射到一个文件(或目录)</p>
+<ul>
+<li>每个目录至少有两个链接：
+<ul>
+<li>. (dot)：到文件夹本身的链接</li>
+<li>… (dot-dot)：到上一层文件夹的链接</li>
+</ul>
+</li>
+<li>目录相关指令：mkdir、ls、rmdir等</li>
+</ul>
+</li>
+<li>
+<p><strong>目录层级</strong>：Linux 内核使用层次化目录来组织所有文件</p>
+<ul>
+<li>/：代表根目录</li>
+<li>每个文件都是根目录直接或间接的后代</li>
+</ul>
+</li>
+<li>
+<p><strong>其他文件类型</strong>：套接字、命名管道、符号连接、字符/块设备</p>
+</li>
+<li>
+<p><strong>打开文件</strong>：应用准备访问一个 IO 设备</p>
+<ul>
+<li>内核打开相关文件，并返回一个非负整数，作为文件标识符(fd)
+<ul>
+<li>fd 代表该文件，用于之后对文件进行操作</li>
+</ul>
+</li>
+<li>内核跟踪记录每个进程的所有打开文件的信息
+<ul>
+<li>对于每个打开文件，维护一个文件内偏移 k</li>
+<li>应用可以通过seek函数，显式改变当前文件内偏移 k</li>
+</ul>
+</li>
+<li>应用只需要记录内核返回的文件标识符</li>
+</ul>
+</li>
+<li>
+<p><strong>关闭文件</strong>：不再需要访问文件</p>
+<ul>
+<li>内核操作如下
+<ul>
+<li>释放在文件打开时创建的数据结构</li>
+<li>把文件标识符返回到可用标识符池</li>
+</ul>
+</li>
+<li>进程终止时，内核会关闭所有打开的文件、释放内存资源</li>
+</ul>
+</li>
+<li>
+<p><strong>读写文件</strong>：读操作</p>
+<ul>
+<li>从文件中复制 m&gt;0 个字节到内存中<br>
+-从当前文件的位置 k 开始, 并更新 k+=m</li>
+<li>如果从 k 开始到文件末尾的长度小于 m，触发一个条件 end-of-file(EOF)
+<ul>
+<li>EOF 可以被应用检测，但文件末尾实际上不存在 EOF 字符</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>文件</strong>：对所有设备的抽象（存储设备、网络设备、其他设备）</p>
+</li>
+</ul>
+<h2 id="参考资料">参考资料</h2>
+<p>本文参考上海交通大学并行与分布式系统研究所（IPADS）操作系统课程 CS3601 华志超老师的 PPT 课件整理。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="category-chain-item">操作系统</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="print-no-link">#操作系统</a>
+      
+        <a href="/tags/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/" class="print-no-link">#课程笔记</a>
+      
+        <a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86/" class="print-no-link">#知识点整理</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>操作系统 SJTU 版(1)：概述</div>
+      <div>https://cny123222.github.io/2025/10/02/操作系统-SJTU-版-1-：概述/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Nuoyan Chen</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>October 2, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/10/21/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-SJTU-%E7%89%88-2-%EF%BC%9A%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" title="操作系统 SJTU 版(2)：内存管理">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">操作系统 SJTU 版(2)：内存管理</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/09/20/Modern-Robotics-Course-Notes/" title="Modern Robotics - Course Notes">
+                        <span class="hidden-mobile">Modern Robotics - Course Notes</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"cny123222/cny123222.github.io","repo-id":"R_kgDOOFgnVw","category":"Announcements","category-id":"DIC_kwDOOFgnV84CnwXM","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"en"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
