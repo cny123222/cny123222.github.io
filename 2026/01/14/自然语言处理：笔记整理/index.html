@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/nlp.png">
 <meta property="article:published_time" content="2026-01-14T14:43:02.000Z">
-<meta property="article:modified_time" content="2026-01-19T15:03:34.308Z">
+<meta property="article:modified_time" content="2026-01-25T14:03:17.720Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          13k words
+          14k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          108 mins
+          121 mins
         
       </span>
     
@@ -442,7 +442,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on January 19, 2026 pm
+                    Last updated on January 25, 2026 pm
                   
                 
               </p>
@@ -1376,8 +1376,8 @@ M1001 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">�
 <li>
 <p><strong>状态更新</strong>：</p>
 <ul>
-<li><strong>计算候选状态</strong>：重置门 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi><msup><mi mathvariant="bold-italic">r</mi><mrow><mo stretchy="false">(</mo><mi mathvariant="bold-italic">t</mi><mo stretchy="false">)</mo></mrow></msup></mi></mrow><annotation encoding="application/x-tex">\boldsymbol{r^{(t)}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.888em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.03194em;">r</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.888em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mathbf mtight">(</span><span class="mord boldsymbol mtight">t</span><span class="mclose mathbf mtight">)</span></span></span></span></span></span></span></span></span></span></span></span></span></span> 控制了历史信息 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi><msup><mi mathvariant="bold-italic">h</mi><mrow><mo stretchy="false">(</mo><mi mathvariant="bold-italic">t</mi><mo mathvariant="bold-italic">−</mo><mn mathvariant="bold">1</mn><mo stretchy="false">)</mo></mrow></msup></mi></mrow><annotation encoding="application/x-tex">\boldsymbol{h^{(t-1)}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.888em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol">h</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.888em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mathbf mtight">(</span><span class="mord boldsymbol mtight">t</span><span class="mbin mathbf mtight">−</span><span class="mord mathbf mtight">1</span><span class="mclose mathbf mtight">)</span></span></span></span></span></span></span></span></span></span></span></span></span></span> 的使用程度<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msup><mover accent="true"><mi mathvariant="bold-italic">h</mi><mo>~</mo></mover><mrow><mo stretchy="false">(</mo><mi mathvariant="bold-italic">t</mi><mo stretchy="false">)</mo></mrow></msup><mo>=</mo><mi>tanh</mi><mo>⁡</mo><mrow><mo fence="true">(</mo><msub><mi mathvariant="bold-italic">W</mi><mi mathvariant="bold-italic">h</mi></msub><mrow><mo fence="true">[</mo><mi><msup><mi mathvariant="bold-italic">r</mi><mrow><mo stretchy="false">(</mo><mi mathvariant="bold-italic">t</mi><mo stretchy="false">)</mo></mrow></msup></mi><mo>∘</mo><mi><msup><mi mathvariant="bold-italic">h</mi><mrow><mo stretchy="false">(</mo><mi mathvariant="bold-italic">t</mi><mo mathvariant="bold-italic">−</mo><mn mathvariant="bold">1</mn><mo stretchy="false">)</mo></mrow></msup></mi><mo separator="true">;</mo><mi><msup><mi mathvariant="bold-italic">x</mi><mrow><mo stretchy="false">(</mo><mi mathvariant="bold-italic">t</mi><mo stretchy="false">)</mo></mrow></msup></mi><mo fence="true">]</mo></mrow><mo>+</mo><msub><mi mathvariant="bold-italic">b</mi><mi mathvariant="bold-italic">h</mi></msub><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">\tilde{\boldsymbol{h}}^{(\boldsymbol{t})}=\tanh \left(\boldsymbol{W}_{\boldsymbol{h}}\left[\boldsymbol{r^{(t)}} \circ \boldsymbol{h^{(\boldsymbol{t}-\mathbf{1})}} ; \boldsymbol{x^{(\boldsymbol{t})}}\right]+\boldsymbol{b}_{\boldsymbol{h}}\right)
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.2092em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9313em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord boldsymbol">h</span></span></span></span><span style="top:-3.6134em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.25em;"><span class="mord">~</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:1.2092em;"><span style="top:-3.3842em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mtight"><span class="mord mtight"><span class="mord boldsymbol mtight">t</span></span></span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.8em;vertical-align:-0.65em;"></span><span class="mop">tanh</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size2">(</span></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.15972em;">W</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord boldsymbol mtight">h</span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size2">[</span></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.03194em;">r</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.938em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mathbf mtight">(</span><span class="mord boldsymbol mtight">t</span><span class="mclose mathbf mtight">)</span></span></span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∘</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol">h</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.938em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mathbf mtight">(</span><span class="mord mtight"><span class="mord mtight"><span class="mord boldsymbol mtight">t</span></span></span><span class="mbin mathbf mtight">−</span><span class="mord mathbf mtight">1</span><span class="mclose mathbf mtight">)</span></span></span></span></span></span></span></span></span></span></span><span class="mpunct">;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.938em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mathbf mtight">(</span><span class="mord mtight"><span class="mord mtight"><span class="mord boldsymbol mtight">t</span></span></span><span class="mclose mathbf mtight">)</span></span></span></span></span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size2">]</span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol">b</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord boldsymbol mtight">h</span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size2">)</span></span></span></span></span></span></span></p>
+<li><strong>计算候选状态</strong>：重置门 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi><msup><mi mathvariant="bold-italic">r</mi><mrow><mo stretchy="false">(</mo><mi mathvariant="bold-italic">t</mi><mo stretchy="false">)</mo></mrow></msup></mi></mrow><annotation encoding="application/x-tex">\boldsymbol{r^{(t)}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.888em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.03194em;">r</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.888em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mathbf mtight">(</span><span class="mord boldsymbol mtight">t</span><span class="mclose mathbf mtight">)</span></span></span></span></span></span></span></span></span></span></span></span></span></span> 控制了历史信息 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi><msup><mi mathvariant="bold-italic">h</mi><mrow><mo stretchy="false">(</mo><mi mathvariant="bold-italic">t</mi><mo mathvariant="bold-italic">−</mo><mn mathvariant="bold">1</mn><mo stretchy="false">)</mo></mrow></msup></mi></mrow><annotation encoding="application/x-tex">\boldsymbol{h^{(t-1)}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.888em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol">h</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.888em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mathbf mtight">(</span><span class="mord boldsymbol mtight">t</span><span class="mbin mathbf mtight">−</span><span class="mord mathbf mtight">1</span><span class="mclose mathbf mtight">)</span></span></span></span></span></span></span></span></span></span></span></span></span></span> 的使用程度<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi><msup><mover accent="true"><mi mathvariant="bold-italic">h</mi><mo>~</mo></mover><mrow><mo stretchy="false">(</mo><mi mathvariant="bold-italic">t</mi><mo stretchy="false">)</mo></mrow></msup></mi><mo>=</mo><mi>tanh</mi><mo>⁡</mo><mrow><mo fence="true">(</mo><msub><mi mathvariant="bold-italic">W</mi><mi mathvariant="bold-italic">h</mi></msub><mrow><mo fence="true">[</mo><mi><msup><mi mathvariant="bold-italic">r</mi><mrow><mo stretchy="false">(</mo><mi mathvariant="bold-italic">t</mi><mo stretchy="false">)</mo></mrow></msup></mi><mo>∘</mo><mi><msup><mi mathvariant="bold-italic">h</mi><mrow><mo stretchy="false">(</mo><mi mathvariant="bold-italic">t</mi><mo mathvariant="bold-italic">−</mo><mn mathvariant="bold">1</mn><mo stretchy="false">)</mo></mrow></msup></mi><mo separator="true">;</mo><mi><msup><mi mathvariant="bold-italic">x</mi><mrow><mo stretchy="false">(</mo><mi mathvariant="bold-italic">t</mi><mo stretchy="false">)</mo></mrow></msup></mi><mo fence="true">]</mo></mrow><mo>+</mo><msub><mi mathvariant="bold-italic">b</mi><mi mathvariant="bold-italic">h</mi></msub><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">\boldsymbol{\tilde{h}^{(t)}}=\tanh \left(\boldsymbol{W}_{\boldsymbol{h}}\left[\boldsymbol{r^{(t)}} \circ \boldsymbol{h^{(\boldsymbol{t}-\mathbf{1})}} ; \boldsymbol{x^{(\boldsymbol{t})}}\right]+\boldsymbol{b}_{\boldsymbol{h}}\right)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9579em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9579em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord boldsymbol">h</span></span><span style="top:-3.6134em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.2875em;"><span class="mord mathbf">~</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.938em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mathbf mtight">(</span><span class="mord boldsymbol mtight">t</span><span class="mclose mathbf mtight">)</span></span></span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.8em;vertical-align:-0.65em;"></span><span class="mop">tanh</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size2">(</span></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.15972em;">W</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord boldsymbol mtight">h</span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size2">[</span></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.03194em;">r</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.938em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mathbf mtight">(</span><span class="mord boldsymbol mtight">t</span><span class="mclose mathbf mtight">)</span></span></span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∘</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol">h</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.938em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mathbf mtight">(</span><span class="mord mtight"><span class="mord mtight"><span class="mord boldsymbol mtight">t</span></span></span><span class="mbin mathbf mtight">−</span><span class="mord mathbf mtight">1</span><span class="mclose mathbf mtight">)</span></span></span></span></span></span></span></span></span></span></span><span class="mpunct">;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.938em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mathbf mtight">(</span><span class="mord mtight"><span class="mord mtight"><span class="mord boldsymbol mtight">t</span></span></span><span class="mclose mathbf mtight">)</span></span></span></span></span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size2">]</span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol">b</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord boldsymbol mtight">h</span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size2">)</span></span></span></span></span></span></span></p>
 </li>
 <li><strong>更新最终隐藏状态</strong>：更新门 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi><msup><mi mathvariant="bold-italic">z</mi><mrow><mo stretchy="false">(</mo><mi mathvariant="bold-italic">t</mi><mo stretchy="false">)</mo></mrow></msup></mi></mrow><annotation encoding="application/x-tex">\boldsymbol{z^{(t)}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.888em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.04213em;">z</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.888em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mathbf mtight">(</span><span class="mord boldsymbol mtight">t</span><span class="mclose mathbf mtight">)</span></span></span></span></span></span></span></span></span></span></span></span></span></span> 像一个开关，在旧状态 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi><msup><mi mathvariant="bold-italic">h</mi><mrow><mo stretchy="false">(</mo><mi mathvariant="bold-italic">t</mi><mo mathvariant="bold-italic">−</mo><mn mathvariant="bold">1</mn><mo stretchy="false">)</mo></mrow></msup></mi></mrow><annotation encoding="application/x-tex">\boldsymbol{h^{(t-1)}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.888em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol">h</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.888em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mathbf mtight">(</span><span class="mord boldsymbol mtight">t</span><span class="mbin mathbf mtight">−</span><span class="mord mathbf mtight">1</span><span class="mclose mathbf mtight">)</span></span></span></span></span></span></span></span></span></span></span></span></span></span> 和新候选状态 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi><msup><mover accent="true"><mi mathvariant="bold-italic">h</mi><mo>^</mo></mover><mrow><mo stretchy="false">(</mo><mi mathvariant="bold-italic">t</mi><mo stretchy="false">)</mo></mrow></msup></mi></mrow><annotation encoding="application/x-tex">\boldsymbol{\hat{h}^{(t)}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9579em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9579em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord boldsymbol">h</span></span><span style="top:-3.2634em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.2875em;"><span class="mord mathbf">^</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.888em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mathbf mtight">(</span><span class="mord boldsymbol mtight">t</span><span class="mclose mathbf mtight">)</span></span></span></span></span></span></span></span></span></span></span></span></span></span> 之间进行插值<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi><msup><mi mathvariant="bold-italic">h</mi><mrow><mo stretchy="false">(</mo><mi mathvariant="bold-italic">t</mi><mo stretchy="false">)</mo></mrow></msup></mi><mo>=</mo><mrow><mo fence="true">(</mo><mn>1</mn><mo>−</mo><mi><msup><mi mathvariant="bold-italic">z</mi><mrow><mo stretchy="false">(</mo><mi mathvariant="bold-italic">t</mi><mo stretchy="false">)</mo></mrow></msup></mi><mo fence="true">)</mo></mrow><mo>∘</mo><mi><msup><mi mathvariant="bold-italic">h</mi><mrow><mo stretchy="false">(</mo><mi mathvariant="bold-italic">t</mi><mo mathvariant="bold-italic">−</mo><mn mathvariant="bold">1</mn><mo stretchy="false">)</mo></mrow></msup></mi><mo>+</mo><mi><msup><mi mathvariant="bold-italic">z</mi><mrow><mo stretchy="false">(</mo><mi mathvariant="bold-italic">t</mi><mo stretchy="false">)</mo></mrow></msup></mi><mo>∘</mo><msup><mover accent="true"><mi mathvariant="bold-italic">h</mi><mo>~</mo></mover><mi><mrow><mo stretchy="false">(</mo><mi mathvariant="bold-italic">t</mi><mo stretchy="false">)</mo></mrow></mi></msup></mrow><annotation encoding="application/x-tex">\boldsymbol{h^{(t)}}=\left(1-\boldsymbol{z^{(t)}}\right) \circ \boldsymbol{h^{(t-\mathbf{1})}}+\boldsymbol{z^{(t)}} \circ \tilde{\boldsymbol{h}}^{\boldsymbol{(t)}}
 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.938em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol">h</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.938em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mathbf mtight">(</span><span class="mord boldsymbol mtight">t</span><span class="mclose mathbf mtight">)</span></span></span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.8em;vertical-align:-0.65em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size2">(</span></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.04213em;">z</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.938em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mathbf mtight">(</span><span class="mord boldsymbol mtight">t</span><span class="mclose mathbf mtight">)</span></span></span></span></span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size2">)</span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∘</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0213em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol">h</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.938em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mathbf mtight">(</span><span class="mord boldsymbol mtight">t</span><span class="mbin mathbf mtight">−</span><span class="mord mathbf mtight">1</span><span class="mclose mathbf mtight">)</span></span></span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.938em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.04213em;">z</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.938em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mathbf mtight">(</span><span class="mord boldsymbol mtight">t</span><span class="mclose mathbf mtight">)</span></span></span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∘</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.2092em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9313em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord boldsymbol">h</span></span></span></span><span style="top:-3.6134em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.25em;"><span class="mord">~</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:1.2092em;"><span style="top:-3.3842em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mtight"><span class="mopen mathbf mtight">(</span><span class="mord boldsymbol mtight">t</span><span class="mclose mathbf mtight">)</span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></p>
@@ -1389,6 +1389,139 @@ M1001 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">�
 <h3 id="不同语言模型效果对比">不同语言模型效果对比</h3>
 <p><img src="lm_comparison.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <h2 id="Lecture-5-分词">Lecture 5: 分词</h2>
+<p><strong>分词（Tokenization）</strong>，又称为词元切分，是将原始的文本字符串分割成一个个有意义的基本单元（称为“词元”或 token）的过程。这是所有自然语言处理任务的第一步。</p>
+<h3 id="问题与需求">问题与需求</h3>
+<p>看似简单的切分任务，在实际中会遇到各种复杂情况。</p>
+<ul>
+<li><strong>简单情况</strong>：对于像 “You are what you eat.” 这样的简单英文句子，直接按照空格和标点符号切分，通常就能得到不错的结果
+<ul>
+<li><code>You / are / what / you / eat / .</code></li>
+</ul>
+</li>
+<li><strong>复杂情况：缩写词 (Contractions)</strong>
+<ul>
+<li><strong>问题</strong>：如何处理像 “I’m”, “aren’t” 这样的缩写词</li>
+<li><strong>方法一</strong>：作为单个词
+<ul>
+<li>将 <code>I'm</code> 和 <code>aren't</code> 视为独立的词元。</li>
+<li><strong>优点</strong>：简单</li>
+<li><strong>缺点</strong>：会增加词汇表的大小，加剧数据稀疏问题</li>
+</ul>
+</li>
+<li><strong>方法二</strong>：拆分处理
+<ul>
+<li>将缩写词拆分为其组成部分，如 <code>I'm</code> -&gt; <code>I / 'm</code>，<code>aren't</code> -&gt; <code>are / n't</code></li>
+<li><strong>优点</strong>：可以有效减小词汇表，因为 <code>are</code> 和 <code>n't</code> 可能会在别处出现</li>
+<li><strong>缺点</strong>：需要制定更复杂的拆分规则</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>复杂情况</strong>：数字与符号
+<ul>
+<li><strong>问题</strong>：如何处理像 <code>$300,000,000</code> 或 <code>Fig. 3</code> 这样的组合</li>
+<li><strong>方法一</strong>：完全拆分
+<ul>
+<li>将 <code>$300,000,000</code> 切分为 <code>$ / 300 / , / 000 / , / 000</code></li>
+<li><strong>缺点</strong>：完全失去了数字作为一个整体的语义</li>
+</ul>
+</li>
+<li><strong>方法二</strong>：不拆分
+<ul>
+<li>将 <code>$300,000,000</code> 和 <code>Fig. 3</code> 保留为单个词元</li>
+<li><strong>优点</strong>：保留了其作为一个整体的意义</li>
+<li><strong>缺点</strong>：会造成词汇表爆炸，如 <code>$300,000,001</code> 和 <code>$300,000,002</code> 将被视为两个完全不同的词元</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="词级别的词元切分-Word-level-Tokenization">词级别的词元切分 (Word-level Tokenization)</h3>
+<p>这种方法的目标是把文本切分成我们传统意义上的“单词”。</p>
+<ul>
+<li>
+<p><strong>基于规则的方法</strong>：</p>
+<ul>
+<li><strong>核心</strong>：使用<strong>正则表达式 (Regular Expressions)</strong> 来定义各种切分规则</li>
+<li><strong>过程</strong>：通过不断编写和完善一系列正则表达式，来处理上述提到的缩写、数字、标点等各种复杂情况</li>
+<li><strong>优点</strong>：实现相对简单，可控性强</li>
+<li><strong>缺点</strong>：规则需要专家手工制定，难以覆盖所有语言现象，泛化能力有限</li>
+</ul>
+</li>
+<li>
+<p><strong>基于学习的方法</strong>：</p>
+<ul>
+<li><strong>核心</strong>：将分词任务看作是一个序列标注 (Sequence Labeling) 任务</li>
+<li><strong>过程</strong>：类似于中文分词，通过在大量已标注好的语料上训练模型，让模型自动学习切分的边界</li>
+<li><strong>优点</strong>：不需要手工制定规则，模型可以从数据中自动学习</li>
+</ul>
+</li>
+</ul>
+<h3 id="亚词级别的词元切分-Subword-level-Tokenization">亚词级别的词元切分 (Subword-level Tokenization)</h3>
+<p>现代 NLP 模型，尤其是大型预训练语言模型，普遍采用亚词切分。</p>
+<ul>
+<li><strong>亚词切分的必要性</strong>：
+<ul>
+<li><strong>词汇表爆炸问题</strong>：
+<ul>
+<li>对于英语、德语等形态变化丰富的语言，一个词根（如 response）可以派生出多种形式（responsive, responsible, responsibility），如果都按词级别切分，词汇表会变得异常庞大（一个中大型语料库可达 30-60 万词）</li>
+<li>巨大的词汇表不仅消耗内存，更严重的是会导致未登录词 (Out-of-Vocabulary, OOV) 问题，即测试时遇到训练时没见过的词，模型将无法处理</li>
+</ul>
+</li>
+<li><strong>词与字母的权衡</strong>：
+<ul>
+<li><strong>词级别 (Word-level)</strong>：语义单元好，但词表太大，有 OOV 问题</li>
+<li><strong>字母级别 (Char-level)</strong>：词表非常小（约几十到一百个），无OOV问题，但破坏了单词的完整性，语义信息丢失严重，且序列会变得非常长</li>
+<li><strong>亚词级别 (Subword-level)</strong>：试图在两者之间找到一个最佳平衡点</li>
+</ul>
+</li>
+<li><strong>齐夫定律 (Zipf’s Law)</strong>：语言中词频分布极不均匀，少数高频词占据了绝大部分文本，而大量词汇是低频的，这种长尾分布的特性使得按词切分效率很低</li>
+</ul>
+</li>
+</ul>
+<h4 id="BPE：Byte-Pair-Encoding-字节对编码">BPE：Byte-Pair Encoding (字节对编码)</h4>
+<p>BPE 是目前最主流的亚词切分算法之一，最早用于数据压缩领域，后被引入 NLP。</p>
+<ul>
+<li>
+<p><strong>核心思想</strong>：一个自底向上的、基于频率的数据驱动算法，它从最基本的单元（字母）开始，不断地将语料中最高频的相邻单元对合并成一个新的、更长的单元</p>
+</li>
+<li>
+<p><strong>算法流程</strong>：</p>
+<ul>
+<li><strong>初始化</strong>：将语料库中的所有单词拆分成单个字母的序列，初始词汇表包含所有出现过的单个字母</li>
+<li><strong>迭代合并</strong>：在设定的迭代次数内，重复以下步骤：
+<ul>
+<li>扫描当前语料库（由现有词元组成的序列），找到出现频率最高的相邻词元对（bi-gram）</li>
+<li>将这个最高频的词元对合并成一个新的、更长的词元</li>
+<li>将这个新的词元添加到词汇表中</li>
+</ul>
+</li>
+<li><strong>终止</strong>：达到预设的迭代次数或词汇表大小后停止</li>
+</ul>
+</li>
+<li>
+<p><strong>示例</strong>: 语料: <code>&#123;'low_': 5, 'lowest_': 2, 'newer_': 3, 'wider_': 6&#125;</code></p>
+<ul>
+<li><strong>初始</strong>：词汇表为 <code>&#123;l, o, w, e, s, t, n, r, i, d, _&#125;</code></li>
+<li><strong>迭代1</strong>：最高频的相邻对是 <code>r</code> 和 <code>_</code> (在 <code>newer_</code> 和 <code>wider_</code> 中共出现 3+6=9 次)，合并 <code>r_</code>，词汇表新增 <code>r_</code></li>
+<li><strong>迭代2</strong>：最高频的相邻对是 <code>e</code> 和 <code>r_</code>，合并 <code>er_</code>，词汇表新增 <code>er_</code></li>
+<li><strong>迭代3</strong>：最高频的相邻对是 <code>l</code> 和 <code>o</code>，合并 <code>lo</code>，词汇表新增 <code>lo</code></li>
+<li><strong>迭代4</strong>：最高频的相邻对是 <code>lo</code> 和 <code>w</code>，合并 <code>low</code>，词汇表新增 <code>low</code></li>
+<li>最终词汇表中的词元数目为：初始词汇数 + 迭代次数</li>
+</ul>
+</li>
+<li>
+<p><strong>优点</strong>：</p>
+<ul>
+<li><strong>在不同切分粒度间取得平衡</strong>：有效解决了单纯按字母切分（破坏语义）和按单词切分（词表爆炸）各自的弊端，并且最终的词元数量可以精确控制</li>
+<li><strong>解决未登录词（OOV）问题</strong>：任何未见过的词都可以被拆分成已知的亚词单元的组合，最坏情况下可以拆成单个字母，因此不存在严格意义上的 OOV</li>
+<li><strong>高效实用</strong>：该算法的计算复杂度低，使其能够在大规模语料库上高效地进行训练和应用</li>
+<li><strong>应用广泛</strong>：是目前绝大多数 NLP 大模型所采用的主流词元切分方法</li>
+</ul>
+</li>
+</ul>
+<h3 id="常用工具-2">常用工具</h3>
+<p><img src="token_tool.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <h2 id="Lecture-6-文本分类">Lecture 6: 文本分类</h2>
 <h2 id="Lecture-7-文本检索">Lecture 7: 文本检索</h2>
 <h2 id="Lecture-8-序列标注">Lecture 8: 序列标注</h2>
