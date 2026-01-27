@@ -1,0 +1,1251 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Nuoyan Chen">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="本人的一些 LeetCode 刷题笔记，欢迎参考。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LeetCode 刷题笔记：hot100">
+<meta property="og:url" content="https://cny123222.github.io/2026/01/27/LeetCode-%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%EF%BC%9Ahot100/index.html">
+<meta property="og:site_name" content="Nuoyan Chen&#39;s Blog">
+<meta property="og:description" content="本人的一些 LeetCode 刷题笔记，欢迎参考。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cny123222.github.io/img/%E7%AE%97%E6%B3%95.png">
+<meta property="article:published_time" content="2026-01-27T05:15:03.000Z">
+<meta property="article:modified_time" content="2026-01-27T05:35:24.847Z">
+<meta property="article:author" content="Nuoyan Chen">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="刷题笔记">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cny123222.github.io/img/%E7%AE%97%E6%B3%95.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>LeetCode 刷题笔记：hot100 - Nuoyan Chen&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"cny123222.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 80vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Nuoyan Chen&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/nanjing.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.4)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="LeetCode 刷题笔记：hot100"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Nuoyan Chen
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-01-27 13:15" pubdate>
+          January 27, 2026 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          269 words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          3 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="算法"
+        id="heading-046a899ee7a6ec88d370211a518c9e80" role="tab" data-toggle="collapse" href="#collapse-046a899ee7a6ec88d370211a518c9e80"
+        aria-expanded="true"
+      >
+        算法
+        <span class="list-group-count">(25)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-046a899ee7a6ec88d370211a518c9e80"
+           role="tabpanel" aria-labelledby="heading-046a899ee7a6ec88d370211a518c9e80">
+        
+        
+          
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2026/01/27/LeetCode-%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%EF%BC%9Ahot100/" title="LeetCode 刷题笔记：hot100"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">LeetCode 刷题笔记：hot100</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/04/23/%E7%AE%97%E6%B3%95%EF%BC%9A%E6%9C%9F%E4%B8%AD%E5%A4%8D%E4%B9%A0/" title="算法：期中复习"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">算法：期中复习</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/04/24/%E7%AE%97%E6%B3%95%EF%BC%9A%E6%9C%9F%E4%B8%AD%E7%9C%9F%E9%A2%98%EF%BC%882024%E6%98%A5%EF%BC%89/" title="算法：期中真题（2024春）"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">算法：期中真题（2024春）</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/06/12/%E7%AE%97%E6%B3%95%EF%BC%9A%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0/" title="算法：期末复习"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">算法：期末复习</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/11/%E7%AE%97%E6%B3%95%EF%BC%9A%E8%81%AA%E6%98%8E%E4%BA%BA%E7%9A%84%E8%AE%A1%E7%AE%97%E8%89%BA%E6%9C%AF/" title="算法：聪明人的计算艺术"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">算法：聪明人的计算艺术</span>
+        </a>
+      
+    
+  </div>
+
+          
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="NP完全"
+        id="heading-2dcc1c7b0e24462144b81fcfb7044f11" role="tab" data-toggle="collapse" href="#collapse-2dcc1c7b0e24462144b81fcfb7044f11"
+        aria-expanded="false"
+      >
+        NP完全
+        <span class="list-group-count">(2)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse " id="collapse-2dcc1c7b0e24462144b81fcfb7044f11"
+           role="tabpanel" aria-labelledby="heading-2dcc1c7b0e24462144b81fcfb7044f11">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/05/13/NP-%E5%AE%8C%E5%85%A8-1-%EF%BC%9AP,%20NP%20%E4%B8%8E%20NP%20%E5%AE%8C%E5%85%A8/" title="NP 完全(1)：P, NP 与 NP 完全"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">NP 完全(1)：P, NP 与 NP 完全</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/06/12/NP-%E5%AE%8C%E5%85%A8-2-%EF%BC%9A%E5%BD%92%E7%BA%A6%E4%B8%8E%E4%BC%98%E5%8C%96/" title="NP 完全(2)：归约与优化"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">NP 完全(2)：归约与优化</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="分治法"
+        id="heading-7fa9794c55018bb18faae2d7c5fa3216" role="tab" data-toggle="collapse" href="#collapse-7fa9794c55018bb18faae2d7c5fa3216"
+        aria-expanded="false"
+      >
+        分治法
+        <span class="list-group-count">(5)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse " id="collapse-7fa9794c55018bb18faae2d7c5fa3216"
+           role="tabpanel" aria-labelledby="heading-7fa9794c55018bb18faae2d7c5fa3216">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/03/11/%E5%88%86%E6%B2%BB%E6%B3%95-1-%EF%BC%9AKaratsuba%E7%AE%97%E6%B3%95%E4%B8%8E%E5%A4%A7O%E8%A1%A8%E7%A4%BA%E6%B3%95/" title="分治法(1)：Karatsuba算法与大O表示法"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">分治法(1)：Karatsuba算法与大O表示法</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/11/%E5%88%86%E6%B2%BB%E6%B3%95-2-%EF%BC%9A%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E4%B8%8E%E6%B1%82%E9%80%86%E5%BA%8F%E6%95%B0/" title="分治法(2)：归并排序与求逆序数"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">分治法(2)：归并排序与求逆序数</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/11/%E5%88%86%E6%B2%BB%E6%B3%95-3-%EF%BC%9A%E5%BF%AB%E9%80%9F%E9%80%89%E6%8B%A9%E7%AE%97%E6%B3%95/" title="分治法(3)：快速选择算法"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">分治法(3)：快速选择算法</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/11/%E5%88%86%E6%B2%BB%E6%B3%95-4-%EF%BC%9A%E6%B1%82%E6%9C%80%E8%BF%91%E7%82%B9%E5%AF%B9/" title="分治法(4)：求最近点对"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">分治法(4)：求最近点对</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/11/%E5%88%86%E6%B2%BB%E6%B3%95-5-%EF%BC%9A%E5%BF%AB%E9%80%9F%E5%82%85%E7%AB%8B%E5%8F%B6%E5%8F%98%E6%8D%A2-FFT/" title="分治法(5)：快速傅立叶变换(FFT)"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">分治法(5)：快速傅立叶变换(FFT)</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="动态规划"
+        id="heading-8c05890ac8f93d0195f884f1ff4656ec" role="tab" data-toggle="collapse" href="#collapse-8c05890ac8f93d0195f884f1ff4656ec"
+        aria-expanded="false"
+      >
+        动态规划
+        <span class="list-group-count">(3)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse " id="collapse-8c05890ac8f93d0195f884f1ff4656ec"
+           role="tabpanel" aria-labelledby="heading-8c05890ac8f93d0195f884f1ff4656ec">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/04/03/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-1-%EF%BC%9ADP%E5%9F%BA%E7%A1%80/" title="动态规划(1)：DP基础"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">动态规划(1)：DP基础</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/04/10/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-2-%EF%BC%9A%E4%BC%98%E5%85%88%E7%BA%A7%E9%98%9F%E5%88%97%E4%BC%98%E5%8C%96/" title="动态规划(2)：优先级队列优化"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">动态规划(2)：优先级队列优化</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/04/22/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-3-%EF%BC%9A%E5%9B%BE%E4%B8%ADDP/" title="动态规划(3)：图中DP"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">动态规划(3)：图中DP</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="图"
+        id="heading-63db5605ac2d3a21f0abd506c9531209" role="tab" data-toggle="collapse" href="#collapse-63db5605ac2d3a21f0abd506c9531209"
+        aria-expanded="false"
+      >
+        图
+        <span class="list-group-count">(3)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse " id="collapse-63db5605ac2d3a21f0abd506c9531209"
+           role="tabpanel" aria-labelledby="heading-63db5605ac2d3a21f0abd506c9531209">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/03/11/%E5%9B%BE-1-%EF%BC%9ADFS%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8/" title="图(1)：DFS及其应用"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">图(1)：DFS及其应用</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/11/%E5%9B%BE-2-%EF%BC%9A%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E7%AE%97%E6%B3%95-BFS%E4%B8%8EDijkstra/" title="图(2)：最短路径算法(BFS与Dijkstra)"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">图(2)：最短路径算法(BFS与Dijkstra)</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/27/%E5%9B%BE-3-%EF%BC%9A%E5%90%AB%E8%B4%9F%E8%BE%B9%E7%9A%84%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E7%AE%97%E6%B3%95/" title="图(3)：含负边的最短路径算法"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">图(3)：含负边的最短路径算法</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="线性规划"
+        id="heading-99b79a2373aa97a6cd92cd2d605e3016" role="tab" data-toggle="collapse" href="#collapse-99b79a2373aa97a6cd92cd2d605e3016"
+        aria-expanded="false"
+      >
+        线性规划
+        <span class="list-group-count">(2)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse " id="collapse-99b79a2373aa97a6cd92cd2d605e3016"
+           role="tabpanel" aria-labelledby="heading-99b79a2373aa97a6cd92cd2d605e3016">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/05/13/%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92-1-%EF%BC%9A%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92%E5%9F%BA%E7%A1%80/" title="线性规划(1)：线性规划基础"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">线性规划(1)：线性规划基础</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/05/13/%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92-2-%EF%BC%9ALP%E5%AF%B9%E5%81%B6%E7%9A%84%E5%BA%94%E7%94%A8/" title="线性规划(2)：LP对偶的应用"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">线性规划(2)：LP对偶的应用</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="网络流"
+        id="heading-37d59bb9956a274e74173c7babe61ec7" role="tab" data-toggle="collapse" href="#collapse-37d59bb9956a274e74173c7babe61ec7"
+        aria-expanded="false"
+      >
+        网络流
+        <span class="list-group-count">(3)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse " id="collapse-37d59bb9956a274e74173c7babe61ec7"
+           role="tabpanel" aria-labelledby="heading-37d59bb9956a274e74173c7babe61ec7">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/04/22/%E7%BD%91%E7%BB%9C%E6%B5%81-1-%EF%BC%9A%E7%AE%97%E6%B3%95%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8/" title="网络流(1)：算法及其应用"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">网络流(1)：算法及其应用</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/04/25/%E7%BD%91%E7%BB%9C%E6%B5%81-2-%EF%BC%9A%E6%AD%A3%E7%A1%AE%E6%80%A7%E8%AF%81%E6%98%8E/" title="网络流(2)：正确性证明"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">网络流(2)：正确性证明</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/05/01/%E7%BD%91%E7%BB%9C%E6%B5%81-3-%EF%BC%9A%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/" title="网络流(3)：时间复杂度"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">网络流(3)：时间复杂度</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+    
+    
+    
+    <div class="category-sub row nomargin-x">
+      <a class="category-subitem collapsed
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="贪心算法"
+        id="heading-f609d9e1619f07d45b7d493b39e44c77" role="tab" data-toggle="collapse" href="#collapse-f609d9e1619f07d45b7d493b39e44c77"
+        aria-expanded="false"
+      >
+        贪心算法
+        <span class="list-group-count">(2)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse " id="collapse-f609d9e1619f07d45b7d493b39e44c77"
+           role="tabpanel" aria-labelledby="heading-f609d9e1619f07d45b7d493b39e44c77">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/03/27/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95-1-%EF%BC%9A%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/" title="贪心算法(1)：最小生成树"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">贪心算法(1)：最小生成树</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/03/28/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95-2-%EF%BC%9A%E7%BC%96%E7%A0%81%E4%B8%8E%E8%B0%83%E5%BA%A6/" title="贪心算法(2)：编码与调度"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">贪心算法(2)：编码与调度</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">LeetCode 刷题笔记：hot100</h1>
+            
+              <p id="updated-time" class="note note-default" style="">
+                
+                  
+                    Last updated on January 27, 2026 pm
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>本人的一些 LeetCode 刷题笔记，欢迎参考。</p>
+<span id="more"></span>
+<h2 id="哈希">哈希</h2>
+<p>哈希表的作用是记录之前出现过的内容，C++ 中对应的数据结构有三种：数组、<code>unordered_set</code>、<code>unordered_map</code>。理想情况下，哈希表的插入/删除/查询的时间复杂度为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span>。</p>
+<h3 id="1-两数之和">1. 两数之和</h3>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/two-sum/description">https://leetcode.cn/problems/two-sum/description</a></p>
+<p>力扣第一题，非常经典。基本思路是，扫描一遍数组，记录之前扫过的数以及对应的下标，对每个数 <code>nums[i]</code>，查询是否出现过 <code>target - nums[i]</code>，如果有，则返回两个 对应的下标。</p>
+<p>要记录之前扫过的数及其下标，就要使用哈希表来存储，查询效率高。同时，由于要存储对应的下标，因此在 C++ 中采用 <code>unordered_map</code> 数据结构。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">twoSum</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt;&amp; nums, <span class="hljs-type">int</span> target)</span> </span>&#123;<br>        unordered_map&lt;<span class="hljs-type">int</span>, <span class="hljs-type">int</span>&gt; seen;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; nums.<span class="hljs-built_in">size</span>(); i++) &#123;<br>            <span class="hljs-keyword">if</span> (seen.<span class="hljs-built_in">find</span>(target - nums[i]) != seen.<span class="hljs-built_in">end</span>()) &#123;<br>                <span class="hljs-keyword">return</span> &#123;i, seen[target - nums[i]]&#125;;<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                seen[nums[i]] = i;<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> &#123;<span class="hljs-number">-1</span>, <span class="hljs-number">-1</span>&#125;;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AE%97%E6%B3%95/" class="category-chain-item">算法</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E7%AE%97%E6%B3%95/" class="print-no-link">#算法</a>
+      
+        <a href="/tags/%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0/" class="print-no-link">#刷题笔记</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>LeetCode 刷题笔记：hot100</div>
+      <div>https://cny123222.github.io/2026/01/27/LeetCode-刷题笔记：hot100/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Nuoyan Chen</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 27, 2026</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/01/14/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%EF%BC%9A%E7%AC%94%E8%AE%B0%E6%95%B4%E7%90%86/" title="自然语言处理：笔记整理">
+                        <span class="hidden-mobile">自然语言处理：笔记整理</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"cny123222/cny123222.github.io","repo-id":"R_kgDOOFgnVw","category":"Announcements","category-id":"DIC_kwDOOFgnV84CnwXM","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"en"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
