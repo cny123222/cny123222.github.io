@@ -19,16 +19,16 @@
   <meta name="author" content="Nuoyan Chen">
   <meta name="keywords" content="">
   
-    <meta name="description" content="本期将从原理到代码，介绍 Batch &#x2F; Layer &#x2F; Instance 三种 Normalization 的方法及区别。">
+    <meta name="description" content="本期主要讲解 BN (Batch Norm)、LN (Layer Norm) 和 RMSNorm 三种主流 Norm 技术。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Batch, Layer, or Instance Normalization?">
-<meta property="og:url" content="https://cny123222.github.io/2025/08/25/Batch-Layer-or-Instance-Normalization/index.html">
+<meta property="og:title" content="AI 八股(1)：BN, LN, RMSNorm">
+<meta property="og:url" content="https://cny123222.github.io/2026/01/28/AI-%E5%85%AB%E8%82%A1-1-%EF%BC%9ABN-LN-RMSNorm/index.html">
 <meta property="og:site_name" content="Nuoyan Chen&#39;s Blog">
-<meta property="og:description" content="本期将从原理到代码，介绍 Batch &#x2F; Layer &#x2F; Instance 三种 Normalization 的方法及区别。">
+<meta property="og:description" content="本期主要讲解 BN (Batch Norm)、LN (Layer Norm) 和 RMSNorm 三种主流 Norm 技术。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/ai.png">
-<meta property="article:published_time" content="2025-08-25T02:47:33.000Z">
-<meta property="article:modified_time" content="2025-08-25T02:49:17.198Z">
+<meta property="article:published_time" content="2026-01-28T13:20:11.000Z">
+<meta property="article:modified_time" content="2026-01-28T13:40:46.814Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta name="twitter:card" content="summary_large_image">
@@ -38,7 +38,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>Batch, Layer, or Instance Normalization? - Nuoyan Chen&#39;s Blog</title>
+  <title>AI 八股(1)：BN, LN, RMSNorm - Nuoyan Chen&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -218,7 +218,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Batch, Layer, or Instance Normalization?"></span>
+            <span id="subtitle" data-typed-text="AI 八股(1)：BN, LN, RMSNorm"></span>
           
         </div>
 
@@ -234,8 +234,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-08-25 10:47" pubdate>
-          August 25, 2025 am
+        <time datetime="2026-01-28 21:20" pubdate>
+          January 28, 2026 pm
         </time>
       </span>
     
@@ -246,7 +246,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          25 words
+          271 words
         
       </span>
     
@@ -257,7 +257,7 @@
         
         
         
-          1 mins
+          3 mins
         
       </span>
     
@@ -337,7 +337,7 @@
       
         <a href="/2026/01/28/AI-%E5%85%AB%E8%82%A1-1-%EF%BC%9ABN-LN-RMSNorm/" title="AI 八股(1)：BN, LN, RMSNorm"
            class="list-group-item list-group-item-action
-           ">
+           active">
           <span class="category-post">AI 八股(1)：BN, LN, RMSNorm</span>
         </a>
       
@@ -346,7 +346,7 @@
       
         <a href="/2025/08/25/Batch-Layer-or-Instance-Normalization/" title="Batch, Layer, or Instance Normalization?"
            class="list-group-item list-group-item-action
-           active">
+           ">
           <span class="category-post">Batch, Layer, or Instance Normalization?</span>
         </a>
       
@@ -444,12 +444,12 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Batch, Layer, or Instance Normalization?</h1>
+            <h1 id="seo-header">AI 八股(1)：BN, LN, RMSNorm</h1>
             
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on August 25, 2025 am
+                    Last updated on January 28, 2026 pm
                   
                 
               </p>
@@ -457,9 +457,41 @@
             
               <div class="markdown-body">
                 
-                <p>本期将从原理到代码，介绍 Batch / Layer / Instance 三种 Normalization 的方法及区别。</p>
+                <p>本期主要讲解 BN (Batch Norm)、LN (Layer Norm) 和 RMSNorm 三种主流 Norm 技术。</p>
 <span id="more"></span>
-<p>(待更新…)</p>
+<h2 id="前置知识：维度与归一化">前置知识：维度与归一化</h2>
+<p>首先，我们需要建立“数据立方体”的视角，搞清楚有哪几个维度。假设有一批数据，</p>
+<ul>
+<li>对于 CV，数据形状一般是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>N</mi><mo separator="true">,</mo><mi>C</mi><mo separator="true">,</mo><mi>H</mi><mo separator="true">,</mo><mi>W</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(N, C, H, W)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="mclose">)</span></span></span></span>，其中 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span> 是样本数量，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span></span></span> 是通道数（特征维度），<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi></mrow><annotation encoding="application/x-tex">H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi></mrow><annotation encoding="application/x-tex">W</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span></span></span></span> 是高度和宽度（空间维度）。</li>
+<li>对于 NLP，数据形状一般是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>N</mi><mo separator="true">,</mo><mi>L</mi><mo separator="true">,</mo><mi>D</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(N, L, D)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">L</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mclose">)</span></span></span></span>，其中 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span> 是样本数量，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi></mrow><annotation encoding="application/x-tex">L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">L</span></span></span></span> 是序列长度（空间维度），<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi></mrow><annotation encoding="application/x-tex">D</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span></span></span></span> 是特征维度。</li>
+</ul>
+<p>所有的 Normalization 本质上都是三个步骤：</p>
+<ol>
+<li>
+<p>在特定维度上计算均值（Mean）和方差（Variance）；</p>
+</li>
+<li>
+<p>用均值和方差对数据进行标准化（减均值，除标准差）；</p>
+</li>
+<li>
+<p>引入可学习参数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi></mrow><annotation encoding="application/x-tex">\gamma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.05556em;">γ</span></span></span></span>（缩放）和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>β</mi></mrow><annotation encoding="application/x-tex">\beta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.05278em;">β</span></span></span></span>（平移）恢复表达能力。</p>
+</li>
+</ol>
+<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>y</mi><mo>=</mo><mfrac><mrow><mi>x</mi><mo>−</mo><mi>μ</mi></mrow><msqrt><mrow><msup><mi>σ</mi><mn>2</mn></msup><mo>+</mo><mi>ϵ</mi></mrow></msqrt></mfrac><mo>⋅</mo><mi>γ</mi><mo>+</mo><mi>β</mi></mrow><annotation encoding="application/x-tex">y=\frac{x-\mu}{\sqrt{\sigma^2+\epsilon}} \cdot \gamma+\beta
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.1903em;vertical-align:-0.93em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.2603em;"><span style="top:-2.1966em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9134em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord" style="padding-left:0.833em;"><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal">ϵ</span></span></span><span style="top:-2.8734em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="min-width:0.853em;height:1.08em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.08em" viewBox="0 0 400000 1080" preserveAspectRatio="xMinYMin slice"><path d="M95,702
+c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
+c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
+c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
+s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
+c69,-144,104.5,-217.7,106.5,-221
+l0 -0
+c5.3,-9.3,12,-14,20,-14
+H400000v40H845.2724
+s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
+c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
+M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1266em;"><span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal">μ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.93em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.05556em;">γ</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.05278em;">β</span></span></span></span></span></p>
+<p>不同 Normalization 技术的区别仅在于：我们在哪些维度上计算 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>μ</mi></mrow><annotation encoding="application/x-tex">\mu</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">μ</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi></mrow><annotation encoding="application/x-tex">\sigma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span></span></span></span>。</p>
+<h2 id="Batch-Normalization-BN">Batch Normalization (BN)</h2>
 
                 
               </div>
@@ -505,8 +537,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Batch, Layer, or Instance Normalization?</div>
-      <div>https://cny123222.github.io/2025/08/25/Batch-Layer-or-Instance-Normalization/</div>
+      <div>AI 八股(1)：BN, LN, RMSNorm</div>
+      <div>https://cny123222.github.io/2026/01/28/AI-八股-1-：BN-LN-RMSNorm/</div>
     </div>
     <div class="license-meta">
       
@@ -518,7 +550,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>August 25, 2025</div>
+          <div>January 28, 2026</div>
         </div>
       
       
@@ -550,18 +582,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/08/28/Paper-Reading-6-SymNCO/" title="Paper Reading #6: SymNCO">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Paper Reading #6: SymNCO</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/08/24/Code-Reading-1-GNN4CO/" title="Code Reading #1: GNN4CO">
-                        <span class="hidden-mobile">Code Reading #1: GNN4CO</span>
+                      <a href="/2026/01/27/LeetCode-%E5%88%B7%E9%A2%98%E7%AC%94%E8%AE%B0%EF%BC%9Ahot100/" title="LeetCode 刷题笔记：hot100">
+                        <span class="hidden-mobile">LeetCode 刷题笔记：hot100</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
