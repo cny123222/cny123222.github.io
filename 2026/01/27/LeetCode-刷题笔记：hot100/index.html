@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/%E7%AE%97%E6%B3%95.png">
 <meta property="article:published_time" content="2026-01-27T05:15:03.000Z">
-<meta property="article:modified_time" content="2026-01-29T05:55:12.833Z">
+<meta property="article:modified_time" content="2026-01-29T12:47:22.079Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="算法">
 <meta property="article:tag" content="刷题笔记">
@@ -247,7 +247,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.7k words
+          3.4k words
         
       </span>
     
@@ -258,7 +258,7 @@
         
         
         
-          23 mins
+          29 mins
         
       </span>
     
@@ -845,6 +845,111 @@
 <p>这道题思路比较直接，因为窗口的大小是固定的，就是 <code>p</code> 的长度。我们只要一格格移动这个窗口，维护好这个窗口中有哪些字母出现（即每个字母出现多少次），是否和 <code>p</code> 中出现的字母完全一致就可以了。可以采取存储差值的方法，当所有差值全为 0 的时候，表明窗口中包含的字符和 <code>p</code> 完全一致。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">findAnagrams</span><span class="hljs-params">(string s, string p)</span> </span>&#123;<br>        <span class="hljs-keyword">if</span> (s.<span class="hljs-built_in">length</span>() &lt; p.<span class="hljs-built_in">length</span>()) <span class="hljs-keyword">return</span> &#123;&#125;;<br>        <span class="hljs-type">int</span> diff[<span class="hljs-number">26</span>];<br>        vector&lt;<span class="hljs-type">int</span>&gt; result;<br>        <span class="hljs-type">int</span> non_zero = <span class="hljs-number">0</span>, tmp, j;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; p.<span class="hljs-built_in">length</span>(); i++) &#123;<br>            tmp = ++diff[p[i] - <span class="hljs-string">&#x27;a&#x27;</span>];<br>            <span class="hljs-keyword">if</span> (tmp == <span class="hljs-number">1</span>) non_zero++;<br>            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (tmp == <span class="hljs-number">0</span>) non_zero--;<br>            tmp = --diff[s[i] - <span class="hljs-string">&#x27;a&#x27;</span>];<br>            <span class="hljs-keyword">if</span> (tmp == <span class="hljs-number">-1</span>) non_zero++;<br>            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (tmp == <span class="hljs-number">0</span>) non_zero--;<br>        &#125;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i + p.<span class="hljs-built_in">length</span>() &lt;= s.<span class="hljs-built_in">length</span>(); i++) &#123;<br>            j = i + p.<span class="hljs-built_in">length</span>() - <span class="hljs-number">1</span>;<br>            <span class="hljs-keyword">if</span> (i != <span class="hljs-number">0</span>) &#123;<br>                tmp = --diff[s[j] - <span class="hljs-string">&#x27;a&#x27;</span>];<br>                <span class="hljs-keyword">if</span> (tmp == <span class="hljs-number">-1</span>) non_zero++;<br>                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (tmp == <span class="hljs-number">0</span>) non_zero--;<br>                tmp = ++diff[s[i - <span class="hljs-number">1</span>] - <span class="hljs-string">&#x27;a&#x27;</span>];<br>                <span class="hljs-keyword">if</span> (tmp == <span class="hljs-number">1</span>) non_zero++;<br>                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (tmp == <span class="hljs-number">0</span>) non_zero--;<br>            &#125;<br>            <span class="hljs-keyword">if</span> (non_zero == <span class="hljs-number">0</span>) result.<span class="hljs-built_in">push_back</span>(i);<br>        &#125;<br>        <span class="hljs-keyword">return</span> result;<br>    &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
 <p>时间复杂度 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo>+</mo><mi>m</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n + m)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">m</span><span class="mclose">)</span></span></span></span>，空间复杂度 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi mathvariant="normal">∣</mi><mi mathvariant="normal">Σ</mi><mi mathvariant="normal">∣</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(|\Sigma|)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">∣Σ∣</span><span class="mclose">)</span></span></span></span>。</p>
+<h2 id="子串">子串</h2>
+<h3 id="10-和为-K-的子数组">10. 和为 K 的子数组</h3>
+<h3 id="11-滑动窗口最大值">11. 滑动窗口最大值</h3>
+<h3 id="12-最小覆盖子串">12. 最小覆盖子串</h3>
+<h2 id="普通数组">普通数组</h2>
+<h3 id="13-最大子数组和">13. 最大子数组和</h3>
+<h3 id="14-合并区间">14. 合并区间</h3>
+<h3 id="15-轮转数组">15. 轮转数组</h3>
+<h3 id="16-除了自身以外数组的乘积">16. 除了自身以外数组的乘积</h3>
+<h3 id="17-缺失的第一个正数">17. 缺失的第一个正数</h3>
+<h2 id="矩阵">矩阵</h2>
+<h3 id="18-矩阵置零">18. 矩阵置零</h3>
+<h3 id="19-螺旋矩阵">19. 螺旋矩阵</h3>
+<h3 id="20-旋转图像">20. 旋转图像</h3>
+<h3 id="21-搜索二维矩阵-II">21. 搜索二维矩阵 II</h3>
+<h2 id="链表">链表</h2>
+<h3 id="22-相交链表">22. 相交链表</h3>
+<h3 id="23-反转链表">23. 反转链表</h3>
+<h3 id="24-回文链表">24. 回文链表</h3>
+<h3 id="25-环形链表">25. 环形链表</h3>
+<h3 id="26-环形链表-II">26. 环形链表 II</h3>
+<h3 id="27-合并两个有序链表">27. 合并两个有序链表</h3>
+<h3 id="28-两数相加">28. 两数相加</h3>
+<h3 id="29-删除链表的倒数第-N-个结点">29. 删除链表的倒数第 N 个结点</h3>
+<h3 id="30-两两交换链表中的节点">30. 两两交换链表中的节点</h3>
+<h3 id="31-K-个一组翻转链表">31. K 个一组翻转链表</h3>
+<h3 id="32-随机链表的复制">32. 随机链表的复制</h3>
+<h3 id="33-排序链表">33. 排序链表</h3>
+<h3 id="34-合并-K-个升序链表">34. 合并 K 个升序链表</h3>
+<h3 id="35-LRU-缓存">35. LRU 缓存</h3>
+<h2 id="二叉树">二叉树</h2>
+<h3 id="36-二叉树的中序遍历">36. 二叉树的中序遍历</h3>
+<h3 id="37-二叉树的最大深度">37. 二叉树的最大深度</h3>
+<h3 id="38-翻转二叉树">38. 翻转二叉树</h3>
+<h3 id="39-对称二叉树">39. 对称二叉树</h3>
+<h3 id="40-二叉树的直径">40. 二叉树的直径</h3>
+<h3 id="41-二叉树的层序遍历">41. 二叉树的层序遍历</h3>
+<h3 id="42-将有序数组转换为二叉搜索树">42. 将有序数组转换为二叉搜索树</h3>
+<h3 id="43-验证二叉搜索树">43. 验证二叉搜索树</h3>
+<h3 id="44-二叉搜索树中第-K-小的元素">44. 二叉搜索树中第 K 小的元素</h3>
+<h3 id="45-二叉树的右视图">45. 二叉树的右视图</h3>
+<h3 id="46-二叉树展开为链表">46. 二叉树展开为链表</h3>
+<h3 id="47-从前序与中序遍历序列构造二叉树">47. 从前序与中序遍历序列构造二叉树</h3>
+<h3 id="48-路径总和-III">48. 路径总和 III</h3>
+<h3 id="49-二叉树的最近公共祖先">49. 二叉树的最近公共祖先</h3>
+<h3 id="50-二叉树中的最大路径和">50. 二叉树中的最大路径和</h3>
+<h2 id="图论">图论</h2>
+<h3 id="51-岛屿数量">51. 岛屿数量</h3>
+<h3 id="52-腐烂的橘子">52. 腐烂的橘子</h3>
+<h3 id="53-课程表">53. 课程表</h3>
+<h3 id="54-实现-Trie-前缀树">54. 实现 Trie (前缀树)</h3>
+<h2 id="回溯">回溯</h2>
+<h3 id="55-全排列">55. 全排列</h3>
+<h3 id="56-子集">56. 子集</h3>
+<h3 id="57-电话号码的字母组合">57. 电话号码的字母组合</h3>
+<h3 id="58-组合总和">58. 组合总和</h3>
+<h3 id="59-括号生成">59. 括号生成</h3>
+<h3 id="60-单词搜索">60. 单词搜索</h3>
+<h3 id="61-分割回文串">61. 分割回文串</h3>
+<h3 id="62-N-皇后">62. N 皇后</h3>
+<h2 id="二分查找">二分查找</h2>
+<h3 id="63-搜索插入位置">63. 搜索插入位置</h3>
+<h3 id="64-搜索二维矩阵">64. 搜索二维矩阵</h3>
+<h3 id="65-在排序数组中查找元素的第一个和最后一个位置">65. 在排序数组中查找元素的第一个和最后一个位置</h3>
+<h3 id="66-搜索旋转排序数组">66. 搜索旋转排序数组</h3>
+<h3 id="67-寻找旋转排序数组中的最小值">67. 寻找旋转排序数组中的最小值</h3>
+<h3 id="68-寻找两个正序数组的中位数">68. 寻找两个正序数组的中位数</h3>
+<h2 id="栈">栈</h2>
+<h3 id="69-有效的括号">69. 有效的括号</h3>
+<h3 id="70-最小栈">70. 最小栈</h3>
+<h3 id="71-字符串解码">71. 字符串解码</h3>
+<h3 id="72-每日温度">72. 每日温度</h3>
+<h3 id="73-柱状图中最大的矩形">73. 柱状图中最大的矩形</h3>
+<h2 id="堆">堆</h2>
+<h3 id="74-数组中的第K个最大元素">74. 数组中的第K个最大元素</h3>
+<h3 id="75-前-K-个高频元素">75. 前 K 个高频元素</h3>
+<h3 id="76-数据流的中位数">76. 数据流的中位数</h3>
+<h2 id="贪心算法">贪心算法</h2>
+<h3 id="77-买卖股票的最佳时机">77. 买卖股票的最佳时机</h3>
+<h3 id="78-跳跃游戏">78. 跳跃游戏</h3>
+<h3 id="79-跳跃游戏-II">79. 跳跃游戏 II</h3>
+<h3 id="80-划分字母区间">80. 划分字母区间</h3>
+<h2 id="动态规划">动态规划</h2>
+<h3 id="81-爬楼梯">81. 爬楼梯</h3>
+<h3 id="82-杨辉三角">82. 杨辉三角</h3>
+<h3 id="83-打家劫舍">83. 打家劫舍</h3>
+<h3 id="84-完全平方数">84. 完全平方数</h3>
+<h3 id="85-零钱兑换">85. 零钱兑换</h3>
+<h3 id="86-单词拆分">86. 单词拆分</h3>
+<h3 id="87-最长递增子序列">87. 最长递增子序列</h3>
+<h3 id="88-乘积最大子数组">88. 乘积最大子数组</h3>
+<h3 id="89-分割等和子集">89. 分割等和子集</h3>
+<h3 id="90-最长有效括号">90. 最长有效括号</h3>
+<h2 id="多维动态规划">多维动态规划</h2>
+<h3 id="91-不同路径">91. 不同路径</h3>
+<h3 id="92-最小路径和">92. 最小路径和</h3>
+<h3 id="93-最长回文子串">93. 最长回文子串</h3>
+<h3 id="94-最长公共子序列">94. 最长公共子序列</h3>
+<h3 id="95-编辑距离">95. 编辑距离</h3>
+<h2 id="技巧">技巧</h2>
+<h3 id="96-只出现一次的数字">96. 只出现一次的数字</h3>
+<h3 id="97-多数元素">97. 多数元素</h3>
+<h3 id="98-颜色分类">98. 颜色分类</h3>
+<h3 id="99-下一个排列">99. 下一个排列</h3>
+<h3 id="100-寻找重复数">100. 寻找重复数</h3>
 
                 
               </div>
