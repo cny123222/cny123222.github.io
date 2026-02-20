@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/nlp.png">
 <meta property="article:published_time" content="2026-01-14T14:43:02.000Z">
-<meta property="article:modified_time" content="2026-02-20T14:14:35.605Z">
+<meta property="article:modified_time" content="2026-02-20T15:13:03.188Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          33k words
+          35k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          277 mins
+          294 mins
         
       </span>
     
@@ -3041,8 +3041,181 @@ P\left(y_t=w \mid\left\{y_{&lt;t}\right\}\right)=\frac{e^{S_w}}{\sum_{u \in V} e
 </ul>
 <div class="group-image-container"><div class="group-image-row"><div class="group-image-wrap"><img src="bert_comp.png" srcset="/img/loading.gif" lazyload alt=""></div><div class="group-image-wrap"><img src="gpt_comp.png" srcset="/img/loading.gif" lazyload alt=""></div></div></div>
 <h4 id="编解码器（Encoder-Decoder）模型：BART-与-T5">编解码器（Encoder-Decoder）模型：BART 与 T5</h4>
-<h4 id="预训练语言模型的发展脉络">预训练语言模型的发展脉络</h4>
+<p>这类模型结合了编码器和解码器的优点，通常用于需要从一个序列转换到另一个序列 (Seq2Seq) 的任务，如机器翻译、摘要生成等。</p>
+<ul>
+<li>
+<p><strong>BART (Bidirectional and Auto-Regressive Transformers)</strong>：</p>
+<ul>
+<li><strong>核心思想</strong>：
+<ul>
+<li>采用一个标准的 Transformer (包含 Encoder 和 Decoder) 架构</li>
+<li>预训练任务是一个去噪自编码器 (Denoising Autoencoder)</li>
+</ul>
+</li>
+<li><strong>模型结构</strong>：
+<ul>
+<li><strong>输入 (Encoder 端)</strong>：将一个被破坏（加噪）的原始文本输入到双向的 Encoder 中（类似于 BERT）</li>
+<li><strong>输出 (Decoder 端)</strong>：自回归地从 Encoder 的输出中，逐步生成原始的、完整的文本（类似于 GPT）</li>
+</ul>
+</li>
+</ul>
+<p><img src="bart.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>多样的噪音形式</strong>：BART 在预训练时使用了多种复杂的加噪方式来破坏原始文本，这迫使模型学习更深层次的语言结构和语义</li>
+</ul>
+<p><img src="bart2.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>优势</strong>：通过这种方式，BART 的 Encoder 学会了像 BERT 一样进行深度双向理解，而其 Decoder 则学会了像 GPT 一样进行流畅的文本生成，非常适合各种文本生成和理解任务</li>
+</ul>
+</li>
+<li>
+<p><strong>T5 (Text-to-Text Transfer Transformer)</strong>：</p>
+<ul>
+<li><strong>核心思想</strong>：将所有 NLP 任务统一转换成“文本到文本 (Text-to-Text)”的格式</li>
+<li><strong>实现方式</strong>:
+<ul>
+<li><strong>统一任务格式</strong>：通过在原始输入文本前添加任务相关的文本前缀，来告诉模型当前需要执行什么任务</li>
+<li><strong>统一模型架构</strong>：使用一个标准的 Encoder-Decoder Transformer 模型来处理所有这些任务</li>
+</ul>
+</li>
+<li><strong>优势</strong>：
+<ul>
+<li>T5 通过这种极致的统一，极大地简化了处理不同 NLP 任务的流程</li>
+<li>不再需要为每个任务设计不同的模型输出层，所有任务都变成了在给定输入文本的条件下，生成目标文本，这种框架的灵活性和通用性极强</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 <h3 id="从-GPT-3-到-ChatGPT：总览">从 GPT-3 到 ChatGPT：总览</h3>
+<p>ChatGPT 的诞生并非一蹴而就，它是在强大的基座模型 GPT-3 的基础上，经过一系列精心设计的训练阶段演化而来的。</p>
+<p><img src="chatgpt.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>
+<p><strong>阶段一</strong>：大规模预训练得到初代 GPT-3</p>
+<ul>
+<li><strong>目标</strong>：构建一个具备广博知识和强大基础能力的模型</li>
+<li><strong>模型结构</strong>：
+<ul>
+<li>ChatGPT 脱胎于 GPT-3 系列中最大的模型</li>
+<li>该模型体量巨大，包含 96 层 Transformer Decoder，每层有 96 个注意力头，维度为 128，总参数量达到了惊人的 1750 亿</li>
+</ul>
+</li>
+<li><strong>训练数据</strong>：
+<ul>
+<li>数据规模巨大，总量约 5000 亿 tokens，相当于约 3TB 的纯文本</li>
+<li>主要数据来源是 Common Crawl (一个庞大的网页抓取数据集)，辅以高质量的 WebText2、Books1、Books2 和 Wikipedia 数据集</li>
+</ul>
+</li>
+<li><strong>训练方式</strong>：自监督学习，即标准语言模型任务
+<ul>
+<li>让模型阅读一长段文档后（一次可达数千个 token），然后预测紧接着的下一个词是什么</li>
+</ul>
+</li>
+<li><strong>资源消耗与挑战</strong>：
+<ul>
+<li>需要 2000-3000 张顶级的 A100 GPU，持续不断地计算 2-3 个月</li>
+<li>训练成本高达数千万人民币</li>
+<li>在如此大的模型规模下，保持训练过程的稳定性是一项巨大的工程挑战</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>初代 GPT-3 的能力</strong>：当模型规模达到 GPT-3 的量级时，它开始展现出一些之前小模型所不具备的、令人惊叹的能力</p>
+<ul>
+<li><strong>强大的语言生成 (Completion)</strong>：
+<ul>
+<li>模型能够精准地遵循用户给出的提示词 (Prompt)，并生成与之相关、连贯的补全内容，这是当今我们与大模型最普遍的交互方式</li>
+</ul>
+</li>
+<li><strong>上下文学习 (In-Context Learning, ICL)</strong>：
+<ul>
+<li>我们无需调整模型的任何权重，只需在提示词中给出几个任务的示例（demonstration），模型就能理解任务意图，并为新的测试用例生成正确的解决方案</li>
+<li>根据示例数量的不同，分为 Zero-shot (无示例)、One-shot (单示例) 和 Few-shot (少示例)</li>
+</ul>
+</li>
+<li><strong>世界知识 (World Knowledge)</strong>：
+<ul>
+<li>通过阅读海量的文本，模型将大量的事实性知识 (factual knowledge) 和常识 (commonsense) 编码到了其参数中</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>阶段二</strong>：对齐（Alignment），从 GPT-3 到 ChatGPT</p>
+<ul>
+<li><strong>动机</strong>：
+<ul>
+<li>初代 GPT-3 虽然强大，但它只是一个文本补全机器，并不能很好地理解和遵循人类的复杂指令，有时还会生成无用、有害或不真实的内容</li>
+<li>对齐阶段的目标就是让模型学会与人类的意图、价值观和偏好保持一致</li>
+</ul>
+</li>
+<li><strong>第一步</strong>：有监督微调 (Supervised Fine-Tuning, SFT)
+<ul>
+<li><strong>目标</strong>：教会模型“如何像人一样对话和遵循指令”</li>
+<li><strong>过程</strong>：
+<ul>
+<li>让人类标注员编写高质量的“指令-回答”对</li>
+<li>用这些高质量的对话数据，对预训练好的 GPT-3 模型进行微调</li>
+</ul>
+</li>
+<li><strong>结果</strong>：得到一个初步能够理解指令并进行问答的 GPT-3.5 模型，这个模型学会了对话的语气和基本形式</li>
+</ul>
+</li>
+<li><strong>第二步</strong>：训练奖励模型 (Reward Modeling, RM)
+<ul>
+<li><strong>目标</strong>：创建一个“裁判”模型，它能够判断哪一个回答比另一个更好，从而量化“好”与“坏”</li>
+<li><strong>过程</strong>：
+<ul>
+<li>让 SFT 阶段的模型对同一个指令，生成多个不同的回答</li>
+<li>人类标注员对这些回答进行排序，指出哪个最好，哪个次之，哪个最差</li>
+<li>用这些排序数据，训练一个奖励模型 (RM)，这个模型的输入是一个“指令-回答”对，输出是一个标量分数，分数越高代表回答质量越好</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>第三步</strong>：基于人类反馈的强化学习 (Reinforcement Learning from Human Feedback, RLHF)
+<ul>
+<li><strong>目标</strong>：利用奖励模型的反馈，进一步优化 SFT 模型，使其生成更高质量、更符合人类偏好的回答</li>
+<li><strong>过程</strong>：
+<ul>
+<li>将 SFT 模型作为强化学习中的策略 (Policy)</li>
+<li>从数据集中采样一个新指令，让当前策略模型生成一个回答</li>
+<li>用奖励模型 (RM) 为这个回答打分，这个分数就是奖励信号 (Reward)</li>
+<li>使用 PPO (Proximal Policy Optimization) 算法，根据奖励信号来更新策略模型（即 GPT 模型本身）的参数，目标是最大化奖励分数</li>
+</ul>
+</li>
+<li><strong>结果</strong>：经过 RLHF 训练的模型，就是最终能够与我们进行流畅、有用、安全对话的 ChatGPT</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>GPT-3.5 的能力</strong>：经过 SFT 的对齐训练后，模型在初代 GPT-3 的基础上，又展示出四个至关重要的能力</p>
+<ul>
+<li><strong>响应人类指令 (Instruction Following)</strong>：模型不再是简单地续写句子，而是会针对用户的具体指令生成更合理、更有针对性的答案</li>
+<li><strong>泛化到未见过任务 (Zero-shot Generalization)</strong>：当指令微调的数据量足够大时，模型可以泛化到在 SFT 阶段从未见过的全新指令，并给出有效回答</li>
+<li><strong>代码能力</strong>：由于训练数据中包含大量代码，模型获得了强大的代码生成和理解能力</li>
+<li><strong>思维链 (Chain-of-Thought, CoT)</strong>：对于复杂推理问题，模型学会了通过生成一步步的推理过程来得出最终答案，极大地增强了其解决复杂问题的能力</li>
+</ul>
+</li>
+<li>
+<p><strong>ChatGPT 的能力</strong>：经过 RLHF 的进一步优化，模型在前面能力的基础上，展示了四个重要能力</p>
+<ul>
+<li><strong>翔实的回应</strong>：ChatGPT 的回应更加冗长，这是 RLHF 的直接产物</li>
+<li><strong>公正的回应</strong>：ChatGPT 通常对涉及多个实体利益的事件（例如政治事件）给出非常<br>
+平衡的回答，这也是 RLHF 的产物</li>
+<li><strong>拒绝不当问题</strong>：这是内容过滤器和由 RLHF 触发的模型自身能力的结合，过滤器过滤掉一部分，然后模型再拒绝一部分</li>
+<li><strong>拒绝其知识范围之外的问题</strong>：
+<ul>
+<li>例如，拒绝在 2021 年 6 月之后发生的新事件，因为它没在这之后的数据上训练过</li>
+<li>这是 RLHF 最神奇的部分，它使模型能够隐式地区分哪些问题在其知识范围内，哪些问题不在其知识范围内</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 <h2 id="Lecture-12-大语言模型的分布式训练">Lecture 12: 大语言模型的分布式训练</h2>
 <h3 id="为什么需要并行计算">为什么需要并行计算</h3>
 <h3 id="数据并行">数据并行</h3>
