@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/nlp.png">
 <meta property="article:published_time" content="2026-01-14T14:43:02.000Z">
-<meta property="article:modified_time" content="2026-02-20T15:13:03.188Z">
+<meta property="article:modified_time" content="2026-02-22T08:09:21.249Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          35k words
+          36k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          294 mins
+          303 mins
         
       </span>
     
@@ -451,7 +451,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on February 20, 2026 pm
+                    Last updated on February 22, 2026 pm
                   
                 
               </p>
@@ -3218,7 +3218,84 @@ P\left(y_t=w \mid\left\{y_{&lt;t}\right\}\right)=\frac{e^{S_w}}{\sum_{u \in V} e
 </ul>
 <h2 id="Lecture-12-大语言模型的分布式训练">Lecture 12: 大语言模型的分布式训练</h2>
 <h3 id="为什么需要并行计算">为什么需要并行计算</h3>
-<h3 id="数据并行">数据并行</h3>
+<p>随着以 Transformer 为代表的模型架构的出现，深度学习<strong>模型的参数规模呈指数级增长</strong>，轻松突破千亿甚至万亿级别。传统的单机单卡训练模式早已无法满足训练这些超大模型的需求。</p>
+<ul>
+<li><strong>显存瓶颈</strong>：模型太大，单卡装不下
+<ul>
+<li>训练一个模型时，GPU 显存需要存储：模型参数（2 bytes）、梯度（2 bytes）、优化器状态（12 bytes），每个参数约需要 16 Bytes 的显存</li>
+<li>即使是 80G 显存的 NVIDIA H100，它也只能装下 80GB / 16 Bytes ≈ 5.0B 参数的模型；对于像 GPT-3 (175B) 这样的大模型，单卡的显存是远远不够的</li>
+</ul>
+</li>
+<li><strong>时间瓶颈</strong>：训练太慢，时间不可接受
+<ul>
+<li>并行计算能够将训练任务分配到多个计算设备上，从而大幅缩短训练时间</li>
+<li>例如，在维基百科上训练 BERT，使用 8 张 3090 GPU 比单张快了近 6 倍</li>
+<li>如果不使用并行计算，仅用一张 GPU 训练 GPT-3，预计需要 355 年</li>
+</ul>
+</li>
+</ul>
+<h3 id="数据并行-Data-Parallelism">数据并行 (Data Parallelism)</h3>
+<p>数据并行是最基本、最常用的一种并行策略。</p>
+<ul>
+<li>
+<p><strong>核心思想</strong>：模型复制，数据切分</p>
+<ul>
+<li>将完整的模型复制到每一个 GPU 上，然后将训练数据切分成多份，每个 GPU 只处理其中的一份</li>
+</ul>
+</li>
+<li>
+<p><strong>朴素数据并行</strong>：以 PyTorch DataParallel (DP) 为例</p>
+<ul>
+<li><strong>流程</strong>：这是一个中心化的流程
+<ul>
+<li><strong>分发数据和模型</strong>：首先，主 GPU 将一个数据批次切分成多个小批次，并将这些小批次分发到每一个 GPU 上；然后，主 GPU 将完整的模型副本分发到每一个 GPU 上</li>
+<li><strong>独立前向计算</strong>：每个 GPU 在自己分配到的数据小批次上，独立地执行模型的前向传播计算，得到各自的输出</li>
+<li><strong>收集输出并计算梯度</strong>：所有 GPU 将各自的计算结果发回给主 GPU，主 GPU 在收集到所有输出后，计算总的损失，并执行反向传播，计算出总梯度</li>
+<li><strong>分发梯度</strong>：主 GPU 将计算出的总梯度分发给每一个 GPU</li>
+<li><strong>独立参数更新</strong>：每个 GPU 接收到总梯度后，独立地使用该梯度来更新本地的模型参数副本</li>
+<li><strong>同步参数</strong>：主 GPU 汇总更新后的参数，并将自己的新参数广播出去，以保证所有 GPU 上的模型再次同步</li>
+</ul>
+</li>
+</ul>
+<p><img src="dp.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>优点</strong>：
+<ul>
+<li><strong>使用方便</strong>：基本无需修改已有的训练代码</li>
+</ul>
+</li>
+<li><strong>缺点</strong>：
+<ul>
+<li><strong>负载不均</strong>：主 GPU 承担了所有的数据分发、结果汇总、损失和梯度计算等额外工作，其负载和显存占用远高于其他 GPU</li>
+<li><strong>通信瓶颈</strong>：数据、输出、梯度等都需要在主 GPU 和其他 GPU 之间来回传递（一次更新，四次通信），通信开销巨大，成为性能瓶颈</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>分布式数据并行</strong>：以 PyTorch DistributedDataParallel (DDP) 为例</p>
+<ul>
+<li><strong>核心改进</strong>：取消中心化的主 GPU，每个 GPU 独立计算，只在必要时同步梯度</li>
+<li><strong>流程</strong>：
+<ul>
+<li><strong>独立计算</strong>：每个 GPU 独立地在其数据子集上完成前向传播和损失计算，并独立反向传播计算梯度</li>
+<li><strong>梯度同步</strong>：各个 GPU 会通过一个高效的通信操作，将各自计算出的梯度进行全局平均，这样每个 GPU 拥有了完全相同的、在全局批次上平均后的梯度</li>
+<li><strong>独立更新</strong>：每个 GPU 使用这个同步好的全局梯度，独立地更新自己的模型参数</li>
+</ul>
+</li>
+</ul>
+<p><img src="ddp.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>优点</strong>：
+<ul>
+<li><strong>负载均衡</strong>：所有 GPU 的工作负载基本相同，没有明显的主次之分</li>
+<li><strong>通信高效</strong>：整个迭代过程中只有一次主要的通信开销——梯度同步，并且这个通信过程可以和反向传播的计算过程重叠，进一步隐藏通信延迟</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>DDP 是目前数据并行训练的事实标准，它极大地提升了训练效率和可扩展性。但是，数据并行的前提是单张 GPU 能够容纳下整个模型，当模型大到连单卡都装不下时，就需要引入模型并行了。</p>
 <h3 id="模型并行">模型并行</h3>
 <h4 id="流水线并行">流水线并行</h4>
 <h4 id="张量并行">张量并行</h4>
