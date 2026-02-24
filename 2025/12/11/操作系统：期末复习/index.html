@@ -1,0 +1,3370 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Nuoyan Chen">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="本文为 SJTU-CS3601 操作系统课程的期末复习，主要复习内容为操作系统概述、内存管理、进程管理、文件管理。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统：期末复习">
+<meta property="og:url" content="https://cny123222.github.io/2025/12/11/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%EF%BC%9A%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Nuoyan Chen&#39;s Blog">
+<meta property="og:description" content="本文为 SJTU-CS3601 操作系统课程的期末复习，主要复习内容为操作系统概述、内存管理、进程管理、文件管理。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cny123222.github.io/img/os-new.png">
+<meta property="article:published_time" content="2025-12-11T05:35:13.000Z">
+<meta property="article:modified_time" content="2026-01-09T04:55:32.099Z">
+<meta property="article:author" content="Nuoyan Chen">
+<meta property="article:tag" content="操作系统">
+<meta property="article:tag" content="知识点整理">
+<meta property="article:tag" content="期中复习">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cny123222.github.io/img/os-new.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>操作系统：期末复习 - Nuoyan Chen&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"cny123222.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 80vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Nuoyan Chen&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/nanjing.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.4)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="操作系统：期末复习"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Nuoyan Chen
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-12-11 13:35" pubdate>
+          December 11, 2025 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          17k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          146 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="操作系统"
+        id="heading-30d23ef4f49e85f37f54786ff984032c" role="tab" data-toggle="collapse" href="#collapse-30d23ef4f49e85f37f54786ff984032c"
+        aria-expanded="true"
+      >
+        操作系统
+        <span class="list-group-count">(12)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-30d23ef4f49e85f37f54786ff984032c"
+           role="tabpanel" aria-labelledby="heading-30d23ef4f49e85f37f54786ff984032c">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2025/10/02/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-SJTU-%E7%89%88-1-%EF%BC%9A%E6%A6%82%E8%BF%B0/" title="操作系统 SJTU 版(1)：概述"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">操作系统 SJTU 版(1)：概述</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/10/21/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-SJTU-%E7%89%88-2-%EF%BC%9A%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" title="操作系统 SJTU 版(2)：内存管理"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">操作系统 SJTU 版(2)：内存管理</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/10/24/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-SJTU-%E7%89%88-3-%EF%BC%9A%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86/" title="操作系统 SJTU 版(3)：进程管理"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">操作系统 SJTU 版(3)：进程管理</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/12/09/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-SJTU-%E7%89%88-4-%EF%BC%9A%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/" title="操作系统 SJTU 版(4)：文件管理"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">操作系统 SJTU 版(4)：文件管理</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/06/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-1-%EF%BC%9A%E6%A6%82%E8%BF%B0/" title="操作系统(1)：概述"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">操作系统(1)：概述</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/06/18/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-2-%EF%BC%9A%E5%A4%84%E7%90%86%E6%9C%BA%E7%AE%A1%E7%90%86/" title="操作系统(2)：处理机管理"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">操作系统(2)：处理机管理</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/07/11/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-3-%EF%BC%9A%E5%AD%98%E5%82%A8%E5%99%A8%E7%AE%A1%E7%90%86/" title="操作系统(3)：存储器管理"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">操作系统(3)：存储器管理</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/07/17/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-4-%EF%BC%9A%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/" title="操作系统(4)：文件管理"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">操作系统(4)：文件管理</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/07/18/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-5-%EF%BC%9AI-O%E7%AE%A1%E7%90%86/" title="操作系统(5)：I/O管理"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">操作系统(5)：I/O管理</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/11/14/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%EF%BC%9A2024-%E6%9C%9F%E4%B8%AD%E7%9C%9F%E9%A2%98/" title="操作系统：2024 期中真题"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">操作系统：2024 期中真题</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/11/05/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%EF%BC%9A%E6%9C%9F%E4%B8%AD%E5%A4%8D%E4%B9%A0/" title="操作系统：期中复习"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">操作系统：期中复习</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/12/11/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%EF%BC%9A%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0/" title="操作系统：期末复习"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">操作系统：期末复习</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">操作系统：期末复习</h1>
+            
+              <p id="updated-time" class="note note-default" style="">
+                
+                  
+                    Last updated on January 9, 2026 pm
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>本文为 SJTU-CS3601 操作系统课程的<strong>期末复习</strong>，主要复习内容为<strong>操作系统概述、内存管理、进程管理、文件管理</strong>。</p>
+<span id="more"></span>
+<h2 id="Lecture-1-操作系统的演化">Lecture 1: 操作系统的演化</h2>
+<ul>
+<li><strong>操作系统的功能</strong>：
+<ul>
+<li><strong>从硬件角度</strong>：管理硬件、对硬件进行抽象</li>
+<li><strong>从应用角度</strong>：服务应用、管理应用</li>
+</ul>
+</li>
+</ul>
+<h3 id="操作系统内核架构">操作系统内核架构</h3>
+<ul>
+<li>
+<p><strong>宏内核</strong>：内核所有模块运行在内核态，具备直接操作硬件的能力</p>
+<ul>
+<li><strong>优点</strong>：
+<ul>
+<li>拥有丰富的沉淀和积累</li>
+<li>内核各模块间可以相互调用，性能高</li>
+</ul>
+</li>
+<li><strong>缺点</strong>：
+<ul>
+<li>安全性与可靠性问题：模块之间没有很强的隔离机制</li>
+<li>实时性支持：系统太复杂导致无法做最坏情况时延分析</li>
+<li>系统过于庞大而阻碍创新</li>
+<li>向上向下的扩展：很难去剪裁/扩展一个宏内核系统支持从 KB 级别到 TB 级别的场景</li>
+<li>硬件异构性：很难长期支持一些定制化的方式去解决一些特定问题</li>
+<li>功能安全：无法通过汽车安全完整性认证</li>
+<li>信息安全：单点错误会导致整个系统出错</li>
+<li>确定性时延：目前依然不确定是否能支持确定性时延</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>微内核</strong>：</p>
+<ul>
+<li><strong>设计原则</strong>：最小化内核功能
+<ul>
+<li>将内核功能拆分到用户态，成为独立的“服务”</li>
+<li>内核仅保留极少功能，为这些服务提供通信</li>
+</ul>
+</li>
+<li><strong>优点</strong>：
+<ul>
+<li>易于扩展：直接添加一个用户进程即可为操作系统增加服务</li>
+<li>易于移植：大部分模块与底层硬件无关</li>
+<li>更加可靠：在内核模式运行的代码量大大减少</li>
+<li>更加安全：即使存在漏洞，服务与服务之间存在进程粒度隔离</li>
+<li>更加健壮：单个模块出现问题不会影响到系统整体</li>
+</ul>
+</li>
+<li><strong>缺点</strong>：
+<ul>
+<li>性能较差：内核中的模块交互由函数调用变成了进程间通信</li>
+<li>生态欠缺：尚未形成像 Linux 一样具有广泛开发者的社区</li>
+<li>重用问题：重用宏内核操作系统提供兼容性，带来新问题</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>外核</strong>：不提供硬件抽象；不管理资源，只管理应用</p>
+<ul>
+<li><strong>思想</strong>：应当由应用来尽可能地控制对硬件资源的抽象</li>
+<li><strong>设计</strong>：
+<ul>
+<li>将对硬件的抽象以库（LibOS）的形式提供，不同应用可使用不同的 LibOS</li>
+<li>外核负责计算资源与应用的绑定与回收；保证多个应用之间的隔离</li>
+</ul>
+</li>
+<li><strong>优点</strong>：
+<ul>
+<li>OS 无抽象，能在理论上提供最优性能</li>
+<li>应用对计算有更精确的实时等控制</li>
+<li>LibOS 在用户态更易调试，调试周期更短</li>
+</ul>
+</li>
+<li><strong>缺点</strong>：
+<ul>
+<li>对计算资源的利用效率主要由应用决定</li>
+<li>定制化过多，导致维护难度增加</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>多内核</strong>：通过多内核来管理异构多核设备</p>
+<ul>
+<li><strong>思路</strong>：
+<ul>
+<li>默认的状态是划分而不是共享</li>
+<li>维持多份状态的 copy 而不是共享一份状态</li>
+<li>显式的核间通信机制</li>
+</ul>
+</li>
+<li><strong>设计</strong>：
+<ul>
+<li>在每个 core 上运行一个小内核</li>
+<li>OS 整体是一个分布式系统</li>
+<li>应用程序依然运行在 OS 之上</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Lecture-2-ARM-汇编基础">Lecture 2: ARM 汇编基础</h2>
+<ul>
+<li><strong>寄存器</strong>：<code>x1</code> - <code>x30</code> 是 31 个 64 位寄存器，<code>w0</code> - <code>w30</code> 是其低位的 31 个 32 位寄存器</li>
+</ul>
+<h3 id="基础指令">基础指令</h3>
+<ul>
+<li><strong>寄存器之间的数据搬移</strong>：<code>mov dst, src</code>
+<ul>
+<li><code>src</code>：立即数或寄存器</li>
+<li><code>dst</code>：寄存器</li>
+</ul>
+</li>
+<li><strong>算术指令</strong>：</li>
+</ul>
+<p><img src="arith.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>移位指令</strong>：</li>
+</ul>
+<p><img src="shift.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>逻辑运算指令</strong>：</li>
+</ul>
+<p><img src="logic.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>
+<p><strong>修改过的寄存器</strong>：对操作数进行移位或位扩展</p>
+<ul>
+<li>对操作数进行移位：如 <code>eor w0, w8, w8, asr #16</code></li>
+<li>对操作数进行位扩展：如 <code>add x19, x19, w0, sxtw</code>
+<ul>
+<li><strong>无符号扩展</strong>：<code>uxtw</code>, <code>uxth</code>, <code>uxtb</code> (Zero-extend single-word / half-word / byte)</li>
+<li><strong>符号扩展</strong>：<code>sxtw</code>, <code>sxth</code>, <code>sxtb</code> (Sign-extend single-word / half-word / byte)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>访存指令</strong>：</p>
+</li>
+</ul>
+<p><img src="mem.png" srcset="/img/loading.gif" lazyload alt=""><br>
+<img src="mem4.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>寻址模式</strong>：</li>
+</ul>
+<p><img src="mem2.png" srcset="/img/loading.gif" lazyload alt=""><br>
+<img src="mem3.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h3 id="分支指令">分支指令</h3>
+<ul>
+<li>
+<p><strong>条件码</strong>：包含 N（Negative）、Z（Zero）、C（Carry）、V（Overﬂow）</p>
+<ul>
+<li><strong>设置</strong>：
+<ul>
+<li>带有 s 后缀的算术或逻辑运算指令（如 <code>subs</code>、<code>adds</code>）</li>
+<li>比较指令：<code>cmp</code> (操作数之差)、<code>cmn</code> (操作数之和)、<code>tst</code> (操作数相与)
+<ul>
+<li><code>cmp src1, src2</code>：计算 <code>src1 - src2</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>跳转条件</strong>：</p>
+</li>
+</ul>
+<p><img src="condition.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>
+<p><strong>跳转指令</strong>：</p>
+<ul>
+<li><strong>直接分支指令</strong>：以标签对应的地址作为跳转目标
+<ul>
+<li>无条件分支指令：<code>b &lt;label&gt;</code></li>
+<li>有条件分支指令：<code>bcond &lt;label&gt;</code>，如 <code>beq</code>、<code>bne</code>、<code>ble</code></li>
+</ul>
+</li>
+<li><strong>间接分支指令</strong>：以寄存器中的地址作为跳转目标
+<ul>
+<li><code>br reg</code>，如 <code>br x0</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>for 循环翻译实例</strong>：</p>
+</li>
+</ul>
+<p><img src="for.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>while 循环翻译方法及实例</strong>：</li>
+</ul>
+<p><img src="while.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="do-while.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="do-while-ex.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h3 id="函数调用">函数调用</h3>
+<ul>
+<li><strong>函数调用指令</strong>：
+<ul>
+<li><code>bl  label</code> (直接调用，调用函数)</li>
+<li><code>blr  Rn</code>   (间接调用，调用函数指针)</li>
+<li><strong>功能</strong>：将返回地址存储在链接寄存器 LR (即 <code>x30</code> 寄存器)，并跳转到被调用者的入口地址</li>
+</ul>
+</li>
+<li><strong>函数返回指令</strong>：
+<ul>
+<li><code>ret</code> (不区分直接调用与间接调用)</li>
+<li><strong>功能</strong>：跳转到链接寄存器 LR 中的返回地址</li>
+</ul>
+</li>
+<li><strong>SP（Stack Pointer）寄存器</strong>：栈指针，指向栈顶（低地址）</li>
+<li><strong>FP (Frame Pointer) 寄存器</strong>：帧指针，即 <code>x29</code> 寄存器</li>
+<li><strong>标准的函数首尾操作</strong>：</li>
+</ul>
+<figure class="highlight arm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs ARM"><span class="hljs-symbol">stp</span> <span class="hljs-built_in">x29</span>, <span class="hljs-built_in">x30</span>, [<span class="hljs-built_in">sp</span>, #-<span class="hljs-number">32</span>]!<br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">x29</span>, <span class="hljs-built_in">sp</span><br><span class="hljs-symbol">...</span><br><span class="hljs-symbol">ldp</span> <span class="hljs-built_in">x29</span>, <span class="hljs-built_in">x30</span>, [<span class="hljs-built_in">sp</span>], <span class="hljs-number">#32</span><br><span class="hljs-symbol">ret</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>参数传递</strong>：
+<ul>
+<li>调用者使用 <code>x0</code> - <code>x7</code> 寄存器传递<strong>前 8 个参数</strong></li>
+<li><strong>第 8 个之后的参数</strong>，按声明顺序从右到左压到栈上，被调用者通过 SP + 偏移量访问</li>
+<li>被调用者<strong>使用 <code>x0</code> 寄存器传递返回值</strong></li>
+</ul>
+</li>
+</ul>
+<p><img src="param.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>寄存器保存</strong>：
+<ul>
+<li>调用者保存：<code>x9</code> - <code>x15</code>
+<ul>
+<li>调用者：在调用前按需进行保存，在返回后进行恢复</li>
+<li>被调用者：可以随意使用</li>
+</ul>
+</li>
+<li>被调用者保存：<code>x19</code> - <code>x28</code>
+<ul>
+<li>被调用者：在使用前进行保存，在返回前进行恢复</li>
+<li>调用者：这些寄存器的值在函数调用前后不会改变</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="reg.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>函数调用实例</strong>：</li>
+</ul>
+<p><img src="func.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h2 id="Lecture-3-ARM-汇编-系统-ISA">Lecture 3: ARM 汇编 - 系统 ISA</h2>
+<ul>
+<li><strong>常见寄存器</strong>：</li>
+</ul>
+<p><img src="el_reg.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>
+<p><strong>系统指令</strong>：</p>
+<ul>
+<li><strong><code>mrs</code>/<code>msr</code></strong>：从系统寄存器读取值/向系统寄存器写入值</li>
+<li><strong><code>svc</code>/<code>eret</code></strong>：特权级切换和返回</li>
+</ul>
+</li>
+<li>
+<p><strong>特权级切换的时机</strong>：</p>
+<ul>
+<li><strong>同步异常</strong>：执行当前指令触发异常
+<ul>
+<li>第一类：用户程序主动发起系统调用（<code>svc</code> 指令）</li>
+<li>第二类：非主动，如用户程序意外访问空指针</li>
+</ul>
+</li>
+<li><strong>异步异常</strong>：CPU 收到中断信号
+<ul>
+<li>从外设发来的中断，如屏幕点击、鼠标、收到网络包</li>
+<li>CPU 时钟中断，如定时器超时</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="特权级切换过程">特权级切换过程</h3>
+<p><img src="switch.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>
+<p><strong>处理器在切换过程中的任务</strong>：</p>
+<ol>
+<li>将发生异常事件的指令地址保存在 ELR_EL1 中</li>
+<li>将异常事件的原因保存在 ESR_EL1</li>
+<li>将处理器的当前状态（即 PSTATE）保存在 SPSR_EL1</li>
+<li>栈寄存器不再使用 SP_EL0（用户态栈寄存器），开始使用 SP_EL1</li>
+<li>修改 PSTATE 寄存器中的特权级标志位，设置为内核态</li>
+<li>找到异常处理函数的入口地址，并将该地址写入 PC，开始运行操作系统</li>
+</ol>
+</li>
+<li>
+<p><strong>操作系统在切换过程中的任务</strong>：将属于应用程序的 CPU 状态保存到内存中，用于之后恢复应用程序继续运行，包括：</p>
+<ul>
+<li>通用寄存器 <code>x0</code> - <code>x30</code></li>
+<li>特殊寄存器，主要包括 PC、SP 和 PSTATE</li>
+<li>系统寄存器，包括页表基地址寄存器等</li>
+</ul>
+</li>
+<li>
+<p><strong>硬件操作的必要性</strong>：</p>
+<ul>
+<li><strong>PC 寄存器的值必须由处理器保存</strong>：否则当操作系统开始执行时，PC 将被覆盖</li>
+<li><strong>栈的切换必须由硬件完成</strong>：否则操作系统有可能使用用户态的栈，导致安全问题</li>
+</ul>
+</li>
+</ul>
+<h3 id="系统调用的优化">系统调用的优化</h3>
+<ul>
+<li><strong>vDSO</strong>：内核将一部分数据通过只读的形式共享给应用，允许应用直接读取</li>
+<li><strong>Flex-SC</strong>：允许应用以“向某一块内存页写入请求”的方式发起系统调用，并通过轮询来等待系统调用完成
+<ul>
+<li>内核独占一个 CPU 核心，通过轮询来等待用户的请求，然后执行系统调用，并将返回值写入同一块内存页</li>
+<li>如果只有一个核心，可以将轮询改成批处理，即应用程序一次发起多个系统调用请求，内核一次性将所有系统调用处理完</li>
+</ul>
+</li>
+</ul>
+<h2 id="Lecture-4-从应用视角看操作系统抽象">Lecture 4: 从应用视角看操作系统抽象</h2>
+<ul>
+<li><strong>处理器上下文</strong>：
+<ul>
+<li><strong>通用寄存器</strong>：所有（X0-X30）</li>
+<li><strong>特殊寄存器</strong>：SP_EL0 (栈寄存器)</li>
+<li><strong>系统寄存器</strong>：ELR_EL1（对应 PC）, SPSR_EL1（对应 PSTATE）</li>
+</ul>
+</li>
+</ul>
+<h3 id="常见的进程接口">常见的进程接口</h3>
+<ul>
+<li>
+<p><strong><code>getpid()</code></strong>：返回调用进程的 PID</p>
+<ul>
+<li>语法：<code>pid_t getpid(void);</code></li>
+</ul>
+</li>
+<li>
+<p><strong><code>getppid()</code></strong>：返回父进程的 PID</p>
+<ul>
+<li>语法：<code>pid_t getppid(void);</code></li>
+</ul>
+</li>
+<li>
+<p><strong><code>exit()</code></strong>：终止进程并带上一个 status 状态</p>
+<ul>
+<li>返回值：无返回值</li>
+<li>语法：<code>void exit(int status);</code></li>
+</ul>
+</li>
+<li>
+<p><strong><code>fork()</code></strong>：父进程创建新的子进程，调用一次返回两次</p>
+<ul>
+<li>返回值：子进程为 0，父进程为子进程 PID，出错为 -1</li>
+<li>语法：<code>pid_t fork(void);</code></li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;csapp.h&quot;</span></span><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>  <span class="hljs-type">pid_t</span> pid;<br>  <span class="hljs-type">int</span> x = <span class="hljs-number">1</span>;<br>  pid = Fork();<br>  <span class="hljs-keyword">if</span> (pid == <span class="hljs-number">0</span>) &#123; <span class="hljs-comment">/* child */</span><br>      <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;child : x=%d\n&quot;</span>, ++x);<br>    <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>  &#125;<br>  <span class="hljs-comment">/* parent */</span><br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;parent: x=%d\n&quot;</span>, --x);<br>  <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong><code>execve()</code></strong>：加载文件并运行</p>
+<ul>
+<li>只调用一次，且永远不会返回（仅仅在运行报错的时候，返回调用程序）</li>
+<li>返回值：成功（不返回），失败（-1）</li>
+<li>语法：<code>int execve(const char *filename, const char *argv[], const char *envp[]);</code></li>
+</ul>
+</li>
+<li>
+<p><strong><code>waitpid()</code></strong>：等待子进程终止后，内核回收子进程</p>
+<ul>
+<li>返回值：成功（子进程 PID），出错（-1）</li>
+<li>语法：<code>pid_t waitpid(pid_t pid, int *status, int options);</code>
+<ul>
+<li>pid&gt;0 ：等待集合中只有 <code>pid</code> 子进程</li>
+<li>pid=-1：等待集合包括所有子进程</li>
+<li>options=0
+<ul>
+<li>挂起调用进程，等待集合中任意子进程终止</li>
+<li>如果等待集合中有子进程在函数调用前已经终止，立刻返回</li>
+<li>返回值是导致函数返回的终止子进程 pid</li>
+<li>该终止子进程被内核回收</li>
+</ul>
+</li>
+<li>status 指针带回被回收子线程的 exit 状态</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>进程的终止</strong>：进程终止后，内核不会立刻销毁该进程，而是以终止态存在，等待父进程回收</p>
+<ul>
+<li><strong>僵尸进程</strong>：终止状态下还未被回收的进程</li>
+<li>如果父进程在自己终止前没有回收僵尸子进程，内核会安排 init 进程回收这些子进程</li>
+</ul>
+</li>
+</ul>
+<h3 id="ELF-文件格式">ELF 文件格式</h3>
+<ul>
+<li><strong>ELF 格式</strong>：可执行可链接格式</li>
+</ul>
+<p><img src="elf.png" srcset="/img/loading.gif" lazyload alt="ELF 格式"></p>
+<ul>
+<li><strong>ELF 头部</strong>：通常用于存元数据</li>
+<li><strong>节头部表</strong>：每一个节都有一个节头部（节头部表的一项）描述</li>
+<li><strong>ELF 字符串表（.strtab）</strong>：记录一系列 C 风格字符串，表示符号名或节名</li>
+<li><strong>用以调试的节</strong>：
+<ul>
+<li><strong>.debug</strong>：调试符号表，包括变量、typedef、C 源文件</li>
+<li><strong>.line</strong>：C 源文件的行数与 .text 节中指令的映射</li>
+</ul>
+</li>
+<li><strong>代码和数据节</strong>：
+<ul>
+<li><strong>.text</strong>：代码</li>
+<li><strong>.rodata</strong>：只读数据，包括不可修改的常量数据
+<ul>
+<li><code>char *str = &quot;apple&quot;</code> 中的 <code>&quot;apple&quot;</code> 存放在 <code>.rodata</code> 段</li>
+<li><code>char str2[] = &quot;apple&quot;</code> 中的 <code>&quot;apple&quot;</code> 存放在栈上</li>
+</ul>
+</li>
+<li><strong>.data</strong>：初始化的全局变量和静态变量</li>
+<li><strong>.bss</strong>：未初始化的全局变量和静态变量（不占文件空间，运行时分配内存）</li>
+</ul>
+</li>
+</ul>
+<h3 id="常见的文件接口">常见的文件接口</h3>
+<ul>
+<li>
+<p><strong><code>open()</code></strong>：打开文件，返回一个文件标识符（file descriptor, fd）</p>
+<ul>
+<li>应用只需要记录内核返回的文件标识符</li>
+<li>语法：<code>int open(char *filename, int flags, mode_t mode);</code></li>
+<li>返回值：成功（新文件标识符），出错（-1）</li>
+</ul>
+</li>
+<li>
+<p><strong><code>close()</code></strong>：关闭文件</p>
+<ul>
+<li>内核把文件标识符返回到可用标识符池</li>
+<li>语法：<code>int close(int fd);</code></li>
+<li>返回值：成功（0），失败（-1）</li>
+</ul>
+</li>
+<li>
+<p><strong><code>read()</code></strong>：读文件，即从文件中复制 <code>m</code>&gt;0 个字节到内存中</p>
+<ul>
+<li>从当前文件的位置 <code>k</code> 开始, 并更新 <code>k+=m</code></li>
+<li>如果从 <code>k</code> 开始到文件末尾的长度小于 <code>m</code>，触发 EOF</li>
+<li>语法：<code>ssize_t read(int fd, void *buf, size_t count);</code></li>
+<li>返回值：成功（读到字节数），遇到 EOF（0），失败（-1）</li>
+</ul>
+</li>
+<li>
+<p><strong><code>write()</code></strong>：写文件</p>
+<ul>
+<li>语法：<code>ssize_t write(int fd, const void *buf, size_t count);</code></li>
+<li>返回值：成功（写入字节数），失败（-1）</li>
+</ul>
+</li>
+</ul>
+<h2 id="Lecture-5-内存地址翻译">Lecture 5: 内存地址翻译</h2>
+<ul>
+<li><strong>页表</strong>：记录虚拟页号到物理页号的映射
+<ul>
+<li>存储在物理内存中，由 OS 负责维护</li>
+<li>其起始地址存放在页表基地址寄存器中</li>
+</ul>
+</li>
+<li><strong>64 位虚拟地址解析</strong>:
+<ul>
+<li>[63:48] 16-bit：全 0（应用程序地址）或全 1（内核地址）</li>
+<li>[47:39] 9-bit：0 级页表索引</li>
+<li>[38:30] 9-bit：1 级页表索引</li>
+<li>[29:21] 9-bit：2 级页表索引</li>
+<li>[20:12] 9-bit：3 级页表索引</li>
+<li>[11:0] 12-bit：页内偏移</li>
+</ul>
+</li>
+<li><strong>页表基地址寄存器</strong>：TTBR0_EL1 和 TTBR1_EL1
+<ul>
+<li>MMU 根据虚拟地址第 63 位选择使用哪一个</li>
+<li>应用程序（地址首位为 0）使用 TTBR0_EL1，操作系统（地址首位为 1）使用 TTBR1_EL1</li>
+</ul>
+</li>
+<li><strong>页表大小</strong>：每个页表页占用一个物理页，对 64 位的地址空间：
+<ul>
+<li>页大小为 4K</li>
+<li>每个页表页中有 512 个页表项</li>
+<li>页表项为 8 字节</li>
+</ul>
+</li>
+</ul>
+<p><img src="big_page.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="addr_trans.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>页描述符 / 表描述符 / 块描述符</strong>：PFN，即物理页号
+<ul>
+<li>页描述符指向 4K 页，表描述符指向下一级页表，块描述符指向大页</li>
+<li>有效的 0-2 级页表项，第 1 位为 0 表示 PFN 指向大页，第 1 位为 1 表示 PFN 指向下一级页表</li>
+</ul>
+</li>
+</ul>
+<p><img src="entry.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>
+<p><strong>大页的优缺点</strong>：</p>
+<ul>
+<li><strong>好处</strong>：
+<ul>
+<li>减少 TLB 缓存项的使用，提高 TLB 命中率</li>
+<li>减少页表的级数，提升遍历页表的效率</li>
+</ul>
+</li>
+<li><strong>弊端</strong>：
+<ul>
+<li>未使用整个大页而造成物理内存资源浪费</li>
+<li>增加管理内存的复杂度</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>TLB</strong>：位于 CPU 内部，是页表的缓存，用于加速地址翻译</p>
+<ul>
+<li><strong>TLB 刷新</strong>：由于 TLB 使用虚拟地址索引，当切换进程页表时需要全部刷新</li>
+<li><strong>避免 TLB 刷新的方法</strong>：为不同进程分配 ASID（地址空间标识），TLB 的每一项也会缓存 ASID</li>
+</ul>
+</li>
+</ul>
+<h2 id="Lecture-6-系统初始化">Lecture 6: 系统初始化</h2>
+<ul>
+<li><strong>内核启动的 3 个主要任务</strong>：
+<ul>
+<li>设置 CPU 异常级别为 EL1</li>
+<li>设置页表并开启虚拟内存机制</li>
+<li>设置异常向量表
+<ul>
+<li>每个异常向量表项跳转到对应的异常处理函数</li>
+<li>处理异常前保存进程上下文、返回进程前恢复其上下文</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="页表初始化">页表初始化</h3>
+<ol>
+<li>设置 TTBR0 页表：将低地址虚拟内存映射到物理内存，使当前低地址代码能正常运行</li>
+<li>设置 TTBR1 页表：将高地址虚拟内存映射到物理内存，使得内核能切换到高地址运行</li>
+<li>将页表的物理地址写入 TTBR0 和 TTBR1</li>
+</ol>
+<ul>
+<li>TTBR0_EL1：虚拟地址 = 物理地址</li>
+<li>TTBR1_EL1：虚拟地址 = 物理地址 + OFFSET</li>
+</ul>
+<ol start="4">
+<li>将 SCTLR_EL1 的某些位置 1，开启页表</li>
+</ol>
+<h2 id="Lecture-7-操作系统管理页表映射">Lecture 7: 操作系统管理页表映射</h2>
+<ul>
+<li>
+<p><strong>直接映射</strong>：虚拟地址 = 物理地址 + 固定偏移</p>
+<ul>
+<li>内核页表使用，映射全部物理内存，在启动时填写</li>
+<li><strong>好处</strong>：能在内核地址空间中很方便地在物理地址和虚拟地址之间进行转换</li>
+</ul>
+</li>
+<li>
+<p><strong>立即映射</strong>：在初始化虚拟地址空间时，直接在进程页表中添加各虚拟内存区域的映射</p>
+<ul>
+<li>在进程运行期间，OS 接收到创建虚拟内存区域的请求后，立刻在页表中为该区域中添加映射</li>
+<li><strong>问题</strong>：物理内存资源浪费、非必要时延</li>
+</ul>
+</li>
+<li>
+<p><strong>延迟映射</strong>：先记录为进程分配的虚拟内存区域，但不分配物理内存</p>
+<ul>
+<li>当进程实际访问某个虚拟页时，CPU 触发缺页异常，OS 在缺页异常处理函数中添加映射</li>
+<li><strong>VMA (<code>vm_area_struct</code>) 结构体</strong>：Linux 中记录进程已分配的虚拟内存区域，通过平衡树数据结构组织</li>
+</ul>
+<p><img src="vma.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>VMA 的添加时机</strong>：
+<ul>
+<li><strong>创建进程时分配</strong>：数据（对应 ELF 段）、代码（对应 ELF 段）、栈（初始无内容）</li>
+<li><strong>进程运行时添加</strong>：堆、栈、分配内存缓冲区、加载新的代码库</li>
+</ul>
+</li>
+<li><strong>根据 VMA 判断缺页异常的合法性</strong>:
+<ul>
+<li><strong>导致缺页异常的三种可能</strong>：访问非法虚拟地址、按需分配、内存页被换出到磁盘上</li>
+<li><strong>OS 的判断步骤</strong>：
+<ul>
+<li>根据 ESR_EL1 判断是否为缺页异常</li>
+<li>从 FAR_EL1 读取导致缺页异常的虚拟地址</li>
+<li>若该地址不落在 VMA 区域内，则判定为非法访问，触发段错误</li>
+<li>检查页表项是否为空，若为不为空，表明被换出，需要从磁盘中换回</li>
+<li>反之，则分配物理页，并在页表中添加映射</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>优势</strong>：节约内存资源</li>
+<li><strong>劣势</strong>：缺页异常导致访问延迟增加</li>
+<li><strong>取得平衡的方式</strong>：采用预先映射策略、主动告知 OS 提前填写映射</li>
+</ul>
+</li>
+<li>
+<p><strong>改变虚拟内存区域的接口</strong>：</p>
+<ul>
+<li><strong><code>mmap()</code></strong>：新增一段虚拟内存区域，通常把一个文件映射到内存
+<ul>
+<li>也可以不映射任何文件，仅仅新建虚拟内存区域（匿名映射）</li>
+</ul>
+</li>
+<li><strong><code>brk()</code></strong>：扩大或缩小堆区域</li>
+</ul>
+</li>
+<li>
+<p><strong>虚拟内存扩展功能</strong>：</p>
+<ul>
+<li><strong>共享内存</strong>：可用于共享库、进程通信</li>
+<li><strong>写时拷贝（copy-on-write）</strong>：
+<ul>
+<li><strong>实现</strong>：以只读的方式共享一段物理内存，在修改并触发访问权限异常时拷贝</li>
+<li><strong>优点</strong>：节约物理内存、性能加速（<code>fork</code>）</li>
+</ul>
+</li>
+</ul>
+<p><img src="copy_on_write.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>内存去重</strong>：OS 定期在内存中扫描发现具有相同内容的物理页面，执行去重</li>
+<li><strong>内存压缩</strong>：当内存资源不充足时，选择一些“最近不太会使用”的内存页进行数据压缩</li>
+</ul>
+</li>
+</ul>
+<h2 id="Lecture-8-物理内存管理">Lecture 8: 物理内存管理</h2>
+<ul>
+<li><strong>外部碎片与内部碎片</strong>：</li>
+</ul>
+<p><img src="segment.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h3 id="伙伴系统">伙伴系统</h3>
+<ul>
+<li><strong>基本思想</strong>：将物理内存划分成连续的块，以块为基本单位进行分配
+<ul>
+<li>每个块都由一个或多个连续的物理页组成，物理页的数量必须是 2 的 n 次幂</li>
+<li>维护一个空闲链表数组，空闲块按照大小放在相应的链表中</li>
+</ul>
+</li>
+<li><strong>物理页/连续物理页的分配</strong>：当一个请求需要分配 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span></span></span></span> 个物理页时，伙伴系统将寻找一个大小合适的块
+<ul>
+<li>该块包含 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">2^n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6644em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span></span></span></span></span></span></span> 个物理页，且满足 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>&lt;</mo><mi>m</mi><mo>≤</mo><msup><mn>2</mn><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">2^{n−1} &lt; m \le 2^n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8532em;vertical-align:-0.0391em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mord mathnormal">m</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6644em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span></span></span></span></span></span></span></li>
+<li>大的块可以分裂成两半，这两个小块互为伙伴</li>
+</ul>
+</li>
+<li><strong>物理页/连续物理页的释放</strong>：分配器会找到其伙伴块
+<ul>
+<li>互为伙伴的两个块的物理地址仅有一位不同，而且块的大小决定是哪一位</li>
+<li>若伙伴块也处于空闲状态，则将这两个伙伴块进行合并，形成一个大一号的空闲块</li>
+</ul>
+</li>
+</ul>
+<p><img src="buddy.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="buddy2.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>资源利用率</strong>：外部碎片程度降低；内部碎片依然存在</li>
+<li><strong>分配性能</strong>：分配和合并的时间复杂度均为常数时间</li>
+</ul>
+<h3 id="SLUB-分配器">SLUB 分配器</h3>
+<ul>
+<li>
+<p><strong>目标</strong>：快速分配小内存对象，因为内核中的数据结构大小远小于 4K（例如 VMA）</p>
+</li>
+<li>
+<p><strong>SLUB 分配器的思路</strong>：OS 频繁分配的对象大小相对比较固定；避免外部碎片</p>
+<ul>
+<li>从伙伴系统获得大块内存（名为 slab）</li>
+<li>对每份大块内存进一步细分成固定大小的小块内存进行管理</li>
+<li>块的大小通常是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">2^n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6644em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span></span></span></span></span></span></span> 个字节（一般来说，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mo>≤</mo><mi>n</mi><mo>&lt;</mo><mn>12</mn></mrow><annotation encoding="application/x-tex">3 \le n &lt; 12</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7804em;vertical-align:-0.136em;"></span><span class="mord">3</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">12</span></span></span></span>）</li>
+</ul>
+</li>
+<li>
+<p><strong>SLUB 设计</strong>：对于每个固定块大小，SLUB 分配器都会使用独立的内存资源池进行分配（采用 best fit 定位资源池）</p>
+<ul>
+<li><strong>1. 初始化资源池</strong>：把从伙伴系统得到的连续物理页划分成若干等份（slot）</li>
+<li><strong>2. 空闲链表</strong>：采用空闲链表区分是否空闲</li>
+</ul>
+<p><img src="slab_slot.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>3. 分配与释放</strong>：
+<ul>
+<li><strong>分配</strong>：
+<ul>
+<li>
+<ol>
+<li>定位到大小最合适的资源池</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>从 slab 中取走 <code>Next_Free</code> 指向的第一个 slot</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><strong>释放</strong>：将 Next_Free 指针指向待释放内存（slot）
+<ul>
+<li><strong>如何找到 <code>Next_Free</code></strong>：根据待释放内存地址和 slab 大小，计算 slab 起始地址</li>
+<li>在物理页结构体中要记录所属 slab 信息</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>4. 新增 slab</strong>：当某个资源池中的 slab 已经分配完，再从伙伴系统分配一个slab</li>
+<li><strong>5. 资源池内组织多个 slab</strong>：每种 slot 大小维护两个指针
+<ul>
+<li><code>Current</code> 指向一个 slab，并从其中分配</li>
+<li>当 <code>Current</code> slab 全满，则从 <code>Partial</code> 链表中取出一个放入 <code>Current</code></li>
+<li>释放后，若某个 slab 不再全满，则加入 <code>Partial</code></li>
+<li>释放后，若某个 slab 全空则可还给伙伴系统</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="slab.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>优势</strong>：减少内部碎片、分配效率高（常数时间）</li>
+</ul>
+<h3 id="换页机制">换页机制</h3>
+<ul>
+<li><strong>换页机制的代价</strong>：
+<ul>
+<li><strong>优势</strong>：突破物理内存容量限制</li>
+<li><strong>劣势</strong>：缺页异常+磁盘操作导致访问延迟增加</li>
+<li><strong>如何取得平衡</strong>：预取机制 （Prefetching），预测接下来进程要使用的页，提前换入</li>
+</ul>
+</li>
+</ul>
+<h4 id="换页策略">换页策略</h4>
+<ul>
+<li><strong>OPT 策略（理想）</strong>：优先换出未来最长时间内不会再访问的页面</li>
+</ul>
+<p><img src="swap_opt.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>FIFO 策略</strong>：优先选择最先换入的页进行换出
+<ul>
+<li>OS 维护一个队列，每换入一个物理页就把其页号加到队尾，因此最先换进的物理页号总是处于队头位置</li>
+</ul>
+</li>
+</ul>
+<p><img src="swap_fifo.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>Second Chance 策略</strong>：FIFO 策略的改进版本，为每一个物理页号维护一个访问标志位
+<ul>
+<li>如果访问的页面号已经处在队列中，则置上其访问标志位</li>
+<li>换页时查看队头：1）无标志则换出；2）有标志则去除并放入队尾，继续寻找</li>
+</ul>
+</li>
+</ul>
+<p><img src="swap_second_chance.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>LRU 策略</strong>：优先选择最久未被访问的页面
+<ul>
+<li>OS 维护一个链表，在每次内存访问后，OS 把刚刚访问的内存页调整到链表尾端；每次都选择换出位于链表头部的页面</li>
+</ul>
+</li>
+</ul>
+<p><img src="swap_lru.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>时钟算法策略</strong>：将换进物理内存的页号排成一个时钟的形状
+<ul>
+<li>有一个针臂，指向新换进内存的页号的后一个；同时，为每个页号维护一个访问位</li>
+<li>当物理页被访问时， 把访问位设成 T</li>
+<li>需要换页时，OS 从针臂所指的页号开始检查
+<ul>
+<li>如果是 T，则置成 F</li>
+<li>如果是 F，则换出该页</li>
+</ul>
+</li>
+<li><strong>实现</strong>：如何知道物理页被访问
+<ul>
+<li>MMU 在页表项里为虚拟页打上“访问位”</li>
+<li>OS 在物理页的结构体中记录页表项位置（反向映射）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="swap_clock.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h2 id="Lecture-9-进程">Lecture 9: 进程</h2>
+<ul>
+<li>
+<p><strong>进程控制块（PCB）</strong>：用于表示进程，存储在内核态</p>
+<ul>
+<li>保存的信息包括：虚拟地址空间、处理器上下文、内核栈</li>
+<li>进程标识符 PID、退出状态、子进程列表、执行状态</li>
+</ul>
+</li>
+<li>
+<p><strong>进程的退出与等待</strong>：</p>
+<ul>
+<li><strong>进程的退出</strong>：进程退出时，其上下文结构和虚拟地址空间会被销毁，但 PCB 和内核栈保留（处于僵尸状态）</li>
+<li><strong>进程的等待</strong>：父进程会等待子进程退出，记录子进程的退出状态，回收 PCB 并销毁内核栈</li>
+</ul>
+</li>
+<li>
+<p><strong>进程的五种典型执行状态</strong>：</p>
+<ul>
+<li><strong>新生（new）</strong>：正在初始化的进程</li>
+<li><strong>就绪（ready）</strong>：随时准备执行（但暂时没有执行）</li>
+<li><strong>运行（running）</strong>：正在执行</li>
+<li><strong>僵尸（zombie）</strong>：退出但未回收</li>
+<li><strong>终止（terminated）</strong>：退出且被回收</li>
+</ul>
+</li>
+</ul>
+<p><img src="process_states.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h3 id="进程的创建">进程的创建</h3>
+<h4 id="进程创建的过程">进程创建的过程</h4>
+<ul>
+<li>
+<p><strong>一、PCB 相关初始化</strong>：PCB 及其包含的内容都需要创建及初始化</p>
+<ul>
+<li>分配 PCB 本身的数据结构</li>
+<li>初始化虚拟内存：创建及初始化 vmspace 数据结构；分配一个物理页，作为顶级页表</li>
+<li>初始化内核栈：分配物理页，作为进程内核栈</li>
+</ul>
+</li>
+<li>
+<p><strong>二、可执行文件加载</strong>：以 ELF 为例</p>
+<ul>
+<li>从程序头部表可以获取需要的段所在位置</li>
+<li>通常只有代码段和数据段需要被加载，即从 ELF 文件中映射到虚拟地址空间</li>
+</ul>
+</li>
+<li>
+<p><strong>三、准备运行环境</strong>：在返回用户态运行前，还需为进程准备运行所需的环境</p>
+<ul>
+<li>分配用户栈：分配物理内存并映射到虚拟地址空间</li>
+<li>准备程序运行时的环境：将参数和环境变量放到栈上</li>
+</ul>
+</li>
+<li>
+<p><strong>四、处理器上下文初始化</strong>：</p>
+<ul>
+<li>SP：设置为用户栈的栈顶地址（用户栈分配后才确定地址）</li>
+<li>PC：设置 ELR_EL1 寄存器（加载 ELF 才知道程序入口地址）</li>
+<li>PSTATE：设置 SPSR_EL1 寄存器</li>
+<li>大部分寄存器初始值可直接赋为 0</li>
+</ul>
+</li>
+</ul>
+<h4 id="Linux-的进程创建">Linux 的进程创建</h4>
+<ul>
+<li>
+<p><strong><code>fork()</code></strong>：</p>
+<ul>
+<li><strong>实现</strong>：将父进程的 PCB 拷贝一份，包括虚拟内存、内核栈、处理器上下文等</li>
+<li><strong>优点</strong>：
+<ul>
+<li>接口非常简洁，（过去）实现简单</li>
+<li>将进程创建和执行（<code>exec</code>）解耦，提高了灵活度</li>
+</ul>
+</li>
+<li><strong>缺点</strong>：
+<ul>
+<li>创建拷贝的复杂度与 PCB 复杂度相关，如今越来越复杂</li>
+<li>完全拷贝过于粗暴（不如 <code>clone</code>）</li>
+<li>性能差、可扩展性差（不如 <code>vfork</code> 和 <code>spawn</code>）</li>
+<li>不可组合性（如 <code>fork()</code> + <code>pthread()</code>）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>fork</code> 的替代接口</strong>：</p>
+<ul>
+<li><strong><code>vfork</code></strong>：类似于 <code>fork</code>，但让父子进程共享同一地址空间
+<ul>
+<li><strong>优点</strong>：连映射都不需要拷贝，性能更好</li>
+<li><strong>缺点</strong>：只能用在“<code>fork</code> + <code>exec</code>”的场景中；共享地址空间存在安全问题</li>
+</ul>
+</li>
+<li><strong><code>posix_spawn</code></strong>: 相当于 <code>fork</code> + <code>exec</code>
+<ul>
+<li><strong>优点</strong>：可扩展性、性能较好</li>
+<li><strong>缺点</strong>：不如 <code>fork</code> 灵活</li>
+</ul>
+</li>
+<li><strong><code>clone</code></strong>: <code>fork</code> 的进阶版，可以选择性地不拷贝内存
+<ul>
+<li><strong>优点</strong>：高度可控，可依照需求调整</li>
+<li><strong>缺点</strong>：接口比 <code>fork</code> 复杂，选择性拷贝容易出错</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="进程切换">进程切换</h3>
+<ul>
+<li>
+<p><strong>一、p0 进入内核态</strong>：由硬件完成部分寄存器保存</p>
+<ul>
+<li>PC 和 PSTATE 分别自动保存到 ELR_EL1 和 SPSR_EL1</li>
+</ul>
+</li>
+<li>
+<p><strong>二、p0 处理器上下文保存</strong>：将处理器中的寄存器值保存到处理器上下文对应的位置</p>
+</li>
+<li>
+<p><strong>三、由 p0 切换到 p1</strong>：</p>
+<ul>
+<li><strong>1. 虚拟地址空间切换</strong>：设置页表相关寄存器（TTBR0_EL1）
+<ul>
+<li>使用 PCB 中保存的页表基地址赋值给 TTBR0_EL1</li>
+</ul>
+</li>
+<li><strong>2. 内核栈切换</strong>：设置内核中的栈寄存器 SP_EL1
+<ul>
+<li>使用 PCB 中保存的内核栈顶地址赋值给 SP_EL1</li>
+</ul>
+</li>
+<li><strong>3. 进程上下文切换</strong>：设置 <code>cur_proc</code> 为之后要执行的进程（p1）
+<ul>
+<li>表明之后操作系统将以 p1 的身份运行</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>四、p1 处理器上下文恢复</strong>：从处理器上下文中加载各寄存器的值，放入对应寄存器中</p>
+</li>
+<li>
+<p><strong>五、p1 回到用户态</strong>：由硬件自动恢复部分寄存器</p>
+<ul>
+<li>将 ELR_EL1 和 SPSR_EL1 中的值自动保存到 PC 和 PSTATE 中</li>
+</ul>
+</li>
+</ul>
+<h2 id="Lecture-10-线程">Lecture 10: 线程</h2>
+<ul>
+<li>
+<p><strong>进程的问题</strong>：</p>
+<ul>
+<li><strong>创建进程的开销较大</strong>：包括了数据、代码、堆、栈等</li>
+<li><strong>进程的隔离性过强</strong>：进程间交互可以通过进程间通信（IPC），但开销较大</li>
+<li><strong>进程内部无法支持并行</strong>：单一进程无法充分利用多核资源</li>
+</ul>
+</li>
+<li>
+<p><strong>线程</strong>：更加轻量级的运行时抽象</p>
+<ul>
+<li>只包含运行时的状态（主要是寄存器和栈），静态部分由进程提供</li>
+<li>一个进程的多个线程可以在不同处理器上同时执行</li>
+<li>调度和切换的基本单元由进程变成了线程</li>
+<li>线程有自己的栈及内核栈，但数据、代码、堆等其他区域共享</li>
+</ul>
+</li>
+<li>
+<p><strong>线程的优势</strong>：</p>
+<ul>
+<li><strong>降低管理开销</strong>：从属于进程，创建和销毁时不涉及进程的所有内容</li>
+<li><strong>数据共享和同步方便</strong>：共享同一地址空间，可以直接读写彼此的数据，无需使用耗时的 IPC 机制</li>
+</ul>
+</li>
+</ul>
+<h3 id="线程的基本操作">线程的基本操作</h3>
+<ul>
+<li><strong>线程的创建</strong>：<code>pthread_create(&amp;tid, attr, start_routine, arg)</code>
+<ul>
+<li><strong>参数说明</strong>：
+<ul>
+<li><code>tid</code>：返回子线程 ID</li>
+<li><code>attr</code>：子线程属性，一般是 <code>NULL</code></li>
+<li><code>start_routine</code>：子线程起始执行点</li>
+<li><code>arg</code>：子线程参数，即传入起始执行点函数的参数</li>
+</ul>
+</li>
+<li>主线程创建子线程后，两线程独立执行</li>
+</ul>
+</li>
+<li><strong>线程的合并</strong>：<code>pthread_join(tid, &amp;status)</code>，等待 <code>tid</code> 对应线程执行完成，获取其执行结果并回收
+<ul>
+<li>主线程需要<strong>手动调用来回收资源</strong>，否则可能出现资源溢出</li>
+</ul>
+</li>
+<li><strong>线程的分离</strong>：<code>pthread_detach(tid)</code>，使 <code>tid</code> 对应线程进入分离状态
+<ul>
+<li>分离线程不能被其他线程杀死或回收，<strong>退出时资源自动回收</strong></li>
+<li>但是，分离线程并不完全独立，主线程调用 <code>exit()</code> 仍会强制终止所有线程</li>
+</ul>
+</li>
+<li><strong>线程的退出</strong>：<code>pthread_exit(status)</code>，只退出当前线程（参数为返回值）
+<ul>
+<li>使用 <code>exit()</code> 会终结当前线程及所有子线程</li>
+</ul>
+</li>
+</ul>
+<h3 id="线程的实现">线程的实现</h3>
+<ul>
+<li>
+<p><strong>线程控制块 (TCB)</strong>：</p>
+<ul>
+<li><strong>TCB 保存的信息</strong>：处理器上下文、所属进程、内核栈、退出/执行状态</li>
+<li><strong>PCB 保存的信息</strong>：虚拟地址空间、PID、子进程列表、包含的线程列表及总数</li>
+</ul>
+</li>
+<li>
+<p><strong>线程创建</strong>：</p>
+<ul>
+<li><strong>1. TCB 相关内容初始化</strong>：创建新的 TCB、初始化内核栈、初始化处理器上下文（主要包括用户栈和 PC）</li>
+<li><strong>2. 维护进程/线程关系</strong></li>
+<li><strong>3. 准备运行环境</strong>：设置参数</li>
+</ul>
+</li>
+</ul>
+<h3 id="线程模型">线程模型</h3>
+<ul>
+<li>
+<p><strong>线程的分类</strong>：</p>
+<ul>
+<li><strong>内核态线程</strong>：由内核创建并直接管理，内核维护其 TCB
+<ul>
+<li>内核态线程是内核进行调度的单位</li>
+</ul>
+</li>
+<li><strong>用户态线程</strong>：由用户态的线程库创建并管理，对应的数据结构保存在用户态
+<ul>
+<li>内核不知晓该线程的存在，也不对其进行管理</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>线程模型</strong>：表示了用户态线程与内核态线程之间的联系</p>
+<ul>
+<li><strong>多对一模型</strong>：多个用户态线程对应一个内核态线程
+<ul>
+<li><strong>优点</strong>：内核管理简单</li>
+<li><strong>缺点</strong>：可扩展性差，无法适应多核机器的发展</li>
+<li>在主流操作系统中被弃用，用于各种用户态线程库中</li>
+</ul>
+</li>
+<li><strong>一对一模型</strong>：一个用户态线程对应一个内核态线程
+<ul>
+<li><strong>优点</strong>：解决了多对一模型中的可扩展性问题</li>
+<li><strong>缺点</strong>：内核线程数量大，开销大</li>
+<li>主流操作系统都采用一对一模型</li>
+</ul>
+</li>
+<li><strong>多对多模型</strong>：多个用户态线程对应多个内核态线程
+<ul>
+<li><strong>优点</strong>：解决了可扩展性问题（多对一）和线程过多问题（一对一）</li>
+<li><strong>缺点</strong>：管理更为复杂</li>
+<li>在虚拟化中得到了广泛应用</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="thread_model.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h2 id="Lecture-11-处理器调度">Lecture 11: 处理器调度</h2>
+<ul>
+<li><strong>共用的调度指标</strong>：高资源利用率、多任务公平性、低调度开销
+<ul>
+<li><strong>降低周转时间</strong>：任务第一次进入系统到执行结束的时间</li>
+<li><strong>降低响应时间</strong>：任务第一次进入系统到第一次给用户输出的时间</li>
+<li><strong>实时性</strong>：在任务的截止时间内完成任务</li>
+<li><strong>公平性</strong>：每个任务都应该有机会执行，不能饿死</li>
+<li><strong>开销低</strong>：调度器是为了优化系统，而非制造性能 BUG</li>
+<li><strong>可扩展</strong>：随着任务数量增加，仍能正常工作</li>
+</ul>
+</li>
+</ul>
+<h3 id="经典调度策略-Classical-Scheduling">经典调度策略 (Classical Scheduling)</h3>
+<h4 id="1-先到先得（First-Come-First-Served-FCFS）">1. 先到先得（First Come First Served, FCFS）</h4>
+<ul>
+<li><strong>规则</strong>：按作业或进程到达的先后顺序进行服务</li>
+<li><strong>优点</strong>：
+<ul>
+<li>设计实现简单</li>
+<li>对所有任务公平</li>
+</ul>
+</li>
+<li><strong>问题</strong>：平均周转、响应时间过长
+<ul>
+<li>长短任务混合场景下，对短任务不友好</li>
+<li>对 I/O 密集型任务不友好</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-最短任务优先（Shortest-Job-First-SJF）">2. 最短任务优先（Shortest Job First, SJF）</h4>
+<ul>
+<li><strong>规则</strong>：运行时间最短的作业或进程优先得到服务</li>
+<li><strong>优点</strong>：平均周转时间短</li>
+<li><strong>问题</strong>：平均响应时间过长
+<ul>
+<li>对长任务不公平，可能饿死</li>
+<li>必须预知任务执行时间</li>
+<li>性能表现严重依赖任务到达时间点</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-时间片轮转-Round-Robin-RR">3. 时间片轮转 (Round Robin, RR)</h4>
+<ul>
+<li><strong>规则</strong>：
+<ul>
+<li>按照各进程到达就绪队列的顺序，轮流让各个进程执行一个时间片</li>
+<li>若进程未在一个时间片内执行完，则剥夺 CPU，将进程重新放到就绪队列队尾重新排队</li>
+</ul>
+</li>
+<li><strong>优点</strong>：
+<ul>
+<li>平均响应时间短</li>
+<li>对所有任务公平</li>
+</ul>
+</li>
+<li><strong>问题</strong>：
+<ul>
+<li>任务运行时间相似的场景下，平均周转时间长</li>
+<li>时间片过短会导致调度开销过大</li>
+</ul>
+</li>
+</ul>
+<h3 id="优先级调度策略-Priority-Scheduling">优先级调度策略 (Priority Scheduling)</h3>
+<h4 id="4-多级队列-Multi-Level-Queue-MLQ">4. 多级队列 (Multi-Level Queue, MLQ)</h4>
+<ul>
+<li><strong>规则</strong>：
+<ul>
+<li>维护多个队列，每个对应静态设置好的优先级</li>
+<li>高优先级的任务优先执行（高优先级空时，低优先级进程才能被调度）</li>
+<li>同优先级内使用 Round Robin 调度（也可使用其他调度策略）</li>
+</ul>
+</li>
+<li><strong>高优先级任务</strong>：
+<ul>
+<li><strong>I/O 密集型任务</strong>：为了更高的资源利用率</li>
+<li>用户主动设置的重要任务</li>
+<li>时延要求极高（必须在短时间内完成）的任务</li>
+</ul>
+</li>
+<li><strong>优先级的动态调整</strong>：工作场景是动态变化的
+<ul>
+<li>静态设置的优先级可能导致：资源利用率低（优先级反转）、低优先级任务饥饿</li>
+</ul>
+</li>
+<li><strong>问题</strong>：需要预知任务是否为 I/O 密集型任务</li>
+</ul>
+<h4 id="5-多级反馈队列-Multi-Level-Feedback-Queue-MLFQ">5. 多级反馈队列 (Multi-Level Feedback Queue, MLFQ)</h4>
+<ul>
+<li><strong>规则</strong>：
+<ul>
+<li>优先级高的任务会抢占优先级低的任务</li>
+<li>每个任务会被分配时间片，优先级相同的两个任务使用时间片轮转</li>
+<li>任务被创建时，假设该任务是短任务，为它分配最高优先级</li>
+<li>一个任务时间片耗尽后，它的优先级会被降低一级</li>
+<li>如果一个任务在时间片耗尽前放弃 CPU，那么它的优先级不变</li>
+<li><strong>定时优先级提升</strong>：在某个时间段 S 后，将系统中所有任务优先级升为最高
+<ul>
+<li>避免长任务饿死、可以解决任务特征动态变化的场景</li>
+</ul>
+</li>
+<li><strong>准确记录执行时间</strong>：任务放弃 CPU 后时间片不重置，当累计一个完整时间片被用完后，降低其优先级
+<ul>
+<li>为了应对抢占 CPU 时间的攻击</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>时间片长短的选择</strong>：
+<ul>
+<li>高优先级队列时间片较短（针对短任务），提升响应时间</li>
+<li>低优先级队列时间片较长（针对长任务），降低调度开销</li>
+</ul>
+</li>
+<li><strong>小结</strong>：
+<ul>
+<li>通过观察任务的历史执行，动态确定任务优先级
+<ul>
+<li>无需任务的先验知识</li>
+</ul>
+</li>
+<li>周转时间低、响应时间低、调度开销低
+<ul>
+<li>对于短任务，周转时间指标近似于 SJF</li>
+<li>对于交互式任务，响应时间指标近似于 RR</li>
+</ul>
+</li>
+<li>可以避免长任务的饿死</li>
+</ul>
+</li>
+</ul>
+<h4 id="6-高响应比优先（Highest-Response-Ratio-Next-HRRN）">6. 高响应比优先（Highest Response Ratio Next, HRRN）</h4>
+<ul>
+<li><strong>规则</strong>：在每次调度时先计算各个任务的响应比，选择响应比最高的任务为其服务</li>
+<li><strong>响应比（Response Ratio）</strong>：一个任务的响应时间 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mtext>Response </mtext></msub></mrow><annotation encoding="application/x-tex">T_\text{Response }</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord text mtight"><span class="mord mtight">Response </span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span> 与其运行时间 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mtext>Run </mtext></msub></mrow><annotation encoding="application/x-tex">T_\text{Run }</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord text mtight"><span class="mord mtight">Run </span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 的比值<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext> 优先级 </mtext><mo>=</mo><mtext> Response Ratio </mtext><mo>=</mo><mfrac><msub><mi>T</mi><mtext>Response </mtext></msub><msub><mi>T</mi><mtext>Run </mtext></msub></mfrac><mo>=</mo><mfrac><mrow><msub><mi>T</mi><mtext>Waiting </mtext></msub><mo>+</mo><msub><mi>T</mi><mtext>Run </mtext></msub></mrow><msub><mi>T</mi><mtext>Run </mtext></msub></mfrac><mo>=</mo><mfrac><msub><mi>T</mi><mtext>Waiting </mtext></msub><msub><mi>T</mi><mtext>Run </mtext></msub></mfrac><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\text { 优先级 }=\text { Response Ratio }=\frac{T_{\text {Response }}}{T_{\text {Run }}}=\frac{T_{\text {Waiting }}+T_{\text {Run }}}{T_{\text {Run }}}=\frac{T_{\text {Waiting }}}{T_{\text {Run }}}+1
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord text"><span class="mord"> </span><span class="mord cjk_fallback">优先级</span><span class="mord"> </span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord text"><span class="mord"> Response Ratio </span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.1963em;vertical-align:-0.836em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">Run </span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">Response </span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.1963em;vertical-align:-0.836em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">Run </span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">Waiting </span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">Run </span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.1963em;vertical-align:-0.836em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">Run </span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">Waiting </span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span></span></p>
+<ul>
+<li>如果两个任务等待时间相同，则运行时间越短越优先</li>
+<li>如果两个任务运行时间相同，则等待时间越长，越优先</li>
+</ul>
+</li>
+<li><strong>优点</strong>：既可以让短任务优先执行，又不会让长任务产生饥饿
+<ul>
+<li>通过结合 FCFS 策略和 SJF 策略，避免了 SJF 策略在公平性方面的问题</li>
+</ul>
+</li>
+</ul>
+<h3 id="公平共享调度策略-Fair-Share-Scheduling">公平共享调度策略 (Fair-Share Scheduling)</h3>
+<ul>
+<li><strong>思想</strong>：每个用户占用的资源是成比例的，设定<strong>份额 (Share)</strong> 以确定相对比例</li>
+<li><strong>方法</strong>：使用 ticket 表示任务的份额，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi></mrow><annotation encoding="application/x-tex">T</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span></span></span></span> 表示 ticket 的总量</li>
+</ul>
+<h4 id="7-彩票调度-Lottery-Scheduling">7. 彩票调度 (Lottery Scheduling)</h4>
+<ul>
+<li><strong>规则</strong>：
+<ul>
+<li>每次调度时，生成随机数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>∈</mo><mo stretchy="false">[</mo><mn>0</mn><mo separator="true">,</mo><mi>T</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">R \in [0,T)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mclose">)</span></span></span></span></li>
+<li>根据 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi></mrow><annotation encoding="application/x-tex">R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span>，找到对应的任务</li>
+</ul>
+</li>
+</ul>
+<p><img src="lottery.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>好处</strong>：简单</li>
+<li><strong>问题</strong>：不精确（伪随机），各个任务对 CPU 时间的占比会有误差</li>
+</ul>
+<h4 id="8-步幅调度-Stride-Scheduling">8. 步幅调度 (Stride Scheduling)</h4>
+<ul>
+<li><strong>Stride</strong>：步幅，任务一次执行增加的虚拟时间<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext> stride </mtext><mo>=</mo><mfrac><mtext> MaxStride </mtext><mtext> ticket </mtext></mfrac></mrow><annotation encoding="application/x-tex">\text { stride }=\frac{\text { MaxStride }}{\text { ticket }}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord text"><span class="mord"> stride </span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0574em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord"> ticket </span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord"> MaxStride </span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext> MaxStride </mtext></mrow><annotation encoding="application/x-tex">\text{ MaxStride }</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord text"><span class="mord"> MaxStride </span></span></span></span></span> 是一个足够大的整数，可以设为所有 tickets 的最小公倍数</li>
+<li><strong>虚拟时间</strong>：物理时间除以任务对应的 ticket，大小表示 CPU 资源的相对使用情况</li>
+</ul>
+</li>
+<li><strong>Pass</strong>：累计执行的虚拟时间</li>
+<li><strong>规则</strong>：每次调度时，挑选 Pass 最小的任务</li>
+</ul>
+<p><img src="stride.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h3 id="多核调度策略-Multicore-Scheduling-Policy">多核调度策略 (Multicore Scheduling Policy)</h3>
+<ul>
+<li>
+<p><strong>全局运行队列</strong>：所有 CPU 共享同一个全局运行队列</p>
+<ul>
+<li><strong>问题</strong>：
+<ul>
+<li>多个 CPU 对全局调度器的访问产生锁竞争</li>
+<li>同一个线程可能在不同 CPU 上切换：切换开销大（Cache 和 TLB）、缓存局部性差</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>本地运行队列</strong>：每个 CPU 核心维护本地运行队列</p>
+<ul>
+<li>现被应用于 Linux、ChCore 等操作系统中</li>
+<li><strong>问题</strong>：负载不均衡</li>
+</ul>
+</li>
+<li>
+<p><strong>负载均衡</strong>：尽可能让每个 CPU 都同等忙碌</p>
+<ul>
+<li>需要追踪 CPU 的负载情况，将任务从负载高的 CPU 迁移到负载低的 CPU</li>
+</ul>
+</li>
+<li>
+<p><strong>亲和性</strong>：尽量让一个进程调度到同一个 CPU 上运行，以发挥 CPU 中 Cache 的作用</p>
+<ul>
+<li>通过操作系统暴露的任务亲和性接口，可以指定任务能够使用的 CPU 核心</li>
+</ul>
+</li>
+</ul>
+<h3 id="Linux-调度器">Linux 调度器</h3>
+<p>Linux 为了满足不同需求，提供了多种调度策略。下面以 Linux 两种调度器为例，每种调度器都对应多个调度策略。</p>
+<ul>
+<li>
+<p><strong>Linux Real-Time Scheduler</strong>：使用 Multi-level Queue 优先级调度</p>
+<ul>
+<li>每个任务有自己的优先级、具体策略</li>
+</ul>
+</li>
+<li>
+<p><strong>Linux Complete Fair Scheduler</strong>：通过调整任务每次执行的时间，达成公平共享的方式</p>
+</li>
+</ul>
+<p><img src="cfs.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h2 id="Lecture-12-进程间通信">Lecture 12: 进程间通信</h2>
+<h3 id="IPC-基础">IPC 基础</h3>
+<ul>
+<li>
+<p><strong>IPC 的消息接口</strong>：</p>
+<ul>
+<li>发送消息：<code>Send(message)</code></li>
+<li>接收消息：<code>Recv(message)</code></li>
+<li>远程方法调用：<code>RPC(req_message, resp_message)</code>
+<ul>
+<li>相当于在发送消息后，等待一个返回消息</li>
+</ul>
+</li>
+<li>远程方法调用的回复：<code>Reply(resp_message)</code></li>
+</ul>
+</li>
+<li>
+<p><strong>IPC 的两个阶段</strong>：</p>
+<ul>
+<li><strong>准备阶段</strong>：建立通信连接，即进程间的信道</li>
+<li><strong>通信阶段</strong>：
+<ul>
+<li><strong>数据传递</strong>：以消息接口为例，通信数据抽象为消息，通常包含头部和数据内容</li>
+<li><strong>通信机制</strong>：在新的数据或消息到来时通知接收方</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>数据传递的两种方法</strong>：</p>
+<ul>
+<li><strong>基于共享内存的数据传递</strong>：OS 在通信过程中不干预数据传输，仅负责准备阶段的映射
+<ul>
+<li>无需切换到内核态即可完成 IPC（多核场景下）</li>
+<li>完全由用户态控制，定制能力更强</li>
+<li>可实现零内存拷贝（无需内核介入）</li>
+</ul>
+</li>
+<li><strong>基于操作系统辅助的数据传递</strong>：OS 提供接口（系统调用），通过内核态内存来传递数据，无需在用户态建立共享内存
+<ul>
+<li>抽象更简单，用户态直接调用接口，使用更方便</li>
+<li>安全性保证更强，发送者在消息被接收时通常无法修改消息</li>
+<li>多方（多进程）通信时更灵活、更安全</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>两种通知机制</strong>：</p>
+<ul>
+<li><strong>基于轮询</strong>：轮询内存数据检查是否有消息到来
+<ul>
+<li><strong>缺点</strong>：大量 CPU 计算资源的浪费</li>
+</ul>
+</li>
+<li><strong>基于控制流转移</strong>：由内核控制进程的运行状态
+<ul>
+<li><strong>优点</strong>：进程只有在条件满足的情况下才运行，避免 CPU 浪费</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>IPC 控制流</strong>：同步和异步</p>
+<ul>
+<li><strong>同步 IPC</strong>：IPC 操作会阻塞调用者进程直到操作完成
+<ul>
+<li>调用者继续运行时，返回结果已经 ready</li>
+</ul>
+</li>
+<li><strong>异步 IPC</strong>：进程发起 IPC 操作后即可返回而不需要等待其完成
+<ul>
+<li>通过轮询或回调函数（需内核支持）来获取返回结果</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>IPC 的超时机制</strong>：</p>
+<ul>
+<li>应用可自行设置超时的阈值，但如何选择合适的阈值却很难</li>
+<li>特殊的超时机制：阻塞、立即返回（要求被调用者处于可立即响应的状态）</li>
+</ul>
+</li>
+<li>
+<p><strong>IPC 的权限检查</strong>：</p>
+<ul>
+<li><strong>宏内核</strong>：通常基于权限检查的机制实现
+<ul>
+<li>如 Linux 中与文件的权限检查结合在一起</li>
+</ul>
+</li>
+<li><strong>微内核</strong>：通常基于 Capability 安全检查机制实现
+<ul>
+<li>Capability 保存在内核中，与进程绑定</li>
+<li>进程发起 IPC 时，内核检查其是否拥有对应的 Capability</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>不同的 IPC 机制</strong>：</p>
+</li>
+</ul>
+<p><img src="ipc2.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h3 id="共享内存-内存接口-IPC">共享内存: 内存接口 IPC</h3>
+<p>共享内存为两个（或多个）进程在它们的虚拟地址空间中映射了同一段物理内存。</p>
+<ul>
+<li><strong>基础实现</strong>：
+<ul>
+<li><strong>共享区域</strong>：共享区域容量、共享状态</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> BUFFER_SIZE 10</span><br><span class="hljs-comment">// 消息抽象，即缓冲区中的元素</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> &#123;</span><br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">msg_header</span> <span class="hljs-title">header</span>;</span><br>  <span class="hljs-type">char</span> data[<span class="hljs-number">0</span>];<br>&#125; item;<br><span class="hljs-comment">// 共享数据区域，容量为 10</span><br>item buffer[BUFFER_SIZE];<br><span class="hljs-comment">// 共享状态</span><br><span class="hljs-keyword">volatile</span> <span class="hljs-type">int</span> buffer_write_cnt = <span class="hljs-number">0</span>;<br><span class="hljs-keyword">volatile</span> <span class="hljs-type">int</span> buffer_read_cnt = <span class="hljs-number">0</span>;<br><span class="hljs-keyword">volatile</span> <span class="hljs-type">int</span> empty_slot = BUFFER_SIZE;<br><span class="hljs-keyword">volatile</span> <span class="hljs-type">int</span> filled_slot = <span class="hljs-number">0</span>;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>发送者(生产者)</strong>：在缓冲区上产生新的数据</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// Produce an item/msg</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">send</span><span class="hljs-params">(item msg)</span><br>&#123;    <br>  <span class="hljs-keyword">while</span> (empty_slot == <span class="hljs-number">0</span>)<br>    ;   <span class="hljs-comment">// do nothing -- no free buffers</span><br>  empty_slot--;<br>  buffer[buffer_write_cnt] = msg;<br>  buffer_write_cnt = (buffer_write_cnt + <span class="hljs-number">1</span>) % BUFFER_SIZE;<br>  filled_slot++; <br>  ...<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>接收者(消费者)</strong>：从缓冲区中获取数据</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c">item <span class="hljs-title function_">recv</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>  <span class="hljs-keyword">while</span> (filled_slot == <span class="hljs-number">0</span>)<br>    ;  <span class="hljs-comment">// do nothing -- nothing to consume</span><br>  filled_slot--;  <span class="hljs-comment">// remove an item from the buffer</span><br>  item = buffer[buffer_read_cnt];<br>  buffer_read_cnt = (buffer_read_cnt + <span class="hljs-number">1</span>) % BUFFER SIZE;<br>  empty_slot++;<br>  <span class="hljs-keyword">return</span> item;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>共享内存的问题</strong>：
+<ul>
+<li><strong>缺少通知机制</strong>：
+<ul>
+<li>若轮询检查，则导致 CPU 资源浪费</li>
+<li>若周期性检查，则可能导致较长的等待时延</li>
+<li><strong>根本原因</strong>：共享内存的抽象过于底层；缺少 OS 更多支持</li>
+</ul>
+</li>
+<li><strong>TOCTTOU （Time-of-check to Time-of-use）问题</strong>：
+<ul>
+<li>当接收者直接用共享内存上的数据时，可能存在被发送者恶意篡改的情况</li>
+<li>这可能导致 buffer overflow 等问题</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="消息队列-消息接口-IPC">消息队列: 消息接口 IPC</h3>
+<ul>
+<li>
+<p><strong>消息队列</strong>：一种消息传递机制，属于间接通信</p>
+<ul>
+<li>发送和接收的接口是内核提供的</li>
+<li>信箱是内核中维护的消息队列结构体</li>
+<li>有缓存，没有超时机制，支持异步通信（非阻塞）</li>
+<li>支持多个发送者和接收者同时存在</li>
+</ul>
+</li>
+<li>
+<p><strong>消息队列的结构</strong>：在内核中的表示是队列，以链表的方式组织消息</p>
+<ul>
+<li>任何有权限的进程都可以访问队列（写入或者读取）</li>
+<li>消息的格式：类型（整型）+ 数据，允许按照类型进行消息查询</li>
+</ul>
+</li>
+</ul>
+<p><img src="message.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>基本操作</strong>：
+<ul>
+<li><strong><code>msgget()</code></strong>：获取已有消息队列的连接，或创建一个新的消息队列</li>
+<li><strong><code>msgctl()</code></strong>：控制和管理消息队列，如修改消息队列的权限信息或删除该消息队列</li>
+<li><strong><code>msgsnd()</code></strong>：向消息队列发送消息</li>
+<li><strong><code>msgrcv()</code></strong>：从消息队列接收消息</li>
+</ul>
+</li>
+</ul>
+<h3 id="轻量级远程方法调用-LRPC">轻量级远程方法调用 (LRPC)</h3>
+<ul>
+<li>
+<p><strong>核心思想</strong>：</p>
+<ul>
+<li><strong>传统思路</strong>：将需要处理的数据发送到另一个进程处理，这使得<strong>控制流转换</strong>和<strong>数据传输</strong>成为主要瓶颈</li>
+<li><strong>LRPC 的思路</strong>：将另一个进程处理数据的代码拉到当前进程，以避免控制流切换和数据传输，从而优化 IPC 性能</li>
+</ul>
+</li>
+<li>
+<p><strong>控制流转换</strong>：</p>
+<ul>
+<li><strong>问题</strong>：需要下陷到内核，内核调度会导致不确定时延
+<ul>
+<li>即 Client 和 Server 之间可能会执行多个不相关进程</li>
+</ul>
+</li>
+<li><strong>解决方法</strong>：将 Client 运行在 Server 的上下文
+<ul>
+<li>只切换地址空间、权限表等状态，不做调度和线程切换</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>数据传输</strong>：</p>
+<ul>
+<li><strong>问题</strong>：经过内核的传输经历两次拷贝，即 Client → 内核 → Server
+<ul>
+<li>数据拷贝很慢（内存指令），并且不可扩展（数据量增大，时延增大）</li>
+</ul>
+</li>
+<li><strong>解决方法</strong>：共享参数栈和寄存器
+<ul>
+<li><strong>参数栈 (A-stack)</strong>：系统内核为每一对 LRPC 连接预先分配好一个 A-stack
+<ul>
+<li>A-stack 被同时映射在 Client 进程和 Server 进程地址空间</li>
+<li>Client 进程只需要将参数准备到 A-stack 即可，不需要内核额外拷贝</li>
+</ul>
+</li>
+<li><strong>共享寄存器</strong>：直接使用当前的通用寄存器，类似函数调用中用寄存器传递参数</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>通信连接建立</strong>：</p>
+<ul>
+<li>Server 进程通过内核注册一个服务描述符，对应 Server 进程内部的一个处理函数</li>
+<li>内核为服务描述符预先分配好参数栈及连接记录，连接记录用于从 Server 进程处返回（类似栈）</li>
+<li>内核返回给 Client 一个绑定对象，作为成功建立连接的标志
+<ul>
+<li>后续 Client 通过绑定对象发起通信</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>通信过程</strong>：</p>
+<ol>
+<li>内核验证绑定对象的正确性，并找到正确的服务描述符</li>
+<li>内核验证参数栈和连接记录</li>
+<li>检查是否有并发调用 (可能导致 A-stack 等异常)</li>
+<li>将 Client 的返回地址和栈指针放到连接记录中</li>
+<li>将连接记录放到线程控制结构体中的栈上 (支持嵌套 LRPC 调用)</li>
+<li>找到 Server 进程的 E-stack (执行代码所使用的栈)</li>
+<li>将当前线程的栈指针设置为 Server 进程的运行栈地址</li>
+<li>将地址空间切换到 Server 进程中</li>
+<li>执行 Server 地址空间中的处理函数</li>
+</ol>
+</li>
+</ul>
+<h3 id="Binder-IPC">Binder IPC</h3>
+<ul>
+<li><strong>Binder IPC</strong>：兼具 IPC 数据传输的高性能与高安全
+<ul>
+<li>框架层 Binder 服务框架：发现服务，接口封装</li>
+<li>内核层 Binder 驱动：提供内核层 IPC 能力</li>
+</ul>
+</li>
+<li><strong>数据传输</strong>：通过内存映射减少 IPC 数据拷贝
+<ul>
+<li>内核发送/接收缓冲区、接收端缓冲区映射到同一块物理内存</li>
+<li>发送端一次数据拷贝，接受端零次数据拷贝</li>
+</ul>
+</li>
+<li><strong>数据序列化</strong>：内核辅助完成特殊对象传输
+<ul>
+<li><strong>问题</strong>：复杂数据结构无法直接跨进程传输，如嵌套数据结构、指针、文件描述符等</li>
+<li><strong>解决方法</strong>：内核使用偏移数据定位特殊对象位置，并帮助接收端进程重构特殊对象</li>
+</ul>
+</li>
+<li><strong>线程池模型</strong>：内核动态创建服务线程
+<ul>
+<li><strong>问题</strong>：一个 IPC Server 可能处理大量 Client 请求
+<ul>
+<li>少量服务线程 -&gt; 无法应对高负载任务</li>
+<li>大量服务线程 -&gt; 低负载时浪费资源</li>
+</ul>
+</li>
+<li><strong>解决方法</strong>：内核默认从服务线程池挑选处理线程，服务线程不足自动创建</li>
+</ul>
+</li>
+</ul>
+<h2 id="Lecture-13-同步原语">Lecture 13: 同步原语</h2>
+<h3 id="并发带来的同步问题">并发带来的同步问题</h3>
+<ul>
+<li>
+<p><strong>竞争条件 (Race Condition)</strong>：</p>
+<ul>
+<li>当 2 个或以上线程同时对共享的数据进行操作，其中至少有一个写操作</li>
+<li>该共享数据最后的结果依赖于这些线程特定的执行顺序</li>
+</ul>
+</li>
+<li>
+<p><strong>临界区 (Critical Section)</strong>：任意时刻，有且只有一个线程可以进入临界区执行</p>
+</li>
+<li>
+<p><strong>实现临界区抽象的三个要求</strong>：</p>
+<ul>
+<li><strong>互斥访问</strong>：在同一时刻，有且仅有一个线程可以进入临界区</li>
+<li><strong>有限等待</strong>：当一个线程申请进入临界区之后，必须在有限的时间内获得许可进入临界区而不能无限等待</li>
+<li><strong>空闲让进</strong>：当没有线程在临界区中时，必须在申请进入临界区的线程中选择一个进入临界区，保证执行临界区的进展</li>
+</ul>
+</li>
+</ul>
+<h3 id="四种同步原语">四种同步原语</h3>
+<ul>
+<li><strong>同步原语 (Synchronization Primitives)</strong>：OS 提供的用于帮助开发者实现线程之间同步的软件工具
+<ul>
+<li>在有限的共享资源上正确的协同工作</li>
+</ul>
+</li>
+</ul>
+<h4 id="互斥锁-Mutual-Exclusive-Lock">互斥锁 (Mutual Exclusive Lock)</h4>
+<ul>
+<li><strong>互斥锁的作用</strong>：保证对共享资源的互斥访问</li>
+<li><strong>互斥锁接口</strong>：
+<ul>
+<li><code>Lock(lock)</code>：尝试拿到锁 <code>lock</code>
+<ul>
+<li>若当前没有其他线程拿着 <code>lock</code>，则拿到 <code>lock</code>，并继续往下执行</li>
+<li>若 <code>lock</code> 被其他线程拿着，则不断循环等待放锁（busy loop）</li>
+</ul>
+</li>
+<li><code>Unlock(lock)</code>：释放锁</li>
+</ul>
+</li>
+<li><strong>使用示例</strong>：
+<ul>
+<li><strong>解决多生产者消费者问题</strong>：</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">while</span> (prodCnt - consCnt == BUFFER_SIZE)<br>  ;   <span class="hljs-comment">/* do nothing -- no free buffers */</span><br><span class="hljs-comment">// 申请进入临界区</span><br>lock(&amp;buffer_lock); <br><span class="hljs-comment">// 临界区</span><br>buffer[prodCnt % BUFFER_SIZE] = item;<br>prodCnt = prodCnt + <span class="hljs-number">1</span>;<br><span class="hljs-comment">// 通知离开临界区</span><br>unlock(&amp;buffer_lock);<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>解决多线程计数问题</strong>：</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> a = <span class="hljs-number">0</span>;<br><span class="hljs-type">void</span> *<span class="hljs-title function_">routine</span><span class="hljs-params">(<span class="hljs-type">void</span> *arg)</span> &#123;<br>  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">1000000000</span>; i++) &#123;<br>    pthread_mutex_lock(&amp;global_lock);<br>    a++;<br>    pthread_mutex_unlock(&amp;global_lock);<br>  &#125;<br>  <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="条件变量-Condition-Variable">条件变量 (Condition Variable)</h4>
+<ul>
+<li><strong>条件变量的作用</strong>：提供线程的睡眠与唤醒机制
+<ul>
+<li>避免无意义的等待，让 OS 调度器调度其他任务执行</li>
+</ul>
+</li>
+<li><strong>条件变量接口</strong>：
+<ul>
+<li><strong>等待</strong>：<code>void cond_wait(struct cond *cond, struct lock *mutex);</code>
+<ol>
+<li>放入条件变量的等待队列</li>
+<li>阻塞自己同时释放锁，即调度器可以调度到其他线程</li>
+<li>被唤醒后重新获取锁</li>
+</ol>
+<ul>
+<li>等待需要在临界区中</li>
+</ul>
+</li>
+<li><strong>唤醒</strong>：<code>void cond_signal(struct cond *cond);</code>
+<ol>
+<li>检查等待队列</li>
+<li>如果有等待者则移出等待队列并唤醒</li>
+</ol>
+<ul>
+<li>唤醒也需要在临界区中</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>使用示例</strong>：多生产者消费者问题
+<ul>
+<li><strong>消费者</strong>：</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/* Wait empty slot */</span><br>lock(&amp;empty_cnt_lock);<br><span class="hljs-keyword">while</span> (empty_slot == <span class="hljs-number">0</span>)<br>  cond_wait(&amp;empty_cond, &amp;empty_cnt_lock); <br>empty_slot--; <br>unlock(&amp;empty_cnt_lock);<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>生产者</strong>：</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/* Add empty slot */</span><br>lock(&amp;empty_cnt_lock);<br>empty_slot++;<br>cond_signal(&amp;empty_cond);<br>unlock(&amp;empty_cnt_lock);<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="信号量-Semaphore">信号量 (Semaphore)</h4>
+<ul>
+<li><strong>信号量的作用</strong>：协调（阻塞/放行）线程对有限数量资源的消耗与释放
+<ul>
+<li>信号量的值 <code>cnt</code> 记录了当前可用资源的数量</li>
+</ul>
+</li>
+<li><strong>信号量原语</strong>：
+<ul>
+<li><strong>P 操作</strong>：消耗资源</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">sem_wait</span><span class="hljs-params">(<span class="hljs-type">sem_t</span> *sem)</span> &#123;<br>  <span class="hljs-keyword">while</span>(sem-&gt;cnt &lt;= <span class="hljs-number">0</span>)<br>    ; <span class="hljs-comment">/* Waiting */</span><br>  sem-&gt;cnt--; <br>&#125; <br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>V 操作</strong>：增加资源</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">sem_signal</span><span class="hljs-params">(<span class="hljs-type">sem_t</span> *sem)</span> &#123;<br>  sem-&gt;cnt++;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>使用示例</strong>：多生产者消费者问题
+<ul>
+<li><strong>生产者</strong>：</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">producer</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> &#123;<br>  new_msg = produce_new(); <br>  sem_wait(&amp;empty_slot_sem);      <span class="hljs-comment">// 消耗 empty_slot</span><br>  buffer_add(new_msg); 	<br>  sem_signal(&amp;filled_slot_sem);   <span class="hljs-comment">// 增加 filled_slot</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>消费者</strong>：</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">consumer</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> &#123;<br>  sem_wait(&amp;filled_slot_sem);    <span class="hljs-comment">// 消耗 filled_slot</span><br>  cur_msg = buffer_remove(); <br>  sem_signal(&amp;empty_slot_sem); 	 <span class="hljs-comment">// 增加 empty_slot</span><br>  handle_msg(cur_msg);<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>信号量的分类</strong>：
+<ul>
+<li><strong>二元信号量</strong>：初始化的资源数量为 1
+<ul>
+<li>其计数器只有可能为 0、1 两个值</li>
+<li>同一时刻只有一个线程能够拿到资源</li>
+</ul>
+</li>
+<li><strong>计数信号量</strong>：初始化的资源数量大于 1
+<ul>
+<li>同一时刻可能有多个线程能够拿到资源</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="读写锁">读写锁</h4>
+<ul>
+<li><strong>读写锁的作用</strong>：允许读者线程并行读取共享资源
+<ul>
+<li>区分读者与写者，允许读者之间并行，读者与写者之间互斥</li>
+</ul>
+</li>
+<li><strong>使用示例</strong>：读者写者问题<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">rwlock</span> *<span class="hljs-title">lock</span>;</span><br><span class="hljs-type">char</span> data[SIZE];<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">reader</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> &#123;<br>  lock_reader(lock);<br>  read_data(data);<br>  unlock_reader(lock);<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">writer</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span> &#123;<br>  lock_writer(lock);<br>  update_data(data);<br>  unlock_writer(lock);<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="死锁">死锁</h3>
+<h4 id="死锁产生的原因">死锁产生的原因</h4>
+<ul>
+<li><strong>互斥访问</strong>：同一时刻只有一个线程能够访问</li>
+<li><strong>持有并等待</strong>：一直持有一部分资源并等待另一部分，不会中途释放</li>
+<li><strong>资源非抢占</strong>：即进程 B 不会抢进程 A 已经持有的锁</li>
+<li><strong>循环等待</strong>：存在一种进程资源的循环等待链（A 等 B，B 等 A）</li>
+</ul>
+<h4 id="死锁的检测与恢复">死锁的检测与恢复</h4>
+<ul>
+<li><strong>资源分配图</strong>：
+<ul>
+<li><strong>进程结点</strong>：对应一个进程</li>
+<li><strong>资源结点</strong>：对应一类资源（一类资源可能有多个）</li>
+<li><strong>请求边 (进程结点 --&gt; 资源结点)</strong>：表示进程想申请几个资源（每条边代表一个）</li>
+<li><strong>分配边 (资源节点 --&gt; 进程结点)</strong>：表示已经为进程分配了几个资源（每条边代表一个）</li>
+</ul>
+</li>
+</ul>
+<p><img src="deadlock-detection.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>死锁的检测</strong>：在资源分配图中找到环（循环等待），表明存在死锁</li>
+<li><strong>死锁的恢复</strong>：
+<ul>
+<li><strong>方法 1</strong>：终止环中的任一线程，检查是否仍然有环，如果有则重复该操作</li>
+<li><strong>方法 2</strong>：让环上所有进程回滚到之前的某一状态</li>
+</ul>
+</li>
+</ul>
+<h4 id="死锁预防">死锁预防</h4>
+<ul>
+<li><strong>避免互斥访问</strong>：通过其他手段，如代理执行
+<ul>
+<li>只有代理线程能够访问共享资源，避免数据竞争</li>
+<li>发送修改请求，由代理线程统一执行</li>
+</ul>
+</li>
+<li><strong>不允许持有并等待</strong>：一次性申请所有资源
+<ul>
+<li><strong><code>trylock</code> 接口</strong>：非阻塞，立即返回成功或失败</li>
+<li><strong>活锁问题</strong>：会导致活锁问题，但活锁可能自己恢复</li>
+</ul>
+</li>
+<li><strong>资源允许抢占</strong>：需要考虑如何恢复
+<ul>
+<li>要让线程 A 正确回滚到拿锁 A 之前的状态</li>
+</ul>
+</li>
+<li><strong>打破循环等待</strong>：按照特定顺序获取资源
+<ul>
+<li>对所有资源进行编号，让所有线程递增获取</li>
+<li>任意时刻，获取最大资源号的线程可以继续执行，然后释放资源</li>
+</ul>
+</li>
+</ul>
+<h4 id="死锁避免">死锁避免</h4>
+<ul>
+<li><strong>银行家算法</strong>：所有线程获取资源需要通过管理者同意，管理者预演会不会造成死锁
+<ul>
+<li><strong>如果会造成</strong>：阻塞线程，下次再给</li>
+<li><strong>如果不会造成</strong>：给线程该资源</li>
+</ul>
+</li>
+<li><strong>安全状态与非安全状态</strong>：对于一组线程 {P1, P2, … , Pn}：
+<ul>
+<li><strong>安全状态</strong>：能找出至少一个执行序列，如 P2-&gt;P1-&gt;P5…，让所有线程需求得到满足</li>
+<li><strong>非安全状态</strong>：不能找出这个序列，必定会导致死锁</li>
+<li>银行家算法通过安全性检查算法，保证系统一直处于安全状态，且按照这个序列执行</li>
+</ul>
+</li>
+<li><strong>安全性检查</strong>：
+<ul>
+<li><strong>四个数据结构</strong>：<code>M</code> 个资源，<code>N</code> 个线程
+<ul>
+<li>全局可利用资源：<code>Available[M]</code></li>
+<li>每线程最大需求量：<code>Max[N][M]</code></li>
+<li>已分配资源：<code>Allocation[N][M]</code></li>
+<li>还需要的资源：<code>Need[N][M]</code></li>
+</ul>
+</li>
+<li><strong>检查步骤</strong>：
+<ul>
+<li>检查当前的剩余可用资源是否能满足某个进程的最大需求，如果可以，就把该进程加入安全序列，并把该进程持有的资源全部回收</li>
+<li>不断重复上述过程，看最终是否能让所有进程都加入安全序列</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="banker.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h2 id="Lecture-14-同步原语的实现">Lecture 14: 同步原语的实现</h2>
+<h3 id="互斥锁实现：基于硬件原子指令">互斥锁实现：基于硬件原子指令</h3>
+<ul>
+<li>
+<p><strong>使用 <code>Test-and-Set</code> 指令实现互斥锁</strong>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">TestAndSet</span><span class="hljs-params">(<span class="hljs-type">int</span> *old_ptr, <span class="hljs-type">int</span> new)</span> &#123;<br>  <span class="hljs-type">int</span> old = *old_ptr; <span class="hljs-comment">// fetch old value at old_ptr</span><br>  *old_ptr = new; <span class="hljs-comment">// store &#x27;new&#x27; into old_ptr</span><br>  <span class="hljs-keyword">return</span> old; <span class="hljs-comment">// return the old value</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> __<span class="hljs-title">lock_t</span> &#123;</span><br>  <span class="hljs-type">int</span> flag;<br>&#125; <span class="hljs-type">lock_t</span>;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">init</span><span class="hljs-params">(<span class="hljs-type">lock_t</span> *lock)</span> &#123;<br>  <span class="hljs-comment">// 0 indicates that lock is available, 1 that it is held</span><br>  lock-&gt;flag = <span class="hljs-number">0</span>;<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">lock</span><span class="hljs-params">(<span class="hljs-type">lock_t</span> *lock)</span> &#123;<br>  <span class="hljs-keyword">while</span> (TestAndSet(&amp;lock-&gt;flag, <span class="hljs-number">1</span>) == <span class="hljs-number">1</span>)<br>  ; <span class="hljs-comment">// spin-wait (do nothing)</span><br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">unlock</span><span class="hljs-params">(<span class="hljs-type">lock_t</span> *lock)</span> &#123;<br>  lock-&gt;flag = <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>使用 <code>Compare-and-swap</code> 指令实现互斥锁</strong>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">CompareAndSwap</span><span class="hljs-params">(<span class="hljs-type">int</span> *ptr, <span class="hljs-type">int</span> expected, <span class="hljs-type">int</span> new)</span> &#123;<br>  <span class="hljs-type">int</span> actual = *ptr;<br>  <span class="hljs-keyword">if</span> (actual == expected)<br>    *ptr = new;<br>  <span class="hljs-keyword">return</span> actual;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">lock</span><span class="hljs-params">(<span class="hljs-type">lock_t</span> *lock)</span> &#123;<br>  <span class="hljs-keyword">while</span> (CompareAndSwap(&amp;lock-&gt;flag, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>) == <span class="hljs-number">1</span>)<br>  ; <span class="hljs-comment">// spin-wait (do nothing)</span><br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">unlock</span><span class="hljs-params">(<span class="hljs-type">lock_t</span> *lock)</span> &#123;<br>  lock-&gt;flag = <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>使用 <code>Load-linked</code> &amp; <code>Store-conditional</code> 指令实现互斥锁</strong>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">LoadLinked</span><span class="hljs-params">(<span class="hljs-type">int</span> *ptr)</span> &#123;<br>  <span class="hljs-keyword">return</span> *ptr;<br>&#125;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">StoreConditional</span><span class="hljs-params">(<span class="hljs-type">int</span> *ptr, <span class="hljs-type">int</span> value)</span> &#123;<br>  <span class="hljs-keyword">if</span> (no one has updated *ptr since the LoadLinked to this address) &#123;<br>    *ptr = value;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>; <span class="hljs-comment">// success!</span><br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>; <span class="hljs-comment">// failed to update</span><br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">lock</span><span class="hljs-params">(<span class="hljs-type">lock_t</span> *lock)</span> &#123;<br>  <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) &#123;<br>    <span class="hljs-keyword">while</span> (LoadLinked(&amp;lock-&gt;flag) == <span class="hljs-number">1</span>)<br>    ; <span class="hljs-comment">// spin until it&#x27;s zero</span><br>    <span class="hljs-keyword">if</span> (StoreConditional(&amp;lock-&gt;flag, <span class="hljs-number">1</span>) == <span class="hljs-number">1</span>)<br>      <span class="hljs-keyword">return</span>; <span class="hljs-comment">// if set-it-to-1 was a success: all done</span><br>              <span class="hljs-comment">// otherwise: try it all over again</span><br>  &#125;<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">unlock</span><span class="hljs-params">(<span class="hljs-type">lock_t</span> *lock)</span> &#123;<br>  lock-&gt;flag = <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>使用 <code>Fetch-and-add</code> 指令实现互斥锁</strong>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">FetchAndAdd</span><span class="hljs-params">(<span class="hljs-type">int</span> *ptr)</span> &#123;<br>  <span class="hljs-type">int</span> old = *ptr;<br>  *ptr = old + <span class="hljs-number">1</span>;<br>  <span class="hljs-keyword">return</span> old;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>排号锁（Ticket Lock）</strong>：通过遵循竞争者到达的顺序来传递锁</li>
+<li><strong><code>owner</code></strong>：表示当前的持有者</li>
+<li><strong><code>next</code></strong>：表示目前放号的最新值</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> __<span class="hljs-title">lock_t</span> &#123;</span><br>  <span class="hljs-type">int</span> ticket;<br>  <span class="hljs-type">int</span> turn;<br>&#125; <span class="hljs-type">lock_t</span>;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">lock_init</span><span class="hljs-params">(<span class="hljs-type">lock_t</span> *lock)</span> &#123;<br>  lock-&gt;ticket = <span class="hljs-number">0</span>;<br>  lock-&gt;turn = <span class="hljs-number">0</span>;<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">lock</span><span class="hljs-params">(<span class="hljs-type">lock_t</span> *lock)</span> &#123;<br>  <span class="hljs-type">int</span> myturn = FetchAndAdd(&amp;lock-&gt;ticket);<br>  <span class="hljs-keyword">while</span> (lock-&gt;turn != myturn)<br>  ; <span class="hljs-comment">// spin</span><br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">unlock</span><span class="hljs-params">(<span class="hljs-type">lock_t</span> *lock)</span> &#123;<br>  lock-&gt;turn = lock-&gt;turn + <span class="hljs-number">1</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="条件变量的实现">条件变量的实现</h3>
+<ul>
+<li>
+<p><strong>条件变量的实现（语义级）</strong>：需要操作系统辅助实现</p>
+<ul>
+<li><strong>等待的接口</strong>：<code>void wait(struct cond *cond, struct lock *mutex);</code>
+<ol>
+<li>放入条件变量的等待队列：<code>list_append(cond-&gt;wait_list, proc_self()); </code></li>
+<li>阻塞自己同时释放锁：<code>unlock(mutex), yield()</code></li>
+<li>被唤醒后重新获取锁：<code>lock(mutex);</code></li>
+</ol>
+</li>
+<li><strong>唤醒的接口</strong>：<code>void signal(struct cond *cond);</code>
+<ol>
+<li>检查等待队列：<code>if (!list_empty(cond-&gt;wait_list))</code></li>
+<li>如果有等待者则移出等待队列并唤醒：<code>wakeup(list_remove(cond-&gt;wait_list));</code></li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>丢失唤醒</strong>：必须原子地完成挂起和放锁，否则会有丢失唤醒问题</p>
+<ul>
+<li>可能存在其他线程在放锁和挂起的间隙调用唤醒操作，导致唤醒丢失</li>
+</ul>
+</li>
+</ul>
+<h3 id="信号量的实现">信号量的实现</h3>
+<ul>
+<li>
+<p><strong>非阻塞信号量的实现</strong>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">wait</span><span class="hljs-params">(<span class="hljs-type">sem_t</span> *S)</span> &#123;<br>  lock(&amp;S-&gt;sem_lock);<br>  <span class="hljs-keyword">while</span>(S-&gt;value == <span class="hljs-number">0</span>) &#123;<br>    unlock(&amp;S-&gt;sem_lock);<br>    lock(&amp;S-&gt;sem_lock); 	<br>  &#125;<br>  S-&gt;value --;<br>  unlock(&amp;S-&gt;sem_lock);<br>&#125; <br><br><span class="hljs-type">void</span> <span class="hljs-title function_">signal</span><span class="hljs-params">(<span class="hljs-type">sem_t</span> *S)</span> &#123;<br>  lock(&amp;S-&gt;sem_lock);<br>  S-&gt;value ++;<br>  unlock(&amp;S-&gt;sem_lock);<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>阻塞信号量的实现</strong>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">wait</span><span class="hljs-params">(<span class="hljs-type">sem_t</span> *S)</span> &#123;<br>  lock(S-&gt;sem_lock);<br>  S-&gt;value --;<br>  <span class="hljs-keyword">if</span> (S-&gt;value &lt; <span class="hljs-number">0</span>) &#123;<br>    <span class="hljs-keyword">do</span> &#123;<br>      cond_wait(S-&gt;sem_cond, S-&gt;sem_lock);<br>    &#125; <span class="hljs-keyword">while</span> (S-&gt;wakeup == <span class="hljs-number">0</span>);<br>    S-&gt;wakeup --;<br>  &#125;<br>  unlock(S-&gt;sem_lock);<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">signal</span><span class="hljs-params">(<span class="hljs-type">sem_t</span> *S)</span> &#123;<br>  lock(S-&gt;sem_lock);<br>  S-&gt;value ++;<br>  <span class="hljs-keyword">if</span> (S-&gt;value &lt;= <span class="hljs-number">0</span>) &#123;<br>    S-&gt;wakeup ++;<br>    cond_signal(S-&gt;sem_cond);                <br>  &#125;<br>  unlock(S-&gt;sem_lock);<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>实现说明</strong>：</p>
+<ul>
+<li><code>value</code>：正数为信号量，负数为有人等待</li>
+<li><code>wakeup</code>：有线程等待时的可用资源数量，即应当唤醒的线程数量</li>
+<li>某一时刻真实的资源数：<code>value &lt; 0 ? wakeup : value + wakeup</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="读写锁的实现">读写锁的实现</h3>
+<ul>
+<li>
+<p><strong>读写锁的偏向性</strong>：有读者在临界区，有新的写者在等待，另一个读者能否进入临界区</p>
+<ul>
+<li><strong>不能（偏向写者的读写锁）</strong>；后序读者必须等待写者进入后才进入；更加公平</li>
+<li><strong>能（偏向读者的读写锁）</strong>：后序读者可以直接进入临界区；更好的并行性</li>
+</ul>
+</li>
+<li>
+<p><strong>偏向读者的读写锁的实现</strong>：</p>
+</li>
+</ul>
+<p><img src="read-write.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>实现说明</strong>：
+<ul>
+<li><code>reader</code> 计数器：表示有多少读者</li>
+<li>第一个/最后一个 reader 负责获取/释放写锁</li>
+<li>只有当完全没有读者时，写者才能进入临界区</li>
+</ul>
+</li>
+</ul>
+<h3 id="同步原语案例分析">同步原语案例分析</h3>
+<p><img src="sync_comp.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h4 id="同步案例1：多线程执行屏障">同步案例1：多线程执行屏障</h4>
+<ul>
+<li>多线程执行屏障，等待全部执行到屏障后再继续执行</li>
+<li>符合场景2：线程等待/唤醒</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c">lock(&amp;thread_cnt_lock);<br>thread_cnt--;<br><span class="hljs-keyword">if</span> (thread_cnt == <span class="hljs-number">0</span>)<br>  cond_broadcast(cond);  <span class="hljs-comment">// 唤醒所有等待的线程</span><br><span class="hljs-keyword">while</span> (thread_cnt != <span class="hljs-number">0</span>)<br>  cond_wait(&amp;cond, &amp;thread_cnt_lock); <br>unlock(&amp;thread_cnt_lock);<br></code></pre></td></tr></table></figure>
+<h4 id="同步案例2：等待队列工作窃取">同步案例2：等待队列工作窃取</h4>
+<ul>
+<li>每核心等待队列，在空时允许窃取其他核心的任务</li>
+<li>符合场景1：共享资源互斥访问</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">lock(ready_queue_lock[<span class="hljs-number">0</span>]);<br></code></pre></td></tr></table></figure>
+<h4 id="同步案例3：map-reduce">同步案例3：map-reduce</h4>
+<ul>
+<li>
+<p>Word-count：大文本拆分字数统计</p>
+<ul>
+<li>Mapper：统计一部分文本自述</li>
+<li>Reducer：一旦其中任意数量的 Mapper 结束，就累加其结果</li>
+</ul>
+</li>
+<li>
+<p>符合场景2：线程等待/唤醒</p>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// Mapper</span><br>lock(&amp;finished_cnt_lock);<br>finished_cnt ++;<br>cond_signal(&amp;cond); <br>unlock(&amp;finished_cnt_lock);<br><br><span class="hljs-comment">// Reducer</span><br>lock(&amp;finished_cnt_lock);<br><span class="hljs-keyword">while</span> (finished_cnt == <span class="hljs-number">0</span>)<br>  cond_wait(&amp;cond, &amp;finished_cnt_lock);<br><span class="hljs-comment">/* collect result */</span><br>finished_cnt = <span class="hljs-number">0</span>;<br>unlock(&amp;finished_cnt_lock);<br></code></pre></td></tr></table></figure>
+<ul>
+<li>也符合场景3：将 Mapper 的结果视为资源</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// Mapper</span><br>signal(&amp;finish_sem);<br><br><span class="hljs-comment">// Reducer</span><br><span class="hljs-keyword">while</span>(finished_cnt != mapper_cnt) &#123;<br>  wait(&amp;finish_sem);<br>  <span class="hljs-comment">/* collect result */</span><br>  finished_cnt ++;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="同步案例4：网页渲染">同步案例4：网页渲染</h4>
+<ul>
+<li>网页等待所有的请求均完成后再进行渲染</li>
+<li>场景2：等待/唤醒</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// Request_cb</span><br>lock(&amp;glock);<br>finished_cnt ++；<br><span class="hljs-keyword">if</span> (finished_cnt == req_cnt)<br>  cond_signal(&amp;gcond);<br>unlock(&amp;glock);<br><br><span class="hljs-comment">// 渲染线程</span><br>lock(&amp;glock);<br><span class="hljs-keyword">while</span> (finished_cnt != req_cnt)<br>  cond_wait(&amp;gcond, &amp;glock);<br>unlock(&amp;glock);<br></code></pre></td></tr></table></figure>
+<ul>
+<li>场景3：视为所有请求结果为资源</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// Request_cb</span><br>signal(&amp;gsem);<br><br><span class="hljs-comment">// 渲染线程</span><br><span class="hljs-keyword">while</span>(remain_req != <span class="hljs-number">0</span>) &#123;<br>  wait(&amp;gsem);<br>  remain_req --;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="同步案例5：线程池并发控制">同步案例5：线程池并发控制</h4>
+<ul>
+<li>控制同一时刻可以执行的线程数量（有的线程阻塞时可以允许新的线程替上）
+<ul>
+<li>例如，允许同时三个线程执行</li>
+</ul>
+</li>
+<li>场景3：视剩余可并行执行线程数量为有限资源</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c">thread_routine () &#123;<br>  wait(&amp;thread_cnt_sem);<br>  <span class="hljs-comment">/* doing something */</span><br>  signal(&amp;thread_cnt_sem);<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="同步案例6：网页服务器">同步案例6：网页服务器</h4>
+<ul>
+<li>处理响应客户端获取静态网页需求，处理后端更新静态网页需求，不允许读取更新到一半的页面</li>
+<li>衍生场景1：读写场景，可以使用读写锁
+<ul>
+<li>client 用读锁，后端用写锁</li>
+</ul>
+</li>
+</ul>
+<h4 id="同步原语选择的参考原则">同步原语选择的参考原则</h4>
+<p><img src="selection.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h2 id="Lecture-15-文件系统">Lecture 15: 文件系统</h2>
+<h3 id="Inode">Inode</h3>
+<ul>
+<li>
+<p><strong>inode</strong>：即 index node，记录文件多个磁盘块的位置</p>
+<ul>
+<li>每个文件对应一个 inode，称为文件元数据</li>
+<li>记录了多个磁盘块号；头部记录文件 size 信息</li>
+</ul>
+</li>
+<li>
+<p><strong>inode 文件系统的存储布局</strong>：</p>
+<ul>
+<li><strong>超级块</strong>：是整个文件系统的元数据
+<ul>
+<li>记录磁盘块的大小、其他信息的起始磁盘块位置，等等</li>
+</ul>
+</li>
+<li><strong>inode 分配信息（位图）</strong>：记录哪些 inode 已分配，哪些空闲</li>
+<li><strong>inode 表</strong>：记录所有 inode
+<ul>
+<li>每个 inode 使用 inode 号作为索引</li>
+<li>此时，inode 号即为文件名</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="inode.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>
+<p><strong>inode 文件系统的基本操作</strong>：</p>
+<ul>
+<li><strong>加载文件系统</strong>：首先读取超级块，然后找到其他信息</li>
+<li><strong>创建新文件</strong>：
+<ul>
+<li>根据 inode 分配信息找到空闲 inode，将 inode 对应的 bit 设置为 1</li>
+<li>返回 inode 在 inode 表中的索引，作为文件名</li>
+</ul>
+</li>
+<li><strong>查找文件（根据 inode 号）</strong>：在 inode 表中根据 inode 号定位该 inode</li>
+<li><strong>删除文件</strong>：在 inode 分配表中，将该 inode 对应的 bit 设置为 0</li>
+</ul>
+</li>
+<li>
+<p><strong>多级 inode</strong>：解决单级 inode 过大的问题，一个多级 inode 占用的空间很少</p>
+<ul>
+<li>索引块指向数据块；二级索引块指向索引块；以此类推</li>
+<li>索引块（包括二级索引块）不在 inode 表的存储区域，而是在数据区域</li>
+</ul>
+</li>
+</ul>
+<p><img src="multi-inode.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h3 id="目录">目录</h3>
+<ul>
+<li><strong>目录文件</strong>：记录字符串到 inode 号的映射，实现了字符串的文件名
+<ul>
+<li>目录中的每条映射称为一个目录项</li>
+<li>目录本身也是一个文件，同样有 inode</li>
+<li>目录文件的大小与其记录的文件大小无关</li>
+<li><strong>支持查找操作</strong>：给定一个目录文件和字符串，返回对应的 inode</li>
+</ul>
+</li>
+</ul>
+<p><img src="dir.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>
+<p><strong>目录的递归</strong>：</p>
+<ul>
+<li>目录中可以记录子目录，因为目录本身也是一个文件
+<ul>
+<li>通过“/”来分割父目录和子目录</li>
+</ul>
+</li>
+<li>最顶端的目录没有文件名，被称为“根目录”（root）</li>
+</ul>
+</li>
+<li>
+<p><strong>文件的查找过程</strong>：以 <code>/os-book/fs.tex</code> 为例</p>
+</li>
+</ul>
+<p><img src="find.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h3 id="硬链接与软链接">硬链接与软链接</h3>
+<h4 id="（硬）链接：Link">（硬）链接：Link</h4>
+<ul>
+<li><strong><code>LINK</code></strong>：创建（硬）链接，如 Linux 中的 <code>ln</code> 命令
+<ul>
+<li>不同的文件名指向同一个 inode 号</li>
+<li>将严格的层次结构（树）变成有向图
+<ul>
+<li>不允许出现环（除了 <code>.</code> 和 <code>..</code>）</li>
+<li>用户不能为目录创建 Link，否则会出现环</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong><code>UNLINK</code></strong>：删掉从文件名到 inode 号的绑定关系
+<ul>
+<li>如果 <code>UNLINK</code> 最后一个绑定，则把 inode 和对应的 blocks 放到 free-list</li>
+<li>每个文件都需要一个<strong>引用计数器（Reference count）</strong>
+<ul>
+<li><code>LINK</code> 时 +1, <code>UNLINK</code> 时 -1</li>
+<li>当 reference count 为 0 时，文件被删除</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="软链接（符号链接）">软链接（符号链接）</h4>
+<ul>
+<li>
+<p><strong>Link 的问题</strong>：无法在一个磁盘上建立指向另一个磁盘的 Link，因为不同磁盘的 inode 命名空间是不同的</p>
+</li>
+<li>
+<p><strong>软链接（符号链接）</strong>: <code>SYMLINK</code>，如 Linux 中的 <code>ln -s</code> 命令</p>
+<ul>
+<li>是一个独立的文件，有自己的文件名和 inode</li>
+<li>增加一种新的 inode 类型，其中直接存储了路径字符串</li>
+<li>既可以对文件链接，也可以对目录链接</li>
+</ul>
+</li>
+<li>
+<p><strong>硬链接和软链接的对比</strong>：</p>
+</li>
+</ul>
+<p><img src="hard-soft-link.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h3 id="文件系统-API">文件系统 API</h3>
+<ul>
+<li>
+<p><strong>两类元数据</strong>：</p>
+<ul>
+<li><strong>磁盘上文件的元数据</strong>：静态的、在磁盘中
+<ul>
+<li><strong>拥有者/所在组 ID</strong>：拥有该 inode 的用户 ID 和组 ID</li>
+<li><strong>权限的类型</strong>：拥有者、所在组、其他；读、写、执行</li>
+<li><strong>时间戳</strong>：最后一次访问；最后一次修改；最后一次 inode 更新</li>
+</ul>
+</li>
+<li><strong>被打开文件的元数据</strong>：动态的、在内存中
+<ul>
+<li>整个系统维护了一个 <code>file_table</code>，记录了所有打开的文件的信息
+<ul>
+<li>包括：文件游标（file cursor）、引用数（ref_count）</li>
+<li>父子进程间可以共享文件游标</li>
+</ul>
+</li>
+<li>每个进程维护了一个 <code>fd_table</code>，记录了该进程每个 <code>fd</code> 所对应文件在 <code>file_table</code> 中的索引</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>文件游标 Cursor</strong>：记录了一个文件中下一次操作的位置</p>
+<ul>
+<li>可以通过 <code>SEEK</code> 操作修改；读写共享文件游标</li>
+<li><strong>共享游标</strong>: 允许父子进程共享同一个文件，父进程将 <code>fd</code> 传递给子进程</li>
+<li><strong>非共享游标</strong>: 两个不同的进程打开同一个文件</li>
+</ul>
+</li>
+</ul>
+<p><img src="cursor.png" srcset="/img/loading.gif" lazyload alt="文件游标共享实例"></p>
+<ul>
+<li>
+<p><strong><code>close()</code></strong>：</p>
+<ul>
+<li>释放 <code>fd_table</code> 中的相关项</li>
+<li>减小 <code>file_table</code> 中相关项的 <code>refcnt</code>
+<ul>
+<li>如果 <code>file_table</code> 中相关项 <code>refcnt</code> 为 0，则将其释放</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>write()</code></strong>：</p>
+<ul>
+<li>可能需要分配新的 block</li>
+<li>更新 inode 的 size 和 mtime
+<ul>
+<li><code>read()</code> 也有写操作，需要更新最后一次访问时间</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>删除一个打开的文件</strong>：inode 引用数变成 0，但不会被立即释放和删除，直到前一个进程调用 <code>close</code> 将其关闭</p>
+</li>
+<li>
+<p><strong><code>fsync()</code></strong>：</p>
+<ul>
+<li><strong>Block cache</strong>：缓存了最近被使用的磁盘块
+<ul>
+<li>推迟数据向磁盘的写入，寻求机会批量写入，提升性能</li>
+<li><strong>问题</strong>：如果在写入前发生故障，可能会造成不一致</li>
+</ul>
+</li>
+<li><strong><code>SYNC</code></strong>：保证对文件的所有修改被写入到存储设备</li>
+</ul>
+</li>
+</ul>
+<h3 id="文件系统的崩溃一致性">文件系统的崩溃一致性</h3>
+<ul>
+<li>
+<p><strong>文件系统的崩溃一致性</strong>：文件系统中的各种数据结构存在依赖关系与一致性要求，崩溃可能会造成这些一致性被打破</p>
+</li>
+<li>
+<p><strong>方法1</strong>：同步元数据写 + <code>fsck</code></p>
+<ul>
+<li><strong>同步元数据写</strong>：每次元数据写入后，运行 <code>sync()</code> 保证更新后的元数据入盘</li>
+<li><strong><code>fsck</code></strong>：非正常重启后，运行 <code>fsck</code> 检查磁盘的一致性关系</li>
+<li><strong>问题</strong>：太慢
+<ul>
+<li><code>fsck</code> 时间与磁盘的大小成比例增长</li>
+<li>同步元数据写导致创建文件等操作非常慢</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>方法2</strong>：日志（Journaling）</p>
+<ul>
+<li><strong>日志的记录方法</strong>：
+<ul>
+<li>在进行修改之前，先将修改记录到日志中</li>
+<li>所有要进行的修改都记录完毕后，COMMIT 日志</li>
+<li>确定日志落盘后，再修改数据和元数据</li>
+<li>修改完成后，删除日志</li>
+</ul>
+</li>
+<li><strong>崩溃后的恢复方法</strong>：
+<ul>
+<li>启动后首先检查日志区域
+<ul>
+<li>若没有任何日志记录，则无需恢复</li>
+</ul>
+</li>
+<li>扫描所有已经 COMMIT 的事务
+<ul>
+<li>若没有 COMMIT 的事务，则无需恢复</li>
+<li>对已经 COMMIT 的事务，将元数据从日志区写到原本位置</li>
+</ul>
+</li>
+<li>完成后清空日志区域</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Lecture-16-设备管理与驱动">Lecture 16: 设备管理与驱动</h2>
+<ul>
+<li>
+<p><strong>OS 的分层设计</strong>：应用 I/O 框架层、设备管理的共性功能层、设备驱动层</p>
+</li>
+<li>
+<p><strong>设备最基本的抽象</strong>：将设备的外部接口设计为一组寄存器，称为设备寄存器</p>
+</li>
+</ul>
+<p><img src="device.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>
+<p><strong>I/O 子系统的目标</strong>：</p>
+<ul>
+<li>提供统一接口，涵盖不同设备
+<ul>
+<li>设备代码（即驱动程序）需要实现标准接口</li>
+</ul>
+</li>
+<li>提供 I/O 硬件的抽象层
+<ul>
+<li>管理硬件资源；隐藏硬件细节</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>设备驱动</strong>：</p>
+<ul>
+<li>内核中设备特定代码，和硬件设备直接交互
+<ul>
+<li>提供标准的文件系统接口</li>
+<li>内核 I/O 子系统可以和内核不同驱动交互</li>
+<li>可借助 <code>ioctl()</code> 系统调用进行设备相关配置</li>
+</ul>
+</li>
+<li>Linux 的设备驱动通常分为两部分
+<ul>
+<li>上半部：迅速处理；关中断状态，没有嵌套</li>
+<li>下半部：延后处理；开中断状态，可能发生嵌套</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="I-O-设备分类">I/O 设备分类</h3>
+<ul>
+<li><strong>字符设备</strong>
+<ul>
+<li><strong>例子</strong>：键盘/鼠标，串口，部分 USB 设备等</li>
+<li><strong>特点</strong>：串行访问，每次一个字符</li>
+<li><strong>交互方式</strong>：
+<ul>
+<li><strong>I/O 命令</strong>：如 <code>get()</code>, <code>put()</code> 等</li>
+<li><strong>文件系统接口</strong>：如 <code>open()</code>, <code>read()</code>, <code>write()</code>, <code>close()</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>块设备</strong>
+<ul>
+<li><strong>例子</strong>：磁盘、磁带、DVD</li>
+<li><strong>交互方式</strong>：
+<ul>
+<li><strong>统一的块 I/O 接口</strong>：以块为粒度访问数据</li>
+<li><strong>原始 I/O 接口或文件形式访问</strong>：获得字节流</li>
+<li><strong>以内存映射文件的方式访问</strong>：即 Memory-Mapped File</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>网络设备</strong>
+<ul>
+<li><strong>例子</strong>：以太网卡、无线网络、蓝牙等</li>
+<li>不同于块设备、字符设备，网络设备有自己的接口</li>
+</ul>
+</li>
+</ul>
+<h3 id="传统-I-O-流程-轮询与中断">传统 I/O 流程: 轮询与中断</h3>
+<ul>
+<li>
+<p><strong>传统 I/O 流程</strong>：</p>
+<ul>
+<li><strong>Step 1</strong>：<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c">While(STATUS == BUSY)<br>  ; <span class="hljs-comment">// 不断等待，直到设备不再忙碌</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>轮询</strong>：CPU 反复读取设备的状态寄存器，直到确认设备可以接受新的命令</li>
+</ul>
+</li>
+<li><strong>Step 2</strong>：<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">Write data to DATA <span class="hljs-keyword">register</span> and address to ADDRESS <span class="hljs-keyword">register</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>如果设备是磁盘，则需要若干次写操作才能将磁盘块传输到设备中</li>
+<li>当 CPU 参与数据的搬移时，称为 programmed I/O (PIO)</li>
+</ul>
+</li>
+<li><strong>Step 3</strong>：<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c">Write command to COMMAND <span class="hljs-keyword">register</span><br>  <span class="hljs-comment">// 此时设备开始工作，并执行 COMMAND 对应操作</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>OS 向设备的命令寄存器写入命令</li>
+<li>设备获悉数据已经就绪，随即设备开始工作，执行 OS 发送的命令</li>
+</ul>
+</li>
+<li><strong>Step 4</strong>：<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c">While(STATUS == BUSY)<br>  ; <span class="hljs-comment">// 再次等待，直到设备响应完请求</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>OS 再次通过不断轮询状态寄存器，判断设备是否完成工作</li>
+<li>最后，OS 会收到设备返回的 success 或 failure 状态码</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>中断</strong>：不需要轮询设备状态，提高 CPU 利用率</p>
+<ul>
+<li>OS 向设备发送一个请求，随后令 I/O 进程睡眠，切换到其他任务（此时进程处于 WAITING 状态）</li>
+<li>设备完成 I/O 命令后，触发硬件中断</li>
+<li>CPU 跳转到 OS 预先注册好的中断处理程序 (Interrupt service routine / ISR)
+<ul>
+<li>中断处理程序运行在内核态，负责响应设备中断</li>
+<li>例如，读取设备数据，或读取设备返回的状态码，进而唤醒等待 I/O 的进程，完成后续工作</li>
+</ul>
+</li>
+<li><strong>局限性</strong>：只适用于慢速设备（如鼠标、键盘）</li>
+</ul>
+</li>
+<li>
+<p><strong>中断的活锁问题</strong>：快速设备（如网卡）可能频繁触发中断，导致 CPU 只顾着响应中断，无法调度用户进程和处理中断发来的数据</p>
+<ul>
+<li><strong>解决方案 1</strong>：合二为一（中断+轮询）
+<ul>
+<li>默认使用中断；中断发生后，使用轮询处理后续达到的网络包</li>
+<li>如果没有更多中断，或轮询中断超过时间限制，则回到中断模式</li>
+<li>该方案在 Linux 网络驱动中称为 NAPI (New API)</li>
+</ul>
+</li>
+<li><strong>解决方案 2</strong>：中断合并（Interrupt Coalescing）
+<ul>
+<li>设备在发送中断前，需要等待一小段时间</li>
+<li>在等待期间，其他中断可能也会马上到来，因此多个中断合并为同一个中断，进而降低频繁中断带来的开销</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="设备交互-PIO-与-MMIO">设备交互: PIO 与 MMIO</h3>
+<ul>
+<li>
+<p><strong>方法1</strong>：端口 I/O (Port I/O, PIO)</p>
+<ul>
+<li>使用 I/O 端口对设备进行寻址
+<ul>
+<li>I/O 端口：独立于物理地址空间的特殊地址空间</li>
+</ul>
+</li>
+<li>通过特殊的 I/O 指令进行读写，如 x86 的 <code>IN</code> 和 <code>OUT</code> 指令</li>
+<li>必须以特权模式执行，只有 OS 可以和直接和设备交互</li>
+</ul>
+</li>
+<li>
+<p><strong>方法2</strong>：内存映射 I/O（Memory-mapped I/O, MMIO）</p>
+<ul>
+<li>将设备寄存器直接映射到物理地址空间</li>
+<li>使用访存的 <code>LOAD</code> 和 <code>STORE</code> 指令，直接访问设备寄存器
+<ul>
+<li>MMU 将虚拟地址转换为物理地址（即总线地址）</li>
+<li>I/O 模块负责将总线地址转换为设备的寄存器地址</li>
+</ul>
+</li>
+<li>可以以非特权模式下执行，ARM 和 x86 都支持</li>
+<li>MMIO 地址应使用 <code>volatile</code> 关键字，防止编译器和 CPU 的错误优化</li>
+<li><strong>例子</strong>：DPDK 用户态网络栈，在用户态进行网络设备管理，减少数据拷贝，去除特权级切换，显著提升了网络性能</li>
+</ul>
+</li>
+</ul>
+<h3 id="数据移动-DMA-与-IOMMU">数据移动: DMA 与 IOMMU</h3>
+<h4 id="直接内存访问-Direct-Memory-Access-DMA">直接内存访问 (Direct Memory Access, DMA)</h4>
+<ul>
+<li>
+<p><strong>工作流程</strong>：</p>
+<ul>
+<li>CPU 向磁盘控制器发送“读”指令，一次读取一大块数据
+<ul>
+<li>“读”指令中包含了目标数据在内存中的地址</li>
+</ul>
+</li>
+<li>磁盘控制器将数据直接读取到磁盘的内存缓冲区
+<ul>
+<li>直接读取物理内存中的目标数据，不需要 CPU 的参与</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>DMA 的优点</strong>：</p>
+<ul>
+<li><strong>减轻 CPU 负载</strong>：CPU 可以执行其他程序</li>
+<li><strong>减少传输次数</strong>：直接从设备传输到内存，不用经过 CPU</li>
+<li><strong>可以更好地支持“长消息”</strong>：需要总线支持</li>
+<li><strong>分摊总线协议开销</strong>：单次操作包括获取总线、传输、释放总线</li>
+</ul>
+</li>
+<li>
+<p><strong>DMA 的安全性问题</strong>：设备可通过 DMA 访问任意物理内存</p>
+</li>
+</ul>
+<h4 id="IOMMU">IOMMU</h4>
+<ul>
+<li><strong>IOMMU</strong>：为 I/O 设备做地址翻译，避免设备直接使用物理地址访问内存
+<ul>
+<li>设备 DMA 使用 IOVA，由 IOMMU 翻译为 PA（实际的物理地址）</li>
+<li>使用 IOTLB 优化 IOMMU 地址翻译流程</li>
+<li>广泛用于 DMA 隔离：用户态驱动、虚拟化等</li>
+</ul>
+</li>
+</ul>
+<p><img src="iommu.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h2 id="参考资料">参考资料</h2>
+<p>本文参考上海交通大学并行与分布式系统研究所（IPADS）操作系统课程 CS3601 华志超老师的 PPT 课件整理。</p>
+<p>部分图片来源于上海交通大学程序语言与编译原理课程 CS2612 曹钦翔老师的讲义。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="category-chain-item">操作系统</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="print-no-link">#操作系统</a>
+      
+        <a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86/" class="print-no-link">#知识点整理</a>
+      
+        <a href="/tags/%E6%9C%9F%E4%B8%AD%E5%A4%8D%E4%B9%A0/" class="print-no-link">#期中复习</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>操作系统：期末复习</div>
+      <div>https://cny123222.github.io/2025/12/11/操作系统：期末复习/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Nuoyan Chen</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>December 11, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/12/26/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%EF%BC%9A%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0/" title="数字图像处理：期末复习">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数字图像处理：期末复习</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/12/11/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86-7-%EF%BC%9A%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2/" title="数字图像处理(7)：图像分割">
+                        <span class="hidden-mobile">数字图像处理(7)：图像分割</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"cny123222/cny123222.github.io","repo-id":"R_kgDOOFgnVw","category":"Announcements","category-id":"DIC_kwDOOFgnV84CnwXM","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"en"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
