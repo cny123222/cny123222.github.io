@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/nlp.png">
 <meta property="article:published_time" content="2026-01-14T14:43:02.000Z">
-<meta property="article:modified_time" content="2026-02-24T14:55:48.545Z">
+<meta property="article:modified_time" content="2026-02-25T14:24:44.963Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          45k words
+          48k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          379 mins
+          398 mins
         
       </span>
     
@@ -451,7 +451,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on February 24, 2026 pm
+                    Last updated on February 25, 2026 pm
                   
                 
               </p>
@@ -4394,11 +4394,198 @@ qk^T = (hW_Q)(cW_K^U) = hW_Q {W_K^U}^Tc^T
 </li>
 </ul>
 <h3 id="KV-缓存的层间复用">KV 缓存的层间复用</h3>
+<p>前面讨论的 KV 缓存优化都集中在单个注意力层内部，即如何压缩某个特定层的 KV 缓存。这一部分探讨一种新的思路：能否在不同层之间共享或复用 KV 缓存，从而减少总的缓存层数。</p>
+<ul>
+<li><strong>Layer-Condensed KV (LCKV)</strong>：
+<ul>
+<li><strong>动机</strong>：
+<ul>
+<li>在 Transformer 中，越高层的表示通常包含越丰富的语义信息</li>
+<li>一个自然的想法是：我们能否只使用顶层的 KV Cache 来为所有其他层服务，从而将 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi></mrow><annotation encoding="application/x-tex">L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">L</span></span></span></span> 层的 KV Cache 压缩为仅 1 层</li>
+</ul>
+</li>
+<li><strong>直接复用的问题与性能下降</strong>：
+<ul>
+<li>直接让所有层都使用同一层的 KV（例如顶层 KV）会导致模型性能严重下降</li>
+<li><strong>原因</strong>：破坏了 Transformer 层级的表示学习模式；通常认为，模型在底层（靠近输入）关注语法和局部结构信息，在高层（靠近输出）关注语义和全局信息，强制所有层关注同样的信息会破坏这种分工</li>
+</ul>
+</li>
+<li><strong>LCKV 的解决方案</strong>：
+<ul>
+<li><strong>预热层 (Warmup Layers)</strong>：保留模型最底部的少数几层（例如 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mi mathvariant="normal">/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">w/2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mord">/2</span></span></span></span> 层）使用标准的、独立的 KV Cache，这些层被称为“预热层”，用于捕捉基础的语法结构</li>
+<li><strong>复用层 (Condensed Layers)</strong>：对于中间及以上的大部分层，它们不再计算和存储自己的 KV，而是全部复用来自最后一个预热层的 KV Cache</li>
+</ul>
+</li>
+<li><strong>LCKV 带来的新问题</strong>：破坏并行性
+<ul>
+<li>在标准 Transformer 中，一个 token 在所有层中的计算都可以并行开始（依赖于前一个 token 的输出）</li>
+<li>但在 LCKV 中，为了计算第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span> 个 token 在某一层 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span></span></span></span> 的表示，需要用到第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">i-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7429em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> 个 token 在顶层（或最后一个预热层）的表示；这引入了顺序依赖，破坏了原有的并行训练能力</li>
+</ul>
+</li>
+<li><strong>新的并行训练方法</strong>：为了解决顺序依赖问题，LCKV 设计了一种新的训练方法
+<ul>
+<li>并行地对所有 token 进行多次（例如 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 次）自下而上的 attention 计算</li>
+<li>在前 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> 次迭代中，只进行前向传播，不计算 loss，也不反向传播梯度（梯度停止）</li>
+<li>只在最后一次迭代时计算 loss，并只将 loss 反向传播最后几次迭代的梯度</li>
+<li><strong>结论</strong>：通过少量迭代（约 7 次），KV Cache 就能收敛，使得这种并行训练方法成为可能</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="lckv.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>跨层注意力 (Cross-Layer Attention, CLA)</strong>：
+<ul>
+<li><strong>思想</strong>：一种更灵活的层间共享机制。让某些层跳过自己的 KV 计算，直接重用其相邻前一层的 KV Cache</li>
+<li><strong>实现</strong>：
+<ul>
+<li>只有一小部分层（例如每隔几层）会真正计算并存储 KV</li>
+<li>没有 KV 值的层，其注意力计算直接使用它前面最近的一个拥有 KV 值的层的缓存</li>
+</ul>
+</li>
+<li><strong>优势</strong>：
+<ul>
+<li>显著减少了训练和推理时需要存储的中间 KV 激活张量，降低了显存占用</li>
+<li>可以实现不同的压缩率（例如，每 2 层或每 4 层计算一次 KV）</li>
+<li>可以与 MQA/GQA/MHA 等其他技术结合使用</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="cla.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <h3 id="算法层面之外的优化">算法层面之外的优化</h3>
+<p>除了从算法层面压缩 KV 缓存，我们还可以从更底层的计算和硬件利用角度进行优化，以及通过模型间的协同来加速。</p>
 <h4 id="更高效地利用硬件架构：Flash-Attention-与-Flash-Decoding">更高效地利用硬件架构：Flash Attention 与 Flash Decoding</h4>
+<pre><code class="hljs">动机：标准Attention计算是内存受限 (memory-bound) 的。其瓶颈不在于GPU的浮点计算能力，而在于在GPU的不同层级内存（高速但小的SRAM和低速但大的HBM）之间反复读写巨大的注意力矩阵 S 和 P。
+</code></pre>
+<ul>
+<li>
+<p><strong>FlashAttention</strong>：针对训练</p>
+<ul>
+<li><strong>动机</strong>：标准 Attention 的瓶颈
+<ul>
+<li><strong>二次复杂度</strong>：标准 Attention 的计算和内存复杂度都是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>N</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(N^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span> 为序列长度），这在处理长序列时成为主要挑战</li>
+<li><strong>内存带宽瓶颈</strong>：现代 GPU 的计算速度（FLOPs）远快于其高带宽内存（HBM）的读写速度；标准 Attention 是一个内存受限 (memory-bound) 的操作，其瓶颈并不在于计算本身，而在于反复读写 HBM</li>
+</ul>
+</li>
+</ul>
+<p><img src="flashattn_bg.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>
+<p><strong>核心思想</strong>：最大化利用 GPU 片上高速缓存 (SRAM)，从而避免对 HBM 的读写</p>
+<ul>
+<li>通过算子融合 (Operator Fusion) 和分块计算 (Tiling)，将整个 Attention 计算（包括 Softmax）在一个 CUDA 核内完成，并将巨大的中间矩阵 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi></mrow><annotation encoding="application/x-tex">P</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span></span></span></span> 的计算和存储过程完全保留在速度极快的SRAM中。</li>
+</ul>
+</li>
+<li>
+<p><strong>实现方法</strong>：</p>
+<ul>
+<li>
+<p><strong>划分为块 (Tiling)</strong>：</p>
+<ul>
+<li>将存储在 HBM 中的输入矩阵 Q, K, V 逻辑上划分为更小的块 (blocks)，其中 Q 划分为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mi mathvariant="normal">/</mi><msub><mi>B</mi><mi>r</mi></msub></mrow><annotation encoding="application/x-tex">N / B_r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mord">/</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 块，K 和 V 划分为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mi mathvariant="normal">/</mi><msub><mi>B</mi><mi>c</mi></msub></mrow><annotation encoding="application/x-tex">N / B_c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mord">/</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">c</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 块</li>
+</ul>
+<p><img src="tiling.png" srcset="/img/loading.gif" lazyload alt=""></p>
+</li>
+<li>
+<p><strong>片上计算 (On-Chip Computation)</strong>：</p>
+<ul>
+<li>通过一个外层循环遍历 K 和 V 的块，一个内层循环遍历 Q 的块</li>
+<li>在每次内层循环中：
+<ul>
+<li>将一个 Q 的块 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Q</mi><mi>B</mi></msub></mrow><annotation encoding="application/x-tex">Q_B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">Q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 和一个 K 的块 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mi>B</mi></msub></mrow><annotation encoding="application/x-tex">K_B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 从 HBM 加载到 SRAM</li>
+<li>在 SRAM 中计算这两块的点积，得到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mi>B</mi></msub><mo>=</mo><msub><mi>Q</mi><mi>B</mi></msub><msubsup><mi>K</mi><mi>B</mi><mi>T</mi></msubsup></mrow><annotation encoding="application/x-tex">S_B = Q_B K_B^T</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.1167em;vertical-align:-0.2753em;"></span><span class="mord"><span class="mord mathnormal">Q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8413em;"><span style="top:-2.4247em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2753em;"><span></span></span></span></span></span></span></span></span></span></li>
+<li>不将 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mi>B</mi></msub></mrow><annotation encoding="application/x-tex">S_B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 写回 HBM，而是在 SRAM 中直接对其进行 Softmax 计算，并与从 HBM 加载的对应 V 块相乘，得到一个中间输出 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>O</mi><mi>B</mi></msub></mrow><annotation encoding="application/x-tex">O_B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></li>
+<li>将这个块的计算结果 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>O</mi><mi>B</mi></msub></mrow><annotation encoding="application/x-tex">O_B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 写回 HBM 中的最终输出矩阵 O 的相应位置</li>
+</ul>
+</li>
+</ul>
+<p><img src="comp.png" srcset="/img/loading.gif" lazyload alt=""></p>
+</li>
+<li>
+<p><strong>在线 Softmax (Online Softmax)</strong>：</p>
+<ul>
+<li>由于 Softmax 的归一化分母需要知道整行的所有值，直接在块上计算是困难的</li>
+<li>FlashAttention 采用了一种在线更新的技巧：在处理每个 K, V 块时，它会计算并保存当前的行最大值 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span></span></span></span> 和归一化因子 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span></span></span></span>；当下一个块的数据加载进来后，它会用新的数据动态地更新这些统计量和之前计算好的输出值，从而在不访问完整 S 矩阵的情况下，得到与标准 Softmax 完全等价的精确结果</li>
+</ul>
+</li>
+<li>
+<p><strong>为反向传播重计算</strong>：</p>
+<ul>
+<li>为了节省内存，FlashAttention 在前向传播时不存储巨大的中间矩阵 S 和 P</li>
+<li>在反向传播需要用到它们时，它会利用前向传播时保存的输出 O 和 Softmax 归一化因子 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>m</mi><mo separator="true">,</mo><mi>l</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(m, l)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">m</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mclose">)</span></span></span></span>，在 SRAM 中重新计算所需的 S 和 P 块，从而以少量额外的计算换取大量的显存节省</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>效果与评估</strong>：</p>
+<ul>
+<li><strong>IO 复杂度降低</strong>：
+<ul>
+<li>通过在片上计算，避免了矩阵 S 和 P 的 HBM 访问</li>
+<li>标准 Attention 的 HBM 访问量级为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>N</mi><mi>d</mi><mo>+</mo><msup><mi>N</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(Nd + N^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mord mathnormal">d</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></li>
+<li>FlashAttention 的 HBM 访问量级为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>N</mi><mn>2</mn></msup><msup><mi>d</mi><mn>2</mn></msup><mi mathvariant="normal">/</mi><mi>M</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(N^2d^2/M)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">d</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mord">/</span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mclose">)</span></span></span></span> (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi></mrow><annotation encoding="application/x-tex">M</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span></span></span></span> 为 SRAM 大小)，由于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi></mrow><annotation encoding="application/x-tex">d</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">d</span></span></span></span> 通常远小于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi></mrow><annotation encoding="application/x-tex">M</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span></span></span></span>，其 HBM 访问量显著降低</li>
+</ul>
+</li>
+<li><strong>性能提升</strong>：
+<ul>
+<li><strong>减少 HBM 访问</strong>：FlashAttention 的 HBM 读写量远低于标准 Attention</li>
+<li><strong>加速端到端运行</strong>：更少的 HBM 访问直接带来了更快的运行时间，速度提升了约 3 倍</li>
+<li><strong>减少内存占用</strong>：由于不存储中间矩阵，FlashAttention 的内存占用从 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>N</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(N^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span> 降低到了 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>N</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(N)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mclose">)</span></span></span></span>，与序列长度呈线性关系</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Flash-Decoding</strong>：针对推理</p>
+<ul>
+<li><strong>动机</strong>：FlashAttention 主要优化了并行度高的训练场景；在自回归推理时，Query 的长度通常为 1，GPU 利用率很低</li>
+<li><strong>思想</strong>：将 FlashAttention 的思想扩展到推理阶段，主要优化 Key 和 Value 的处理</li>
+<li><strong>实现</strong>：将长序列的 Key/Value 划分为多个块 (chunks)，在 GPU 的不同线程块 (thread blocks) 上并行加载和处理这些 KV 块，然后再将结果聚合起来</li>
+<li><strong>效果</strong>：优化了单步解码的吞吐量和延迟，进一步加速了自回归生成</li>
+</ul>
+</li>
+</ul>
 <h4 id="大小模型协同：Speculative-Decoding">大小模型协同：Speculative Decoding</h4>
+<ul>
+<li>
+<p><strong>动机</strong>：大语言模型（LLM）推理的延迟（Latency）主要来源于将海量参数从 HBM 加载到 SRAM 的过程，而不是计算本身</p>
+</li>
+<li>
+<p><strong>核心思想</strong>：用一个小的、计算速度快的“草稿模型 (Draft Model)”来一次性预测多个未来 token，然后让大的“目标模型 (Target Model)”并行地一次性验证这些预测，而不是逐个生成</p>
+</li>
+<li>
+<p><strong>流程 (Draft-then-Verify)</strong>：</p>
+<ul>
+<li><strong>推测 (Draft)</strong>：使用一个同系列但小得多的模型（如 OPT-125M vs OPT-70B），自回归地快速生成一个包含 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi></mrow><annotation encoding="application/x-tex">K</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span></span></span></span> 个 token 的候选序列</li>
+<li><strong>并行验证 (Verify)</strong>：将原始输入和整个候选序列一起输入到大模型中，进行一次前向计算；这次计算会并行地得到这 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi></mrow><annotation encoding="application/x-tex">K</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span></span></span></span> 个位置上，大模型“本应该”输出的概率分布</li>
+<li><strong>比较与采纳</strong>：逐个比较小模型生成的 token 与大模型在该位置的预测
+<ul>
+<li>如果小模型的预测与大模型的验证结果一致（通过一种随机接受准则判断），则接受这个 token</li>
+<li>一旦遇到第一个不一致的token，则拒绝该 token 及其之后的所有 token</li>
+<li>然后，根据大模型在该拒绝位置的概率分布，重新采样一个正确的 token</li>
+</ul>
+</li>
+<li><strong>循环</strong>：将新生成的序列作为下一次推测的起点，重复上述过程</li>
+</ul>
+</li>
+<li>
+<p><strong>优势</strong>：</p>
+<ul>
+<li><strong>减少大模型调用次数</strong>：在理想情况下（小模型预测得准），大模型可以用一次前向计算的成本，一次性生成 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi></mrow><annotation encoding="application/x-tex">K</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span></span></span></span> 个 token，而不是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi></mrow><annotation encoding="application/x-tex">K</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span></span></span></span> 次</li>
+<li><strong>显著降低延迟</strong>：由于小模型的推理速度远远快于大模型，推理速度得到大幅提升</li>
+<li><strong>理论保证</strong>：通过特定的接受准则，可以证明推测解码最终生成的文本分布与完全由大模型自己生成的文本分布是完全一致的</li>
+</ul>
+</li>
+</ul>
+<p><img src="speculative.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <h2 id="Lecture-16-混合专家模型-MoE">Lecture 16: 混合专家模型 (MoE)</h2>
-<h3 id="为什么需要Mixture-of-Experts">为什么需要Mixture of Experts</h3>
+<h3 id="为什么需要-Mixture-of-Experts">为什么需要 Mixture of Experts</h3>
 <h3 id="什么是-Mixture-of-Experts">什么是 Mixture of Experts</h3>
 <h4 id="什么是-Experts">什么是 Experts</h4>
 <h4 id="Experts-到底能学到什么">Experts 到底能学到什么</h4>
