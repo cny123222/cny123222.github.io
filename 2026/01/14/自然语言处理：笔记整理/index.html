@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/nlp.png">
 <meta property="article:published_time" content="2026-01-14T14:43:02.000Z">
-<meta property="article:modified_time" content="2026-03-01T12:45:16.586Z">
+<meta property="article:modified_time" content="2026-03-01T13:54:01.102Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          51k words
+          56k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          428 mins
+          464 mins
         
       </span>
     
@@ -4862,10 +4862,125 @@ qk^T = (hW_Q)(cW_K^U) = hW_Q {W_K^U}^Tc^T
 </li>
 </ul>
 <h2 id="Lecture-17-检索增强生成-RAG">Lecture 17: 检索增强生成 (RAG)</h2>
+<ul>
+<li>
+<p><strong>大模型学习了什么</strong>：</p>
+<ul>
+<li><strong>世界知识</strong>：通过海量数据预训练，大模型学习并内化了关于我们世界的广泛知识</li>
+<li><strong>规则逻辑</strong>：模型同样学习到了语言、推理等方面的规则和逻辑</li>
+<li><strong>提示词 (Prompt) 的作用</strong>：我们使用提示词作为引导，指示大模型遵循人类的逻辑和方法，来调用和表达它所学习到的知识和逻辑，以完成内容生成、知识问答、代码生成、数学求解等任务</li>
+</ul>
+</li>
+<li>
+<p><strong>精雕细琢</strong>：让 AI 成为你需要的专家</p>
+<ul>
+<li><strong>角色的重要性</strong>：同一个基础大模型，通过在提示词中设定不同的角色，可以展现出截然不同的性格和行为模式</li>
+<li><strong>商业应用的需求</strong>：在真实的商业世界里，我们需要将 AI 塑造成可靠、专业的专家角色</li>
+</ul>
+</li>
+<li>
+<p><strong>从业务目标到技术手段</strong>：一个商业目标，可以从不同视角拆解，从而产生不同的技术需求</p>
+<ul>
+<li><strong>共同目标</strong>：为“高端咖啡机品牌”打造“王牌客服”</li>
+<li><strong>用户视角</strong>：需要一个能对答如流、解决所有购买问题的专家
+<ul>
+<li><strong>技术需求</strong>：打造精准的知识问答系统</li>
+</ul>
+</li>
+<li><strong>业务视角</strong>：需要一个能代表企业形象、推广咖啡知识的专家
+<ul>
+<li><strong>技术需求</strong>：塑造 AI 品牌大使</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>这两种不同的技术需求，分别指向了两种主流的大模型优化技术：RAG (检索增强生成) 和 微调 (Fine-tuning)。本讲座的核心，就是前者——RAG。</p>
 <h3 id="RAG（检索增强生成）简介">RAG（检索增强生成）简介</h3>
 <h4 id="RAG-的定义">RAG 的定义</h4>
+<ul>
+<li>
+<p><strong>问题</strong>：</p>
+<ul>
+<li>大模型在预训练时学习的知识是静态的，会随着时间推移而过时</li>
+<li>同时，模型在回答其知识范围外的问题时，可能会“一本正经地胡说八道”，产生幻觉 (Hallucination)</li>
+</ul>
+</li>
+<li>
+<p><strong>RAG 的定义</strong>：RAG (Retrieval-Augmented Generation)，即检索增强生成，是一种结合了信息检索 (Information Retrieval) 与文本生成 (Text Generation) 的技术</p>
+</li>
+<li>
+<p><strong>核心思想</strong>：在让大模型回答问题之前，先从一个外部的、最新的知识库中检索出与问题相关的资料，然后将这些资料作为上下文（Context），连同原始问题一起交给大模型，让大模型基于这些给定的资料来生成答案</p>
+</li>
+</ul>
 <h4 id="RAG-的核心步骤">RAG 的核心步骤</h4>
+<p>RAG 系统主要包含三大核心步骤，构成一个完整的工作流。</p>
+<ul>
+<li>
+<p><strong>索引 (Indexing) / 建立知识库</strong>：这个过程就像是为图书馆的书籍制作索引卡片，方便快速查找</p>
+<ul>
+<li><strong>输入</strong>：将私有、特定领域的资料（如公司文档、产品手册、FAQ）作为知识源</li>
+<li><strong>处理</strong>：
+<ul>
+<li><strong>加载与分割</strong>：加载不同格式的文档（PDF, TXT 等），并将其分割成更小的文本块 (chunks)</li>
+<li><strong>向量化</strong>：使用一个嵌入模型 (Embedding Model) 将每个文本块转换成一个向量 (vector)</li>
+<li><strong>存储</strong>：将这些文本块的向量和原文存储到一个向量数据库中，建立索引</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>检索 (Retrieval)</strong>：</p>
+<ul>
+<li><strong>输入</strong>：用户的提问</li>
+<li><strong>处理</strong>：
+<ul>
+<li>将用户的提问也通过同一个嵌入模型转换成一个向量</li>
+<li>在向量数据库中，通过向量相似度搜索，找到与问题向量最相似的 Top-K 个文本块</li>
+</ul>
+</li>
+<li><strong>输出</strong>：与用户提问最相关的几段原始资料</li>
+</ul>
+</li>
+<li>
+<p><strong>生成 (Generation)</strong>：</p>
+<ul>
+<li><strong>输入</strong>：原始的用户提问 + 上一步检索到的相关资料</li>
+<li><strong>处理</strong>：将上述信息组合成一个精心设计的提示词 (Prompt)，并将其提交给大语言模型 (LLM)</li>
+<li><strong>输出</strong>：LLM 基于给定的资料，生成一个内容准确、有逻辑的最终答案</li>
+</ul>
+</li>
+</ul>
 <h4 id="RAG-的功能特点">RAG 的功能特点</h4>
+<ul>
+<li>
+<p><strong>核心优势</strong>：用对的资料，给对的答案</p>
+</li>
+<li>
+<p><strong>主要功能与应用场景</strong>：</p>
+<ul>
+<li><strong>企业内部智能助手</strong>：
+<ul>
+<li><strong>应用</strong>：快速、准确地回答员工关于内部政策、财务报销、IT 支持等问题</li>
+<li><strong>优势</strong>：确保回答基于最新的公司制度，避免 HR 等支持部门重复回答问题</li>
+</ul>
+</li>
+<li><strong>垂直领域知识问答</strong>：
+<ul>
+<li><strong>应用</strong>：旅游导览、医疗健康咨询、法律金融问答等</li>
+<li><strong>优势</strong>：答案基于权威、专业的知识库，保证了信息的权威性和可靠性，避免了模型因缺乏专业知识而产生的不负责任的回答</li>
+</ul>
+</li>
+<li><strong>客户支持与售后服务</strong>：
+<ul>
+<li><strong>应用</strong>：7x24 小时在线解答客户关于产品使用、故障排查等问题</li>
+<li><strong>优势</strong>：降低人工客服压力，保证回复内容的一致性和规范性</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>RAG 通过为大模型外挂一个可随时更新的“外部大脑”（知识库），有效地解决了大模型知识陈旧和产生幻觉的核心痛点，是当前推动大模型在企业级和垂直领域应用落地的关键技术。</p>
 <h3 id="RAG-的实现原理">RAG 的实现原理</h3>
 <h4 id="工作流程图">工作流程图</h4>
 <h4 id="索引建立">索引建立</h4>
@@ -4884,12 +4999,310 @@ qk^T = (hW_Q)(cW_K^U) = hW_Q {W_K^U}^Tc^T
 <h2 id="Lecture-18-多模态大模型-MLLM">Lecture 18: 多模态大模型 (MLLM)</h2>
 <h3 id="MLLM-是什么">MLLM 是什么</h3>
 <h4 id="多模态模型构建">多模态模型构建</h4>
+<ul>
+<li>
+<p><strong>核心思想</strong>：让大语言模型“看”和“听”</p>
+<ul>
+<li><strong>LLM 作为“大脑”</strong>：
+<ul>
+<li>大语言模型（LLM）在理解和生成文本方面展现了强大的能力</li>
+<li>一个自然的想法是，能否让 LLM 充当一个处理中心，一个“大脑”，使其不仅能处理文本，还能理解和处理来自其他模态（modality）的信息，如图像、音频等</li>
+</ul>
+</li>
+<li><strong>关键挑战</strong>：模态对齐 (Modality Alignment)
+<ul>
+<li>不同模态的数据（如图像的像素、音频的波形）与文本的表示形式是完全不同的</li>
+<li>核心挑战在于，如何将这些非文本的模态信息转换并“对齐”到 LLM 能够理解的语义空间中</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>MLLM 的具体实现</strong>：以大规模视觉语言模型为例，当前最主流的 MLLM 研究集中在视觉-语言 (Vision-Language) 领域，其通用的解决方案由三个核心组件构成：</p>
+<ul>
+<li><strong>大语言模型 (LLM) 骨干</strong>：
+<ul>
+<li>这是模型的核心，充当“大脑”，负责高级的语义理解、推理和文本生成</li>
+<li>通常会选择一个强大的、预训练好的纯语言模型作为基础，如 LLaMA, Vicuna, FlanT5 等</li>
+</ul>
+</li>
+<li><strong>视觉编码器 (Visual Encoder)</strong>：
+<ul>
+<li>这是模型的“眼睛”，负责从输入的图像中提取视觉特征</li>
+<li>通常会选择一个强大的、在大型图像数据集上预训练好的视觉模型，如 ViT (Vision Transformer) 或 CLIP 的图像编码器</li>
+</ul>
+</li>
+<li><strong>连接模块 (Connection Module)</strong>：
+<ul>
+<li>这是连接“眼睛”和“大脑”的桥梁，是实现模态对齐的关键</li>
+<li>它的任务是将视觉编码器输出的视觉表征，转换成 LLM 能够接受的、类似于文本词向量 (word embedding) 的序列</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="mllm.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>MLLM的主流架构分类</strong>：连接模块的设计是区分不同 MLLM 架构的关键，主流方法包括：
+<ul>
+<li><strong>线性层 (Linear Layer)</strong>：
+<ul>
+<li>这是最简单直接的方式。使用一个简单的线性投影层，将视觉编码器输出的特征向量直接映射到与 LLM 词嵌入空间相同的维度</li>
+<li><strong>代表模型</strong>：LLaVA, PandaGPT</li>
+</ul>
+</li>
+<li><strong>适配器 (Adapter)</strong>：
+<ul>
+<li>使用更复杂的、轻量级的神经网络模块（Adapter）作为连接器，在保持 LLM 大部分参数冻结的同时，提供更强的转换能力</li>
+<li><strong>代表模型</strong>：LLaMA-Adapter V2</li>
+</ul>
+</li>
+<li><strong>Q-Former (Querying Transformer)</strong>：
+<ul>
+<li>这是一种更强大的连接模块，本身就是一个小型的 Transformer</li>
+<li>它引入了一组可学习的查询向量 (learnable queries)，通过交叉注意力机制（cross-attention）主动地从视觉编码器的输出中“查询”和“提取”与文本最相关的视觉信息，生成更精炼的视觉表征</li>
+<li><strong>代表模型</strong>：BLIP-2, InstructBLIP, MiniGPT-4</li>
+</ul>
+</li>
+<li><strong>感知器 (Perceiver)</strong>：
+<ul>
+<li>类似于 Q-Former，也是一种基于交叉注意力的信息提取模块，旨在将大规模的视觉输入压缩成一个固定长度的、精简的表示</li>
+<li><strong>代表模型</strong>：mPLUG-Owl</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 <h4 id="MLLM-的训练">MLLM 的训练</h4>
-<h3 id="MLLM经典模型">MLLM经典模型</h3>
-<h4 id="LLaVa">LLaVa</h4>
-<h4 id="BLIP-2">BLIP-2</h4>
+<p>为了让这三个模块协同工作，MLLM 的训练通常分为两个阶段。</p>
+<ul>
+<li><strong>阶段一</strong>：生成式预训练（模态对齐）
+<ul>
+<li><strong>目标</strong>：教会连接模块如何将视觉信息正确地“翻译”成 LLM 能理解的“语言”</li>
+<li><strong>数据</strong>：使用海量的图像-文本对（如图片及其对应的描述文字）</li>
+<li><strong>方法</strong>：
+<ul>
+<li>通常冻结强大的视觉编码器和 LLM 的参数，只训练连接模块</li>
+<li>任务是让模型在看到一张图片后，能够生成其对应的文本描述</li>
+<li>通过这个过程，连接模块学会了如何搭建视觉和语言之间的桥梁</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>阶段二</strong>：指令微调 (Instruction Tuning)
+<ul>
+<li><strong>目标</strong>：在模态对齐的基础上，进一步教会模型遵循更复杂的多模态指令，进行对话、推理等高级任务</li>
+<li><strong>数据</strong>：使用更高质量的、人工构建的多模态指令数据集（例如，针对一张图片提出一个复杂问题，并提供一个详细的回答）</li>
+<li><strong>方法</strong>：
+<ul>
+<li>通常冻结视觉编码器，同时微调连接模块和LLM的所有（或部分）参数</li>
+<li>通过这个过程，模型学会了如何将视觉信息与复杂的指令结合起来，进行深入的思考和回答</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="MLLM-经典模型">MLLM 经典模型</h3>
+<p>在了解了 MLLM 的通用架构和训练流程后，我们来深入分析两个具有里程碑意义的经典模型：LLaVA 和 BLIP-2。</p>
+<h4 id="LLaVa-Large-Language-and-Vision-Assistant">LLaVa (Large Language and Vision Assistant)</h4>
+<p>LLaVA 以其简洁的设计和出色的性能，证明了将视觉和语言进行直接映射的有效性，并为后续许多工作开辟了道路。</p>
+<ul>
+<li>
+<p><strong>三大核心组件</strong>：</p>
+<ul>
+<li><strong>视觉编码器 (Vision Encoder)</strong>：采用预训练好的 CLIP ViT-L/14
+<ul>
+<li>CLIP的强大之处在于它在训练时就已经对图像和文本进行了一定程度的对齐，这为LLaVA提供了高质量的初始视觉表征</li>
+</ul>
+</li>
+<li><strong>大语言模型 (LLM)</strong>：采用开源的指令微调过的模型 Vicuna（LLaMA 的变体）</li>
+<li><strong>连接模块 (Connection Module)</strong>：采用最简单的线性层 (Linear Layer) 作为投影模块</li>
+</ul>
+</li>
+<li>
+<p><strong>两阶段训练流程</strong>：</p>
+<ul>
+<li><strong>阶段一</strong>：视觉模态对齐预训练
+<ul>
+<li>训练连接模块，将视觉特征对齐到语言模型的词嵌入空间</li>
+</ul>
+</li>
+<li><strong>阶段二</strong>：指令微调
+<ul>
+<li>使用多模态指令数据，端到端微调模型，使其具备对话和遵循指令的能力</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>视觉编码器 Vision Transformer (ViT) 的工作原理</strong>：</p>
+<ul>
+<li><strong>图像分块 (Image Patching)</strong>：
+<ul>
+<li>将输入的图像分割成一系列固定大小的、不重叠的小方块 (patches)，如一张 224x224 的图像可以被分割成 14x14 个 16x16 的 patch</li>
+<li>这个过程将二维的图像转换成了一个一维的 patch 序列</li>
+</ul>
+</li>
+<li><strong>线性映射 (Linear Projection)</strong>：
+<ul>
+<li>将每个被展平（flatten）的 patch 通过一个线性层，将其映射成一个固定维度的向量，这个向量被称为 Patch Embedding</li>
+</ul>
+</li>
+<li><strong>添加位置编码 (Position Embedding)</strong>：
+<ul>
+<li>由于 Transformer 本身不具备感知序列顺序的能力，我们需要为每个 Patch Embedding 添加一个可学习的位置编码 (Position Embedding)，以告知模型每个 patch 在原始图像中的位置信息</li>
+<li>最终输入到 Transformer Encoder 的是 Patch Embedding + Position Embedding</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="vit.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>LLaVA 的训练细节</strong>：
+<ul>
+<li><strong>阶段一</strong>：预训练（模态对齐）
+<ul>
+<li><strong>目标</strong>：训练连接模块（线性层 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">W</mi></mrow><annotation encoding="application/x-tex">\mathbf{W}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6861em;"></span><span class="mord mathbf" style="margin-right:0.01597em;">W</span></span></span></span>）</li>
+<li><strong>过程</strong>：冻结视觉编码器（ViT）和 LLM（Vicuna）的参数，将图片经过 ViT 和线性层 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">W</mi></mrow><annotation encoding="application/x-tex">\mathbf{W}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6861em;"></span><span class="mord mathbf" style="margin-right:0.01597em;">W</span></span></span></span> 转换后的视觉 token 序列，与对应的文本描述一起输入 LLM，训练 LLM 去生成这段文本描述</li>
+<li><strong>本质</strong>：让线性层 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">W</mi></mrow><annotation encoding="application/x-tex">\mathbf{W}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6861em;"></span><span class="mord mathbf" style="margin-right:0.01597em;">W</span></span></span></span> 学会如何将 ViT 输出的“视觉语言”翻译成 Vicuna 能听懂的“文本语言”</li>
+</ul>
+</li>
+<li><strong>阶段二</strong>：指令微调 (Instruction Tuning)
+<ul>
+<li><strong>挑战</strong>：如何为多模态场景构建高质量的指令微调数据集，现有的 LLM 都是纯文本的，无法直接“看到”图片来生成问答对</li>
+<li><strong>LLaVA 的创新方法（类似 Self-Instruct）</strong>：
+<ul>
+<li><strong>文本化多模态信息</strong>：从已有的多模态数据集（如 MS COCO）中，提取图像的文本描述（caption）和物体检测框（bbox）信息</li>
+<li><strong>LLM 生成指令</strong>：将这些文本化的信息输入给一个强大的 Text-only LLM（如GPT-4），并使用人工写出的 Examples 作为提示，让 GPT-4 基于这些信息，生成与图像内容相关的、多样化的对话、问答或推理指令</li>
+<li><strong>构建数据集</strong>：将原始图像、GPT-4 生成的指令、以及 GPT-4 生成的答案，组合成一条条 (Image, Instruction, Answer) 的三元组数据</li>
+</ul>
+</li>
+<li><strong>训练</strong>：在这个新构建的多模态指令数据集上进行微调
+<ul>
+<li>此阶段冻结视觉编码器，但更新连接模块和 LLM 的参数，从而教会模型如何遵循多模态指令</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="BLIP-2-Bootstrapping-Language-Image-Pre-training-with-Frozen-LLMs">BLIP-2 (Bootstrapping Language-Image Pre-training with Frozen LLMs)</h4>
+<p>BLIP-2 引入了一个更强大、更高效的连接模块——Q-Former，旨在用更少的参数实现更优的模态对齐。</p>
+<ul>
+<li>
+<p><strong>三大核心组件</strong>：</p>
+<ul>
+<li><strong>视觉编码器</strong>：采用预训练好的 ViT-L/14</li>
+<li><strong>大语言模型</strong>：采用指令微调过的大模型 FlanT5, Vicuna</li>
+<li><strong>连接模块</strong>：轻量级的 Q-Former (Querying Transformer)</li>
+</ul>
+</li>
+<li>
+<p><strong>两阶段训练流程</strong>：</p>
+<ul>
+<li><strong>阶段一</strong>：视觉表征学习
+<ul>
+<li>训练 Q-Former，使其从视觉编码器中提取与文本最相关的视觉特征</li>
+</ul>
+</li>
+<li><strong>阶段二</strong>：生成式训练
+<ul>
+<li>将 Q-Former 的输出连接到 LLM，训练模型生成文本</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="blip.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>
+<p><strong>Q-Former 结构与表征学习（阶段一）</strong>：Q-Former 是 BLIP-2 的核心创新，它通过三个相互关联的预训练任务，来学习如何将海量的视觉信息压缩成一小段精炼的、对 LLM 友好的表征</p>
+<ul>
+<li><strong>结构</strong>：Q-Former 内部包含一个 Image Transformer 和一个 Text Transformer，它的关键是一组可学习的查询向量 (Learned Queries)，这些查询向量作为“信息中介”，同时与图像和文本进行交互
+<ul>
+<li><strong>Image-Text 共享信息</strong>：通过 Self Attention 参数共享实现</li>
+<li><strong>Image 信息</strong>：通过 Image Transformer 每层的 Cross Attention 提取</li>
+<li><strong>Text 信息</strong>：通过 Text Transformer 的 Self Attention 提取</li>
+</ul>
+</li>
+<li><strong>训练任务</strong>:
+<ul>
+<li><strong>图像-文本对比学习 (Image-Text Contrastive Learning, ITC)</strong>：
+<ul>
+<li><strong>目标</strong>：让匹配的“图像-文本”对的表示在特征空间中更接近，不匹配的则更远</li>
+<li><strong>实现</strong>：通过对比损失函数 (contrastive loss) 来优化</li>
+</ul>
+</li>
+<li><strong>基于图像的文本生成 (Image-Grounded Text Generation, ITG)</strong> ：
+<ul>
+<li><strong>目标</strong>：在给定图像的条件下，能够生成对应的文本描述</li>
+<li><strong>实现</strong>：Q-Former 的查询向量与图像特征交互后，其输出需要能够指导 Text Transformer 生成原始文本</li>
+</ul>
+</li>
+<li><strong>图像-文本匹配 (Image-Text Matching, ITM)</strong>：
+<ul>
+<li><strong>目标</strong>：判断给定的“图像-文本”对是否匹配，是一个二分类任务</li>
+<li><strong>实现</strong>：将图像和文本的表示融合后，通过一个分类头来判断</li>
+</ul>
+</li>
+<li>通过这三个任务的联合训练，Q-Former 的可学习查询向量学会了如何从视觉编码器中找出对描述文本最重要的视觉信息</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>生成式训练（阶段二）</strong>：</p>
+<ul>
+<li><strong>目标</strong>：将 Q-Former 学到的视觉表征连接到 LLM</li>
+<li><strong>过程</strong>：
+<ul>
+<li>冻结 ViT 和 LLM 的参数，Q-Former 的参数在阶段一训练好后也冻结</li>
+<li>在 Q-Former 的输出和 LLM 的输入之间，添加一个全连接层 (Fully Connected)</li>
+<li>只训练这个全连接层，其任务是将 Q-Former 的输出（已经压缩好的视觉信息）映射到 LLM 的文本嵌入空间</li>
+</ul>
+</li>
+<li><strong>优势</strong>：整个训练过程完全不更新庞大的 ViT 和 LLM 的参数，极大地提高了训练效率，降低了对计算资源的要求</li>
+</ul>
+</li>
+</ul>
 <h3 id="MLLM-发展与应用">MLLM 发展与应用</h3>
+<p>多模态大模型的发展并不仅限于视觉，其最终目标是能够理解和处理世界上的所有模态信息。</p>
+<ul>
+<li><strong>统一其它模态信息</strong>：
+<ul>
+<li>除了图像输入，其他模态如语音、音乐、视频等也可以通过各自的编码器被转换为特征向量</li>
+<li><strong>核心思想不变</strong>：将所有这些模态的特征信息，通过不同的连接模块，统一对齐到 LLM 强大的语义空间中</li>
+<li><strong>实现“万物可输入”</strong>：模型可以支持语音输入、音乐输入等</li>
+<li><strong>实现“万物可输出”</strong>：模型也可以支持生成文字以外的内容，如直接生成音频或图片</li>
+</ul>
+</li>
+</ul>
 <h4 id="AnyGPT">AnyGPT</h4>
+<p>AnyGPT 是迈向通用多模态模型的一个重要尝试，其核心理念是 “Tokenize Everything”。</p>
+<ul>
+<li><strong>统一的离散表示</strong>：
+<ul>
+<li>AnyGPT 将所有模态（语音、文本、图像、音乐等）都通过各自的编码器（tokenizer）转换成一个统一的、离散的 token 序列</li>
+<li>它为不同模态设计了特殊的控制token，用于在序列中区分不同的模态数据</li>
+</ul>
+</li>
+<li><strong>端到端的生成</strong>：
+<ul>
+<li>模型在一个包含各种模态交错数据的序列上进行训练</li>
+<li>这使得 AnyGPT 能够在一个统一的框架内，实现任意模态到任意模态的自由转换和生成</li>
+</ul>
+</li>
+<li><strong>应用示例</strong>：
+<ul>
+<li><strong>文生图/音乐</strong>：输入文本指令，生成图片或音乐</li>
+<li><strong>图文生音乐</strong>：输入一张图片和一段文字描述，生成与之匹配的音乐</li>
+<li><strong>语音指令生图</strong>：输入一段语音指令，生成对应的图片</li>
+</ul>
+</li>
+</ul>
+<p>AnyGPT 等工作展示了多模态大模型的未来方向：一个能够无缝地理解、关联和生成世界上各种信息模态的通用人工智能。</p>
 <h2 id="参考资料">参考资料</h2>
 <p>本文参考上海交通大学《自然语言处理》课程 CS3602 林洲汉老师的 PPT 课件整理。</p>
 
