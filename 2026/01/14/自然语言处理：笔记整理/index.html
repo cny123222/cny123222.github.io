@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/nlp.png">
 <meta property="article:published_time" content="2026-01-14T14:43:02.000Z">
-<meta property="article:modified_time" content="2026-03-01T13:54:01.102Z">
+<meta property="article:modified_time" content="2026-03-01T14:21:27.539Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          56k words
+          60k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          464 mins
+          498 mins
         
       </span>
     
@@ -4983,19 +4983,334 @@ qk^T = (hW_Q)(cW_K^U) = hW_Q {W_K^U}^Tc^T
 <p>RAG 通过为大模型外挂一个可随时更新的“外部大脑”（知识库），有效地解决了大模型知识陈旧和产生幻觉的核心痛点，是当前推动大模型在企业级和垂直领域应用落地的关键技术。</p>
 <h3 id="RAG-的实现原理">RAG 的实现原理</h3>
 <h4 id="工作流程图">工作流程图</h4>
+<p>RAG 的基本工作流可以分为两个主要阶段：建立索引 和 检索生成。</p>
+<ul>
+<li>
+<p><strong>阶段一</strong>：建立索引 (Indexing) - 准备知识</p>
+<ul>
+<li>这个阶段是离线进行的，目标是把你所有的非结构化/半结构化数据处理成一个可供快速检索的知识库</li>
+<li><strong>数据加载 (Data Loading)</strong>：从各种数据源（如文档、网页、数据库）加载原始资料</li>
+<li><strong>文本分割 (Chunking / Parsing)</strong>：将加载的长文档分割成更小的、有意义的文本块（chunks）</li>
+<li><strong>向量嵌入 (Embedding)</strong>：使用一个嵌入模型（Embedding Model）将每个文本块转换成一个高维的数字向量</li>
+<li><strong>索引存储 (Storing)</strong>：将这些向量连同其对应的原始文本块一起存入一个向量数据库 (Vector Database)，并建立索引以便快速搜索</li>
+</ul>
+</li>
+<li>
+<p><strong>阶段二</strong>：检索生成 (Retrieval &amp; Generation) - 实时问答</p>
+<ul>
+<li>这个阶段是当用户提出问题时实时发生的</li>
+<li><strong>用户问题向量化</strong>：将用户的提问（Query）通过同一个嵌入模型转换成一个查询向量</li>
+<li><strong>向量检索 (Vector Search)</strong>：在向量数据库中，使用查询向量去搜索，找出在向量空间中与之最相似的 Top-K 个文本块</li>
+<li><strong>构建提示词 (Prompt Construction)</strong>：将用户的原始问题和检索到的 Top-K 个文本块（作为上下文 Context）组合成一个提供给大语言模型的提示词</li>
+<li><strong>生成答案 (Generation)</strong>：将构建好的提示词发送给大语言模型（LLM），LLM 基于给定的上下文信息，生成最终的答案</li>
+</ul>
+</li>
+</ul>
 <h4 id="索引建立">索引建立</h4>
+<p>建立一个高质量的索引是RAG系统性能的基石。这个过程涉及多个关键步骤和挑战。</p>
+<ul>
+<li>
+<p><strong>数据清洗与解析 (Data Cleaning &amp; Parsing)</strong>：</p>
+<ul>
+<li><strong>目标</strong>：从原始、混乱的文档中提取出干净、有价值的文本内容</li>
+<li><strong>关键任务</strong>：
+<ul>
+<li><strong>格式转换</strong>：将 PDF、Docx、Markdown 等不同格式的文件统一解析为纯文本</li>
+<li><strong>去除冗余与乱码</strong>：清除广告、页眉页脚、不相关的导航链接、格式错误导致的乱码等“噪音”</li>
+<li><strong>结构化信息提取</strong>：识别并保留有用的结构化信息，如文档标题、章节名、列表、表格和图像，而不仅仅是处理纯文本</li>
+<li><strong>规范化</strong>：处理特殊字符和格式，避免重复嵌入相同但格式不同的内容</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>文本块切分 (Chunking)</strong>：</p>
+<ul>
+<li><strong>目标</strong>：将长文档切分成大小适中、语义完整的块，以平衡检索的精确性和完整性</li>
+<li><strong>挑战</strong>：
+<ul>
+<li><strong>切分太细</strong>：可能导致语义不完整，一个完整的答案被拆到多个块中，单次检索无法获取全部信息</li>
+<li><strong>切分太粗</strong>：可能引入过多噪音，降低检索精度，并且增加传入 LLM 的上下文长度，导致成本上升</li>
+</ul>
+</li>
+<li><strong>常见策略</strong>：
+<ul>
+<li><strong>固定长度切分</strong>：最简单，但容易切断句子</li>
+<li><strong>按语义边界切分</strong>：按段落、句子或使用专门的 NLP 库进行切分，能更好地保持语义完整性</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>嵌入向量化 (Embedding)</strong>：</p>
+<ul>
+<li><strong>目标</strong>：将文本块转换为能够表达其语义的数字向量</li>
+<li><strong>核心</strong>：选择一个高质量的嵌入模型至关重要，它直接决定了后续检索的准确性</li>
+</ul>
+</li>
+</ul>
+<p>建立索引的挑战在于：如何有效地清洗和解析异构数据、如何智能地切分文本块以保留完整语义、以及如何将文本块高质量地向量化。</p>
 <h4 id="知识检索与生成">知识检索与生成</h4>
+<ul>
+<li>
+<p><strong>检索 (Retrieval)</strong>：</p>
+<ul>
+<li><strong>目标</strong>：根据用户问题，快速、准确地从知识库中找到最相关的文本块</li>
+<li><strong>核心步骤</strong>：
+<ul>
+<li><strong>意图识别</strong>：理解用户问题的真实意图</li>
+<li><strong>相似度计算</strong>：计算问题向量与数据库中所有文本块向量的相似度（常用余弦相似度）</li>
+<li><strong>排序 (Ranking)</strong>：根据相似度得分，对检索到的文本块进行排序</li>
+<li><strong>选择 Top-K</strong>：选取排名最高的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi></mrow><annotation encoding="application/x-tex">K</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span></span></span></span> 个文本块作为后续生成的依据</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>生成 (Generation)</strong>：</p>
+<ul>
+<li><strong>目标</strong>：基于检索到的信息，生成一个清晰、准确、符合用户提问的回答</li>
+<li><strong>核心步骤</strong>：
+<ul>
+<li><strong>提示词工程</strong>：将用户的原始问题和检索到的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi></mrow><annotation encoding="application/x-tex">K</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span></span></span></span> 个文本块整合到一个精心设计的提示词模板中，这个模板会明确指示 LLM：“请你基于以下资料来回答这个问题…”</li>
+<li><strong>LLM 推理</strong>：大模型接收到这个富含上下文的提示词，并据此生成答案</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>检索与生成的挑战在于：如何准确识别用户意图、如何高效判断语义相似性、以及如何对找到的多个知识片段进行有效排序和整合。</p>
 <h3 id="评测-RAG-应用">评测 RAG 应用</h3>
+<p>构建一个 RAG 系统只是第一步，如何科学、高效地评测其效果，并在此基础上进行持续优化，是决定 RAG 应用成败的关键。</p>
 <h4 id="RAG-应用的潜在问题">RAG 应用的潜在问题</h4>
-<h4 id="检索模块和生成模块的评估指标">检索模块和生成模块的评估指标</h4>
-<h4 id="构建评测矩阵">构建评测矩阵</h4>
+<p>在 RAG 的整个工作流程中，每个环节都可能出错，导致最终结果不理想。</p>
+<ul>
+<li>
+<p><strong>主要的潜在问题点</strong>：</p>
+<ul>
+<li>
+<p><strong>意图理解不准确</strong>：</p>
+<ul>
+<li><strong>问题</strong>：系统未能正确理解用户查询的真实意图</li>
+<li><strong>示例</strong>：用户问“大模型如何收费？”，系统可能只检索到关于“询价”的文档，而忽略了关于“缴费流程”的内容</li>
+</ul>
+</li>
+<li>
+<p><strong>召回的文段不正确</strong>：</p>
+<ul>
+<li><strong>问题</strong>：检索系统未能从知识库中找到包含正确答案的文本块，或者找到了不相关的、错误的文本块</li>
+<li>这是 RAG 中最常见和最关键的问题，如果“找资料”这一步就错了，后续的生成也必然是错误的</li>
+</ul>
+</li>
+<li>
+<p><strong>生成答案不正确</strong>：</p>
+<ul>
+<li><strong>问题</strong>：即使检索到的文段是正确的，大模型在生成答案时也可能出错</li>
+<li><strong>表现</strong>：
+<ul>
+<li><strong>幻觉</strong>：答案中包含检索文段里没有的信息</li>
+<li><strong>概括错误</strong>：对检索到的信息进行了错误的总结或推理</li>
+<li><strong>不忠实</strong>：未能严格依据提供的上下文来回答</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>评测 RAG 应用的挑战</strong>：</p>
+<ul>
+<li><strong>挑战一</strong>：AI 评测不可靠
+<ul>
+<li>对于通识性问题，可以使用更强大的 AI（如 GPT-4）来评测 RAG 系统的回答</li>
+<li>但 RAG 的核心应用场景是私域知识，对于这些外部 AI 完全陌生的知识，它无法判断 RAG 系统回答的正确性</li>
+<li><strong>结论</strong>：在私域知识场景下，高质量的评测必须依赖人工，特别是资深的领域专家</li>
+</ul>
+</li>
+<li><strong>挑战二</strong>：规模化评测的效率瓶颈
+<ul>
+<li>真实的 RAG 应用往往面临庞大的文档库（数十万篇）和高并发的用户问答量（每周数万次）</li>
+<li>完全依赖人工评测，覆盖率极低，效率低下，无法满足快速迭代的需求</li>
+</ul>
+</li>
+<li><strong>核心矛盾</strong>：我们需要专家级的人工评测来保证准确性，但又面临大规模自动化评测的效率需求</li>
+</ul>
+</li>
+</ul>
+<h4 id="自动化评测框架">自动化评测框架</h4>
+<p>为了解决上述矛盾，社区发展出了像 RAGAS (Retrieval-Augmented Generation Assessment System) 这样的自动化评测框架。</p>
+<ul>
+<li>
+<p><strong>RAGAS 的核心思想</strong>：</p>
+<ul>
+<li>将 RAG 系统的评测分解为对检索 (Retrieval) 和生成 (Generation) 两个独立组件的评估</li>
+<li>通过一系列精心设计的、可量化的指标，自动化地评估这两个组件的质量</li>
+</ul>
+</li>
+<li>
+<p><strong>RAGAS 的关键指标</strong>：</p>
+<ul>
+<li><strong>检索性能指标</strong>：
+<ul>
+<li><strong>Contextual Recall (召回率)</strong>：评估检索到的上下文（chunks）是否完整，即标准答案（Ground Truth）中蕴含的信息，是否都能在被召回的上下文中找到</li>
+<li><strong>Contextual Precision (精确率)</strong>：评估检索到的上下文是否相关，即被召回的上下文中，有多少是真正与问题相关的，有多少是噪音</li>
+</ul>
+</li>
+<li><strong>生成性能指标</strong>：
+<ul>
+<li><strong>Faithfulness (忠实度)</strong>：评估生成的答案是否完全基于所提供的上下文，即答案中的每一句话是否都能在召回的 chunks 中找到依据，是否存在幻觉</li>
+<li><strong>Answer Relevancy (相关性)</strong>：评估生成的答案与用户原始提问的关联程度，即答案是否直接、有效地回应了用户的问题</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>端到端指标</strong>：</p>
+<ul>
+<li><strong>Answer Correctness (正确性)</strong>：综合评估生成的答案在事实层面是否与标准答案一致</li>
+</ul>
+</li>
+<li>
+<p><strong>自动化评测流程</strong>：</p>
+<ul>
+<li><strong>构建评测集</strong>：通过采样真实用户问题，并由领域专家提供高质量的标准答案 (Ground Truth)</li>
+<li><strong>运行 RAG 系统</strong>：对评测集中的问题，运行 RAG 系统，记录其召回的上下文 (Chunks) 和生成的最终答案</li>
+<li><strong>RAGAS 自动评估</strong>：将（问题，召回的上下文，生成的答案，标准答案）四元组输入 RAGAS 框架，它会利用 LLM（如 GPT-4）作为裁判，自动计算上述各项指标得分</li>
+<li><strong>持续优化</strong>：根据各项指标的得分，定位系统的瓶颈（是检索问题还是生成问题），并进行针对性优化</li>
+</ul>
+</li>
+</ul>
+<h4 id="评测运营体系">评测运营体系</h4>
+<p>一个成功的 RAG 应用，需要一个持续迭代的闭环评测体系。</p>
+<ul>
+<li><strong>核心理念</strong>：业务驱动，专家参与，让最懂业务的人（领域专家）来定义评测标准和提供高质量数据</li>
+<li><strong>构建评测体系</strong>：
+<ul>
+<li><strong>从意图和知识空间出发</strong>：从历史数据（如客服工单、用户对话）中提取和归纳用户的核心意图空间，并梳理对应的知识空间</li>
+<li><strong>构建高质量评测集</strong>：基于意图空间进行抽样，由专家构造覆盖面广、质量高的评测集，并进行周期性迭代，保持评测集的新鲜度</li>
+<li><strong>持续优化与改进</strong>：
+<ul>
+<li>通过 RAGAS 等工具进行自动化评测，发现主要问题（如回答不相关、有错误、有幻觉）</li>
+<li>根据问题，针对性地进行知识库优化（清理垃圾、修正错误、优化索引）和算法优化（改进检索排序、优化 Prompt 等）</li>
+</ul>
+</li>
+<li><strong>最终目标</strong>：通过这样一个“发现问题 -&gt; 改进 -&gt; 跟踪效果”的持续闭环，不断提升 RAG 应用的性能和用户满意度</li>
+</ul>
+</li>
+</ul>
 <h3 id="RAG-持续优化">RAG 持续优化</h3>
+<p>构建 RAG 系统只是起点，真正的挑战在于如何围绕 RAG 的核心工作流程，进行持续的、数据驱动的优化，以不断提升其性能。我们从六个核心方向给出优化的具体策略。</p>
 <h4 id="优化索引准确性">优化索引准确性</h4>
+<ul>
+<li>
+<p><strong>核心思想</strong>：把知识整理好，让它更方便被找到</p>
+</li>
+<li>
+<p><strong>清洗数据</strong>：优化文本解析过程，去除无关信息（如网页广告、页眉页脚）</p>
+</li>
+<li>
+<p><strong>优化分块 (Chunking) 策略</strong>：</p>
+<ul>
+<li><strong>按语义切分</strong>：优先按段落、句子等语义单元切分，而不是固定长度，以保持意思完整。</li>
+<li><strong>滑动窗口</strong>：在切块时，让每个 chunk 包含前后相邻 chunk 的一部分重叠内容，以便在检索时能更好地理解上下文</li>
+<li><strong>自动合并检索</strong>：当检索到的多个小 chunk（如 128 token）都与问题高度相关时，自动向上合并，返回一个包含它们全部信息的、更大的父 chunk（如 512 token），避免回答缺少关键信息</li>
+</ul>
+</li>
+<li>
+<p><strong>优化 Embedding 和排序模型</strong>：</p>
+<ul>
+<li><strong>Embedding 模型</strong>：选择或微调一个更适合你所在领域的 Embedding 模型，可以显著提升检索的准确率</li>
+<li><strong>ReRank 模型</strong>：在初次检索（召回）后，使用一个更强大的重排序模型（ReRanker），对召回的 Top-K 个 chunks 进行二次排序，让最贴近用户问题的 chunks 排在最前面</li>
+</ul>
+</li>
+<li>
+<p><strong>先进索引策略 (如 Raptor)</strong>：</p>
+<ul>
+<li><strong>思想</strong>：像自动为文档构建多层目录一样</li>
+<li><strong>方法</strong>：通过聚类算法，将语义相似的文本块（chunks）组织成树状结构，底层是原始的细粒度 chunks，上层是这些 chunks 的摘要或总结</li>
+<li><strong>优势</strong>：检索时可以先在高层级的摘要中快速定位，然后再深入到底层细节，极大地提高了长文档的检索效率和准确性</li>
+</ul>
+</li>
+</ul>
 <h4 id="理解用户提问的“真实意图”">理解用户提问的“真实意图”</h4>
+<ul>
+<li>
+<p><strong>核心思想</strong>：搞清楚用户到底想问什么，别答错了题</p>
+</li>
+<li>
+<p><strong>补全相关信息 (Enrich)</strong>：用户的原始提问往往是模糊和口语化的，我们可以通过自动化方案来“丰富”它</p>
+<ul>
+<li><strong>多轮对话追问</strong>：当用户问题不明确时，让 LLM 主动追问细节（如预算、偏好等），通过多轮对话逐步澄清用户需求。</li>
+<li><strong>利用历史信息</strong>：结合用户的历史问答记录、应用场景等信息，补全查询的上下文</li>
+<li><strong>大模型改写</strong>：直接让大模型对用户的原始问题进行转述和修正，使其更规范、信息更完整</li>
+</ul>
+</li>
+<li>
+<p><strong>多角度改写与融合 (Multi-Query &amp; RAG-Fusion)</strong>：</p>
+<ul>
+<li><strong>Multi-Query</strong>：让 LLM 将用户的单个问题，从不同角度改写成多个语义相近但表述不同的问题</li>
+<li><strong>并行检索</strong>：用这些改写后的多个问题，并行地去知识库中进行检索</li>
+<li><strong>RAG-Fusion</strong>：将多路检索回来的结果进行去重、筛选和融合，确保最终提供给生成模型的资料更全面、更鲁棒</li>
+</ul>
+</li>
+<li>
+<p><strong>问题分解 (Decomposition / Step Back)</strong>：</p>
+<ul>
+<li><strong>Decomposition</strong>：将一个复杂的、需要多步推理的问题，拆解成一系列更简单的、有逻辑关联的子问题，然后分步进行检索和回答（相当于 RAG 中的思维链 CoT）</li>
+<li><strong>Step Back</strong>：对于一个过于具体的问题，先让 LLM 将其概括成一个更高层次的核心问题，基于这个核心问题去检索，获得更广泛的背景知识后，再回答原始的具体问题</li>
+</ul>
+</li>
+</ul>
 <h4 id="改造信息抽取途径">改造信息抽取途径</h4>
+<ul>
+<li>
+<p><strong>核心思想</strong>：不仅看文本文档，还从数据库、知识图谱或互联网中找答案</p>
+</li>
+<li>
+<p><strong>数据库查询 (NL2SQL)</strong>：</p>
+<ul>
+<li>将用户的自然语言问题，转换为SQL查询语句。</li>
+<li>直接从结构化的数据库中查询精确的数据（如销量、库存），而不是从非结构化文本中提取</li>
+<li>利用 Spider 等评测榜单可以评估大模型生成 SQL 的能力</li>
+</ul>
+</li>
+<li>
+<p><strong>知识图谱查询 (Graph RAG)</strong>：</p>
+<ul>
+<li>将用户问题转换为图查询语言（如 Cypher）</li>
+<li>从知识图谱（如 Neo4j）中查询实体之间的复杂关系（如人物关系、产业链），发现普通文本检索难以找到的隐藏关联</li>
+</ul>
+</li>
+</ul>
 <h4 id="反思与验证">反思与验证</h4>
-<h4 id="引入多源数据">引入多源数据</h4>
+<ul>
+<li>
+<p><strong>核心思想</strong>：回答前自己检查一遍，别答错了</p>
+</li>
+<li>
+<p><strong>自反思机制 (Self-RAG)</strong>：在大模型生成最终答案前，增加一个“自我反思”的步骤，让模型自己判断：</p>
+<ul>
+<li><strong>相关性</strong>：检索到的资料真的和问题相关吗？</li>
+<li><strong>幻觉检测</strong>：我的回答是不是完全基于给定的资料，有没有自己“瞎编”的成分？</li>
+<li><strong>完整性</strong>：我真的完整地回答了用户的问题吗？</li>
+</ul>
+</li>
+<li>
+<p><strong>迭代循环</strong>：如果自查发现有问题（如资料不相关、信息不足），模型可以决定重新改写问题、重新检索，或者上网搜索，形成一个迭代优化的闭环，直到生成一个高质量的答案为止</p>
+</li>
+</ul>
 <h4 id="切换基础模型">切换基础模型</h4>
+<ul>
+<li><strong>核心思想</strong>：选用最合适的大模型来搭配 RAG 使用</li>
+<li>RAG 系统中的大语言模型（LLM）是可插拔的，不同的 LLM 在长文本理解、多语言支持、特定领域（如数学、编码）能力上各有千秋</li>
+<li>应根据具体的业务需求、成本预算、评测体系评分等因素，灵活选择和切换最合适的基础模型（如 Qwen, DeepSeek, GLM, Llama等），以达到最佳效果</li>
+</ul>
+<h4 id="上下文是-RAG的生命线">上下文是 RAG的生命线</h4>
+<ul>
+<li><strong>“大海捞针”实验揭示</strong>：随着提供给模型的上下文（Context）越来越长，模型从中准确抽取出关键信息的能力会显著下降</li>
+<li><strong>核心结论</strong>：提高 RAG 精度的关键，往往不在于盲目地增大基础模型，而在于你为它提供的上下文的“知识浓度”</li>
+<li><strong>实践启示</strong>：避免“一股脑全部灌给大模型”，RAG优化的核心就是通过前面提到的各种方法（精准检索、去噪、排序等），确保最终提交给 LLM 的上下文信息是高度相关、精炼且无噪音的</li>
+</ul>
 <h2 id="Lecture-18-多模态大模型-MLLM">Lecture 18: 多模态大模型 (MLLM)</h2>
 <h3 id="MLLM-是什么">MLLM 是什么</h3>
 <h4 id="多模态模型构建">多模态模型构建</h4>
