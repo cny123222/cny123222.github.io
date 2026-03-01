@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/nlp.png">
 <meta property="article:published_time" content="2026-01-14T14:43:02.000Z">
-<meta property="article:modified_time" content="2026-03-01T08:28:49.354Z">
+<meta property="article:modified_time" content="2026-03-01T12:45:16.586Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          49k words
+          51k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          410 mins
+          428 mins
         
       </span>
     
@@ -4710,11 +4710,157 @@ qk^T = (hW_Q)(cW_K^U) = hW_Q {W_K^U}^Tc^T
 </ul>
 <p><img src="moe3.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <h4 id="路由策略">路由策略</h4>
+<p>现在我们有了一组专家，模型如何知道应该为每个 token 选择哪些专家呢？这就是路由器 (Router) 的工作。</p>
+<ul>
+<li><strong>路由器的角色</strong>：
+<ul>
+<li>路由器位于专家模块之前，它是一个小型的、可训练的神经网络，通常也是一个简单的 FFNN</li>
+<li>它的输入是来自前一个模块的 token 表示</li>
+<li>它的输出是一个概率分布，表示该 token 被分配给每一个专家的“偏好”或“权重”</li>
+</ul>
+</li>
+</ul>
+<p><img src="router1.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>路由策略的两种类别</strong>：
+<ul>
+<li><strong>密集混合专家 (Dense MoE)</strong>：
+<ul>
+<li>路由器会为所有专家都计算一个权重。</li>
+<li>token 的最终输出是所有专家输出的加权平均值</li>
+<li><strong>缺点</strong>：虽然概念上是 MoE，但实际上激活了所有专家，计算成本与标准密集模型无异，失去了稀疏性带来的效率优势，因此在实践中很少直接使用</li>
+</ul>
+</li>
+<li><strong>稀疏混合专家 (Sparse MoE)</strong>：
+<ul>
+<li>这是最常见的 MoE 形式</li>
+<li>路由器会从所有专家中选择少数几个（通常是 1 个或 2 个，即 Top-K）得分最高的专家来处理当前的 token</li>
+<li><strong>优点</strong>：计算成本低，因为每次只激活一小部分参数</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="router2.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>稀疏路由 (Sparse Routing) 的计算过程</strong>：
+<ul>
+<li><strong>计算门控值</strong>：将输入 token 的表示 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">x</mi></mrow><annotation encoding="application/x-tex">\mathbf{x}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4444em;"></span><span class="mord mathbf">x</span></span></span></span> 与路由器的权重矩阵 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">W</mi></mrow><annotation encoding="application/x-tex">\mathbf{W}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6861em;"></span><span class="mord mathbf" style="margin-right:0.01597em;">W</span></span></span></span> 相乘，得到每个专家的得分（或 logit）：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="bold">H</mi><mo stretchy="false">(</mo><mi mathvariant="bold">x</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><mrow><mi mathvariant="bold">x</mi><mi mathvariant="bold">W</mi></mrow></mrow><annotation encoding="application/x-tex">\mathbf{H(x)} = \mathbf{x W}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathbf">H</span><span class="mopen">(</span><span class="mord mathbf">x</span><span class="mclose">)</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6861em;"></span><span class="mord"><span class="mord mathbf" style="margin-right:0.01597em;">xW</span></span></span></span></span></li>
+<li><strong>生成概率分布</strong>：对得分 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">H</mi><mo stretchy="false">(</mo><mi mathvariant="bold">x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathbf{H(x)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathbf">H</span><span class="mopen">(</span><span class="mord mathbf">x</span><span class="mclose">)</span></span></span></span></span> 应用 Softmax 函数，得到一个概率分布 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">G</mi><mo stretchy="false">(</mo><mi mathvariant="bold">x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathbf{G(x)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathbf">G</span><span class="mopen">(</span><span class="mord mathbf">x</span><span class="mclose">)</span></span></span></span></span>，表示每个专家的被选概率</li>
+<li><strong>选择 Top-K 专家</strong>：选择 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">G</mi><mo stretchy="false">(</mo><mi mathvariant="bold">x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathbf{G(x)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathbf">G</span><span class="mopen">(</span><span class="mord mathbf">x</span><span class="mclose">)</span></span></span></span></span> 中概率最高的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span> 个专家（在最简单的例子中 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">k=1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>）</li>
+<li><strong>计算专家输出</strong>：将输入 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">x</mi></mrow><annotation encoding="application/x-tex">\mathbf{x}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4444em;"></span><span class="mord mathbf">x</span></span></span></span> 分别送入被选中的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span> 个专家，得到各自的输出 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="bold">E</mi><mi mathvariant="bold">i</mi></msub><mo stretchy="false">(</mo><mi mathvariant="bold">x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathbf{E_i(x)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord"><span class="mord mathbf">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathbf mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathbf">x</span><span class="mclose">)</span></span></span></span></span></li>
+<li><strong>加权求和</strong>：将每个被选专家的输出 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="bold">E</mi><mi mathvariant="bold">i</mi></msub><mo stretchy="false">(</mo><mi mathvariant="bold">x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathbf{E_i(x)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord"><span class="mord mathbf">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathbf mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathbf">x</span><span class="mclose">)</span></span></span></span></span> 与其对应的门控值 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="bold">G</mi><mi mathvariant="bold">i</mi></msub><mo stretchy="false">(</mo><mi mathvariant="bold">x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathbf{G_i(x)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord"><span class="mord mathbf">G</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathbf mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathbf">x</span><span class="mclose">)</span></span></span></span></span> 相乘，然后求和，得到最终的 MoE 层输出：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">y</mi><mo>=</mo><mo>∑</mo><mo stretchy="false">[</mo><mrow><msub><mi mathvariant="bold">G</mi><mi mathvariant="bold">i</mi></msub><mo stretchy="false">(</mo><mi mathvariant="bold">x</mi><mo stretchy="false">)</mo></mrow><mo>∗</mo><mrow><msub><mi mathvariant="bold">E</mi><mi mathvariant="bold">i</mi></msub><mo stretchy="false">(</mo><mi mathvariant="bold">x</mi><mo stretchy="false">)</mo></mrow><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">\mathbf{y} = \sum [\mathbf{G_i(x)} * \mathbf{E_i(x)}]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6389em;vertical-align:-0.1944em;"></span><span class="mord mathbf" style="margin-right:0.01597em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop op-symbol small-op" style="position:relative;top:0em;">∑</span><span class="mopen">[</span><span class="mord"><span class="mord"><span class="mord mathbf">G</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathbf mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathbf">x</span><span class="mclose">)</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord"><span class="mord mathbf">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathbf mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathbf">x</span><span class="mclose">)</span></span><span class="mclose">]</span></span></span></span></li>
+</ul>
+</li>
+</ul>
+<p><img src="router3.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>
+<p><strong>路由带来的问题</strong>：“马太效应”</p>
+<ul>
+<li>一个简单的路由策略可能会导致负载不均衡</li>
+<li>如果某个专家因为随机初始化或早期训练数据的原因，表现得稍好一些，路由器就会更倾向于将 token 发送给它</li>
+<li>这使得这个“明星专家”得到更多的训练机会，从而变得更强，进而更频繁地被选中</li>
+<li>这种“强者愈强”的现象被称为马太效应</li>
+<li><strong>后果</strong>：导致某些专家被过度使用，而另一些“冷门”专家则很少被训练，最终退化失效，模型的整体容量受到损害</li>
+</ul>
+</li>
+<li>
+<p><strong>核心挑战</strong>：我们希望在训练和推理时，所有专家都能够被均衡地使用，这个问题被称为负载均衡 (Load Balancing)，是设计高效 MoE 模型的关键</p>
+</li>
+</ul>
 <h3 id="负载均衡问题">负载均衡问题</h3>
+<p>简单的路由策略会导致“马太效应”，即少数专家被过度使用，而大多数专家被闲置。为了解决这个问题，我们需要引入负载均衡机制，确保所有专家都能得到充分的训练和利用。</p>
+<ul>
+<li><strong>负载不均衡的两种表现</strong>：
+<ul>
+<li><strong>概率值不均</strong>：路由器的 Softmax 输出在整个 batch 上，总会倾向于给某几个专家更高的概率值</li>
+<li><strong>Token 分配不均</strong>：即使某个专家的总概率值不低，但可能在每个 token 的 Top-K 选择中都只是“千年老二”，从未被真正选中，导致实际分配给它的 token 数量为 0</li>
+</ul>
+</li>
+</ul>
 <h4 id="Keep-TopK">Keep-TopK</h4>
+<ul>
+<li><strong>思想</strong>：在路由器的权重上引入一些随机性，防止总是选择相同的专家</li>
+<li><strong>实现</strong>：
+<ul>
+<li>在计算路由得分时，加入一个可训练的高斯噪声：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="bold">H</mi><mo stretchy="false">(</mo><mi mathvariant="bold">x</mi><mo stretchy="false">)</mo></mrow><mo>=</mo><mi mathvariant="bold">x</mi><mi mathvariant="bold">W</mi><mo>+</mo><mi mathvariant="bold">n</mi></mrow><annotation encoding="application/x-tex">\mathbf{H(x)} = \mathbf{x}  \mathbf{W} + \mathbf{n}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathbf">H</span><span class="mopen">(</span><span class="mord mathbf">x</span><span class="mclose">)</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7694em;vertical-align:-0.0833em;"></span><span class="mord mathbf" style="margin-right:0.01597em;">xW</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4444em;"></span><span class="mord mathbf">n</span></span></span></span>，其中 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">n</mi></mrow><annotation encoding="application/x-tex">\mathbf{n}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4444em;"></span><span class="mord mathbf">n</span></span></span></span> 是高斯噪声</li>
+<li>这个噪声使得即使对于相同的输入，路由器的选择也会有轻微的随机扰动，给了“冷门”专家被选中的机会</li>
+<li>在计算 Softmax 之前，通常只保留得分最高的 Top-K 个专家的 logit，将其余专家的 logit 强制设为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mi mathvariant="normal">∞</mi></mrow><annotation encoding="application/x-tex">-\infty</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord">∞</span></span></span></span>；这样，经过 Softmax 后，这些未被选中的专家的概率就为 0，确保了计算的稀疏性</li>
+</ul>
+</li>
+</ul>
 <h4 id="Auxiliary-Loss">Auxiliary Loss</h4>
+<ul>
+<li><strong>思想</strong>：在模型的常规损失函数（如交叉熵损失）之外，额外添加一个负载均衡损失项，直接对路由器的不均衡行为进行“惩罚”</li>
+<li><strong>实现</strong>：
+<ul>
+<li><strong>计算专家重要性分数</strong>：对于一个 batch 中的所有 token，将路由器分配给每个专家的概率值进行求和，这个和值可以看作是该专家在这个 batch 中的重要性分数</li>
+<li><strong>计算分数差异 (CV)</strong>：计算所有专家重要性分数的变化系数 (Coefficient of Variation, CV)<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext> Coefficient Variation </mtext><mo stretchy="false">(</mo><mrow><mi mathvariant="bold">C</mi><mi mathvariant="bold">V</mi></mrow><mo stretchy="false">)</mo><mo>=</mo><mfrac><mrow><mtext> standard deviation </mtext><mo stretchy="false">(</mo><mi mathvariant="bold-italic">σ</mi><mo stretchy="false">)</mo></mrow><mrow><mtext> mean </mtext><mo stretchy="false">(</mo><mi mathvariant="bold-italic">μ</mi><mo stretchy="false">)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">\text { Coefficient Variation }(\mathbf{C V})=\frac{\text { standard deviation }(\boldsymbol{\sigma})}{\text { mean }(\boldsymbol{\mu})}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord text"><span class="mord"> Coefficient Variation </span></span><span class="mopen">(</span><span class="mord"><span class="mord mathbf" style="margin-right:0.01597em;">CV</span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.363em;vertical-align:-0.936em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord"> mean </span></span><span class="mopen">(</span><span class="mord"><span class="mord"><span class="mord boldsymbol">μ</span></span></span><span class="mclose">)</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord"> standard deviation </span></span><span class="mopen">(</span><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.03704em;">σ</span></span></span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<ul>
+<li>如果所有专家被分配的概率总和差不多，那么重要性分数的方差就小，CV 值就低</li>
+<li>如果某些专家被分配的概率远高于其他专家，方差就大，CV 值就高</li>
+</ul>
+</li>
+<li><strong>加入总损失</strong>：将 CV 值乘以一个超参数（缩放因子 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi></mrow><annotation encoding="application/x-tex">w</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span></span></span></span>），作为辅助损失项（Auxiliary Loss）加入到模型的总损失中</li>
+</ul>
+</li>
+<li><strong>效果</strong>：在模型训练过程中，优化器为了最小化总损失，会迫使路由器学会将 token 更均匀地分配给所有专家，从而降低 CV 值，达到负载均衡的目的</li>
+</ul>
 <h4 id="Expert-Capacity">Expert Capacity</h4>
+<ul>
+<li><strong>思想</strong>：除了在概率层面进行引导，我们还可以在 token 的实际分配数量上进行硬性约束</li>
+<li><strong>实现</strong>：
+<ul>
+<li>为每个专家设置一个容量上限 (Capacity)，即在一个 batch 中，该专家最多能处理的 token 数量</li>
+<li>当一个专家达到容量限制时，多余的 token 将被强制分配到下一个专家</li>
+<li>如果所有专家都已达到其容量限制，这个 token 将不会被任何专家处理，而是通过一个残差连接直接传递到下一层，这种情况被称为“token 溢出” (Token Overflow)</li>
+</ul>
+</li>
+<li><strong>权衡</strong>：
+<ul>
+<li>容量设置得太低，会导致大量 token 溢出，模型性能下降</li>
+<li>容量设置得太高，可能会导致某些时刻专家负载不均，出现计算瓶颈</li>
+<li>通常容量会设置成 (平均每个专家的 token 数) × (一个大于 1 的容量因子)，来在效率和性能之间取得平衡</li>
+</ul>
+</li>
+</ul>
 <h3 id="前沿工作">前沿工作</h3>
+<ul>
+<li>
+<p><strong>重新思考 MLP 与 MoE 的关系</strong>：</p>
+<ul>
+<li><strong>MoEfication</strong>：
+<ul>
+<li><strong>思想</strong>：传统的 MLP（即 FFNN）本身就可以被看作是一种密集 MoE，可以将一个预训练好的标准 MLP，通过特定的重组方式，稀疏化为一个 MoE 结构，而无需重新训练</li>
+<li><strong>意义</strong>：提供了一种将密集模型高效转换为稀疏模型的方法，提升了推理效率</li>
+</ul>
+</li>
+<li><strong>联合稀疏与密集训练</strong>：
+<ul>
+<li><strong>思想</strong>：在预训练过程中，动态地在密集训练和稀疏（MoE）训练之间切换</li>
+<li><strong>过程</strong>：开始时进行密集训练，当模型的激活模式变得稳定后，将其转换为 MoE 结构进行稀疏训练，以提升效率</li>
+<li><strong>意义</strong>：结合了密集训练的稳定性和稀疏训练的高效率</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>将专家数量扩展至百万级别</strong>：</p>
+<ul>
+<li><strong>问题</strong>：传统的 MoE 架构中，专家的数量通常是有限的（如 8 个、64 个、128 个），这主要是因为每个专家都是一个完整的大型 FFNN，参数量依然很大</li>
+<li><strong>Mixture of A Million Experts</strong>：
+<ul>
+<li><strong>思想</strong>：能否将专家的数量提升到百万甚至更高量级，让每个专家学到更“专一”的知识</li>
+<li><strong>实现</strong>：这篇工作提出，不再让每个专家都是一个完整的 FFNN，而是使用参数高效微调模块（如 LoRA）作为专家</li>
+<li><strong>优势</strong>：由于每个专家的参数量极小，我们可以在相同的总参数预算下，集成海量的专家；同时，通过高效的检索机制（如向量检索）来寻找最匹配的专家</li>
+<li><strong>意义</strong>：在相同参数量下，更多的专家数量不仅能提升推理效率，还能让模型学习到更细粒度、更专业的知识，从而提升模型的知识容量和性能</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 <h2 id="Lecture-17-检索增强生成-RAG">Lecture 17: 检索增强生成 (RAG)</h2>
 <h3 id="RAG（检索增强生成）简介">RAG（检索增强生成）简介</h3>
 <h4 id="RAG-的定义">RAG 的定义</h4>
