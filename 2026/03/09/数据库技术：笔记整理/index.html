@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/db.png">
 <meta property="article:published_time" content="2026-03-09T08:30:32.000Z">
-<meta property="article:modified_time" content="2026-03-09T09:21:41.576Z">
+<meta property="article:modified_time" content="2026-03-09T10:44:48.839Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.7k words
+          3k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          15 mins
+          25 mins
         
       </span>
     
@@ -794,6 +794,167 @@
 </li>
 </ul>
 <h4 id="2-1-两类数据模型">2.1 两类数据模型</h4>
+<ul>
+<li>
+<p><strong>概念模型</strong>：也称信息模型</p>
+<ul>
+<li>是按用户的观点来对数据和信息建模，用于数据库设计</li>
+</ul>
+</li>
+<li>
+<p><strong>逻辑模型和物理模型</strong>：</p>
+<ul>
+<li><strong>逻辑模型</strong>：主要包括网状模型、层次模型、关系模型等，它是按计算机系统的观点对数据建模，用于 DBMS 的实现</li>
+<li><strong>物理模型</strong>：数据最低层的抽象，描述数据在系统内部的表示方式和存取方法，面向计算机系统</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-2-概念模型">2.2 概念模型</h4>
+<ul>
+<li>
+<p><strong>概念模型</strong>：</p>
+<ul>
+<li><strong>用途</strong>：
+<ul>
+<li>用于信息世界的建模</li>
+<li>是现实世界到机器世界的一个中间层次</li>
+<li>是数据库设计的有力工具</li>
+<li>数据库设计人员和用户之间进行交流的语言</li>
+</ul>
+</li>
+<li><strong>基本要求</strong>：
+<ul>
+<li>较强的语义表达能力</li>
+<li>简单、清晰、易于用户理解</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>信息世界的基本概念</strong>：</p>
+<ul>
+<li><strong>实体（Entity）</strong>：客观存在并可相互区别的事物
+<ul>
+<li>可以是具体的人、事、物或抽象的概念</li>
+</ul>
+</li>
+<li><strong>属性（Attribute）</strong>：实体所具有的某一特性
+<ul>
+<li>一个实体可以由若干个属性来刻画</li>
+</ul>
+</li>
+<li><strong>码（Key）</strong>：唯一标识实体的属性集</li>
+<li><strong>域（Domain）</strong>：属性的取值范围</li>
+<li><strong>实体型（Entity Type）</strong>：同类实体，用实体名及其属性名集合来抽象和刻画</li>
+<li><strong>实体集（Entity Set）</strong>：同型实体的集合</li>
+<li><strong>联系（Relationship）</strong>：现实世界中事物内部以及事物之间的联系，在信息世界中反映为实体内部的联系和实体之间的联系</li>
+</ul>
+</li>
+<li>
+<p><strong>实体之间的联系</strong>：</p>
+<ul>
+<li>
+<p><strong>联系的度</strong>：参与联系的实体型的数目</p>
+<ul>
+<li>两个实体型之间的联系度为 2，称为二元联系</li>
+<li>三个实体型之间的联系度为 3，称为三元联系</li>
+<li>N 个实体型之间的联系度为 N，称为 N 元联系</li>
+</ul>
+</li>
+<li>
+<p><strong>两个实体型之间的联系</strong>：</p>
+<p><img src="1-%E8%81%94%E7%B3%BB.png" srcset="/img/loading.gif" lazyload alt="两个实体型之间的联系"></p>
+<ul>
+<li>
+<p><strong>一对一联系</strong>：如果对于实体集 A 中的每一个实体，实体集 B 中至多有一个实体与之联系，反之亦然，则称实体集 A 与实体集 B 具有一对一联系，记为 1:1</p>
+<ul>
+<li>例如，班级与班长之间的联系：一个班级只有一个正班长，一个班长只在一个班中任职</li>
+</ul>
+</li>
+<li>
+<p><strong>一对多联系</strong>：如果对于实体集 A 中的每一个实体，实体集 B 中有 n 个实体（n≥0）与之联系，反之，对于实体集 B 中的每一个实体，实体集 A 中至多只有一个实体与之联系，则称实体集 A 与实体集 B 有一对多联系，记为 1:n</p>
+<ul>
+<li>例如，班级与学生之间的联系：一个班级中有若干名学生，每个学生只在一个班级中学习</li>
+</ul>
+</li>
+<li>
+<p><strong>多对多联系</strong>：记为 m:n</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>多个实体型之间的联系</strong>：</p>
+<ul>
+<li><strong>一对多联系</strong>：若实体型 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>E</mi><mn>2</mn></msub><mo separator="true">,</mo><mo>…</mo><mtext>，</mtext><msub><mi>E</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">E_1, E_2, \dots，E_n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord cjk_fallback">，</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 存在联系，对于实体型 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">E_j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span>（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi><mo>=</mo><mn>1</mn><mo separator="true">,</mo><mn>2</mn><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><mi>i</mi><mo>−</mo><mn>1</mn><mo separator="true">,</mo><mi>i</mi><mo>+</mo><mn>1</mn><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">j=1, 2, \dots, i-1, i+1, \dots, n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.854em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.05724em;">j</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.854em;vertical-align:-0.1944em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.854em;vertical-align:-0.1944em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span></span></span></span>）中的给定实体，最多只和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">E_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 中的一个实体相联系，则我们说 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">E_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 与 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>E</mi><mn>2</mn></msub><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><msub><mi>E</mi><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msub><mo separator="true">,</mo><msub><mi>E</mi><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow></msub><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><msub><mi>E</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">E_1, E_2, \dots, E_{i-1}, E_{i+1}, \dots, E_n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8917em;vertical-align:-0.2083em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 之间的联系是一对多的</li>
+<li><strong>多对多联系</strong></li>
+<li><strong>一对一联系</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>同一实体集内各实体间的联系</strong>：</p>
+<ul>
+<li><strong>一对多联系</strong>：例如，职工实体集内部具有领导与被领导的联系，某一职工（干部）“领导”若干名职工一个职工仅被另外一个职工直接领导</li>
+<li><strong>一对一联系</strong></li>
+<li><strong>多对多联系</strong></li>
+</ul>
+</li>
+<li>
+<p><strong>概念模型的表示方法</strong>：概念模型的表示方法很多</p>
+<ul>
+<li><strong>实体－联系方法 (Entity-Relationship approach)</strong>：
+<ul>
+<li>用 E-R 图来描述现实世界的概念模型</li>
+<li>提供了表示实体型、属性和联系的方法</li>
+<li>E-R 方法也称为 E-R 模型</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>E-R 图</strong>：</p>
+<ul>
+<li><strong>实体型</strong>：用矩形表示，矩形框内写明实体名</li>
+<li><strong>属性</strong>：用椭圆形表示，并用无向边将其与相应的实体连接起来</li>
+<li><strong>联系</strong>：用菱形表示，菱形框内写明联系名，并用无向边分别与有关实体连接起来，同时在无向边旁标上联系的类型（1:1、1:n 或 m:n）</li>
+<li><strong>联系的属性</strong>：用无向边与该联系连起来
+<ul>
+<li>联系本身也是一种实体型，也可以有属性</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-3-数据模型的组成要素">2.3 数据模型的组成要素</h4>
+<ul>
+<li>
+<p><strong>数据模型的组成要素</strong>：</p>
+<ul>
+<li><strong>数据结构</strong>：静态特性</li>
+<li><strong>数据操作</strong>：动态特性</li>
+<li><strong>数据的完整性约束条件</strong></li>
+</ul>
+</li>
+<li>
+<p><strong>数据结构</strong></p>
+<ul>
+<li><strong>作用</strong>：
+<ul>
+<li>描述数据库的组成对象及对象之间的联系</li>
+<li>经常用数据结构的类型来命名数据模型，例如：层次结构—层次模型、关系结构—关系模型</li>
+</ul>
+</li>
+<li><strong>描述的内容</strong>：
+<ul>
+<li>与对象的类型、内容、性质有关</li>
+<li>与数据之间联系有关的对象</li>
+<li>数据结构是对系统<strong>静态特性</strong>的描述</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 <h3 id="3-数据库系统结构">3. 数据库系统结构</h3>
 <h3 id="4-数据库系统的组成">4. 数据库系统的组成</h3>
 <h3 id="5-数据库的现状与展望">5. 数据库的现状与展望</h3>
