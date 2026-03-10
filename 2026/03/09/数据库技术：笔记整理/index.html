@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/db.png">
 <meta property="article:published_time" content="2026-03-09T08:30:32.000Z">
-<meta property="article:modified_time" content="2026-03-09T10:44:48.839Z">
+<meta property="article:modified_time" content="2026-03-10T06:58:13.118Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3k words
+          4.4k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          25 mins
+          37 mins
         
       </span>
     
@@ -525,7 +525,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on March 9, 2026 pm
+                    Last updated on March 10, 2026 pm
                   
                 
               </p>
@@ -937,11 +937,11 @@
 </ul>
 </li>
 <li>
-<p><strong>数据结构</strong></p>
+<p><strong>数据结构</strong>：对系统<strong>静态特性</strong>的描述</p>
 <ul>
 <li><strong>作用</strong>：
 <ul>
-<li>描述数据库的组成对象及对象之间的联系</li>
+<li>描述数据库的<strong>组成对象</strong>及<strong>对象之间的联系</strong></li>
 <li>经常用数据结构的类型来命名数据模型，例如：层次结构—层次模型、关系结构—关系模型</li>
 </ul>
 </li>
@@ -949,9 +949,204 @@
 <ul>
 <li>与对象的类型、内容、性质有关</li>
 <li>与数据之间联系有关的对象</li>
-<li>数据结构是对系统<strong>静态特性</strong>的描述</li>
 </ul>
 </li>
+</ul>
+</li>
+<li>
+<p><strong>数据操作</strong>：对系统<strong>动态特性</strong>的描述</p>
+<ul>
+<li><strong>内容</strong>：对数据库中各种对象（型）的实例（值）允许执行的<strong>操作</strong>及有关的<strong>操作规则</strong></li>
+<li><strong>类型</strong>：
+<ul>
+<li><strong>查询</strong></li>
+<li><strong>更新</strong>：包括插入、删除、修改</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>数据的完整性约束条件</strong>：一组完整性规则的集合</p>
+<ul>
+<li><strong>完整性规则</strong>：给定的数据模型中数据及其联系所具有的制约和储存规则
+<ul>
+<li><strong>作用</strong>：可以限定符合数据模型的数据库状态以及状态的变化，以保证数据的正确、有效、相容</li>
+</ul>
+</li>
+<li><strong>约束条件的定义</strong>：
+<ul>
+<li>反映和规定本数据模型必须遵守的基本的通用的完整性约束条件
+<ul>
+<li>例如：在关系模型中，任何关系必须满足实体完整性和参照完整性两个条件</li>
+</ul>
+</li>
+<li>提供定义完整性约束条件的机制，以反映具体应用所涉及的数据必须遵守的特定的语义约束条件</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-4-常用的数据模型">2.4 常用的数据模型</h4>
+<ul>
+<li><strong>格式化模型</strong>：第一代数据库
+<ul>
+<li>层次模型 (Hierarchical Model)</li>
+<li>网状模型 (Network Model)</li>
+<li><strong>数据结构</strong>：以基本层次联系为基本单位</li>
+</ul>
+</li>
+<li><strong>关系模型 (Relational Model)</strong>：第二代数据库
+<ul>
+<li><strong>数据结构</strong>：表</li>
+</ul>
+</li>
+<li><strong>新一代数据库</strong>：
+<ul>
+<li>面向对象模型 (Object Oriented Data Model)</li>
+<li>对象关系模型 (Object Relational Model)</li>
+<li>半结构化数据模型 (Semi-structure Data Model)</li>
+<li>非结构化数据模型</li>
+<li>图模型</li>
+<li>其他</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-5-层次模型">2.5 层次模型</h4>
+<ul>
+<li><strong>数据结构</strong>
+<ul>
+<li><strong>几个术语</strong>:
+<ul>
+<li>双亲结点，子女结点</li>
+<li>根结点，叶结点</li>
+<li>兄弟结点</li>
+</ul>
+</li>
+<li><strong>要求</strong>：满足下面两个条件的基本层次联系的集合为层次模型：
+<ul>
+<li>有且只有一个结点没有双亲结点，这个结点称为根结点</li>
+<li>根以外的其它结点有且只有一个双亲结点</li>
+</ul>
+</li>
+<li><strong>表示方法</strong>：
+<ul>
+<li><strong>实体型</strong>：用记录类型描述，每个结点表示一个记录类型</li>
+<li><strong>属性</strong>：用字段描述，每个记录类型可包含若干个字段</li>
+<li><strong>联系</strong>：用结点之间的连线（有向边）表示记录（类型）之间的一对多的父子联系</li>
+</ul>
+</li>
+<li><strong>特点</strong>：
+<ul>
+<li>结点的双亲是唯一的</li>
+<li>只能直接处理一对多的实体联系</li>
+<li>每个记录类型定义一个排序字段，也称为码字段</li>
+<li>任何记录值只有按其路径查看时，才能显出它的全部意义</li>
+<li>没有一个子女记录值能够脱离双亲记录值而独立存在</li>
+</ul>
+</li>
+<li><strong>多对多联系的表示</strong>：用层次模型间接表示多对多联系
+<ul>
+<li><strong>方法</strong>：将多对多联系分解成一对多联系</li>
+<li><strong>分解方法</strong>：冗余结点法、虚拟结点法</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="1-%E5%B1%82%E6%AC%A1.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>
+<p><strong>数据操纵</strong>：查询、插入、删除、更新</p>
+</li>
+<li>
+<p><strong>完整性约束</strong>：</p>
+<ul>
+<li>无相应的双亲结点值就不能插入子女结点值</li>
+<li>如果删除双亲结点值，则相应的子女结点值也被同时删除</li>
+<li>更新操作时，应更新所有相应记录，以保证数据的一致性</li>
+</ul>
+</li>
+<li>
+<p><strong>优点</strong>：</p>
+<ul>
+<li>层次数据模型简单，对具有一对多的层次关系的部门描述自然、直观，容易理解</li>
+<li>查询效率高，性能优于关系模型，不低于网状模型</li>
+<li>层次数据模型提供了良好的完整性支持</li>
+</ul>
+</li>
+<li>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li>多对多联系表示不自然</li>
+<li>对插入和删除操作的限制多</li>
+<li>查询子女结点必须通过双亲结点</li>
+<li>查询及更新操作必须给出完整路径</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-6-网状模型">2.6 网状模型</h4>
+<ul>
+<li><strong>数据结构</strong>：
+<ul>
+<li><strong>要求</strong>：满足下面两个条件的基本层次联系的集合为网状模型：
+<ul>
+<li>允许一个以上的结点无双亲</li>
+<li>一个结点可以有多于一个的双亲</li>
+</ul>
+</li>
+<li><strong>表示方法</strong>：与层次数据模型相同
+<ul>
+<li><strong>实体型</strong>：用记录类型描述，每个结点表示一个记录类型</li>
+<li><strong>属性</strong>：用字段描述，每个记录类型可包含若干个字段。</li>
+<li><strong>联系</strong>：用结点之间的连线表示记录（类）型之间的一对多的父子联系</li>
+</ul>
+</li>
+<li><strong>与层次模型的区别</strong>：
+<ul>
+<li>网状模型允许多个结点没有双亲结点，允许一个结点有多个双亲结点</li>
+<li>网状模型允许两个结点之间有多种联系（复合联系）</li>
+<li>网状模型可以更直接地去描述现实世界</li>
+<li>层次模型实际上是网状模型的一个特例</li>
+</ul>
+</li>
+<li><strong>多对多联系的表示</strong>：用网状模型间接表示多对多联系；
+<ul>
+<li><strong>方法</strong>：将多对多联系直接分解成一对多联系</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="1-%E7%BD%91%E7%8A%B6.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>
+<p><strong>数据操纵</strong>：查询、插入、删除、更新</p>
+</li>
+<li>
+<p><strong>完整性约束</strong>：网状数据库系统（如 DBTG）对数据操纵加了一些限制，提供了一定的完整性约束</p>
+<ul>
+<li>支持记录码的概念（唯一标识记录的数据项集合）</li>
+<li>双亲结点与子女结点之间是一对多联系</li>
+<li>可以支持属籍类别：
+<ul>
+<li>加入类别：双亲记录在，子女记录才可以加入</li>
+<li>移出类别：双亲记录删除，子女记录删除</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>优点</strong>：</p>
+<ul>
+<li>能够更为直接地描述现实世界，如一个结点可以有多个双亲</li>
+<li>具有良好的性能，存取效率较高</li>
+</ul>
+</li>
+<li>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li>结构比较复杂，而且随着应用环境的扩大，数据库的结构就变得越来越复杂，不利于最终用户掌握；</li>
+<li>DDL、DML 语言复杂，用户不容易使用</li>
 </ul>
 </li>
 </ul>
