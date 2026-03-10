@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/db.png">
 <meta property="article:published_time" content="2026-03-09T08:30:32.000Z">
-<meta property="article:modified_time" content="2026-03-10T06:58:13.118Z">
+<meta property="article:modified_time" content="2026-03-10T07:13:34.640Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          4.4k words
+          4.8k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          37 mins
+          41 mins
         
       </span>
     
@@ -1147,6 +1147,73 @@
 <ul>
 <li>结构比较复杂，而且随着应用环境的扩大，数据库的结构就变得越来越复杂，不利于最终用户掌握；</li>
 <li>DDL、DML 语言复杂，用户不容易使用</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-7-关系模型">2.7 关系模型</h4>
+<ul>
+<li>
+<p><strong>数据结构</strong>：在用户观点下，关系模型中数据的逻辑结构是一张二维表，它由行和列组成</p>
+<ul>
+<li><strong>基本概念</strong>：
+<ul>
+<li><strong>关系（Relation）</strong>：一个关系对应通常说的一张表</li>
+<li><strong>元组（Tuple）</strong>：表中的一行即为一个元组</li>
+<li><strong>属性（Attribute）</strong>：表中的一列即为一个属性，给每一个属性起一个名称即属性名</li>
+<li><strong>主码（Key）</strong>：表中的某个属性组，它可以唯一确定一个元组</li>
+<li><strong>域（Domain）</strong>：属性的取值范围来自某个域</li>
+<li><strong>分量</strong>：元组中的一个属性值</li>
+<li><strong>关系模式</strong>：对关系的描述</li>
+</ul>
+</li>
+<li><strong>表示方法</strong>：
+<ul>
+<li><strong>实体型</strong>：直接用关系（表）表示</li>
+<li><strong>属性</strong>：用属性名表示
+<ul>
+<li>例：学生（学号，姓名，年龄，性别，系号，年级）</li>
+</ul>
+</li>
+<li><strong>一对一联系</strong>：隐含在实体对应的关系中
+<ul>
+<li>例：班级（班级号，班级人数，班长学号）</li>
+</ul>
+</li>
+<li><strong>一对多联系</strong>：隐含在实体对应的关系中</li>
+<li><strong>多对多联系</strong>：直接用关系表示
+<ul>
+<li>例：选修（学号，课程号，成绩）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>规范条件</strong>：关系必须是规范化的，满足一定的规范条件
+<ul>
+<li><strong>最基本的规范条件</strong>：关系的每一个分量必须是一个不可分的数据项（不允许表中还有表）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>数据操纵</strong>：查询、插入、删除、更新</p>
+<ul>
+<li>数据操作是集合操作，操作对象和操作结果都是关系，即若干元组的集合</li>
+<li>存取路径对用户隐蔽，用户只要指出“干什么”，不必详细说明“怎么干”</li>
+</ul>
+</li>
+<li>
+<p><strong>完整性约束</strong>：</p>
+<ul>
+<li>实体完整性</li>
+<li>参照完整性</li>
+<li>用户定义的完整性</li>
+</ul>
+</li>
+<li>
+<p><strong>存储结构</strong>：实体及实体间的联系用表来表示，表以文件形式存储</p>
+<ul>
+<li>有的 DBMS 一个表对应一个操作系统文件</li>
+<li>有的 DBMS 自己设计文件结构</li>
 </ul>
 </li>
 </ul>
