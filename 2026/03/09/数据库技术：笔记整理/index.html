@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/db.png">
 <meta property="article:published_time" content="2026-03-09T08:30:32.000Z">
-<meta property="article:modified_time" content="2026-04-28T06:45:31.484Z">
+<meta property="article:modified_time" content="2026-04-28T07:24:29.267Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          20k words
+          22k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          171 mins
+          182 mins
         
       </span>
     
@@ -2901,6 +2901,132 @@
 <li><strong>例</strong>：查询每个学生及其选修课程的情况<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Student.<span class="hljs-operator">*</span>, SC.<span class="hljs-operator">*</span><br><span class="hljs-keyword">FROM</span> Student，SC<br><span class="hljs-keyword">WHERE</span> Student.Sno <span class="hljs-operator">=</span> SC.Sno;<br></code></pre></td></tr></table></figure>
 </li>
 </ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>连接操作的执行过程</strong>：</p>
+<ul>
+<li><strong>嵌套循环连接算法(NESTED-LOOP)</strong>：
+<ul>
+<li>首先在表1中找到第一个元组，然后从头开始扫描表2，逐一查找满足连接件的元组，找到后就将表1中的第一个元组与该元组拼接起来，形成结果表中一个元组</li>
+<li>表2全部查找完后，再找表1中第二个元组，然后再从头开始扫描表2，逐一查找满足连接条件的元组，找到后就将表1中的第二个元组与该元组拼接起来，形成结果表中一个元组。</li>
+<li>重复上述操作，直到表1中的全部元组都处理完毕</li>
+</ul>
+</li>
+<li><strong>索引连接(INDEX-JOIN)</strong>：
+<ul>
+<li>对表2按连接字段 Sno 建立索引</li>
+<li>对表1中的每个元组，依次根据其连接字段值查询表2的索引，从中找到满足条件的元组，找到后就将表1中的第一个元组与该元组拼接起来，形成结果表中一个元组</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>自然连接</strong>：等值连接的一种特殊情况，把<strong>目标列中重复的属性列去掉</strong></p>
+<ul>
+<li><strong>例</strong>：查询每个学生及其选修课程的情况<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Student.Sno, Sname, Ssex, Sage, Sdept, Cno, Grade<br><span class="hljs-keyword">FROM</span> Student，SC<br><span class="hljs-keyword">WHERE</span> Student.Sno <span class="hljs-operator">=</span> SC.Sno；<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>自身连接</strong>：一个表与其自己进行连接</p>
+<ul>
+<li>需要给表起别名以示区别；由于所有属性名都是同名属性，因此必须使用别名前缀</li>
+<li><strong>例</strong>：查询每一门课的间接先修课（即先修课的先修课）<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> FIRST.Cno, SECOND.Cpno<br><span class="hljs-keyword">FROM</span> Course <span class="hljs-keyword">FIRST</span>，Course <span class="hljs-keyword">SECOND</span><br><span class="hljs-keyword">WHERE</span> FIRST.Cpno <span class="hljs-operator">=</span> SECOND.Cno;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>外连接（Outer Join）</strong>：</p>
+<ul>
+<li><strong>外连接与普通连接的区别</strong>：
+<ul>
+<li>普通连接操作只输出满足连接条件的元组；</li>
+<li>外连接操作以指定表为连接主体，将主体表中不满足连接条件的悬浮元组一并输出；</li>
+</ul>
+</li>
+<li><strong>例</strong>：查询每个学生及其选修课程的情况，包括没有选修课程的学生<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Student.Sno, Sname, Ssex, Sage, Sdept, Cno, Grade<br><span class="hljs-keyword">FROM</span> Student <span class="hljs-keyword">LEFT</span> <span class="hljs-keyword">OUTER</span> <span class="hljs-keyword">JOIN</span> SC <span class="hljs-keyword">ON</span><br>(Student.Sno <span class="hljs-operator">=</span> SC.Sno);<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>左外连接</strong>：列出左边关系中所有元组</li>
+<li><strong>右外连接</strong>：列出右边关系中所有元组</li>
+</ul>
+</li>
+<li>
+<p><strong>复合条件连接</strong>：WHERE 子句中含多个连接条件</p>
+<ul>
+<li><strong>例</strong>：查询选修 2 号课程且成绩在 90 分以上的所有学生的学号和姓名<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Student.Sno, Student.Sname<br><span class="hljs-keyword">FROM</span> Student, SC<br><span class="hljs-keyword">WHERE</span> Student.Sno <span class="hljs-operator">=</span> SC.Sno <span class="hljs-keyword">AND</span> <span class="hljs-comment">/* 连接谓词 */</span><br>SC.Cno<span class="hljs-operator">=</span> <span class="hljs-string">&#x27; 2 &#x27;</span> <span class="hljs-keyword">AND</span> <span class="hljs-comment">/* 其他限定条件 */</span><br>SC.Grade <span class="hljs-operator">&gt;</span> <span class="hljs-number">90</span>;  <span class="hljs-comment">/* 其他限定条件 */</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>例</strong>：查询每个学生的学号、姓名、选修的课程名及成绩<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Student.Sno, Sname, Cname, Grade<br><span class="hljs-keyword">FROM</span> Student, SC, Course<br><span class="hljs-keyword">WHERE</span> Student.Sno <span class="hljs-operator">=</span> SC.Sno <br><span class="hljs-keyword">AND</span> SC.Cno <span class="hljs-operator">=</span> Course.Cno;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-3-嵌套查询">3.3 嵌套查询</h4>
+<ul>
+<li>
+<p><strong>嵌套查询</strong>：将一个查询块嵌套在另一个查询块的 <code>WHERE</code> 子句或 <code>HAVING</code> 短语的条件中的查询（一个 <code>SELECT-FROM-WHERE</code> 语句称为一个查询块）</p>
+<ul>
+<li>允许多层嵌套，但子查询有限制，即 SELECT 语句中不能使用 ORDER BY 子句，因为 ORDER BY 子句只能对最终查询结果排序</li>
+<li>层层嵌套方式反映了 SQL 语言的结构化</li>
+<li>有些嵌套查询可以用连接运算替代</li>
+</ul>
+</li>
+<li>
+<p><strong>嵌套查询分类</strong>：</p>
+<ul>
+<li><strong>不相关子查询</strong>：子查询的查询条件不依赖于父查询
+<ul>
+<li><strong>处理过程</strong>：由里向外逐层处理，即每个子查询在上一级查询处理之前求解，子查询的结果用于建立其父查询的查找条件</li>
+</ul>
+</li>
+<li><strong>相关子查询</strong>：子查询的查询条件依赖于父查询
+<ul>
+<li><strong>处理过程</strong>：
+<ul>
+<li>首先取外层查询中表的第一个元组，根据它与内层查询相关的属性值处理内层查询，若 WHERE 子句返回值为真，则取此元组放入结果表</li>
+<li>然后再取外层表的下一个元组</li>
+<li>重复这一过程，直至外层表全部检查完为止</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>带有 IN 谓词的子查询</strong>：</p>
+<ul>
+<li><strong>例</strong>：查询与“刘晨”在同一个系学习的学生<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno, Sname, Sdept<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sdept <span class="hljs-keyword">IN</span><br>  (<span class="hljs-keyword">SELECT</span> Sdept<br>  <span class="hljs-keyword">FROM</span> Student<br>  <span class="hljs-keyword">WHERE</span> Sname<span class="hljs-operator">=</span> ‘刘晨’);<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>例</strong>：查询选修了课程名为“信息系统”的学生学号和姓名<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno, Sname <span class="hljs-keyword">FROM</span> Student <br><span class="hljs-keyword">WHERE</span> Sno <span class="hljs-keyword">IN</span><br>  (<span class="hljs-keyword">SELECT</span> Sno <span class="hljs-keyword">FROM</span> SC <br>  <span class="hljs-keyword">WHERE</span> Cno <span class="hljs-keyword">IN</span><br>    (<span class="hljs-keyword">SELECT</span> Cno <span class="hljs-keyword">FROM</span> Course <br>    <span class="hljs-keyword">WHERE</span> Cname<span class="hljs-operator">=</span> ‘信息系统’));<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>带有比较运算符的子查询</strong>：当能确切知道内层查询返回单值时，可用比较运算符（&gt;，&lt;，=，&gt;=，&lt;=，!=或&lt; &gt;）；与 <code>ANY</code> 或 <code>ALL</code> 谓词配合使用</p>
+<ul>
+<li><strong>注意</strong>：子查询一定要跟在比较符之后</li>
+<li><strong>例</strong>：查询与“刘晨”在同一个系学习的学生<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno, Sname, Sdept<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sdept <span class="hljs-operator">=</span><br>  (<span class="hljs-keyword">SELECT</span> Sdept<br>  <span class="hljs-keyword">FROM</span> Student<br>  <span class="hljs-keyword">WHERE</span> Sname<span class="hljs-operator">=</span> ‘刘晨’);<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>例</strong>：找出每个学生超过他选修课程平均成绩的课程号<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno, Cno<br><span class="hljs-keyword">FROM</span> SC x<br><span class="hljs-keyword">WHERE</span> Grade <span class="hljs-operator">&gt;=</span> (<span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">AVG</span>(Grade)<br>                <span class="hljs-keyword">FROM</span> SC y<br>                <span class="hljs-keyword">WHERE</span> y.Sno<span class="hljs-operator">=</span>x.Sno);<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>带有 ANY 或 ALL 谓词的子查询</strong>：</p>
+<ul>
+<li><strong>谓词语义</strong>：
+<ul>
+<li><code>ANY</code>：某一个值</li>
+<li><code>ALL</code>：所有值</li>
+</ul>
+</li>
+<li>ANY 和 ALL 谓词有时可以用聚集函数实现</li>
+<li><strong>例</strong>：查询其他系中比计算机系某一个 (任意一个)学生年龄小的学生姓名和年龄<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname, Sage<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sage <span class="hljs-operator">&lt;</span> <span class="hljs-keyword">ANY</span> (<span class="hljs-keyword">SELECT</span> Sage<br>                  <span class="hljs-keyword">FROM</span> Student<br>                  <span class="hljs-keyword">WHERE</span> Sdept<span class="hljs-operator">=</span> <span class="hljs-string">&#x27; CS &#x27;</span>)<br>      <span class="hljs-keyword">AND</span> Sdept <span class="hljs-operator">&lt;&gt;</span> <span class="hljs-string">&#x27; CS &#x27;</span>;<br></code></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname, Sage<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sage <span class="hljs-operator">&lt;</span> (<span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">MAX</span>(Sage)<br>              <span class="hljs-keyword">FROM</span> Student<br>              <span class="hljs-keyword">WHERE</span> Sdept<span class="hljs-operator">=</span> <span class="hljs-string">&#x27; CS &#x27;</span>)<br>      <span class="hljs-keyword">AND</span> Sdept <span class="hljs-operator">&lt;&gt;</span> <span class="hljs-string">&#x27; CS &#x27;</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>例</strong>：查询其他系中比计算机系所有学生年龄都小的学生姓名及年龄<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname, Sage<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sage <span class="hljs-operator">&lt;</span> <span class="hljs-keyword">ALL</span> (<span class="hljs-keyword">SELECT</span> Sage<br>                  <span class="hljs-keyword">FROM</span> Student<br>                  <span class="hljs-keyword">WHERE</span> Sdept<span class="hljs-operator">=</span> <span class="hljs-string">&#x27; CS &#x27;</span>)<br>      <span class="hljs-keyword">AND</span> Sdept <span class="hljs-operator">&lt;&gt;</span> <span class="hljs-string">&#x27; CS &#x27;</span>;<br></code></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname, Sage<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sage <span class="hljs-operator">&lt;</span> (<span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">MIN</span>(Sage)<br>              <span class="hljs-keyword">FROM</span> Student<br>              <span class="hljs-keyword">WHERE</span> Sdept<span class="hljs-operator">=</span> <span class="hljs-string">&#x27; CS &#x27;</span>)<br>      <span class="hljs-keyword">AND</span> Sdept <span class="hljs-operator">&lt;&gt;</span> <span class="hljs-string">&#x27; CS &#x27;</span>;<br></code></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
