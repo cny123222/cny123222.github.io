@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/db.png">
 <meta property="article:published_time" content="2026-03-09T08:30:32.000Z">
-<meta property="article:modified_time" content="2026-05-08T08:27:09.095Z">
+<meta property="article:modified_time" content="2026-05-08T08:39:49.242Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="知识点整理">
@@ -259,7 +259,7 @@
         
         
         
-          189 mins
+          193 mins
         
       </span>
     
@@ -3148,6 +3148,50 @@
 <li><strong>例</strong>：查询所有选修了 1 号课程的学生姓名<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname<br><span class="hljs-keyword">FROM</span> Student, (<span class="hljs-keyword">SELECT</span> Sno <span class="hljs-keyword">FROM</span> SC <span class="hljs-keyword">WHERE</span> Cno<span class="hljs-operator">=</span><span class="hljs-string">&#x27;1&#x27;</span>)<br>              <span class="hljs-keyword">AS</span> SC1 <br><span class="hljs-keyword">WHERE</span> Student.Sno <span class="hljs-operator">=</span> SC1.Sno<br></code></pre></td></tr></table></figure>
 </li>
 <li>如果子查询没有聚集函数，派生表可以不指定属性列，子查询 SELECT 子句后面的列名为其默认属性</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-数据更新">4. 数据更新</h3>
+<ul>
+<li><strong>插入数据</strong>：
+<ul>
+<li>
+<p><strong>插入单个元组</strong>：</p>
+<ul>
+<li><strong>基本语法</strong>：<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">INSERT</span><br><span class="hljs-keyword">INTO</span> <span class="hljs-operator">&lt;</span>表名<span class="hljs-operator">&gt;</span> [(<span class="hljs-operator">&lt;</span>属性列<span class="hljs-number">1</span><span class="hljs-operator">&gt;</span>[, <span class="hljs-operator">&lt;</span>属性列<span class="hljs-number">2</span><span class="hljs-operator">&gt;</span>...)]<br><span class="hljs-keyword">VALUES</span> (<span class="hljs-operator">&lt;</span>常量<span class="hljs-number">1</span><span class="hljs-operator">&gt;</span>[, <span class="hljs-operator">&lt;</span>常量<span class="hljs-number">2</span><span class="hljs-operator">&gt;</span>] ...)<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>功能</strong>：将新元组插入指定表中</li>
+<li><strong>例</strong>：将一个新学生记录（学号：201215128；姓名：陈冬；性别：男；所在系：IS；年龄：18岁）插入到 Student 表中<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">INSERT</span><br><span class="hljs-keyword">INTO</span> Student (Sno, Sname, Ssex, Sdept, Sage)<br><span class="hljs-keyword">VALUES</span> (<span class="hljs-string">&#x27;201215128&#x27;</span>, <span class="hljs-string">&#x27;陈冬&#x27;</span>, <span class="hljs-string">&#x27;男&#x27;</span>, <span class="hljs-string">&#x27;IS&#x27;</span>, <span class="hljs-number">18</span>);<br></code></pre></td></tr></table></figure>
+</li>
+<li>如果不指定任何属性列，则新插入的元组必须在每个属性列上均有值</li>
+<li>属性列的顺序可与表定义中的顺序不一致</li>
+<li>如果仅指定部分属性列，则新元组在没有出现的属性列上取空值</li>
+<li>VALUES 子句提供的值必须与 INTO 子句匹配（值的个数、值的类型）</li>
+</ul>
+</li>
+<li>
+<p><strong>插入子查询结果</strong>：可以一次插入多个元组</p>
+<ul>
+<li><strong>基本语法</strong>：<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">INSERT </span><br><span class="hljs-keyword">INTO</span> <span class="hljs-operator">&lt;</span>表名<span class="hljs-operator">&gt;</span> [(<span class="hljs-operator">&lt;</span>属性列<span class="hljs-number">1</span><span class="hljs-operator">&gt;</span> [，<span class="hljs-operator">&lt;</span>属性列<span class="hljs-number">2</span><span class="hljs-operator">&gt;</span>… )]<br>子查询;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>功能</strong>：将子查询结果插入指定表中</li>
+<li><strong>例</strong>：对每一个系，求学生的平均年龄，并把结果存入数据库<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">/* 第一步：建表 */</span><br><span class="hljs-keyword">CREATE TABLE</span> Deptage<br>      (Sdept <span class="hljs-type">CHAR</span>(<span class="hljs-number">15</span>)<br>      Avgage <span class="hljs-type">SMALLINT</span>);<br><br><span class="hljs-comment">/* 第二步：建表 */</span><br><span class="hljs-keyword">INSERT</span><br><span class="hljs-keyword">  INTO</span> Deptage(Sdept，Avgage)<br>  <span class="hljs-keyword">SELECT</span> Sdept, <span class="hljs-built_in">AVG</span>(Sage)<br>  <span class="hljs-keyword">FROM</span> Student<br>  <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> Sdept;<br></code></pre></td></tr></table></figure>
+</li>
+<li>INTO 子句
+<ul>
+<li>指定要插入数据的表名及属性列</li>
+<li>属性列的顺序可与表定义中的顺序不一致</li>
+<li>没有指定属性列：表示要插入的是一条完整的元组</li>
+<li>指定部分属性列：插入的元组在其余属性列上取空值</li>
+</ul>
+</li>
+<li>子查询
+<ul>
+<li>SELECT 子句目标列必须与 INTO 子句匹配（值的个数、值的类型）</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
