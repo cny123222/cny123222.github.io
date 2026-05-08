@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/db.png">
 <meta property="article:published_time" content="2026-03-09T08:30:32.000Z">
-<meta property="article:modified_time" content="2026-04-28T07:24:29.267Z">
+<meta property="article:modified_time" content="2026-05-08T08:18:06.332Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="知识点整理">
@@ -259,7 +259,7 @@
         
         
         
-          182 mins
+          186 mins
         
       </span>
     
@@ -366,7 +366,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on April 28, 2026 pm
+                    Last updated on May 8, 2026 pm
                   
                 
               </p>
@@ -3030,7 +3030,66 @@
 </li>
 </ul>
 </li>
+<li>
+<p><strong>带有 EXISTS 谓词的子查询</strong>：</p>
+<ul>
+<li>
+<p><strong>EXISTS 谓词</strong>：存在量词 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∃</mi></mrow><annotation encoding="application/x-tex">\exists</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord">∃</span></span></span></span></p>
+<ul>
+<li>带有 EXISTS 谓词的子查询不返回任何数据，只产生逻辑真值“true”或逻辑假值“false”
+<ul>
+<li>若内层查询结果非空，则返回真值</li>
+<li>若内层查询结果为空，则返回假值</li>
 </ul>
+</li>
+<li>由 EXISTS 引出的子查询，其目标列表达式通常都用 *，因为带 EXISTS 的子查询只返回真值或假值，给出列名无实际意义</li>
+<li><strong>例</strong>：查询所有选修了 1 号课程的学生姓名<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> <span class="hljs-keyword">EXISTS</span><br>      (<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br>      <span class="hljs-keyword">FROM</span> SC <br>      <span class="hljs-keyword">WHERE</span> Sno<span class="hljs-operator">=</span>Student.Sno <br>      <span class="hljs-keyword">AND</span> Cno<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;1&#x27;</span>);<br></code></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname<br><span class="hljs-keyword">FROM</span> Student, SC<br><span class="hljs-keyword">WHERE</span> Student.Sno<span class="hljs-operator">=</span>SC.Sno <span class="hljs-keyword">AND</span> <br>      SC.Cno<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;1&#x27;</span>;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>NOT EXISTS</strong> 谓词</p>
+<ul>
+<li><strong>例</strong>：查询没有选修 1 号课程的学生姓名<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">EXISTS</span><br>        (<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br>        <span class="hljs-keyword">FROM</span> SC<br>        <span class="hljs-keyword">WHERE</span> Sno <span class="hljs-operator">=</span> Student.Sno <br>        <span class="hljs-keyword">AND</span> Cno<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;1&#x27;</span>);<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>不同形式的查询间的替换</strong>：</p>
+<ul>
+<li>一些带 EXISTS 或 NOT EXISTS 谓词的子查询不能被其他形式的子查询等价替换</li>
+<li>所有带 IN 谓词、比较运算符、ANY 和 ALL 谓词的子查询都能用带 EXISTS 谓词的子查询等价替换</li>
+<li><strong>例</strong>：查询与“刘晨”在同一个系学习的学生，可以用带 EXISTS 谓词的子查询替换<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno，Sname，Sdept<br><span class="hljs-keyword">FROM</span> Student S1<br><span class="hljs-keyword">WHERE</span> <span class="hljs-keyword">EXISTS</span><br>    　(<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br>        <span class="hljs-keyword">FROM</span> Student S2<br>        <span class="hljs-keyword">WHERE</span> S2.Sdept <span class="hljs-operator">=</span> S1.Sdept <span class="hljs-keyword">AND</span><br>        S2.Sname <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;刘晨&#x27;</span>);<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>用 EXISTS/NOT EXISTS 实现全称量词</strong>：</p>
+<ul>
+<li>SQL语言中没有全称量词 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∀</mi></mrow><annotation encoding="application/x-tex">\forall</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord">∀</span></span></span></span></li>
+<li>可以把带有全称量词的谓词转换为等价的带有存在量词的谓词<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo stretchy="false">(</mo><mi mathvariant="normal">∀</mi><mi mathvariant="normal">x</mi><mo stretchy="false">)</mo><mi mathvariant="normal">P</mi><mo>≡</mo><mi mathvariant="normal">¬</mi><mo stretchy="false">(</mo><mi mathvariant="normal">∃</mi><mi mathvariant="normal">x</mi><mo stretchy="false">(</mo><mi mathvariant="normal">¬</mi><mi mathvariant="normal">P</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(\forall \mathrm{x}) \mathrm{P} \equiv \neg(\exists \mathrm{x}(\neg \mathrm{P}))
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">∀</span><span class="mord mathrm">x</span><span class="mclose">)</span><span class="mord mathrm">P</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≡</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">¬</span><span class="mopen">(</span><span class="mord">∃</span><span class="mord mathrm">x</span><span class="mopen">(</span><span class="mord">¬</span><span class="mord mathrm">P</span><span class="mclose">))</span></span></span></span></span></p>
+</li>
+<li><strong>例</strong>：查询选修了全部课程的学生姓名<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">EXISTS</span><br>    (<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br>    <span class="hljs-keyword">FROM</span> Course<br>    <span class="hljs-keyword">WHERE</span> <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">EXISTS</span><br>          (<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br>          <span class="hljs-keyword">FROM</span> SC<br>          <span class="hljs-keyword">WHERE</span> Sno<span class="hljs-operator">=</span> Student.Sno<br>          <span class="hljs-keyword">AND</span> Cno<span class="hljs-operator">=</span> Course.Cno));<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>用 EXISTS/NOT EXISTS 实现逻辑蕴函</strong>：</p>
+<ul>
+<li>SQL 语言中没有蕴函逻辑运算</li>
+<li>可以利用谓词演算将逻辑蕴函谓词等价转换为<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi mathvariant="normal">p</mi><mo>→</mo><mi mathvariant="normal">q</mi><mo>≡</mo><mi mathvariant="normal">¬</mi><mi mathvariant="normal">p</mi><mo>∨</mo><mi mathvariant="normal">q</mi></mrow><annotation encoding="application/x-tex">\mathrm{p} \rightarrow \mathrm{q} \equiv \neg \mathrm{p} \vee \mathrm{q}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathrm">p</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6582em;vertical-align:-0.1944em;"></span><span class="mord mathrm">q</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≡</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.75em;vertical-align:-0.1944em;"></span><span class="mord">¬</span><span class="mord mathrm">p</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∨</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathrm">q</span></span></span></span></span></p>
+</li>
+<li><strong>例</strong>：查询至少选修了学生 201215122 选修的全部课程的学生号码<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">DISTINCT</span> Sno<br><span class="hljs-keyword">FROM</span> SC SCX<br><span class="hljs-keyword">WHERE</span> <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">EXISTS</span><br>    (<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br>    <span class="hljs-keyword">FROM</span> SC SCY<br>    <span class="hljs-keyword">WHERE</span> SCY.Sno <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;201215122&#x27;</span> <span class="hljs-keyword">AND</span><br>    <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">EXISTS</span><br>        (<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br>        <span class="hljs-keyword">FROM</span> SC SCZ<br>        <span class="hljs-keyword">WHERE</span> SCZ.Sno<span class="hljs-operator">=</span>SCX.Sno <span class="hljs-keyword">AND</span><br>        SCZ.Cno<span class="hljs-operator">=</span>SCY.Cno));<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-4-集合查询">3.4 集合查询</h4>
 <h2 id="参考资料">参考资料</h2>
 <p>本文参考上海交通大学《数据库技术》课程 CS3321 郭捷老师的 PPT 课件整理。</p>
 
