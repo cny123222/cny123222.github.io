@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/db.png">
 <meta property="article:published_time" content="2026-03-09T08:30:32.000Z">
-<meta property="article:modified_time" content="2026-05-08T08:39:49.242Z">
+<meta property="article:modified_time" content="2026-05-08T09:33:52.266Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          23k words
+          26k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          193 mins
+          215 mins
         
       </span>
     
@@ -3153,7 +3153,8 @@
 </ul>
 <h3 id="4-数据更新">4. 数据更新</h3>
 <ul>
-<li><strong>插入数据</strong>：
+<li>
+<p><strong>插入数据</strong>：</p>
 <ul>
 <li>
 <p><strong>插入单个元组</strong>：</p>
@@ -3177,7 +3178,7 @@
 <li><strong>功能</strong>：将子查询结果插入指定表中</li>
 <li><strong>例</strong>：对每一个系，求学生的平均年龄，并把结果存入数据库<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">/* 第一步：建表 */</span><br><span class="hljs-keyword">CREATE TABLE</span> Deptage<br>      (Sdept <span class="hljs-type">CHAR</span>(<span class="hljs-number">15</span>)<br>      Avgage <span class="hljs-type">SMALLINT</span>);<br><br><span class="hljs-comment">/* 第二步：建表 */</span><br><span class="hljs-keyword">INSERT</span><br><span class="hljs-keyword">  INTO</span> Deptage(Sdept，Avgage)<br>  <span class="hljs-keyword">SELECT</span> Sdept, <span class="hljs-built_in">AVG</span>(Sage)<br>  <span class="hljs-keyword">FROM</span> Student<br>  <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> Sdept;<br></code></pre></td></tr></table></figure>
 </li>
-<li>INTO 子句
+<li><strong>INTO 子句</strong>：
 <ul>
 <li>指定要插入数据的表名及属性列</li>
 <li>属性列的顺序可与表定义中的顺序不一致</li>
@@ -3185,13 +3186,391 @@
 <li>指定部分属性列：插入的元组在其余属性列上取空值</li>
 </ul>
 </li>
-<li>子查询
+<li><strong>子查询</strong>：
 <ul>
 <li>SELECT 子句目标列必须与 INTO 子句匹配（值的个数、值的类型）</li>
 </ul>
 </li>
+<li>DBMS 在执行插入语句时会检查所插元组是否破坏表上已定义的完整性规则
+<ul>
+<li>实体完整性</li>
+<li>参照完整性</li>
+<li>用户定义的完整性
+<ul>
+<li>对于有 NOT NULL 约束的属性列是否提供了非空值</li>
+<li>对于有 UNIQUE 约束的属性列是否提供了非重复值</li>
+<li>对于有值域约束的属性列所提供的属性值是否在值域范围内</li>
 </ul>
 </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>修改数据</strong>：</p>
+<ul>
+<li><strong>基本语法</strong>：<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">UPDATE</span> <span class="hljs-operator">&lt;</span>表名<span class="hljs-operator">&gt;</span><br><span class="hljs-keyword">SET</span> <span class="hljs-operator">&lt;</span>列名<span class="hljs-operator">&gt;=</span><span class="hljs-operator">&lt;</span>表达式<span class="hljs-operator">&gt;</span>[, <span class="hljs-operator">&lt;</span>列名<span class="hljs-operator">&gt;=</span><span class="hljs-operator">&lt;</span>表达式<span class="hljs-operator">&gt;</span>]...<br>[<span class="hljs-keyword">WHERE</span> <span class="hljs-operator">&lt;</span>条件<span class="hljs-operator">&gt;</span>];<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>功能</strong>：修改指定表中满足 WHERE 子句条件的元组</li>
+<li><strong>SET 子句</strong>：指定修改方式、要修改的列、修改后取值</li>
+<li><strong>WHERE 子句</strong>：指定要修改的元组，缺省表示要修改表中的所有元组</li>
+<li><strong>修改元组的值</strong>：
+<ul>
+<li><strong>例</strong>：将学生 201215121 的年龄改为 22 岁<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">UPDATE</span> Student<br><span class="hljs-keyword">SET</span> Sage<span class="hljs-operator">=</span><span class="hljs-number">22</span><br><span class="hljs-keyword">WHERE</span> Sno<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;201215121&#x27;</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>例</strong>：将所有学生的年龄增加 1 岁<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">UPDATE</span> Student<br><span class="hljs-keyword">SET</span> Sage<span class="hljs-operator">=</span> Sage<span class="hljs-operator">+</span><span class="hljs-number">1</span>;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><strong>带子查询的修改语句</strong>：
+<ul>
+<li><strong>例</strong>：将计算机科学系全体学生的成绩置零<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">UPDATE</span> SC<br><span class="hljs-keyword">SET</span> Grade<span class="hljs-operator">=</span><span class="hljs-number">0</span><br><span class="hljs-keyword">WHERE</span> sno <span class="hljs-keyword">IN</span><br>      (SELETE Sno<br>      <span class="hljs-keyword">FROM</span> Student<br>      <span class="hljs-keyword">WHERE</span> Sdept<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;CS&#x27;</span>);<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>删除数据</strong>：</p>
+<ul>
+<li><strong>基本语法</strong>：<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DELETE</span><br><span class="hljs-keyword">FROM</span> <span class="hljs-operator">&lt;</span>表名<span class="hljs-operator">&gt;</span><br>[<span class="hljs-keyword">WHERE</span> <span class="hljs-operator">&lt;</span>条件<span class="hljs-operator">&gt;</span>]<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>功能</strong>：删除指定表中满足 WHERE 子句条件的元组</li>
+<li><strong>WHERE 子句</strong>：指定要删除的元组，缺省表示要删除表中的所有元组（表的定义仍在数据字典中）</li>
+<li><strong>删除元组的值</strong>：
+<ul>
+<li><strong>例</strong>：删除学号为 201215128 的学生记录<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DELETE</span><br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sno<span class="hljs-operator">=</span><span class="hljs-string">&#x27;201215128&#x27;</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>例</strong>：删除 2 号课程的所有选课记录<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DELETE</span><br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">WHERE</span> Cno<span class="hljs-operator">=</span><span class="hljs-string">&#x27;2&#x27;</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>例</strong>：删除所有的学生选课记录<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DELETE</span><br><span class="hljs-keyword">FROM</span> SC;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><strong>带子查询的删除语句</strong>：
+<ul>
+<li><strong>例</strong>：删除计算机科学系所有学生的选课记录<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DELETE</span><br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">WHERE</span> Sno <span class="hljs-keyword">IN</span><br>    (SELETE Sno<br>    <span class="hljs-keyword">FROM</span> Student<br>    <span class="hljs-keyword">WHERE</span> Sdept<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;CS&#x27;</span>);<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>DBMS 在执行插入语句时会检查所插元组是否破坏表上已定义<br>
+的完整性规则
+<ul>
+<li>参照完整性（不允许删除、级联删除）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-空值">5. 空值</h3>
+<ul>
+<li>
+<p><strong>空值的概念</strong>：</p>
+<ul>
+<li>空值就是“不知道”或“不存在”或“无意义”的值</li>
+<li>SQL 语言允许某些元组的某些属性在一定情况下取空值：
+<ul>
+<li>该属性应该有一个值，但目前不知道它的具体值</li>
+<li>该属性不应该有值</li>
+<li>某种原因不便于填写</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>空值的产生</strong>：</p>
+<ul>
+<li><strong>例</strong>：向 SC 表中插入一个元组，学号是“201215126”，课程号是“1”，成绩为空<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">INSERT INTO</span> SC(Sno, Cno, Grade)<br><span class="hljs-keyword">VALUES</span>(<span class="hljs-string">&#x27;201215126&#x27;</span>, <span class="hljs-string">&#x27;1&#x27;</span>, <span class="hljs-keyword">NULL</span>);<br><span class="hljs-comment">/*在插入时该学生还没有考试成绩，取空值*/</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">INSERT INTO</span> SC(Sno, Cno)<br><span class="hljs-keyword">VALUES</span>(<span class="hljs-string">&#x27;201215126&#x27;</span>, <span class="hljs-string">&#x27;1&#x27;</span>);<br><span class="hljs-comment">/*在插入语句中没有赋值的属性，取空值*/</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>例</strong>：将 Student 表中学号是“201215200”的学生所属的系改为空值<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">UPDATE</span> Student <br><span class="hljs-keyword">SET</span> Sdept <span class="hljs-operator">=</span> <span class="hljs-keyword">NULL</span><br><span class="hljs-keyword">WHERE</span> Sno <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;201215200&#x27;</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li>外连接会产生空值；空值的关系运算也会产生空值</li>
+</ul>
+</li>
+<li>
+<p><strong>空值的判断</strong>：判断一个属性的值是否为空值，用 IS NULL 或 IS NOT NULL</p>
+<ul>
+<li><strong>例</strong>：从 Student 表中找出漏填了数据的学生信息<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sname <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span> <span class="hljs-keyword">OR</span> Ssex <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span> <span class="hljs-keyword">OR</span> <br>Sage <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span> <span class="hljs-keyword">OR</span> Sdept <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span>;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>空值的约束条件</strong>：</p>
+<ul>
+<li>属性定义（或域定义）中有 NOT NULL 约束条件的不能取空值</li>
+<li>加了 UNIQUE 限制的属性不能取空值</li>
+<li>码属性不能取空值</li>
+</ul>
+</li>
+<li>
+<p><strong>空值的算术运算、比较运算和逻辑运算</strong>：</p>
+<ul>
+<li>空值与另一个值（包括另一个空值）的算术运算结果为空值</li>
+<li>空值与另一个值（包括另一个空值）的比较运算结果为 UNKNOWN</li>
+<li><strong>三值逻辑的概念</strong>：T、F、U
+<table>
+<thead>
+<tr>
+<th style="text-align:center">x y</th>
+<th style="text-align:center">x AND y</th>
+<th style="text-align:center">x OR y</th>
+<th style="text-align:center">NOT x</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">T T</td>
+<td style="text-align:center">T</td>
+<td style="text-align:center">T</td>
+<td style="text-align:center">F</td>
+</tr>
+<tr>
+<td style="text-align:center">T U</td>
+<td style="text-align:center">U</td>
+<td style="text-align:center">T</td>
+<td style="text-align:center">F</td>
+</tr>
+<tr>
+<td style="text-align:center">T F</td>
+<td style="text-align:center">F</td>
+<td style="text-align:center">T</td>
+<td style="text-align:center">F</td>
+</tr>
+<tr>
+<td style="text-align:center">U T</td>
+<td style="text-align:center">U</td>
+<td style="text-align:center">T</td>
+<td style="text-align:center">U</td>
+</tr>
+<tr>
+<td style="text-align:center">U U</td>
+<td style="text-align:center">U</td>
+<td style="text-align:center">U</td>
+<td style="text-align:center">U</td>
+</tr>
+<tr>
+<td style="text-align:center">U F</td>
+<td style="text-align:center">F</td>
+<td style="text-align:center">U</td>
+<td style="text-align:center">U</td>
+</tr>
+<tr>
+<td style="text-align:center">F T</td>
+<td style="text-align:center">F</td>
+<td style="text-align:center">T</td>
+<td style="text-align:center">T</td>
+</tr>
+<tr>
+<td style="text-align:center">F U</td>
+<td style="text-align:center">F</td>
+<td style="text-align:center">U</td>
+<td style="text-align:center">T</td>
+</tr>
+<tr>
+<td style="text-align:center">F F</td>
+<td style="text-align:center">F</td>
+<td style="text-align:center">F</td>
+<td style="text-align:center">T</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><strong>例</strong>：找出选修 1 号课程的不及格的学生<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">WHERE</span> Grade<span class="hljs-operator">&lt;</span><span class="hljs-number">60</span> <span class="hljs-keyword">AND</span> Cno<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;1&#x27;</span>;<br><span class="hljs-comment">/* 选出了参加考试不及格的学生，不包括缺考的学生 */</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>例</strong>：找出选修 1 号课程的不及格的学生及缺考的学生<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">WHERE</span> Grade <span class="hljs-operator">&lt;</span> <span class="hljs-number">60</span> <span class="hljs-keyword">AND</span> Cno <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;1&#x27;</span><br><span class="hljs-keyword">UNION</span><br><span class="hljs-keyword">SELECT</span> Sno<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">WHERE</span> Grade <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span> <span class="hljs-keyword">AND</span> Cno<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;1&#x27;</span>;<br></code></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">WHERE</span> Cno<span class="hljs-operator">=</span><span class="hljs-string">&#x27;1&#x27;</span> <span class="hljs-keyword">AND</span> (Grade<span class="hljs-operator">&lt;</span><span class="hljs-number">60</span> <span class="hljs-keyword">OR</span> Grade <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span>);<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="6-视图">6. 视图</h3>
+<ul>
+<li>
+<p><strong>视图的特点</strong>：</p>
+<ul>
+<li>虚表，是从一个或几个基本表（或视图）导出的表</li>
+<li>只存放视图的定义，不会出现数据冗余</li>
+<li>基表中的数据发生变化，从视图中查询出的数据也随之改变</li>
+</ul>
+</li>
+<li>
+<p><strong>基于视图的操作</strong>：</p>
+<ul>
+<li>查询</li>
+<li>删除（只影响视图本身）</li>
+<li>受限更新（直接影响基本表）</li>
+<li>定义基于该视图的新视图</li>
+</ul>
+</li>
+<li>
+<p><strong>建立视图</strong>：</p>
+<ul>
+<li><strong>基本语法</strong>：<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">VIEW</span> <span class="hljs-operator">&lt;</span>视图名<span class="hljs-operator">&gt;</span> [(<span class="hljs-operator">&lt;</span>列名<span class="hljs-operator">&gt;</span> [, <span class="hljs-operator">&lt;</span>列名<span class="hljs-operator">&gt;</span>]...)]<br><span class="hljs-keyword">AS</span> <span class="hljs-operator">&lt;</span>子查询<span class="hljs-operator">&gt;</span><br>[<span class="hljs-keyword">WITH</span> <span class="hljs-keyword">CHECK</span> OPTION];<br></code></pre></td></tr></table></figure>
+<ul>
+<li>子查询可以是任意的 SELECT 语句，是否含有 ORDER BY 子句和 DISTINCT 短语，取决于具体系统的实现</li>
+<li>WITH CHECK OPTION 表示对视图进行更新、插入或删除操作时，要保证满足视图定义中的谓词条件（子查询条件表达式）</li>
+<li>组成视图的属性列名：全部省略或全部指定，但在下面三种情况必须明确指定组成视图的所有列名：
+<ul>
+<li>某个目标列不是单纯的属性名，而是聚集函数或列表达式</li>
+<li>多表连接时选出了几个同名列作为视图的字段</li>
+<li>需要在视图中为某个列启用新的更合适的名字</li>
+</ul>
+</li>
+<li>DBMS 执行 CREATE VIEW 语句时只是把视图的定义存入数据字典，并不执行其中的 SELECT 语句</li>
+</ul>
+</li>
+<li><strong>行列子集视图</strong>：若一个视图由单个基本表导出，只是去掉某些行列，但保留主码，这类视图称为行列子集视图
+<ul>
+<li><strong>例</strong>：建立信息系学生的视图，并要求透过该视图进行的更新操作只涉及信息系学生<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">VIEW</span> IS_Student<br>      <span class="hljs-keyword">AS</span> <br>      <span class="hljs-keyword">SELECT</span> Sno, Sname, Sage<br>      <span class="hljs-keyword">FROM</span> Student<br>      <span class="hljs-keyword">WHERE</span> Sdept<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;IS&#x27;</span><br>      <span class="hljs-keyword">WITH</span> <span class="hljs-keyword">CHECK</span> OPTION;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><strong>基于多个基表的视图</strong>：
+<ul>
+<li><strong>例</strong>：建立信息系选修了 1 号课程的学生视图<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">VIEW</span> IS_S1(Sno, Sname, Grade)<br>      <span class="hljs-keyword">AS</span> <br>      <span class="hljs-keyword">SELECT</span> Student.Sno, Sname, Grade<br>      <span class="hljs-keyword">FROM</span> Student, SC<br>      <span class="hljs-keyword">WHERE</span> Sdept<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;IS&#x27;</span> <span class="hljs-keyword">AND</span><br>            Student.Sno<span class="hljs-operator">=</span>SC.Sno <span class="hljs-keyword">AND</span><br>            SC.Cno<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;1&#x27;</span>;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><strong>基于视图的视图</strong>：
+<ul>
+<li><strong>例</strong>：建立信息系选修了 1 号课程且成绩在 90 分以上的学生的视图<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">VIEW</span> IS_S2<br>      <span class="hljs-keyword">AS</span><br>      <span class="hljs-keyword">SELECT</span> Sno, Sname, Grade<br>      <span class="hljs-keyword">FROM</span> IS_S1<br>      <span class="hljs-keyword">WHERE</span> Grade<span class="hljs-operator">&gt;=</span><span class="hljs-number">90</span>;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><strong>带表达式的视图</strong>：
+<ul>
+<li><strong>例</strong>：定义一个反映学生出生年份的视图<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">VIEW</span> BT_S(Sno, Sname, Sbirth)<br><span class="hljs-keyword">AS</span> <br><span class="hljs-keyword">SELECT</span> Sno, Sname, <span class="hljs-number">2014</span><span class="hljs-operator">-</span>Sage<br><span class="hljs-keyword">FROM</span> Student<br></code></pre></td></tr></table></figure>
+</li>
+<li>设置一些派生属性列，也称为虚拟列，例如 Sbirth</li>
+<li>带表达式的视图必须明确定义组成视图的各个属性列名</li>
+</ul>
+</li>
+<li><strong>建立分组视图</strong>：
+<ul>
+<li><strong>例</strong>：将学生的学号及他的平均成绩定义为一个视图，假设 SC 表中“成绩”列 Grade 为数字型<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">VIEW</span> S_G(Sno，Gavg)<br>      <span class="hljs-keyword">AS</span> <br>      <span class="hljs-keyword">SELECT</span> Sno，<span class="hljs-built_in">AVG</span>(Grade)<br>      <span class="hljs-keyword">FROM</span> SC<br>      <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> Sno;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><strong>不指定属性列</strong>：
+<ul>
+<li><strong>例</strong>：将 Student 表中所有女生记录定义为一个视图<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">VIEW</span> F_Student1(F_sno，name，sex，age，dept)<br>      <span class="hljs-keyword">AS</span> <br>      <span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br>      <span class="hljs-keyword">FROM</span> Student<br>      <span class="hljs-keyword">WHERE</span> Ssex<span class="hljs-operator">=</span><span class="hljs-string">&#x27;女&#x27;</span>;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>缺点</strong>：修改基表 Student 的结构后，Student 表与 F_Student1 视图的映象关系被破坏，导致该视图不能正确工作</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>删除视图</strong>：</p>
+<ul>
+<li><strong>基本语法</strong>：<code>DROP VIEW &lt;视图名&gt;[CASCADE];</code>
+<ul>
+<li>该语句从数据字典中删除指定的视图定义</li>
+<li>由该视图导出的其他视图定义仍在数据字典中，但已不能使用，必须显式删除</li>
+<li>删除基表时，由该基表导出的所有视图定义都必须显式删除</li>
+</ul>
+</li>
+<li><strong>例</strong>：
+<ul>
+<li>删除视图 BT_S：<code>DROP VIEW BT_S;</code></li>
+<li>删除视图 IS_S1：<code>DROP VIEW IS_S1;</code> 拒绝执行</li>
+<li>级联删除：<code>DROP VIEW IS_S1 CASCADE;</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>查询视图</strong>：</p>
+<ul>
+<li><strong>用户角度</strong>：查询视图与查询基本表相同</li>
+<li><strong>DBMS 实现视图查询的方法</strong>：
+<ul>
+<li><strong>实体化视图（View Materialization）</strong>：
+<ul>
+<li>有效性检查：检查所查询的视图是否存在</li>
+<li>执行视图定义，将视图临时实体化，生成临时表</li>
+<li>查询视图转换为查询临时表</li>
+<li>查询完毕删除被实体化的视图(临时表)</li>
+</ul>
+</li>
+<li><strong>视图消解法（View Resolution）</strong>：
+<ul>
+<li>进行有效性检查，检查查询的表、视图等是否存在。如果存在，则从数据字典中取出视图的定义</li>
+<li>把视图定义中的子查询与用户的查询结合起来，转换成等价的对基本表的查询</li>
+<li>执行修正后的查询</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>例</strong>：在信息系学生的视图中找出年龄小于 20 岁的学生<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno，Sage<br><span class="hljs-keyword">FROM</span> IS_Student<br><span class="hljs-keyword">WHERE</span> Sage<span class="hljs-operator">&lt;</span><span class="hljs-number">20</span>;<br></code></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">/* 转换后的查询语句 */</span><br><span class="hljs-keyword">SELECT</span> Sno，Sage <br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sdept<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;IS&#x27;</span> <span class="hljs-keyword">AND</span> Sage<span class="hljs-operator">&lt;</span><span class="hljs-number">20</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>例（多表查询）</strong>：查询信息系选修了 1 号课程的学生<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> IS_Student.Sno，Sname<br><span class="hljs-keyword">FROM</span> IS_Student，SC<br><span class="hljs-keyword">WHERE</span> IS_Student.Sno <span class="hljs-operator">=</span> SC.Sno <span class="hljs-keyword">AND</span> SC.Cno<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;1&#x27;</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>例</strong>：在S_G视图中查询平均成绩在90分以上的学生学号和平均成绩<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br><span class="hljs-keyword">FROM</span> S_G<br><span class="hljs-keyword">WHERE</span> Gavg<span class="hljs-operator">&gt;=</span><span class="hljs-number">90</span>;<br></code></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">/* 转换后的查询语句 */</span><br><span class="hljs-keyword">SELECT</span> Sno，<span class="hljs-built_in">AVG</span>(Grade)<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">WHERE</span> <span class="hljs-built_in">AVG</span>(Grade)<span class="hljs-operator">&gt;=</span><span class="hljs-number">90</span> <span class="hljs-comment">/* 查询出现语法错误 */</span><br><span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> Sno；<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>视图消解法的局限</strong>：有些情况下，视图消解法不能生成正确查询，DBMS 会限制这类查询</li>
+</ul>
+</li>
+<li>
+<p><strong>更新视图</strong>：</p>
+<ul>
+<li><strong>用户角度</strong>：更新视图与更新基本表相同</li>
+<li><strong>DBMS 实现视图更新的方法</strong>：
+<ul>
+<li>视图实体化法（View Materialization）</li>
+<li>视图消解法（View Resolution）</li>
+</ul>
+</li>
+<li>指定 WITH CHECK OPTION 子句后，DBMS 在更新视图时会进行检查，防止用户通过视图对不属于视图范围内的基本表数据进行更新</li>
+<li><strong>例</strong>：将信息系学生视图 IS_Student 中学号 201215122 的学生姓名改为“刘辰”<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">UPDATE</span> IS_Student<br><span class="hljs-keyword">SET</span> Sname<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;刘辰&#x27;</span><br><span class="hljs-keyword">WHERE</span> Sno<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;201215122&#x27;</span>;<br></code></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">/* 转换后的语句 */</span><br><span class="hljs-keyword">UPDATE</span> Student<br><span class="hljs-keyword">SET</span> Sname<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;刘辰&#x27;</span><br><span class="hljs-keyword">WHERE</span> Sno<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;201215122&#x27;</span> <span class="hljs-keyword">AND</span> Sdept<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;IS&#x27;</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>例</strong>：向信息系学生视图 IS_S 中插入一个新的学生记录：201215129，赵新，20岁<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">INSERT</span><br><span class="hljs-keyword">INTO</span> IS_Student<br><span class="hljs-keyword">VALUES</span>(<span class="hljs-string">&#x27;201215129&#x27;</span>，<span class="hljs-string">&#x27;赵新&#x27;</span>，<span class="hljs-number">20</span>);<br></code></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">/* 转换为对基本表的更新 */</span><br><span class="hljs-keyword">INSERT</span><br><span class="hljs-keyword">INTO</span> Student(Sno，Sname，Sage，Sdept)<br><span class="hljs-keyword">VALUES</span>(<span class="hljs-string">&#x27;201215129&#x27;</span>，<span class="hljs-string">&#x27;赵新&#x27;</span>，<span class="hljs-number">20</span>，<span class="hljs-string">&#x27;IS&#x27;</span>);<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>例</strong>：删除视图 CS_S 中学号为 201215129 的记录<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DELETE</span><br><span class="hljs-keyword">FROM</span> IS_Student<br><span class="hljs-keyword">WHERE</span> Sno<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;201215129&#x27;</span>;<br></code></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">/* 转换为对基本表的更新 */</span><br><span class="hljs-keyword">DELETE</span><br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sno<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;201215129&#x27;</span> <span class="hljs-keyword">AND</span> Sdept<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;IS&#x27;</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>更新视图的限制</strong>：一些视图是不可更新的，因为对这些视图的更新不能唯一地有意义地转换成对相应基本表的更新(对两类方法均如此)
+<ul>
+<li><strong>例</strong>：视图 S_G 为不可更新视图<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">UPDATE</span> S_G<br><span class="hljs-keyword">SET</span> Gavg<span class="hljs-operator">=</span><span class="hljs-number">90</span><br><span class="hljs-keyword">WHERE</span> Sno<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;95001&#x27;</span>;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><strong>实际系统对视图更新的限制</strong>：
+<ul>
+<li>允许对行列子集视图进行更新</li>
+<li>对其他类型视图的更新不同系统有不同限制</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>视图的作用</strong>：</p>
+<ul>
+<li><strong>视图能够简化用户的操作</strong>：当视图中数据不是直接来自基本表时，定义视图能够简化用户的操作
+<ul>
+<li>基于多张表连接形成的视图</li>
+<li>基于复杂嵌套查询的视图</li>
+<li>含导出属性的视图</li>
+</ul>
+</li>
+<li><strong>视图使用户能以多种角度看待同一数据</strong>：视图机制能使不同用户以不同方式看待同一数据，适应不同种类的用户数据库共享的需要</li>
+<li><strong>视图对重构数据库提供了一定程度的逻辑独立性</strong></li>
+<li><strong>视图能够对机密数据提供安全保护</strong>：
+<ul>
+<li>对不同用户定义不同视图，使每个用户只能看到他有权看到的数据</li>
+<li>通过 WITH CHECK OPTION 对关键数据定义操作时间限制</li>
+</ul>
+</li>
+<li><strong>适当的视图能够更清晰表达查询</strong></li>
 </ul>
 </li>
 </ul>
