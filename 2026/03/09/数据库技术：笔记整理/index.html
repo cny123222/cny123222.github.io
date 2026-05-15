@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/db.png">
 <meta property="article:published_time" content="2026-03-09T08:30:32.000Z">
-<meta property="article:modified_time" content="2026-05-12T06:46:15.691Z">
+<meta property="article:modified_time" content="2026-05-15T09:23:13.180Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          29k words
+          33k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          239 mins
+          273 mins
         
       </span>
     
@@ -366,7 +366,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on May 12, 2026 pm
+                    Last updated on May 15, 2026 pm
                   
                 
               </p>
@@ -3574,6 +3574,348 @@
 </ul>
 </li>
 </ul>
+<h2 id="第五章-数据库设计">第五章 数据库设计</h2>
+<h3 id="1-数据库设计概述">1. 数据库设计概述</h3>
+<ul>
+<li>
+<p><strong>数据库设计</strong>：</p>
+<ul>
+<li>数据库设计是指对于一个给定的应用环境，构造（设计）优化的数据库逻辑模式和物理结构，并据此建立数据库及其应用系统，使之能够有效地存储和管理数据，满足各种用户的应用需求，包括信息管理要求和数据操作要求</li>
+<li><strong>目标</strong>：为用户和各种应用系统提供一个信息基础设施和高效率的运行环境</li>
+</ul>
+</li>
+<li>
+<p><strong>数据库设计的特点</strong>：</p>
+<ul>
+<li>数据库建设是硬件、软件和干件的结合
+<ul>
+<li>三分技术，七分管理，十二分基础数据</li>
+<li>技术与管理的界面称之为“干件”</li>
+</ul>
+</li>
+<li>数据库设计应该与应用系统设计相结合
+<ul>
+<li><strong>结构（数据）设计</strong>：设计数据库框架或数据库结构</li>
+<li><strong>行为（处理）设计</strong>：设计应用程序、事务处理等</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>数据库设计的基本步骤</strong>：</p>
+<ul>
+<li><strong>数据库设计分 6 个阶段</strong>：
+<ul>
+<li>需求分析</li>
+<li>概念结构设计</li>
+<li>逻辑结构设计</li>
+<li>物理结构设计</li>
+<li>数据库实施</li>
+<li>数据库运行和维护</li>
+</ul>
+</li>
+<li>需求分析和概念设计独立于任何数据库管理系统</li>
+<li>逻辑设计和物理设计与选用的 DBMS 密切相关</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-需求分析">2. 需求分析</h3>
+<ul>
+<li>
+<p><strong>需求分析</strong>：</p>
+<ul>
+<li>需求分析就是分析用户的需要与要求</li>
+<li>需求分析是设计数据库的起点</li>
+<li>需求分析的结果是否准确地反映了用户的实际要求，将直接影响到后面各个阶段的设计，并影响到设计结果是否合理和实用</li>
+</ul>
+</li>
+<li>
+<p><strong>需求分析的任务</strong>：</p>
+<ul>
+<li>详细调查现实世界要处理的对象（组织、部门、企业等）</li>
+<li>充分了解原系统（手工系统或计算机系统）工作概况</li>
+<li>明确用户的各种需求</li>
+<li>在此基础上确定新系统的功能</li>
+<li>充分考虑今后可能的扩充和改变，不能仅仅按当前应用需求来设计数据库</li>
+</ul>
+</li>
+<li>
+<p><strong>需求分析的重点</strong>：是“数据”和“处理”，调查、收集与分析用户在数据管理中：</p>
+<ul>
+<li>信息要求（查询内容与性质）</li>
+<li>处理要求（功能、响应时间、方式）</li>
+<li>安全性与完整性要求</li>
+</ul>
+</li>
+<li>
+<p><strong>需求分析的难点</strong>：</p>
+<ul>
+<li><strong>确定用户最终需求的难点</strong>：
+<ul>
+<li>用户缺少计算机知识，无法一下子准确地表达自己的需求，他们所提出的需求往往不断地变化</li>
+<li>设计人员缺少用户的专业知识，不易理解用户的真正需求，甚至误解用户的需求</li>
+<li>新的硬件、软件技术的出现也会使用户需求发生变化</li>
+</ul>
+</li>
+<li><strong>解决方法</strong>：
+<ul>
+<li>设计人员必须采用有效的方法，与用户不断深入地进行交流，才能逐步得以确定用户的实际需求</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>需求分析的方法</strong>：</p>
+<ul>
+<li>调查清楚用户的实际需求并进行初步分析</li>
+<li>与用户达成共识</li>
+<li><strong>进一步分析与表达这些需求</strong>：
+<ul>
+<li><strong>分析和表达用户的需求的常用方法</strong>：结构化分析方法（Structured Analysis，SA 方法）
+<ul>
+<li>从最上层的系统组织机构入手</li>
+<li>自顶向下、逐层分解</li>
+<li>用数据流图和数据字典描述系统</li>
+</ul>
+</li>
+<li>首先把任何一个系统都抽象为信息要求、处理要求</li>
+<li><strong>分解处理功能和数据</strong>：
+<ul>
+<li><strong>分解处理功能</strong>：将处理功能的具体内容分解为若干子功能</li>
+<li><strong>分解数据</strong>：处理功能逐步分解同时，逐级分解所用数据，形成若干层次的数据流图</li>
+<li><strong>表达方法</strong>：
+<ul>
+<li><strong>处理逻辑</strong>：用判定表或判定树来描述。</li>
+<li><strong>数据</strong>：用数据字典来描述。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>将分析结果再次提交给用户，征得用户的认可</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>数据字典的用途</strong>：</p>
+<ul>
+<li>数据字典是各类数据<strong>描述</strong>的集合</li>
+<li>数据字典是进行详细的数据收集和数据分析所获得的主要结果</li>
+<li>数据字典在数据库设计中占有很重要的地位</li>
+</ul>
+</li>
+<li>
+<p><strong>数据字典的内容</strong>：</p>
+<ul>
+<li><strong>数据字典的内容</strong>：数据项、数据结构、数据流、数据存储、处理过程
+<ul>
+<li>数据项是数据的最小组成单位</li>
+<li>若干个数据项可以组成一个数据结构</li>
+<li>数据字典通过对数据项和数据结构的定义来描述数据流、数据存储的逻辑内容</li>
+</ul>
+</li>
+<li><strong>数据项</strong>：
+<ul>
+<li>数据项是不可再分的数据单位</li>
+<li><strong>对数据项的描述</strong>：数据项描述＝｛数据项名，数据项含义说明，别名，数据类型，长度，取值范围，取值含义，与其他数据项的逻辑关系，数据项之间的联系｝</li>
+<li>取值范围、与其他数据项的逻辑关系定义了数据的完整性约束条件</li>
+</ul>
+</li>
+<li><strong>数据结构</strong>：
+<ul>
+<li>数据结构反映了数据之间的组合关系。</li>
+<li>一个数据结构可以由若干个数据项组成，也可以由若干个数据结构组成，或由若干个数据项和数据结构混合组成</li>
+<li><strong>对数据结构的描述</strong>：数据结构描述＝｛数据结构名，含义说明，组成:｛数据项或数据结构｝｝</li>
+</ul>
+</li>
+<li><strong>数据流</strong>：
+<ul>
+<li>数据流是数据结构在系统内传输的路径</li>
+<li><strong>对数据流的描述</strong>：数据流描述＝｛数据流名，说明，数据流来源，数据流去向，组成:｛数据结构｝，平均流量，高峰期流量｝
+<ul>
+<li>数据流来源是说明该数据流来自哪个过程</li>
+<li>数据流去向是说明该数据流将到哪个过程去</li>
+<li>平均流量是指在单位时间（每天、每周、每月等）里的传输次数</li>
+<li>高峰期流量则是指在高峰时期的数据流量</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>数据存储</strong>：
+<ul>
+<li>数据存储是数据结构停留或保存的地方，也是数据流的来源和去向之一</li>
+<li><strong>对数据存储的描述</strong>：数据存储描述＝｛数据存储名，说明，编号，输入的数据流，输出的数据流，组成:｛数据结构｝，数据量，存取频度，存取方式｝
+<ul>
+<li>输入的数据流：指出数据来源</li>
+<li>输出的数据流：指出数据去向</li>
+<li>存取频度：每次存取多少数据，每天（或每小时、每周等）存取几次等信息</li>
+<li>存取方法：批处理/联机处理；检索/更新；顺序检索/随机检索</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>处理过程</strong>：
+<ul>
+<li>处理过程的具体处理逻辑一般用判定表或判定树来描述，数据字典中只需要描述处理过程的说明性信息</li>
+<li><strong>处理过程说明信息的描述</strong>：处理过程描述＝｛处理过程名，说明，输入:｛数据流｝，输出:｛数据流｝，处理:｛简要说明｝｝</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>数据字典</strong>：</p>
+<ul>
+<li>数据字典是关于数据库中数据的描述，是元数据，而不是数据本身</li>
+<li>数据字典在需求分析阶段建立，在数据库设计过程中不断修改、充实、完善</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-概念结构设计">3. 概念结构设计</h3>
+<ul>
+<li>
+<p><strong>概念结构</strong>：</p>
+<ul>
+<li><strong>什么是概念结构设计</strong>：
+<ul>
+<li>需求分析阶段描述的用户应用需求是现实世界的具体需求</li>
+<li>将需求分析得到的用户需求抽象为信息结构即概念模型的过程就是概念结构设计</li>
+<li>概念结构是各种数据模型的共同基础，它比数据模型更独立于机器，更抽象，从而更加稳定</li>
+<li>概念结构设计是整个数据库设计的关键</li>
+</ul>
+</li>
+<li><strong>概念结构设计的特点</strong>：
+<ul>
+<li>能真实、充分地反映现实世界，包括事物和事物之间的联系，能满足用户对数据的处理要求</li>
+<li>易于理解，从而可以用它和不熟悉计算机的用户交换意见</li>
+<li>易于更改，当应用环境和应用要求改变时，容易对概念模型修改和扩充</li>
+<li>易于向关系、网状、层次等各种数据模型转换</li>
+</ul>
+</li>
+<li><strong>描述概念模型的工具</strong>：E-R 模型</li>
+</ul>
+</li>
+<li>
+<p><strong>两个实体之间的联系</strong>：1:1 联系、1:n 联系、m:n 联系</p>
+</li>
+<li>
+<p><strong>概念结构设计的四类方法</strong>：</p>
+<ul>
+<li><strong>自顶向下</strong>：首先定义全局概念结构的框架，然后逐步细化</li>
+<li><strong>自底向上</strong>：首先定义各局部应用的概念结构，然后将它们集成起来，得到全局概念结构</li>
+<li><strong>逐步扩张</strong>：首先定义最重要的核心概念结构，然后向外扩充，以滚雪球的方式逐步生成其他概念结构，直至总体概念结构</li>
+<li><strong>混合策略</strong>：将自顶向下和自底向上相结合，用自顶向下策略设计一个全局概念结构的框架，以它为骨架集成由自底向上策略中设计的各局部概念结构</li>
+</ul>
+</li>
+<li>
+<p><strong>概念结构设计的方法与步骤</strong>：</p>
+<ul>
+<li><strong>常用策略</strong>：自顶向下地进行需求分析，自底向上地设计概念结构</li>
+<li><strong>自底向上设计概念结构的步骤</strong>：
+<ul>
+<li><strong>第 1 步</strong>：抽象数据并设计局部视图</li>
+<li><strong>第 2 步</strong>：集成局部视图，得到全局概念结构</li>
+<li><strong>第 3 步</strong>：验证整体概念结构</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>数据抽象</strong>：</p>
+<ul>
+<li><strong>数据抽象的主要功能</strong>：
+<ul>
+<li>对需求分析阶段收集到的数据进行分类、组织（聚集），形成
+<ul>
+<li>实体</li>
+<li>实体的属性、标识实体的码</li>
+<li>确定实体之间的联系类型（1:1，1:n，m:n）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>局部视图设计</strong>：</p>
+<ul>
+<li><strong>选择局部应用</strong>：在多层的数据流图中选择一个适当层次的数据流图，作为设计分 E-R 图的出发点
+<ul>
+<li>通常以中层数据流图作为设计分 E-R 图的依据</li>
+</ul>
+</li>
+<li><strong>逐一设计分 E-R 图</strong>：
+<ul>
+<li><strong>任务</strong>：
+<ul>
+<li>将各局部应用涉及的数据分别从数据字典中抽取出来</li>
+<li>参照数据流图，标定各局部应用中的实体、实体的属性、标识实体的码</li>
+<li>确定实体之间的联系及其类型（1:1，1:n，m:n）</li>
+</ul>
+</li>
+<li><strong>区分实体和属性</strong>：为了简化 E-R 图的处置，现实世界中的事物凡能够作为属性对待的，应尽量作为属性
+<ul>
+<li>属性不能再具有需要描述的性质，即属性必须是不可分的数据项，不能再由另一些属性组成</li>
+<li>属性不能与其他实体具有联系，联系只发生在实体之间</li>
+<li>符合上述两条特性的事物一般作为属性对待</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>视图的集成</strong>：</p>
+<ul>
+<li>各个局部视图即分 E-R 图建立好后，还需要对它们进行合并，集成为一个整体的数据概念结构，即总 E-R 图</li>
+<li><strong>视图集成的两种方式</strong>：
+<ul>
+<li><strong>多个分 E-R 图一次集成</strong>：一次集成多个分 E-R 图，通常用于局部视图比较简单时</li>
+<li><strong>逐步累积式</strong>：首先集成两个局部视图（通常是比较关键的两个），以后每次将一个新的局部视图集成进来</li>
+</ul>
+</li>
+<li><strong>各分 E-R 图存在冲突</strong>：属性冲突、命名冲突、结构冲突
+<ul>
+<li><strong>合并分 E-R 图的主要工作与关键</strong>：合理消除各分 E-R 图的冲突</li>
+<li><strong>属性冲突</strong>：
+<ul>
+<li><strong>属性域冲突</strong>：属性值的类型、取值范围或取值集合不同
+<ul>
+<li><strong>例</strong>：某些部门（即局部应用）以出生日期形式表示学生的年龄，而另一些部门（即局部应用）用整数形式表示学生的年龄</li>
+</ul>
+</li>
+<li><strong>属性取值单位冲突</strong>：
+<ul>
+<li><strong>例</strong>：学生的身高，有的以米为单位，有的以厘米为单位，有的以尺为单位</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>命名冲突</strong>：
+<ul>
+<li><strong>同名异义</strong>：不同意义的对象在不同的局部应用中具有相同的名字
+<ul>
+<li><strong>例</strong>：局部应用 A 中将教室称为房间，局部应用 B 中将学生宿舍称为房间</li>
+</ul>
+</li>
+<li><strong>异名同义（一义多名）</strong>：同一意义的对象在不同的局部应用中具有不同的名字
+<ul>
+<li><strong>例</strong>：有的部门把教科书称为课本，有的部门则把教科书称为教材</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>结构冲突</strong>：
+<ul>
+<li>同一对象在不同应用中具有不同的抽象</li>
+<li>同一实体在不同分 E-R 图中所包含的<strong>属性个数</strong>和<strong>属性排列次序</strong>不完全相同</li>
+<li>实体之间的联系在不同局部视图中呈现不同的类型</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 <h2 id="第六章-数据库编程">第六章 数据库编程</h2>
 <h3 id="1-概述">1. 概述</h3>
 <ul>
@@ -3861,12 +4203,142 @@
 </ul>
 <h3 id="3-JDBC-编程">3. JDBC 编程</h3>
 <ul>
-<li><strong>JDBC 工作原理概述</strong>：
+<li>
+<p><strong>JDBC 工作原理概述</strong>：</p>
 <ul>
 <li><strong>JDBC (Java Database Connection)</strong>：
 <ul>
 <li>由于不同的数据库管理系统的存在，在某个关系数据库管理系统下编写的应用程序就不能在另一个关系数据库管理系统下运行</li>
 <li>许多应用程序需要共享多个部门的数据资源，访问不同的关系数据库管理系统</li>
+<li>是面向 Java 语言的软件开发工具包（Java Development Kit，JDK）中有关数据库的一个组成部分</li>
+<li><strong>提供了一组访问数据库的应用程序编程接口</strong>（Application Programming Interface，API）</li>
+</ul>
+</li>
+<li><strong>JDBC 约束力</strong>：规范应用开发、规范关系数据库管理系统应用接口</li>
+<li><strong>JDBC 应用系统的体系结构</strong>：用户应用程序、JDBC 驱动程序管理器、数据源</li>
+</ul>
+</li>
+<li>
+<p><strong>JDBC API 基础</strong>：</p>
+<ul>
+<li>
+<p><strong>JDBC 中的常用类</strong>：JDBC 进行应用程序开发涉及到的所有类都包含在 java.sql 包中，不同的 JDBC 版本接口名和使用略有差异</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">类名</th>
+<th style="text-align:left">路径</th>
+<th style="text-align:left">备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">驱动程序类</td>
+<td style="text-align:left">java.sql.Driver</td>
+<td style="text-align:left">由各数据库厂商提供</td>
+</tr>
+<tr>
+<td style="text-align:left">驱动程序管理类</td>
+<td style="text-align:left">java.sql.DriverManager</td>
+<td style="text-align:left">作用于应用程序与驱动程序之间</td>
+</tr>
+<tr>
+<td style="text-align:left">数据库连接类</td>
+<td style="text-align:left">java.sql.Connection</td>
+<td style="text-align:left">用于建立与指定数据库的连接</td>
+</tr>
+<tr>
+<td style="text-align:left">静态 SQL 语句执行类</td>
+<td style="text-align:left">java.sql.Statement</td>
+<td style="text-align:left">用于执行静态 SQL 语句并返回结果</td>
+</tr>
+<tr>
+<td style="text-align:left">动态 SQL 语句执行类</td>
+<td style="text-align:left">java.sql.PreparedStatement</td>
+<td style="text-align:left">用于执行含参 SQL 语句并返回结果</td>
+</tr>
+<tr>
+<td style="text-align:left">存储过程语句执行类</td>
+<td style="text-align:left">java.sql.CallableStatement</td>
+<td style="text-align:left">用于执行存储过程语句并返回结果</td>
+</tr>
+<tr>
+<td style="text-align:left">结果集处理类</td>
+<td style="text-align:left">java.sql.ResultSet</td>
+<td style="text-align:left">用于检索结果集中的数据</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p><strong>数据类型</strong>：</p>
+<ul>
+<li><strong>SQL 数据类型</strong>：用于数据源，VARCHAR、CHAR、BIT、NUMERIC、DATE 等</li>
+<li><strong>Java 数据类型</strong>：用于应用程序的 Java 代码，String、boolean、BigDecimal、byte、short、int 等</li>
+<li>由数据库管理系统的驱动程序完成自身数据类型和 JDBC 标准数据类型的映射</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>使用 JDBC 操纵数据库的工作流程</strong>：</p>
+<ul>
+<li><strong>步骤 1</strong>：加载驱动程序
+<ul>
+<li>驱动程序在 JDBC API 中实现定义数据交互的接口</li>
+</ul>
+</li>
+<li><strong>步骤 2</strong>：设置待连接数据库的 URL，并建立与数据库连接
+<ul>
+<li>加载驱动后，可以通过 URL 地址与数据库建立连接</li>
+<li>URL 包含了连接数据库所需的协议、子协议和数据库名称，定义格式为：<code>&lt;协议名&gt;:&lt;子协议名&gt;:&lt;数据库名称&gt;</code></li>
+</ul>
+</li>
+<li><strong>步骤 3</strong>：执行SQL语句
+<ul>
+<li><strong>静态语句执行类对象(Statement)</strong></li>
+<li><strong>派生执行类对象</strong>：
+<ul>
+<li><strong>动态语句执行类(PreparedStatement)</strong>：执行动态的 SQL 语句</li>
+<li><strong>存储过程执行类(CallableStatement)</strong>：执行数据库存储过程</li>
+</ul>
+</li>
+<li><strong>执行方法</strong>：
+<ul>
+<li><code>ResultSet executeQuery()</code>: 执行数据库查询语句</li>
+<li><code>int executeUpdate()</code>: 处理增、删、改以及定义语句</li>
+<li><code>boolean execute()</code>: 处理存储过程或动态 SQL 语句</li>
+</ul>
+</li>
+<li><strong>SQL 注入防御</strong>：预编译；正则过滤，输入验证，框架</li>
+</ul>
+</li>
+<li><strong>步骤 4</strong>：处理结果集，并处理用户逻辑
+<ul>
+<li><code>ResultSet</code>: 结果集合类对象
+<ul>
+<li><code>.GetXXX(参数)</code>：获取元组的属性值，<code>XXX</code> 代表某种数据类型；可以指定参数为列号（JDBC 的列从 1 开始）或列名</li>
+<li><strong>游标(cursor)</strong>：JDBC 处理结果集的机制</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>步骤 5</strong>：释放资源
+<ul>
+<li>执行结束后，将与数据库进行交互的对象释放</li>
+<li><strong>释放资源有标准的顺序</strong>：
+<ul>
+<li>关闭结果集：<code>ResultSet.close()</code></li>
+<li>关闭语句执行类对象：<code>Statement.close()</code></li>
+<li>释放数据库连接对象：<code>Connection.close()</code></li>
+</ul>
+</li>
+<li><strong>释放资源的 Coding Tips</strong>：
+<ul>
+<li>Connection 对象在应用程序中较为稀有，尽量做到晚创建，早释放</li>
+<li>推荐在 finally 代码块中释放资源，以满足异常处理机制（finally 语句在什么情况下都会执行,确保一定会释放资源）</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
