@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/db.png">
 <meta property="article:published_time" content="2026-03-09T08:30:32.000Z">
-<meta property="article:modified_time" content="2026-05-15T09:23:13.180Z">
+<meta property="article:modified_time" content="2026-05-19T06:59:36.320Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          33k words
+          35k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          273 mins
+          290 mins
         
       </span>
     
@@ -366,7 +366,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on May 15, 2026 pm
+                    Last updated on May 19, 2026 pm
                   
                 
               </p>
@@ -3915,7 +3915,213 @@
 </li>
 </ul>
 </li>
+<li>
+<p><strong>修改与重构</strong>：</p>
+<ul>
+<li><strong>基本任务</strong>：消除不必要的冗余，设计生成基本 E-R 图
+<ul>
+<li>分 E-R 图 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mo stretchy="true" minsize="3.0em">→</mo><mpadded width="+0.6em" lspace="0.3em"><mtext>合并</mtext></mpadded></mover></mrow><annotation encoding="application/x-tex">\xrightarrow{\text{合并}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.1113em;vertical-align:-0.011em;"></span><span class="mrel x-arrow"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.1003em;"><span style="top:-3.322em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight x-arrow-pad"><span class="mord mtight"><span class="mord text mtight"><span class="mord cjk_fallback mtight">合并</span></span></span></span></span><span class="svg-align" style="top:-2.689em;"><span class="pstrut" style="height:2.7em;"></span><span class="hide-tail" style="height:0.522em;min-width:1.469em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.522em" viewBox="0 0 400000 522" preserveAspectRatio="xMaxYMin slice"><path d="M0 241v40h399891c-47.3 35.3-84 78-110 128
+-16.7 32-27.7 63.7-33 95 0 1.3-.2 2.7-.5 4-.3 1.3-.5 2.3-.5 3 0 7.3 6.7 11 20
+ 11 8 0 13.2-.8 15.5-2.5 2.3-1.7 4.2-5.5 5.5-11.5 2-13.3 5.7-27 11-41 14.7-44.7
+ 39-84.5 73-119.5s73.7-60.2 119-75.5c6-2 9-5.7 9-11s-3-9-9-11c-45.3-15.3-85
+-40.5-119-75.5s-58.3-74.8-73-119.5c-4.7-14-8.3-27.3-11-40-1.3-6.7-3.2-10.8-5.5
+-12.5-2.3-1.7-7.5-2.5-15.5-2.5-14 0-21 3.7-21 11 0 2 2 10.3 6 25 20.7 83.3 67
+ 151.7 139 205zm0 0v40h399900v-40z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.011em;"><span></span></span></span></span></span></span></span></span> 初步 E-R 图 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mo stretchy="true" minsize="3.0em">→</mo><mpadded width="+0.6em" lspace="0.3em"><mtext>消除不必要的冗余</mtext></mpadded></mover></mrow><annotation encoding="application/x-tex">\xrightarrow{\text{消除不必要的冗余}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.1113em;vertical-align:-0.011em;"></span><span class="mrel x-arrow"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.1003em;"><span style="top:-3.322em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight x-arrow-pad"><span class="mord mtight"><span class="mord text mtight"><span class="mord cjk_fallback mtight">消除不必要的冗余</span></span></span></span></span><span class="svg-align" style="top:-2.689em;"><span class="pstrut" style="height:2.7em;"></span><span class="hide-tail" style="height:0.522em;min-width:1.469em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.522em" viewBox="0 0 400000 522" preserveAspectRatio="xMaxYMin slice"><path d="M0 241v40h399891c-47.3 35.3-84 78-110 128
+-16.7 32-27.7 63.7-33 95 0 1.3-.2 2.7-.5 4-.3 1.3-.5 2.3-.5 3 0 7.3 6.7 11 20
+ 11 8 0 13.2-.8 15.5-2.5 2.3-1.7 4.2-5.5 5.5-11.5 2-13.3 5.7-27 11-41 14.7-44.7
+ 39-84.5 73-119.5s73.7-60.2 119-75.5c6-2 9-5.7 9-11s-3-9-9-11c-45.3-15.3-85
+-40.5-119-75.5s-58.3-74.8-73-119.5c-4.7-14-8.3-27.3-11-40-1.3-6.7-3.2-10.8-5.5
+-12.5-2.3-1.7-7.5-2.5-15.5-2.5-14 0-21 3.7-21 11 0 2 2 10.3 6 25 20.7 83.3 67
+ 151.7 139 205zm0 0v40h399900v-40z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.011em;"><span></span></span></span></span></span></span></span></span> 基本 E-R 图</li>
 </ul>
+</li>
+<li><strong>冗余</strong>：
+<ul>
+<li><strong>冗余的数据</strong>是指可由基本数据导出的数据；<strong>冗余的联系</strong>是指可由其他联系导出的联系</li>
+<li>冗余数据和冗余联系容易<strong>破坏数据库的完整性</strong>，给数据库维护增加困难</li>
+<li>并不是所有的冗余数据与冗余联系都必须加以消除，有时为了提高某些应用的效率，<strong>不得不以冗余信息作为代价</strong></li>
+</ul>
+</li>
+<li><strong>消除冗余的方法</strong>：
+<ul>
+<li><strong>分析方法</strong>：以数据字典和数据流图为依据，根据数据字典中关于数据项之间逻辑关系的说明来消除冗余</li>
+<li><strong>效率 VS 冗余信息</strong>：需要根据用户的整体需求来确定
+<ul>
+<li>若人为地保留了一些冗余数据，则应把数据字典中数据关联的说明作为<strong>完整性约束条件</strong></li>
+</ul>
+</li>
+<li><strong>规范化理论</strong>：函数依赖的概念提供了消除冗余联系的形式化工具
+<ul>
+<li><strong>方法</strong>：
+<ol>
+<li>确定分 E-R 图实体之间的<strong>数据依赖 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>F</mi><mi>L</mi></msub></mrow><annotation encoding="application/x-tex">F_L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">L</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></strong></li>
+<li>求 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>F</mi><mi>L</mi></msub></mrow><annotation encoding="application/x-tex">F_L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">L</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 的<strong>最小覆盖 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>G</mi><mi>L</mi></msub></mrow><annotation encoding="application/x-tex">G_L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">G</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">L</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></strong>，差集为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mo>=</mo><msub><mi>F</mi><mi>L</mi></msub><mo>−</mo><msub><mi>G</mi><mi>L</mi></msub></mrow><annotation encoding="application/x-tex">D = F_L-G_L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">L</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">G</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">L</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，逐一考察 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi></mrow><annotation encoding="application/x-tex">D</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span></span></span></span> 中的函数依赖，确定是否是冗余的联系，若是，就把它去掉</li>
+</ol>
+</li>
+<li><strong>冗余的联系一定在 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi></mrow><annotation encoding="application/x-tex">D</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span></span></span></span> 中，而 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi></mrow><annotation encoding="application/x-tex">D</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span></span></span></span> 中的联系不一定是冗余的</strong></li>
+<li>当实体之间存在多种联系时，要将实体之间的联系在形式上加以区分</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>验证整体概念结构</strong>：视图集成后形成一个整体的数据库概念结构，对该整体概念结构还必须进行进一步验证，确保它能够满足下列条件：</p>
+<ul>
+<li>整体概念结构<strong>内部必须具有一致性</strong>，不存在互相矛盾的表达</li>
+<li>整体概念结构能<strong>准确地反映原来的每个视图结构</strong>，包括属性、实体及实体间的联系</li>
+<li>整体概念结构能满足需要分析阶段所确定的所有要求</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-逻辑结构设计">4. 逻辑结构设计</h3>
+<ul>
+<li>
+<p><strong>逻辑结构设计</strong>：</p>
+<ul>
+<li>
+<p><strong>逻辑结构设计的任务</strong>：把概念结构设计阶段设计好的基本 E-R 图转换为与选用 DBMS 产品所支持的数据模型相符合的逻辑结构</p>
+</li>
+<li>
+<p><strong>逻辑结构设计的步骤</strong>：</p>
+<p><img src="6-%E9%80%BB%E8%BE%91%E7%BB%93%E6%9E%84.png" srcset="/img/loading.gif" lazyload alt=""></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>E-R 图向关系模型的转换</strong>：</p>
+<ul>
+<li><strong>转换内容</strong>：
+<ul>
+<li>E-R 图由<strong>实体</strong>、实体的<strong>属性</strong>和实体之间的<strong>联系</strong>三个要素组成</li>
+<li>关系模型的逻辑结构是一组<strong>关系模式</strong>的集合</li>
+<li>将 E-R 图转换为关系模型：将实体、实体的属性和实体之间的联系转化为关系模式</li>
+</ul>
+</li>
+<li>一个<strong>实体型</strong>转换为一个关系模式
+<ul>
+<li><strong>关系的属性</strong>：实体型的属性</li>
+<li><strong>关系的码</strong>：实体型的码</li>
+</ul>
+</li>
+<li>一个 <strong>m:n 联系</strong>转换为一个关系模式
+<ul>
+<li><strong>关系的属性</strong>：与该联系相连的各实体的码以及联系本身的属性</li>
+<li><strong>关系的码</strong>：各实体码的组合</li>
+</ul>
+</li>
+<li>一个 <strong>1:n 联系</strong>可以转换为一个独立的关系模式，也可以与 n 端对应的关系模式合并
+<ul>
+<li>转换为一个独立的关系模式
+<ul>
+<li><strong>关系的属性</strong>：与该联系相连的各实体的码以及联系本身的属性</li>
+<li><strong>关系的码</strong>：n 端实体的码</li>
+</ul>
+</li>
+<li>与 n 端对应的关系模式合并
+<ul>
+<li><strong>合并后关系的属性</strong>：在 n 端关系中加入 1 端关系的码和联系本身的属性</li>
+<li><strong>合并后关系的码</strong>：不变</li>
+<li>可以减少系统中的关系个数，一般情况下<strong>更倾向于采用这种方法</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>一个 <strong>1:1 联系</strong>可以转换为一个独立的关系模式，也可以与任意一端对应的关系模式合并
+<ul>
+<li>转换为一个独立的关系模式
+<ul>
+<li><strong>关系的属性</strong>：与该联系相连的各实体的码以及联系本身的属性</li>
+<li><strong>关系的候选码</strong>：每个实体的码均是该关系的候选码</li>
+</ul>
+</li>
+<li>与某一端对应的关系模式合并
+<ul>
+<li><strong>合并后关系的属性</strong>：加入对应关系的码和联系本身的属性</li>
+<li><strong>合并后关系的码</strong>：不变</li>
+</ul>
+</li>
+<li><strong>注意</strong>：
+<ul>
+<li>从理论上讲，1:1 联系可以与任意一端对应的关系模式合并</li>
+<li>但在一些情况下，<strong>与不同的关系模式合并效率会大不一样</strong>，因此究竟应该与哪端的关系模式合并需要依应用的具体情况而定</li>
+<li>由于连接操作是最费时的操作，所以一般应以<strong>尽量减少连接操作为目标</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>三个或三个以上实体间的一个<strong>多元联系</strong>转换为一个关系模式
+<ul>
+<li><strong>关系的属性</strong>：与该多元联系相连的各实体的码以及联系本身的属性</li>
+<li><strong>关系的码</strong>：各实体码的组合</li>
+</ul>
+</li>
+<li>具有<strong>相同码</strong>的关系模式可合并：
+<ul>
+<li><strong>目的</strong>：减少系统中的关系个数</li>
+<li><strong>合并方法</strong>：将其中一个关系模式的全部属性加入到另一个关系模式中，然后去掉其中的同义属性（可能同名也 可能不同名），并适当调整属性的次序</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>数据模型的优化</strong>：</p>
+<ul>
+<li>数据库逻辑设计的结果不是唯一的</li>
+<li>得到初步数据模型后，还应该适当地修改、调整数据模型的结构，以进一步提高数据库应用系统的性能，这就是<strong>数据模型的优化</strong></li>
+<li>关系数据模型的优化通常以<strong>规范化理论</strong>为指导</li>
+<li><strong>优化数据模型的方法</strong>：
+<ul>
+<li><strong>确定数据依赖</strong>：按需求分析阶段所得到的语义，分别写出每个关系模式内部各属性之间的数据依赖以及不同关系模式属性之间数据的依赖</li>
+<li><strong>消除冗余的联系</strong>：对于各个关系模式之间的数据依赖进行极小化处理，消除冗余的联系</li>
+<li><strong>确定所属范式</strong>：
+<ul>
+<li>按照数据依赖的理论对关系模式逐一进行分析</li>
+<li>考查是否存在部分函数依赖、传递函数依赖、多值依赖等</li>
+<li>确定各关系模式分别属于第几范式</li>
+</ul>
+</li>
+<li>按照需求分析阶段得到的各种应用对数据处理的要求，分析对于这样的应用环境这些模式是否合适，确定是否要对它们进行合并或分解
+<ul>
+<li><strong>并不是规范化程度越高的关系就越优</strong>，一般说来，第三范式就足够了</li>
+</ul>
+</li>
+<li>按照需求分析阶段得到的各种应用对数据处理的要求，对关系模式进行<strong>必要的分解</strong>，以提高数据操作的效率和存储空间的利用率
+<ul>
+<li><strong>水平分解</strong>：
+<ul>
+<li>把(基本)关系的元组分为若干子集合，定义每个子集合为一个子关系，以提高系统的效率</li>
+<li><strong>水平分解的适用范围</strong>：满足“80/20原则”的应用；并发事务经常存取不相交的数据</li>
+</ul>
+</li>
+<li><strong>垂直分解</strong>：
+<ul>
+<li>把关系模式 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi></mrow><annotation encoding="application/x-tex">R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span> 的属性分解为若干子集合，形成若干子关系模式</li>
+<li><strong>垂直分解的原则</strong>：取决于分解后 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi></mrow><annotation encoding="application/x-tex">R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span> 上的所有事务的<strong>总效率是否得到了提高</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>设计用户子模式</strong>：</p>
+<ul>
+<li>定义数据库全局模式主要是从系统的<strong>时间效率、空间效率、易维护</strong>等角度出发</li>
+<li>定义<strong>用户外模式</strong>时应注重考虑用户的习惯与方便，包括：
+<ul>
+<li>使用更符合用户习惯的别名</li>
+<li>针对<strong>不同级别的用户定义不同的 View</strong>，以满足系统对安全性的要求</li>
+<li>简化用户对系统的使用</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-数据库物理设计">5. 数据库物理设计</h3>
 <h2 id="第六章-数据库编程">第六章 数据库编程</h2>
 <h3 id="1-概述">1. 概述</h3>
 <ul>
