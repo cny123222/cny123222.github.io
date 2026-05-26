@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/db.png">
 <meta property="article:published_time" content="2026-03-09T08:30:32.000Z">
-<meta property="article:modified_time" content="2026-05-26T07:09:41.347Z">
+<meta property="article:modified_time" content="2026-05-26T07:26:15.720Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          48k words
+          49k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          403 mins
+          407 mins
         
       </span>
     
@@ -6007,6 +6007,76 @@
 </li>
 </ul>
 <h2 id="第九章-数据库存储管理">第九章 数据库存储管理</h2>
+<h3 id="1-数据组织">1. 数据组织</h3>
+<ul>
+<li><strong>数据组织</strong>：
+<ul>
+<li>以<strong>最优的</strong>形式在外存上组织、存放庞大数据集
+<ul>
+<li>存储效率高，节省存储空间</li>
+<li>存取效率高，访问速度快，代价小</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="1-1-数据库的逻辑组织方式与物理组织方式">1.1 数据库的逻辑组织方式与物理组织方式</h4>
+<ul>
+<li>
+<p><strong>数据存储的管理方式</strong>：</p>
+<ul>
+<li><strong>方式一</strong>：每个 DB 对象（基本表、索引）对应一个操作系统文件
+<ul>
+<li>例如，PostgreSQL、Kingbase ES</li>
+</ul>
+</li>
+<li><strong>方式二</strong>：整个 DB 对应一个或若干个文件（<strong>段页式存储</strong>）
+<ul>
+<li>例如，Oracle、SQL Server</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>数据库的逻辑组织</strong>：表空间 – 段 – 分区 – 数据块，方便数据管理</p>
+<p><img src="9-%E9%80%BB%E8%BE%91%E7%BB%84%E7%BB%87.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li><strong>表空间（Tablespace）</strong>：磁盘上的一个或多个物理文件，<strong>一个物理文件只能属于一个表空间</strong>；一个数据库可以有多个表空间，从逻辑上组织数据库的数据存储
+<ul>
+<li>例如，系统表空间、联机表空间、临时表空间</li>
+</ul>
+</li>
+<li><strong>数据段（Segment）</strong>：一个表空间逻辑上由多个段组成，每个段可以<strong>逻辑上组织不同类型</strong>的数据
+<ul>
+<li>例如，数据段、索引段、临时段</li>
+</ul>
+</li>
+<li><strong>分区（Extent）</strong>：一个段逻辑上由多个分区组成，每个分区由<strong>一组连续数据块</strong>组成</li>
+<li><strong>数据块（Block）</strong>：数据库的磁盘存取单元，大小为操作系统块的整数倍</li>
+</ul>
+</li>
+<li>
+<p><strong>数据库的物理组织</strong>：文件 – 块 – 记录</p>
+<ul>
+<li><strong>文件</strong>：操作系统文件</li>
+<li><strong>块</strong>：每个文件物理上分成<strong>定长的存储单元</strong>，即<strong>操作系统的物理块</strong>；存储分配和 I/O 的基本单位</li>
+<li><strong>记录</strong>：物理块中存放的多条元组</li>
+</ul>
+</li>
+<li>
+<p><strong>逻辑组织与物理组织的对应关系</strong>：</p>
+<p><img src="9-%E9%80%BB%E8%BE%91-%E7%89%A9%E7%90%86.png" srcset="/img/loading.gif" lazyload alt=""></p>
+</li>
+</ul>
+<h4 id="1-2-记录表示">1.2 记录表示</h4>
+<ul>
+<li><strong>元组存储</strong>：
+<ul>
+<li><strong>形式一</strong>：定长记录存储</li>
+<li><strong>形式二</strong>：变长记录存储</li>
+</ul>
+</li>
+</ul>
 <h2 id="参考资料">参考资料</h2>
 <p>本文参考上海交通大学《数据库技术》课程 CS3321 郭捷老师的 PPT 课件整理。</p>
 
