@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/db.png">
 <meta property="article:published_time" content="2026-03-09T08:30:32.000Z">
-<meta property="article:modified_time" content="2026-06-05T08:54:41.492Z">
+<meta property="article:modified_time" content="2026-06-05T09:40:12.247Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="知识点整理">
@@ -259,7 +259,7 @@
         
         
         
-          488 mins
+          492 mins
         
       </span>
     
@@ -7046,6 +7046,63 @@
 <ul>
 <li>自顶向下的执行方式是一种被动的、需求驱动的执行方式</li>
 <li>自底向上的执行方式是一种主动的执行方式</li>
+</ul>
+</li>
+</ul>
+<h2 id="第十一章-数据库恢复技术">第十一章 数据库恢复技术</h2>
+<h3 id="1-事务的基本概念">1. 事务的基本概念</h3>
+<ul>
+<li><strong>数据库恢复概述</strong>：
+<ul>
+<li><strong>故障是不可避免的</strong>：计算机硬件故障、系统软件和应用软件的错误、操作员的失误、恶意的破坏</li>
+<li><strong>故障的影响</strong>：运行事务非正常中断（影响数据正确性）、破坏数据库（数据丢失）</li>
+<li><strong>数据库管理系统对故障的对策</strong>：
+<ul>
+<li>DBMS 提供<strong>恢复子系统</strong></li>
+<li>保证故障发生后，能把数据库从错误状态恢复到某种逻辑一致的状态（某一已知的正确状态）</li>
+<li>保证事务 ACID；</li>
+</ul>
+</li>
+<li>恢复技术是衡量系统性能优劣的重要指标</li>
+</ul>
+</li>
+</ul>
+<h4 id="1-1-什么是事务">1.1 什么是事务</h4>
+<ul>
+<li><strong>事务(Transaction)</strong>：用户定义的一个数据库操作序列，<strong>这些操作要么全做，要么全不做</strong>，是一个不可分割的工作单位
+<ul>
+<li><strong>事务和程序是两个概念</strong>：在关系数据库中，一个事务可以是一条 SQL 语句，一组 SQL 语句或整个程序；一个应用程序通常包含多个事务</li>
+<li><strong>事务是恢复和并发控制的基本单位</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="1-2-如何定义事务">1.2 如何定义事务</h4>
+<ul>
+<li>
+<p><strong>定义事务</strong>：</p>
+<ul>
+<li><strong>显式定义方式</strong>：<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">BEGIN</span> TRANSACTION<br><span class="hljs-keyword">SQL</span> 语句<span class="hljs-number">1</span><br><span class="hljs-keyword">SQL</span> 语句<span class="hljs-number">2</span><br>...<br><span class="hljs-keyword">COMMIT</span> （提交）<br></code></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">BEGIN</span> TRANSACTION<br><span class="hljs-keyword">SQL</span> 语句<span class="hljs-number">1</span><br><span class="hljs-keyword">SQL</span> 语句<span class="hljs-number">2</span><br>...<br><span class="hljs-keyword">ROLLBACK</span> （回滚）<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>隐式方式</strong>：当用户没有显式地定义事务时，DBMS 按缺省规定自动划分事务</li>
+</ul>
+</li>
+<li>
+<p><strong>事务结束</strong>：</p>
+<ul>
+<li><strong>COMMIT (提交)</strong>：
+<ul>
+<li><strong>提交</strong>事务的所有操作（<strong>读+更新</strong>），事务正常结束</li>
+<li>将事务中所有对数据库的更新写回到磁盘上的物理数据库中</li>
+<li>事务中所有对数据库的更新<strong>永久</strong>生效</li>
+</ul>
+</li>
+<li><strong>ROLLBACK (回滚)</strong>：
+<ul>
+<li>事务异常终止，事务运行的过程中发生了某种故障，不能继续执行</li>
+<li>系统将事务中对数据库的所有已完成操作全部撤销，事务滚回到<strong>开始时的状态</strong></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
