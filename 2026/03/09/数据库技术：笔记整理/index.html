@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/db.png">
 <meta property="article:published_time" content="2026-03-09T08:30:32.000Z">
-<meta property="article:modified_time" content="2026-06-05T09:40:12.247Z">
+<meta property="article:modified_time" content="2026-06-06T16:36:20.777Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          59k words
+          60k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          492 mins
+          496 mins
         
       </span>
     
@@ -366,7 +366,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on June 5, 2026 pm
+                    Last updated on June 7, 2026 am
                   
                 
               </p>
@@ -378,10 +378,18 @@
 <span id="more"></span>
 <h2 id="第一章-数据库系统概论">第一章 数据库系统概论</h2>
 <h3 id="1-数据库系统概述">1. 数据库系统概述</h3>
+<ul>
+<li><strong>数据库的发展</strong>：
+<ul>
+<li><strong>经历了三代演变</strong>：层次/网状数据库系统、关系数据库系统、新一代数据库系统</li>
+<li><strong>造就了五位图灵奖得主</strong>：C.W.Bachman (网状数据库)、E.F.Codd (关系数据库)、James Gray (事务处理)、M.R.Stonebraker (Ingres 等)、Jeffrey D. Ullman (数据依赖)</li>
+</ul>
+</li>
+</ul>
 <h4 id="1-1-四个基本概念">1.1 四个基本概念</h4>
 <ul>
 <li>
-<p><strong>数据 (Data)</strong>：数据库中存储的基本对象</p>
+<p><strong>数据 (Data)</strong>：数据库中<strong>存储的基本对象</strong></p>
 <ul>
 <li><strong>定义</strong>：描述事物的符号记录</li>
 <li><strong>种类</strong>：数值、文字、图形、图象、声音、视频等</li>
@@ -391,14 +399,14 @@
 <li>
 <p><strong>数据库 (DataBase, DB)</strong>：</p>
 <ul>
-<li><strong>定义</strong>：长期储存在计算机内、有组织、可共享的大量数据集合</li>
+<li><strong>定义</strong>：<strong>长期储存</strong>在计算机内、<strong>有组织</strong>、<strong>可共享</strong>的<strong>大量数据集合</strong></li>
 <li><strong>基本特征</strong>：
 <ul>
-<li>数据按一定的数据模型组织、描述和储存</li>
-<li>可为各种用户共享</li>
-<li>冗余度较小</li>
-<li>数据独立性较高</li>
-<li>易扩展</li>
+<li>数据按一定的<strong>数据模型</strong>组织、描述和储存</li>
+<li>可为各种用户<strong>共享</strong></li>
+<li><strong>冗余度较小</strong></li>
+<li>数据<strong>独立性较高</strong>（<strong>应用程序</strong>与<strong>数据库中存储的数据</strong>相互独立，即数据结构发生变化，应用程序不必做相应修改）</li>
+<li><strong>易扩展</strong></li>
 </ul>
 </li>
 </ul>
@@ -406,8 +414,8 @@
 <li>
 <p><strong>数据库管理系统 (DataBase Management System, DBMS)</strong>：</p>
 <ul>
-<li><strong>定义</strong>：位于用户与操作系统之间的一层数据管理软件</li>
-<li><strong>用途</strong>：科学地组织和存储数据、高效地获取和维护数据</li>
+<li><strong>定义</strong>：位于<strong>用户</strong>与<strong>操作系统</strong>之间的一层<strong>数据管理软件</strong></li>
+<li><strong>用途</strong>：科学地<strong>组织和存储</strong>数据、高效地<strong>获取和维护</strong>数据</li>
 <li><strong>主要功能</strong>：
 <ul>
 <li><strong>数据定义功能</strong>：
@@ -459,13 +467,13 @@
 <p><strong>数据库系统 (DataBase System, DBS)</strong>：</p>
 <ul>
 <li>
-<p><strong>定义</strong>：在计算机系统中引入数据库和 DBMS 后的系统构成</p>
+<p><strong>定义</strong>：在计算机系统中<strong>引入数据库和 DBMS 后的系统构成</strong></p>
 <ul>
 <li>在不引起混淆的情况下，常常把数据库系统简称为数据库</li>
 </ul>
 </li>
 <li>
-<p><strong>构成</strong>：由数据库、数据库管理系统（及其应用开发工具）、应用系统、数据库管理员（DataBase Administrator, DBA）构成</p>
+<p><strong>构成</strong>：由<strong>数据库</strong>、<strong>数据库管理系统</strong>（及其应用开发工具）、<strong>应用系统</strong>、<strong>数据库管理员</strong>（DataBase Administrator, DBA）构成</p>
 </li>
 <li>
 <p><strong>结构</strong>：</p>
@@ -479,7 +487,7 @@
 <li>
 <p><strong>数据管理技术</strong>：</p>
 <ul>
-<li><strong>定义</strong>：对数据进行分类、组织、编码、存储、检索和维护，是数据处理和数据分析的中心问题</li>
+<li><strong>定义</strong>：对数据进行<strong>分类、组织、编码、存储、检索和维护</strong>，是数据处理和数据分析的中心问题</li>
 <li><strong>发展过程</strong>：
 <ul>
 <li><strong>人工管理阶段</strong>：40 年代 – 50 年代中</li>
@@ -495,7 +503,7 @@
 <li>
 <p><strong>背景</strong>：</p>
 <ul>
-<li><strong>应用背景</strong>：计算机主要用于科学计算</li>
+<li><strong>应用背景</strong>：计算机主要用于<strong>科学计算</strong></li>
 <li><strong>硬件背景</strong>：外存只有磁带、卡片、纸带，没有直接存储设备</li>
 <li><strong>软件背景</strong>：没有操作系统、没有管理数据的软件</li>
 <li><strong>处理方式</strong>：批处理</li>
@@ -504,10 +512,10 @@
 <li>
 <p><strong>特点</strong>：</p>
 <ul>
-<li>数据不保存，没有文件的概念</li>
-<li>应用程序管理数据，程序员负担很重</li>
-<li>数据面向某个应用程序，无共享，冗余度大</li>
-<li><strong>应用程序与数据的关系</strong>：一一对应，数据不具有独立性</li>
+<li><strong>数据不保存</strong>，没有文件的概念</li>
+<li><strong>应用程序管理数据</strong>，程序员负担很重</li>
+<li>数据面向某个应用程序，<strong>无共享，冗余度大</strong></li>
+<li>应用程序与数据的关系：<strong>一一对应，数据不具有独立性</strong></li>
 </ul>
 <p><img src="1-%E5%85%B3%E7%B3%BB1.png" srcset="/img/loading.gif" lazyload alt="应用程序与数据对应关系 (人工管理阶段)"></p>
 </li>
@@ -520,19 +528,19 @@
 <p><strong>背景</strong>：</p>
 <ul>
 <li><strong>应用需求</strong>：科学计算、管理</li>
-<li><strong>硬件水平</strong>：磁盘、磁鼓等存储设备</li>
-<li><strong>软件水平</strong>：有文件系统</li>
-<li><strong>处理方式</strong>：联机实时处理、批处理</li>
+<li><strong>硬件水平</strong>：磁盘、磁鼓等<strong>存储设备</strong></li>
+<li><strong>软件水平</strong>：有<strong>文件系统</strong></li>
+<li><strong>处理方式</strong>：<strong>联机实时处理</strong>、批处理</li>
 </ul>
 </li>
 <li>
 <p><strong>特点</strong></p>
 <ul>
-<li><strong>数据的管理者</strong>：文件系统，数据可长期保存</li>
+<li><strong>数据的管理者</strong>：文件系统，<strong>数据可长期保存</strong></li>
 <li><strong>数据面向的对象</strong>：某一应用程序</li>
-<li><strong>数据的共享程度</strong>：共享性差、冗余度极大</li>
-<li><strong>数据的独立性</strong>：独立性差，数据的逻辑结构改变必须修改应用程序</li>
-<li><strong>数据的结构化</strong>：记录内有结构，整体无结构数据</li>
+<li><strong>数据的共享程度</strong>：<strong>共享性差、冗余度极大</strong></li>
+<li><strong>数据的独立性</strong>：<strong>独立性差</strong>，数据的逻辑结构改变必须修改应用程序</li>
+<li><strong>数据的结构化</strong>：记录内有结构，<strong>整体无结构数据</strong></li>
 <li><strong>控制能力</strong>：应用程序自己控制</li>
 </ul>
 <p><img src="1-%E5%85%B3%E7%B3%BB2.png" srcset="/img/loading.gif" lazyload alt="应用程序与数据对应关系 (文件系统阶段)"></p>
@@ -545,10 +553,10 @@
 <li>
 <p><strong>背景</strong>：</p>
 <ul>
-<li><strong>应用需求</strong>：大规模管理</li>
+<li><strong>应用需求</strong>：<strong>大规模管理</strong></li>
 <li><strong>硬件水平</strong>：大容量磁盘、磁盘列阵</li>
-<li><strong>软件水平</strong>：有数据库管理系统</li>
-<li><strong>处理方式</strong>：联机实时处理、分布处理、批处理</li>
+<li><strong>软件水平</strong>：有<strong>数据库管理系统</strong></li>
+<li><strong>处理方式</strong>：联机实时处理、<strong>分布处理</strong>、批处理</li>
 </ul>
 </li>
 <li>
@@ -556,9 +564,9 @@
 <ul>
 <li><strong>数据的管理者</strong>：DBMS</li>
 <li><strong>数据面向的对象</strong>：现实世界</li>
-<li><strong>数据的共享程度</strong>：共享性高，冗余度小</li>
-<li><strong>数据的独立性</strong>：高度的物理独立性和一定的逻辑独立性</li>
-<li><strong>数据的结构化</strong>：整体结构化，用数据模型来表示</li>
+<li><strong>数据的共享程度</strong>：<strong>共享性高，冗余度小</strong></li>
+<li><strong>数据的独立性</strong>：高度的<strong>物理独立性</strong>和一定的<strong>逻辑独立性</strong></li>
+<li><strong>数据的结构化</strong>：<strong>整体结构化</strong>，用数据模型来表示</li>
 <li><strong>控制能力</strong>：由 DBMS 统一管理和控制</li>
 </ul>
 <p><img src="1-%E5%85%B3%E7%B3%BB3.png" srcset="/img/loading.gif" lazyload alt="应用程序与数据对应关系 (数据库系统阶段)"></p>
@@ -569,10 +577,10 @@
 <h4 id="1-3-数据库系统的特点">1.3 数据库系统的特点</h4>
 <ul>
 <li>
-<p><strong>数据的结构化</strong>：整体数据的结构化是数据库的主要特征之一</p>
+<p><strong>数据的结构化</strong>：<strong>整体数据的结构化</strong>是数据库的主要特征之一</p>
 <ul>
-<li>数据的结构用数据模型描述，无需程序定义和解释</li>
-<li>数据可以变长；数据的最小存取单位是数据项</li>
+<li>数据的结构用<strong>数据模型</strong>描述，无需程序定义和解释</li>
+<li>数据可以<strong>变长</strong>；数据的最小存取单位是<strong>数据项</strong></li>
 <li>不再仅仅针对某一应用，而是面向整个企业或组织</li>
 </ul>
 </li>
@@ -582,25 +590,25 @@
 <li><strong>物理独立性</strong>：
 <ul>
 <li>指用户的应用程序与存储在物理磁盘上的数据库中数据是相互独立的</li>
-<li>当数据的物理存储改变了，应用程序不用改变</li>
+<li><strong>当数据的物理存储改变了，应用程序不用改变</strong></li>
 </ul>
 </li>
 <li><strong>逻辑独立性</strong>：
 <ul>
 <li>指用户的应用程序与数据库的逻辑结构是相互独立的</li>
-<li>数据的逻辑结构改变了，用户程序也可以不变</li>
+<li><strong>数据的逻辑结构改变了，用户程序也可以不变</strong></li>
 </ul>
 </li>
 </ul>
 </li>
 <li>
-<p><strong>数据的高共享性</strong>：数据面向整个系统，可以被多个用户、多个应用共享使用</p>
+<p><strong>数据的高共享性</strong>：数据面向整个系统，可以被<strong>多个用户、多个应用共享使用</strong></p>
 <ul>
 <li><strong>好处</strong>：
 <ul>
-<li>降低数据的冗余度，节省存储空间</li>
-<li>避免数据间的不一致性和不相容性</li>
-<li>数据库系统弹性大，易于扩充</li>
+<li><strong>降低数据的冗余度</strong>，节省存储空间</li>
+<li><strong>避免</strong>数据间的<strong>不一致性和不相容性</strong></li>
+<li>数据库系统弹性大，<strong>易于扩充</strong></li>
 </ul>
 </li>
 </ul>
@@ -608,8 +616,8 @@
 <li>
 <p><strong>数据由 DBMS 统一管理和控制</strong>：</p>
 <ul>
-<li><strong>数据的安全性（Security）保护</strong>：使每个用户只能按指定方式使用和处理指定数据，保护数据以防止不合法的使用造成的数据的泄密和破坏</li>
-<li><strong>数据的完整性（Integrity）检查</strong>：保持数据的正确性、有效性、相容性；将数据控制在有效的范围内，保证数据之间满足一定的关系</li>
+<li><strong>数据的安全性（Security）保护</strong>：使每个用户只能按指定方式使用和处理指定数据，保护数据以<strong>防止不合法的使用</strong>造成的数据的泄密和破坏</li>
+<li><strong>数据的完整性（Integrity）检查</strong>：保持数据的<strong>正确性、有效性、相容性</strong>；将数据控制在有效的范围内，保证数据之间满足一定的关系</li>
 <li><strong>并发（Concurrency）控制</strong>：对多用户的并发操作加以控制和协调，防止相互干扰而得到错误的结果</li>
 <li><strong>数据库恢复（Recovery）</strong>：将数据库从错误状态恢复到某一已知的正确状态</li>
 </ul>
@@ -617,36 +625,37 @@
 </ul>
 <h3 id="2-数据模型">2. 数据模型</h3>
 <ul>
-<li><strong>数据模型</strong>：
+<li><strong>作用</strong>：<strong>抽象、表示和处理</strong>现实世界中的数据和信息
 <ul>
-<li><strong>作用</strong>：抽象、表示和处理现实世界中的数据和信息
-<ul>
-<li>通俗地讲数据模型就是现实世界的模拟</li>
+<li>数据模型就是<strong>现实世界数据特征的抽象</strong></li>
 </ul>
 </li>
 <li><strong>要求</strong>：
 <ul>
-<li>能比较真实地模拟现实世界</li>
-<li>容易为人所理解</li>
-<li>便于在计算机上实现</li>
+<li>能比较<strong>真实地模拟</strong>现实世界</li>
+<li><strong>容易</strong>为人所<strong>理解</strong></li>
+<li>便于在计算机上<strong>实现</strong></li>
 </ul>
 </li>
 </ul>
-</li>
-</ul>
-<h4 id="2-1-两类数据模型">2.1 两类数据模型</h4>
+<h4 id="2-1-数据建模">2.1 数据建模</h4>
 <ul>
 <li>
-<p><strong>概念模型</strong>：也称信息模型</p>
-<ul>
-<li>是按用户的观点来对数据和信息建模，用于数据库设计</li>
-</ul>
+<p><strong>数据建模</strong>：把现实世界的具体事物抽象、组织为某一数据库管理系统支持的数据模型</p>
 </li>
 <li>
-<p><strong>逻辑模型和物理模型</strong>：</p>
+<p><strong>两步抽象</strong>：</p>
 <ul>
-<li><strong>逻辑模型</strong>：主要包括网状模型、层次模型、关系模型等，它是按计算机系统的观点对数据建模，用于 DBMS 的实现</li>
-<li><strong>物理模型</strong>：数据最低层的抽象，描述数据在系统内部的表示方式和存取方法，面向计算机系统</li>
+<li><strong>建立概念模型</strong>：将<strong>现实世界</strong>抽象为<strong>信息世界</strong>
+<ul>
+<li><strong>概念模型</strong>：按<strong>用户的观点</strong>来对数据和信息建模，用于数据库设计</li>
+</ul>
+</li>
+<li><strong>将概念模型转换为数据模型</strong>：将<strong>信息世界</strong>转换为<strong>机器世界</strong>
+<ul>
+<li><strong>数据模型</strong>：按<strong>计算机系统的观点</strong>对数据建模，是 DBMS 支持的，用于 DBMS 的实现</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -658,7 +667,7 @@
 <li><strong>用途</strong>：
 <ul>
 <li>用于信息世界的建模</li>
-<li>是现实世界到机器世界的一个中间层次</li>
+<li>是<strong>现实世界到机器世界的一个中间层次</strong></li>
 <li>是数据库设计的有力工具</li>
 <li>数据库设计人员和用户之间进行交流的语言</li>
 </ul>
@@ -667,6 +676,8 @@
 <ul>
 <li>较强的语义表达能力</li>
 <li>简单、清晰、易于用户理解</li>
+<li>易于更改和扩充</li>
+<li>易于向各种数据模型进行转换</li>
 </ul>
 </li>
 </ul>
@@ -684,22 +695,46 @@
 <li>一个实体可以由若干个属性来刻画</li>
 </ul>
 </li>
-<li><strong>码（Key）</strong>：唯一标识实体的属性集</li>
+<li><strong>码（Key）</strong>：唯一标识实体的<strong>属性集</strong></li>
 <li><strong>域（Domain）</strong>：属性的取值范围</li>
-<li><strong>实体型（Entity Type）</strong>：同类实体，用实体名及其属性名集合来抽象和刻画</li>
+<li><strong>实体型（Entity Type）</strong>：用<strong>实体名</strong>及其<strong>属性名集合</strong>来抽象和刻画的同类实体
+<ul>
+<li>具有相同属性的实体必然具有共同的特征和性质</li>
+</ul>
+</li>
 <li><strong>实体集（Entity Set）</strong>：同型实体的集合</li>
-<li><strong>联系（Relationship）</strong>：现实世界中事物内部以及事物之间的联系，在信息世界中反映为实体内部的联系和实体之间的联系</li>
+<li><strong>联系（Relationship）</strong>：现实世界中事物内部以及事物之间的联系，在信息世界中反映为<strong>实体内部的联系</strong>（组成实体的各属性之间的联系）和<strong>实体之间的联系</strong>（不同实体集之间的联系）</li>
 </ul>
 </li>
 <li>
-<p><strong>实体之间的联系</strong>：</p>
+<p><strong>概念模型的表示方法</strong>：概念模型的表示方法很多，最常用的是<strong>实体－联系模型 (Entity-Relationship model)</strong>，简称 E-R 模型</p>
 <ul>
+<li>
+<p><strong>实体-联系模型</strong>：</p>
+<ul>
+<li>用 E-R 图来描述现实世界的概念模型</li>
+<li>提供了表示实体型、属性和联系的方法</li>
+</ul>
+</li>
+<li>
+<p><strong>E-R 图</strong>：</p>
+<ul>
+<li><strong>实体型</strong>：用<strong>矩形表示</strong>，矩形框内写明实体名</li>
+<li><strong>属性</strong>：用<strong>椭圆形表示</strong>，并用<strong>无向边</strong>将其与相应的实体连接起来</li>
+<li><strong>联系</strong>：用<strong>菱形表示</strong>，菱形框内写明<strong>联系名</strong>，并用<strong>无向边</strong>分别与有关实体连接起来，同时在无向边旁<strong>标上联系的类型</strong>（1:1、1:n 或 m:n）</li>
+<li><strong>联系的属性</strong>：用无向边与该联系连起来
+<ul>
+<li>联系本身也是一种实体型，也可以有属性</li>
+</ul>
+</li>
+</ul>
+</li>
 <li>
 <p><strong>联系的度</strong>：参与联系的实体型的数目</p>
 <ul>
-<li>两个实体型之间的联系度为 2，称为二元联系</li>
-<li>三个实体型之间的联系度为 3，称为三元联系</li>
-<li>N 个实体型之间的联系度为 N，称为 N 元联系</li>
+<li>两个实体型之间的联系度为 2，称为<strong>二元联系</strong></li>
+<li>三个实体型之间的联系度为 3，称为<strong>三元联系</strong></li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span> 个实体型之间的联系度为 N，称为 <strong><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span> 元联系</strong></li>
 </ul>
 </li>
 <li>
@@ -707,19 +742,22 @@
 <p><img src="1-%E8%81%94%E7%B3%BB.png" srcset="/img/loading.gif" lazyload alt="两个实体型之间的联系"></p>
 <ul>
 <li>
-<p><strong>一对一联系</strong>：如果对于实体集 A 中的每一个实体，实体集 B 中至多有一个实体与之联系，反之亦然，则称实体集 A 与实体集 B 具有一对一联系，记为 1:1</p>
+<p><strong>一对一联系</strong>：如果对于实体集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span></span></span></span> 中的每一个实体，实体集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span> 中至多有一个实体与之联系，反之亦然，则称实体集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span></span></span></span> 与实体集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span> <strong>具有一对一联系</strong>，记为 1:1</p>
 <ul>
 <li>例如，班级与班长之间的联系：一个班级只有一个正班长，一个班长只在一个班中任职</li>
 </ul>
 </li>
 <li>
-<p><strong>一对多联系</strong>：如果对于实体集 A 中的每一个实体，实体集 B 中有 n 个实体（n≥0）与之联系，反之，对于实体集 B 中的每一个实体，实体集 A 中至多只有一个实体与之联系，则称实体集 A 与实体集 B 有一对多联系，记为 1:n</p>
+<p><strong>一对多联系</strong>：如果对于实体集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span></span></span></span> 中的每一个实体，实体集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span> 中有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 个实体 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>n</mi><mo>≥</mo><mn>0</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(n\ge 0)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">0</span><span class="mclose">)</span></span></span></span> 与之联系，反之，对于实体集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span> 中的每一个实体，实体集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span></span></span></span> 中至多只有一个实体与之联系，则称<strong>实体集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span></span></span></span> 与实体集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span> 有一对多联系</strong>，记为 1:n</p>
 <ul>
 <li>例如，班级与学生之间的联系：一个班级中有若干名学生，每个学生只在一个班级中学习</li>
 </ul>
 </li>
 <li>
-<p><strong>多对多联系</strong>：记为 m:n</p>
+<p><strong>多对多联系</strong>：如果对于实体集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span></span></span></span> 中的每一个实体，实体集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span> 中有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 个实体 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>n</mi><mo>≥</mo><mn>0</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(n \ge 0)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">0</span><span class="mclose">)</span></span></span></span> 与之联系，反之，对于实体集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span> 中的每一个实体，实体集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span></span></span></span> 中也有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span></span></span></span> 个实体 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>m</mi><mo>≥</mo><mn>0</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(m \ge 0)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">m</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">0</span><span class="mclose">)</span></span></span></span> 与之联系，则称<strong>实体集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span></span></span></span> 与实体 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span> 具有多对多联系</strong>，记为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>:</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">m: n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span></p>
+<ul>
+<li>例如，课程与学生之间的联系：一门课程同时有若干个同学选修，一个学生可以同时选修多门课程</li>
+</ul>
 </li>
 </ul>
 </li>
@@ -731,37 +769,12 @@
 <li><strong>一对一联系</strong></li>
 </ul>
 </li>
-</ul>
-</li>
 <li>
 <p><strong>同一实体集内各实体间的联系</strong>：</p>
 <ul>
-<li><strong>一对多联系</strong>：例如，职工实体集内部具有领导与被领导的联系，某一职工（干部）“领导”若干名职工一个职工仅被另外一个职工直接领导</li>
+<li><strong>一对多联系</strong>：例如，职工实体集内部具有领导与被领导的联系，某一职工（干部）“领导”若干名职工，一个职工仅被另外一个职工直接领导</li>
 <li><strong>一对一联系</strong></li>
 <li><strong>多对多联系</strong></li>
-</ul>
-</li>
-<li>
-<p><strong>概念模型的表示方法</strong>：概念模型的表示方法很多</p>
-<ul>
-<li><strong>实体－联系方法 (Entity-Relationship approach)</strong>：
-<ul>
-<li>用 E-R 图来描述现实世界的概念模型</li>
-<li>提供了表示实体型、属性和联系的方法</li>
-<li>E-R 方法也称为 E-R 模型</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p><strong>E-R 图</strong>：</p>
-<ul>
-<li><strong>实体型</strong>：用矩形表示，矩形框内写明实体名</li>
-<li><strong>属性</strong>：用椭圆形表示，并用无向边将其与相应的实体连接起来</li>
-<li><strong>联系</strong>：用菱形表示，菱形框内写明联系名，并用无向边分别与有关实体连接起来，同时在无向边旁标上联系的类型（1:1、1:n 或 m:n）</li>
-<li><strong>联系的属性</strong>：用无向边与该联系连起来
-<ul>
-<li>联系本身也是一种实体型，也可以有属性</li>
 </ul>
 </li>
 </ul>
@@ -774,7 +787,7 @@
 <ul>
 <li><strong>数据结构</strong>：静态特性</li>
 <li><strong>数据操作</strong>：动态特性</li>
-<li><strong>数据的完整性约束条件</strong></li>
+<li>数据的<strong>完整性约束条件</strong></li>
 </ul>
 </li>
 <li>
@@ -782,7 +795,7 @@
 <ul>
 <li><strong>作用</strong>：
 <ul>
-<li>描述数据库的<strong>组成对象</strong>及<strong>对象之间的联系</strong></li>
+<li><strong>描述</strong>数据库的<strong>组成对象</strong>及<strong>对象之间的联系</strong></li>
 <li>经常用数据结构的类型来命名数据模型，例如：层次结构—层次模型、关系结构—关系模型</li>
 </ul>
 </li>
@@ -797,31 +810,31 @@
 <li>
 <p><strong>数据操作</strong>：对系统<strong>动态特性</strong>的描述</p>
 <ul>
-<li><strong>内容</strong>：对数据库中各种对象（型）的实例（值）允许执行的<strong>操作</strong>及有关的<strong>操作规则</strong></li>
+<li><strong>内容</strong>：对数据库中各种对象（型）的实例（值）允许执行的<strong>操作的集合</strong>，包括<strong>操作</strong>及有关的<strong>操作规则</strong></li>
 <li><strong>类型</strong>：
 <ul>
-<li><strong>查询</strong></li>
-<li><strong>更新</strong>：包括插入、删除、修改</li>
+<li>查询</li>
+<li>更新（包括插入、删除、修改）</li>
 </ul>
 </li>
 </ul>
 </li>
 <li>
-<p><strong>数据的完整性约束条件</strong>：一组完整性规则的集合</p>
+<p><strong>数据的完整性约束条件</strong>：一组<strong>完整性规则</strong>的集合</p>
 <ul>
-<li><strong>完整性规则</strong>：给定的数据模型中数据及其联系所具有的制约和储存规则
+<li><strong>完整性规则</strong>：给定的数据模型中数据及其联系所具有的<strong>制约和储存</strong>规则
 <ul>
-<li><strong>作用</strong>：可以限定符合数据模型的数据库状态以及状态的变化，以保证数据的正确、有效、相容</li>
+<li><strong>作用</strong>：可以限定符合数据模型的数据库状态以及状态的变化，以保证数据的<strong>正确、有效、相容</strong></li>
 </ul>
 </li>
 <li><strong>约束条件的定义</strong>：
 <ul>
-<li>反映和规定本数据模型必须遵守的基本的通用的完整性约束条件
+<li>反映和规定本数据模型必须遵守的<strong>基本的通用的完整性约束</strong>
 <ul>
 <li>例如：在关系模型中，任何关系必须满足实体完整性和参照完整性两个条件</li>
 </ul>
 </li>
-<li>提供定义完整性约束条件的机制，以反映具体应用所涉及的数据必须遵守的特定的语义约束条件</li>
+<li>提供定义完整性约束条件的机制，以反映<strong>具体应用</strong>所涉及的数据必须遵守的特定的语义约束条件</li>
 </ul>
 </li>
 </ul>
@@ -833,7 +846,7 @@
 <ul>
 <li>层次模型 (Hierarchical Model)</li>
 <li>网状模型 (Network Model)</li>
-<li><strong>数据结构</strong>：以基本层次联系为基本单位</li>
+<li><strong>数据结构</strong>：以<strong>基本层次联系</strong>为基本单位</li>
 </ul>
 </li>
 <li><strong>关系模型 (Relational Model)</strong>：第二代数据库
@@ -845,16 +858,19 @@
 <ul>
 <li>面向对象模型 (Object Oriented Data Model)</li>
 <li>对象关系模型 (Object Relational Model)</li>
-<li>半结构化数据模型 (Semi-structure Data Model)</li>
-<li>非结构化数据模型</li>
-<li>图模型</li>
-<li>其他</li>
+<li>半结构化的 XML 数据模型</li>
+<li>新型数据模型：
+<ul>
+<li>NoSQL：键值数据模型、文档数据模型、图数据模型</li>
+<li>NewSQL：时序数据模型、时空数据模型、多媒体数据模型</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 <h4 id="2-5-层次模型">2.5 层次模型</h4>
 <ul>
-<li><strong>数据结构</strong>
+<li><strong>数据结构</strong>：树形结构
 <ul>
 <li><strong>几个术语</strong>:
 <ul>
@@ -865,29 +881,29 @@
 </li>
 <li><strong>要求</strong>：满足下面两个条件的基本层次联系的集合为层次模型：
 <ul>
-<li>有且只有一个结点没有双亲结点，这个结点称为根结点</li>
-<li>根以外的其它结点有且只有一个双亲结点</li>
+<li><strong>有且只有一个结点没有双亲结点</strong>，这个结点称为根结点</li>
+<li>根以外的<strong>其它结点有且只有一个双亲结点</strong></li>
 </ul>
 </li>
 <li><strong>表示方法</strong>：
 <ul>
 <li><strong>实体型</strong>：用记录类型描述，每个结点表示一个记录类型</li>
 <li><strong>属性</strong>：用字段描述，每个记录类型可包含若干个字段</li>
-<li><strong>联系</strong>：用结点之间的连线（有向边）表示记录（类型）之间的一对多的父子联系</li>
+<li><strong>联系</strong>：用结点之间的连线（<strong>有向边</strong>）表示记录（类型）之间的<strong>一对多的父子联系</strong></li>
 </ul>
 </li>
 <li><strong>特点</strong>：
 <ul>
 <li>结点的双亲是唯一的</li>
-<li>只能直接处理一对多的实体联系</li>
+<li>只能直接处理<strong>一对多</strong>的实体联系</li>
 <li>每个记录类型定义一个排序字段，也称为码字段</li>
-<li>任何记录值只有按其路径查看时，才能显出它的全部意义</li>
+<li><strong>任何记录值只有按其路径查看时</strong>，才能显出它的全部意义</li>
 <li>没有一个子女记录值能够脱离双亲记录值而独立存在</li>
 </ul>
 </li>
-<li><strong>多对多联系的表示</strong>：用层次模型间接表示多对多联系
+<li><strong>多对多联系的表示</strong>：用层次模型<strong>间接</strong>表示多对多联系
 <ul>
-<li><strong>方法</strong>：将多对多联系分解成一对多联系</li>
+<li><strong>方法</strong>：<strong>将多对多联系分解成一对多联系</strong></li>
 <li><strong>分解方法</strong>：冗余结点法、虚拟结点法</li>
 </ul>
 </li>
@@ -908,11 +924,18 @@
 </ul>
 </li>
 <li>
+<p><strong>存储结构</strong>：</p>
+<ul>
+<li><strong>邻接法</strong>：按照层次树前序遍历的顺序把所有记录值依次邻接存放在物理介质上，即通过<strong>物理空间的位置相邻</strong>来实现层次顺序</li>
+<li><strong>链接法</strong>：用指引元来反映数据之间的层次联系，有子女一兄弟链接法、层次序列链接法</li>
+</ul>
+</li>
+<li>
 <p><strong>优点</strong>：</p>
 <ul>
-<li>层次数据模型简单，对具有一对多的层次关系的部门描述自然、直观，容易理解</li>
-<li>查询效率高，性能优于关系模型，不低于网状模型</li>
-<li>层次数据模型提供了良好的完整性支持</li>
+<li>层次数据<strong>模型简单</strong>，对具有一对多的层次关系的部门描述自然、直观，容易理解</li>
+<li><strong>查询效率高</strong>，性能优于关系模型，不低于网状模型</li>
+<li>层次数据模型提供了良好的<strong>完整性支持</strong></li>
 </ul>
 </li>
 <li>
@@ -927,7 +950,7 @@
 </ul>
 <h4 id="2-6-网状模型">2.6 网状模型</h4>
 <ul>
-<li><strong>数据结构</strong>：
+<li><strong>数据结构</strong>：图
 <ul>
 <li><strong>要求</strong>：满足下面两个条件的基本层次联系的集合为网状模型：
 <ul>
@@ -938,21 +961,21 @@
 <li><strong>表示方法</strong>：与层次数据模型相同
 <ul>
 <li><strong>实体型</strong>：用记录类型描述，每个结点表示一个记录类型</li>
-<li><strong>属性</strong>：用字段描述，每个记录类型可包含若干个字段。</li>
+<li><strong>属性</strong>：用字段描述，每个记录类型可包含若干个字段</li>
 <li><strong>联系</strong>：用结点之间的连线表示记录（类）型之间的一对多的父子联系</li>
 </ul>
 </li>
 <li><strong>与层次模型的区别</strong>：
 <ul>
-<li>网状模型允许多个结点没有双亲结点，允许一个结点有多个双亲结点</li>
-<li>网状模型允许两个结点之间有多种联系（复合联系）</li>
+<li>网状模型允许<strong>多个结点没有双亲结点</strong>，允许<strong>一个结点有多个双亲结点</strong></li>
+<li>网状模型<strong>允许两个结点之间有多种联系</strong>（复合联系）</li>
 <li>网状模型可以更直接地去描述现实世界</li>
-<li>层次模型实际上是网状模型的一个特例</li>
+<li>层次模型实际上是网状模型的一个<strong>特例</strong></li>
 </ul>
 </li>
-<li><strong>多对多联系的表示</strong>：用网状模型间接表示多对多联系；
+<li><strong>多对多联系的表示</strong>：用网状模型<strong>间接</strong>表示多对多联系
 <ul>
-<li><strong>方法</strong>：将多对多联系直接分解成一对多联系</li>
+<li><strong>方法</strong>：将多对多联系<strong>直接</strong>分解成一对多联系</li>
 </ul>
 </li>
 </ul>
@@ -966,7 +989,7 @@
 <li>
 <p><strong>完整性约束</strong>：网状数据库系统（如 DBTG）对数据操纵加了一些限制，提供了一定的完整性约束</p>
 <ul>
-<li>支持记录码的概念（唯一标识记录的数据项集合）</li>
+<li>支持记录码的概念</li>
 <li>双亲结点与子女结点之间是一对多联系</li>
 <li>可以支持属籍类别：
 <ul>
@@ -977,10 +1000,13 @@
 </ul>
 </li>
 <li>
+<p><strong>存储结构</strong>：单向链接、双向链接、环状链接、向首链接</p>
+</li>
+<li>
 <p><strong>优点</strong>：</p>
 <ul>
 <li>能够更为直接地描述现实世界，如一个结点可以有多个双亲</li>
-<li>具有良好的性能，存取效率较高</li>
+<li>具有良好的性能，对于预定义的路径，查询存取效率较高</li>
 </ul>
 </li>
 <li>
@@ -988,20 +1014,21 @@
 <ul>
 <li>结构比较复杂，而且随着应用环境的扩大，数据库的结构就变得越来越复杂，不利于最终用户掌握；</li>
 <li>DDL、DML 语言复杂，用户不容易使用</li>
+<li>用户必须了解系统物理结构细节，加重编写和使用应用程序的负担</li>
 </ul>
 </li>
 </ul>
 <h4 id="2-7-关系模型">2.7 关系模型</h4>
 <ul>
 <li>
-<p><strong>数据结构</strong>：在用户观点下，关系模型中数据的逻辑结构是一张二维表，它由行和列组成</p>
+<p><strong>数据结构</strong>：在<strong>用户观点</strong>下，关系模型中数据的逻辑结构是一张二维表，它由行和列组成</p>
 <ul>
-<li><strong>基本概念</strong>：
+<li><strong>基本概念</strong>：关系模型建立在<strong>集合代数</strong>的基础上
 <ul>
 <li><strong>关系（Relation）</strong>：一个关系对应通常说的一张表</li>
 <li><strong>元组（Tuple）</strong>：表中的一行即为一个元组</li>
 <li><strong>属性（Attribute）</strong>：表中的一列即为一个属性，给每一个属性起一个名称即属性名</li>
-<li><strong>主码（Key）</strong>：表中的某个属性组，它可以唯一确定一个元组</li>
+<li><strong>主码（Key）</strong>：表中的某个<strong>属性组</strong>，它可以唯一确定一个元组</li>
 <li><strong>域（Domain）</strong>：属性的取值范围来自某个域</li>
 <li><strong>分量</strong>：元组中的一个属性值</li>
 <li><strong>关系模式</strong>：对关系的描述</li>
@@ -1009,7 +1036,7 @@
 </li>
 <li><strong>表示方法</strong>：
 <ul>
-<li><strong>实体型</strong>：直接用关系（表）表示</li>
+<li><strong>实体型</strong>：直接用<strong>关系</strong>（表）表示</li>
 <li><strong>属性</strong>：用属性名表示
 <ul>
 <li>例：学生（学号，姓名，年龄，性别，系号，年级）</li>
