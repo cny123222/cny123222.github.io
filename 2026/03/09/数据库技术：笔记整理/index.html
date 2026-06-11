@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/db.png">
 <meta property="article:published_time" content="2026-03-09T08:30:32.000Z">
-<meta property="article:modified_time" content="2026-06-09T07:22:39.303Z">
+<meta property="article:modified_time" content="2026-06-11T07:36:36.274Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          67k words
+          68k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          559 mins
+          571 mins
         
       </span>
     
@@ -366,7 +366,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on June 9, 2026 pm
+                    Last updated on June 11, 2026 pm
                   
                 
               </p>
@@ -2565,36 +2565,43 @@
 <h3 id="1-SQL-概述">1. SQL 概述</h3>
 <ul>
 <li>
-<p><strong>SQL（Structured Query Language）</strong>：</p>
+<p><strong>SQL（Structured Query Language）</strong>：结构化查询语言，是关系数据库的标准语言</p>
 <ul>
-<li>结构化查询语言，是关系数据库的标准语言</li>
-<li>是一个通用的、功能极强的关系数据库语言</li>
-<li>SQL 语言的功能包括查询、操纵、定义和控制，是一个综合的、通用的关系数据库语言，也是一种高度非过程化语言，只要求用户指出做什么而不需要指出怎么做</li>
-<li>SQL 集成实现了数据库生命周期的全部操作</li>
+<li>是一个通用的、功能极强又简洁易学的关系数据库语言</li>
+<li>SQL 语言的<strong>功能包括数据查询(data query)、数据操纵(data manipulation)、数据定义(data definition) 和数据控制(data control)</strong>，是一个综合的、通用的关系数据库语言，也是一种<strong>高度非过程化语言</strong>，只要求用户指出做什么而不需要指出怎么做。</li>
+<li><strong>SQL 集成实现了数据库生命周期的全部操作</strong></li>
+<li>1974 年，IBM 的 <strong>Ray Boyce</strong> 和 <strong>Don Chamberlin</strong> 将 Codd 关系数据库的 12 条准则的数学定义以简单的关键字语法表现出来，里程碑式地提出了 <strong>SEQUEL(Structured English Query Language)</strong> 语言</li>
+</ul>
+</li>
+<li>
+<p><strong>SQL 语言与高级语言</strong>：</p>
+<ul>
+<li>一条数据库语言相当于高级语言的一个或多个循环程序</li>
 </ul>
 </li>
 <li>
 <p><strong>SQL 语言的特点</strong>：</p>
 <ul>
-<li><strong>综合统一</strong>：集<strong>数据定义语言 (DDL)、数据操纵语言 (DML)、数据控制语言 (DCL)</strong> 功能于一体
+<li><strong>综合统一</strong>：功能综合且风格统一，集<strong>数据定义语言 (DDL)、数据操纵语言 (DML)、数据控制语言 (DCL)</strong> 功能于一体
 <ul>
 <li>可以独立完成数据库生命周期中的全部活动
 <ul>
-<li>定义关系模式，插入数据，建立数据库；</li>
-<li>对数据库中的数据进行查询和更新；</li>
-<li>数据库重构和维护；</li>
-<li>数据库安全性、完整性控制等；</li>
+<li>创建和删除数据库模式</li>
+<li>创建基本表，创建视图</li>
+<li>使用数据库，包括查询和增删改数据、事务处理等</li>
+<li>数据库控制，包括安全性控制、完整性控制和并发控制等</li>
+<li>数据库维护和重构，如修改和删除基本表、数据库备份与恢复等</li>
 </ul>
 </li>
-<li>用户数据库投入运行后，可根据需要随时逐步修改模式，不影响数据的运行</li>
+<li>用户数据库投入运行后，可根据需要<strong>随时逐步修改模式</strong>，不影响数据的运行</li>
 <li>数据操作符统一</li>
 </ul>
 </li>
-<li><strong>高度非过程化</strong>：
+<li><strong>高度非过程化</strong>：数据操纵高度非过程化
 <ul>
-<li>非关系数据模型的数据操纵语言“面向过程”，必须制定存取路径</li>
+<li>非关系数据模型的数据操纵语言“<strong>面向过程</strong>”，必须制定存取路径</li>
 <li>SQL 只要提出＂做什么＂，<strong>无须了解存取路径</strong></li>
-<li>存取路径的选择以及 SQL 的操作过程由系统自动完成</li>
+<li>存取路径的选择以及 SQL 的操作过程由 DBMS 系统自动完成</li>
 </ul>
 </li>
 <li><strong>面向集合的操作方式</strong>：
@@ -2608,13 +2615,17 @@
 </li>
 </ul>
 </li>
-<li><strong>以同一种语法结构提供两种使用方法</strong>：
+<li><strong>以统一的语法结构提供多种使用方法</strong>：
 <ul>
-<li><strong>SQL 是独立的语言</strong>：能够独立地用于联机交互的使用方式</li>
-<li><strong>SQL 又是嵌入式语言</strong>：能够嵌入到高级语言（例如 C，C++，Java）程序中，供程序员设计程序时使用</li>
+<li>SQL 是独立的语言（<strong>交互式 SQL</strong>）：能够独立地用于联机交互的使用方式</li>
+<li>SQL 又是嵌入式语言（<strong>嵌入式 SQL</strong>）：能够嵌入到高级语言（例如 C，C++，Java）程序中，供程序员设计程序时使用</li>
+<li><strong>动态 SQL</strong>：在程序运行时动态生成或修改 SQL 语句，它的核心特点是 SQL 语句的结构不是固定的，而是根据程序运行时的输入、条件或参数来动态拼装</li>
 </ul>
 </li>
 <li><strong>语言简洁，易学易用</strong>：
+<ul>
+<li>
+<p>建立数据库包括两件事：定义数据库（DDL），向表中追加删除元组（DML）</p>
 <table>
 <thead>
 <tr>
@@ -2644,28 +2655,28 @@
 </li>
 </ul>
 </li>
+</ul>
+</li>
 <li>
 <p><strong>SQL 的基本概念</strong>：</p>
 <ul>
 <li><strong>基本表</strong>：
 <ul>
 <li>本身独立存在的表</li>
-<li>SQL 中一个关系就对应一个基本表</li>
-<li>一个（或多个）基本表对应一个存储文件</li>
-<li>一个表可以带若干索引</li>
+<li>SQL 中一个关系就对应一个基本表，一个（或多个）基本表对应一个存储文件</li>
+<li>一个表可以带若干索引，索引放在存储文件中</li>
 </ul>
 </li>
 <li><strong>存储文件</strong>：
 <ul>
 <li>逻辑结构组成了关系数据库的内模式</li>
-<li>物理结构是任意的，对用户透明</li>
+<li>物理文件结构是由数据库管理系统设计确定的，对用户透明</li>
 </ul>
 </li>
 <li><strong>视图</strong>：
 <ul>
-<li>从一个或几个基本表导出的表</li>
-<li>数据库中只存放视图的定义而不存放视图对应的数据</li>
-<li>视图是一个虚表</li>
+<li>从基本表或其他视图中导出的表</li>
+<li>数据库中只存放视图的定义而不存放视图对应的数据，是一个虚表</li>
 <li>用户可以在视图上再定义视图</li>
 </ul>
 </li>
@@ -2681,26 +2692,47 @@
 <h4 id="2-1-模式的定义与删除">2.1 模式的定义与删除</h4>
 <ul>
 <li>
-<p><strong>定义数据库模式</strong>：</p>
+<p><strong>模式</strong>关系数据库管理系统提供<strong>层次化的数据库对象命名机制</strong></p>
 <ul>
-<li><strong>基本语法</strong>：<code>CREATE SCHEMA &lt;模式名&gt; AUTHORIZATION &lt;用户名&gt;</code><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> SCHEMA “S<span class="hljs-operator">-</span>T” <span class="hljs-keyword">AUTHORIZATION</span> WANG;<br></code></pre></td></tr></table></figure>
+<li>一个关系数据库管理系统的实例(Instance)中可以建立多个数据库</li>
+<li>一个数据库中可以建立多个模式</li>
+<li>一个模式下通常包括多个表、视图和索引等数据库对象</li>
+</ul>
 </li>
-<li>如果没有指定<code>&lt;模式名&gt;</code>，那么<code>&lt;模式名&gt;</code>隐含为<code>&lt;用户名&gt;</code><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> SCHEMA <span class="hljs-keyword">AUTHORIZATION</span> WANG;<br></code></pre></td></tr></table></figure>
+<li>
+<p><strong>数据库模式的定义</strong>：</p>
+<ul>
+<li><strong>基本语法</strong>：<code>CREATE SCHEMA &lt;模式名&gt; AUTHORIZATION &lt;用户名&gt;</code>
+<ul>
+<li><strong>例</strong>：为用户 WANG 定义一个&quot;学生-课程&quot;模式 S-T<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> SCHEMA “S<span class="hljs-operator">-</span>T” <span class="hljs-keyword">AUTHORIZATION</span> WANG;<br></code></pre></td></tr></table></figure>
 </li>
-<li>定义模式实际上定义了一个命名空间，在这个空间中可以定义该模式包含的数据库对象，例如基本表、视图、索引等</li>
-<li>在 CREATE SCHEMA 中可以接受 CREATE TABLE，CREATE VIEW 和 GRANT 子句，即 <code>CREATE SCHEMA &lt;模式名&gt; AUTHORIZATION &lt;用户名&gt;[&lt;表定义子句&gt;|&lt;视图定义子句&gt;|&lt;授权定义子句&gt;]</code><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> SCHEMA TEST <span class="hljs-keyword">AUTHORIZATION</span> ZHANG<br><span class="hljs-keyword">CREATE TABLE</span> TAB1(COL1 <span class="hljs-type">SMALLINT</span>,<br>                  COL2 <span class="hljs-type">INT</span>,<br>                  COL3 <span class="hljs-type">CHAR</span>(<span class="hljs-number">20</span>),<br>                  COL4 <span class="hljs-type">NUMERIC</span>(<span class="hljs-number">10</span>，<span class="hljs-number">3</span>),<br>                  COL5 <span class="hljs-type">DECIMAL</span>(<span class="hljs-number">5</span>，<span class="hljs-number">2</span>)<br>                  );<br></code></pre></td></tr></table></figure>
+</ul>
+</li>
+<li>如果没有指定<code>&lt;模式名&gt;</code>，那么 <strong><code>&lt;模式名&gt;</code>隐含为<code>&lt;用户名&gt;</code></strong>
+<ul>
+<li><strong>例</strong>：&lt;模式名&gt; 隐含为用户名 WANG<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> SCHEMA <span class="hljs-keyword">AUTHORIZATION</span> WANG;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>定义模式实际上定义了一个<strong>命名空间</strong>，在这个空间中可以<strong>定义该模式包含的数据库对象</strong>，例如基本表、视图、索引等</li>
+<li>在 CREATE SCHEMA 中可以接受 CREATE TABLE，CREATE VIEW 和 GRANT 子句，即 <code>CREATE SCHEMA &lt;模式名&gt; AUTHORIZATION &lt;用户名&gt;[&lt;表定义子句&gt;|&lt;视图定义子句&gt;|&lt;授权定义子句&gt;]</code>
+<ul>
+<li><strong>例</strong>：为用户 ZHANG 创建了一个模式 TEST，并在其中定义了一个表 TAB1<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> SCHEMA TEST <span class="hljs-keyword">AUTHORIZATION</span> ZHANG<br><span class="hljs-keyword">CREATE TABLE</span> TAB1(COL1 <span class="hljs-type">SMALLINT</span>,<br>                  COL2 <span class="hljs-type">INT</span>,<br>                  COL3 <span class="hljs-type">CHAR</span>(<span class="hljs-number">20</span>),<br>                  COL4 <span class="hljs-type">NUMERIC</span>(<span class="hljs-number">10</span>, <span class="hljs-number">3</span>),<br>                  COL5 <span class="hljs-type">DECIMAL</span>(<span class="hljs-number">5</span>, <span class="hljs-number">2</span>)<br>                  );<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
 </li>
 </ul>
 </li>
 <li>
-<p><strong>删除数据库模式</strong>：</p>
+<p><strong>数据库模式的删除</strong>：</p>
 <ul>
 <li><strong>基本语法</strong>：<code>DROP SCHEMA &lt;模式名&gt;&lt;CASCADE|RESTRICT&gt;</code>
 <ul>
 <li><strong>CASCADE(级联)</strong>：删除模式的同时把该模式中所有的数据库对象全部删除</li>
 <li><strong>RESTRICT(限制)</strong>：如果该模式中定义了下属的数据库对象（如表、视图等），则拒绝该删除语句的执行，没有任何下属的对象时才能执行</li>
 </ul>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DROP</span> SCHEMA ZHANG CASCADE;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>例</strong>：删除模式 TEST，同时该模式中定义的表 TAB1 也被删除<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DROP</span> SCHEMA TEST CASCADE;<br></code></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
@@ -2710,23 +2742,65 @@
 <li>
 <p><strong>定义基本表</strong>：</p>
 <ul>
-<li><strong>基本语法</strong>：<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> <span class="hljs-operator">&lt;</span>表名<span class="hljs-operator">&gt;</span><br>        (<span class="hljs-operator">&lt;</span>列名<span class="hljs-operator">&gt;</span> <span class="hljs-operator">&lt;</span>数据类型<span class="hljs-operator">&gt;</span>[<span class="hljs-operator">&lt;</span>列级完整性约束条件<span class="hljs-operator">&gt;</span>]<br>        [, <span class="hljs-operator">&lt;</span>列名<span class="hljs-operator">&gt;</span> <span class="hljs-operator">&lt;</span>数据类型<span class="hljs-operator">&gt;</span>[<span class="hljs-operator">&lt;</span>列级完整性约束条件<span class="hljs-operator">&gt;</span>]] <br>        ...<br>        [, <span class="hljs-operator">&lt;</span>表级完整性约束条件<span class="hljs-operator">&gt;</span>]);<br></code></pre></td></tr></table></figure>
+<li>
+<p><strong>基本语法</strong>：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> <span class="hljs-operator">&lt;</span>表名<span class="hljs-operator">&gt;</span><br>        (<span class="hljs-operator">&lt;</span>列名<span class="hljs-operator">&gt;</span> <span class="hljs-operator">&lt;</span>数据类型<span class="hljs-operator">&gt;</span>[<span class="hljs-operator">&lt;</span>列级完整性约束条件<span class="hljs-operator">&gt;</span>]<br>        [, <span class="hljs-operator">&lt;</span>列名<span class="hljs-operator">&gt;</span> <span class="hljs-operator">&lt;</span>数据类型<span class="hljs-operator">&gt;</span>[<span class="hljs-operator">&lt;</span>列级完整性约束条件<span class="hljs-operator">&gt;</span>]] <br>        ...<br>        [, <span class="hljs-operator">&lt;</span>表级完整性约束条件<span class="hljs-operator">&gt;</span>]);<br></code></pre></td></tr></table></figure>
 <ul>
 <li>&lt;表名&gt;：所要定义的基本表的名字</li>
 <li>&lt;列名&gt;：组成该表的各个属性（列）</li>
-<li>&lt;列级完整性约束条件&gt;：涉及相应属性列的完整性约束条件</li>
-<li>&lt;表级完整性约束条件&gt;：涉及一个或多个属性列的完整性约束条件</li>
-</ul>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> Student<br>(Sno <span class="hljs-type">CHAR</span>(<span class="hljs-number">9</span>) <span class="hljs-keyword">PRIMARY KEY</span>, <span class="hljs-comment">/* 列级完整性约束条件，主码*/</span> <br>Sname <span class="hljs-type">CHAR</span>(<span class="hljs-number">20</span>) <span class="hljs-keyword">UNIQUE</span>, <span class="hljs-comment">/* Sname取唯一值*/</span> <br>Ssex <span class="hljs-type">CHAR</span>(<span class="hljs-number">2</span>),<br>Sage <span class="hljs-type">SMALLINT</span>,<br>Sdept <span class="hljs-type">CHAR</span>(<span class="hljs-number">20</span>)<br>);<br><br><span class="hljs-keyword">CREATE TABLE</span> Course<br>(Cno <span class="hljs-type">CHAR</span>(<span class="hljs-number">4</span>) <span class="hljs-keyword">PRIMARY KEY</span>, <span class="hljs-comment">/* 列级完整性约束条件，主码*/</span> <br>Cname <span class="hljs-type">CHAR</span>(<span class="hljs-number">40</span>) <span class="hljs-keyword">NOT NULL</span>, <span class="hljs-comment">/* Cname不能取空值*/</span> <br>Cpno <span class="hljs-type">CHAR</span>(<span class="hljs-number">4</span>),<br>Ccredit <span class="hljs-type">SMALLINT</span>,<br><span class="hljs-keyword">FOREIGN KEY</span> (Cpno) <span class="hljs-keyword">REFERENCES</span> Course(Cno)<br>);<br><br><span class="hljs-keyword">CREATE TABLE</span> SC<br>(Sno <span class="hljs-type">CHAR</span>(<span class="hljs-number">9</span>),<br>Cno <span class="hljs-type">CHAR</span>(<span class="hljs-number">4</span>),<br>Grade <span class="hljs-type">SMALLINT</span> <span class="hljs-keyword">CHECK</span> (Grade<span class="hljs-operator">&gt;=</span><span class="hljs-number">0</span> <span class="hljs-keyword">and</span> Grade<span class="hljs-operator">&lt;=</span><span class="hljs-number">100</span>),<br><span class="hljs-keyword">PRIMARY KEY</span> (Sno，Cno),<br><span class="hljs-comment">/* 主码由两个属性构成，必须作为表级完整性进行定义*/</span> <br><span class="hljs-keyword">FOREIGN KEY</span> (Sno) <span class="hljs-keyword">REFERENCES</span> Student(Sno),<br><span class="hljs-comment">/* 表级完整性约束条件，Sno是外码，被参照表是Student */</span> <br><span class="hljs-keyword">FOREIGN KEY</span> (Cno) <span class="hljs-keyword">REFERENCES</span> Course(Cno)<br><span class="hljs-comment">/* 表级完整性约束条件，Cno是外码，被参照表是Course*/</span><br>);<br></code></pre></td></tr></table></figure>
-</li>
+<li>&lt;列级完整性约束条件&gt;：涉及<strong>相应属性列</strong>的完整性约束条件</li>
+<li>&lt;表级完整性约束条件&gt;：涉及<strong>一个或多个属性列</strong>的完整性约束条件</li>
 </ul>
 </li>
 <li>
 <p><strong>数据类型</strong>：</p>
 <ul>
-<li>SQL 中域的概念用数据类型来实现</li>
-<li>定义表的属性时需要指明其数据类型及长度</li>
+<li>SQL 中域的概念用<strong>数据类型</strong>来实现</li>
+<li>定义表的属性时需要指明其<strong>数据类型及长度</strong></li>
 <li>选用哪种数据类型：取值范围、要做哪些运算</li>
+</ul>
+</li>
+<li>
+<p><strong>常见的完整性约束</strong>：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">约束条件</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">PRIMARY KEY (PK)</td>
+<td style="text-align:left">标识该字段为该表的<strong>主码</strong>，可以唯一的标识记录，不可以为空 <strong>UNIQUE + NOT NULL</strong></td>
+</tr>
+<tr>
+<td style="text-align:center">FOREIGN KEY (FK)</td>
+<td style="text-align:left">标识该字段为该表的<strong>外码</strong>，实现表与表（父表主码/子表外码）之间的关联</td>
+</tr>
+<tr>
+<td style="text-align:center">NOT NULL</td>
+<td style="text-align:left">标识该字段<strong>不能为空</strong></td>
+</tr>
+<tr>
+<td style="text-align:center">UNIQUE KEY (UK)</td>
+<td style="text-align:left">标识该字段的<strong>值是唯一的</strong>，一个表中可以有多个UNIQUEKEY(候选码)</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p><strong>例</strong>：建立“学生”表 Student，学号是主码，姓名取值唯一</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> Student<br>(Sno <span class="hljs-type">CHAR</span>(<span class="hljs-number">9</span>) <span class="hljs-keyword">PRIMARY KEY</span>, <span class="hljs-comment">/* 列级完整性约束条件，主码*/</span> <br>Sname <span class="hljs-type">CHAR</span>(<span class="hljs-number">20</span>) <span class="hljs-keyword">UNIQUE</span>, <span class="hljs-comment">/* Sname取唯一值*/</span> <br>Ssex <span class="hljs-type">CHAR</span>(<span class="hljs-number">2</span>),<br>Sage <span class="hljs-type">SMALLINT</span>,<br>Sdept <span class="hljs-type">CHAR</span>(<span class="hljs-number">20</span>)<br>);<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>例</strong>：建立一个“课程”表 Course</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> Course<br>(Cno <span class="hljs-type">CHAR</span>(<span class="hljs-number">4</span>) <span class="hljs-keyword">PRIMARY KEY</span>, <span class="hljs-comment">/* 列级完整性约束条件，主码*/</span> <br>Cname <span class="hljs-type">CHAR</span>(<span class="hljs-number">40</span>) <span class="hljs-keyword">NOT NULL</span>, <span class="hljs-comment">/* Cname不能取空值*/</span> <br>Cpno <span class="hljs-type">CHAR</span>(<span class="hljs-number">4</span>),<br>Ccredit <span class="hljs-type">SMALLINT</span>,<br><span class="hljs-keyword">FOREIGN KEY</span> (Cpno) <span class="hljs-keyword">REFERENCES</span> Course(Cno)<br>);<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>例</strong>：建立一个“学生选课”表 SC，学生成绩在 0~100</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> SC<br>(Sno <span class="hljs-type">CHAR</span>(<span class="hljs-number">9</span>),<br>Cno <span class="hljs-type">CHAR</span>(<span class="hljs-number">4</span>),<br>Grade <span class="hljs-type">SMALLINT</span> <span class="hljs-keyword">CHECK</span> (Grade<span class="hljs-operator">&gt;=</span><span class="hljs-number">0</span> <span class="hljs-keyword">and</span> Grade<span class="hljs-operator">&lt;=</span><span class="hljs-number">100</span>),<br><span class="hljs-keyword">PRIMARY KEY</span> (Sno, Cno),<br><span class="hljs-comment">/* 主码由两个属性构成，必须作为表级完整性进行定义*/</span> <br><span class="hljs-keyword">FOREIGN KEY</span> (Sno) <span class="hljs-keyword">REFERENCES</span> Student(Sno),<br><span class="hljs-comment">/* 表级完整性约束条件，Sno是外码，被参照表是Student*/</span> <br><span class="hljs-keyword">FOREIGN KEY</span> (Cno) <span class="hljs-keyword">REFERENCES</span> Course(Cno)<br><span class="hljs-comment">/* 表级完整性约束条件，Cno是外码，被参照表是Course*/</span><br>);<br></code></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
 <li>
@@ -2735,27 +2809,48 @@
 <li>每一个基本表都属于某一个模式，一个模式包含多个基本表</li>
 <li><strong>定义基本表所属模式</strong>：
 <ul>
-<li><strong>方法一</strong>：在表名中明显地给出模式名：<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">Create TABLE</span> “S<span class="hljs-operator">-</span>T”.Student（......）; <span class="hljs-comment">/*模式名为S-T*/</span><br></code></pre></td></tr></table></figure>
+<li><strong>方法一</strong>：在表名中明显地给出模式名<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> “S<span class="hljs-operator">-</span>T”.Student(......); <span class="hljs-comment">/*模式名为S-T*/</span><br></code></pre></td></tr></table></figure>
 </li>
 <li><strong>方法二</strong>：在创建模式语句中同时创建表</li>
-<li><strong>方法三</strong>：设置所属的模式</li>
+<li><strong>方法三</strong>：设置所属的模式，创建表时表名中不必给出模式名</li>
 </ul>
 </li>
-<li>创建基本表（其他数据库对象也一样）时，若没有指定模式，系统根据搜索路径来确定该对象所属的模式；RDBMS 会使用模式列表中第一个存在的模式作为数据库对象的模式名</li>
+<li>创建基本表（其他数据库对象也一样）时，若没有指定模式，系统根据<strong>搜索路径(search path)</strong> 来确定该对象所属的模式
+<ul>
+<li>RDBMS 会使用模式列表中<strong>第一个存在的模式</strong>作为数据库对象的模式名</li>
+<li>若搜索路径中的模式名都不存在，系统将给出错误</li>
+</ul>
+</li>
 <li>DBA 用户可以设置搜索路径，然后定义基本表</li>
 </ul>
 </li>
 <li>
 <p><strong>修改基本表</strong>：</p>
 <ul>
-<li><strong>基本语法</strong>：<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER TABLE</span> <span class="hljs-operator">&lt;</span>表名<span class="hljs-operator">&gt;</span><br>[ <span class="hljs-keyword">ADD</span> [ <span class="hljs-keyword">COLUMN</span> ] <span class="hljs-operator">&lt;</span>新列名<span class="hljs-operator">&gt;</span> <span class="hljs-operator">&lt;</span>数据类型<span class="hljs-operator">&gt;</span> [完整性约束] ]<br>[ <span class="hljs-keyword">ADD</span> <span class="hljs-operator">&lt;</span>表级完整性约束<span class="hljs-operator">&gt;</span>]<br>[ <span class="hljs-keyword">DROP</span> [ <span class="hljs-keyword">COLUMN</span> ] <span class="hljs-operator">&lt;</span>列名<span class="hljs-operator">&gt;</span> [CASCADE<span class="hljs-operator">|</span>RESTRICT] ]<br>[ <span class="hljs-keyword">DROP</span> <span class="hljs-keyword">CONSTRAINT</span> <span class="hljs-operator">&lt;</span>完整性约束名<span class="hljs-operator">&gt;</span> [CASCADE<span class="hljs-operator">|</span>RESTRICT] ]<br>[ <span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">COLUMN</span> <span class="hljs-operator">&lt;</span>列名<span class="hljs-operator">&gt;</span> <span class="hljs-operator">&lt;</span>数据类型<span class="hljs-operator">&gt;</span> ];<br></code></pre></td></tr></table></figure>
+<li><strong>基本语法</strong>：<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER TABLE</span> <span class="hljs-operator">&lt;</span>表名<span class="hljs-operator">&gt;</span><br>[ <span class="hljs-keyword">ADD</span> [ <span class="hljs-keyword">COLUMN</span> ] <span class="hljs-operator">&lt;</span>新列名<span class="hljs-operator">&gt;</span> <span class="hljs-operator">&lt;</span>数据类型<span class="hljs-operator">&gt;</span> [完整性约束] ]<br>[ <span class="hljs-keyword">ADD</span> <span class="hljs-operator">&lt;</span>表级完整性约束<span class="hljs-operator">&gt;</span>]<br>[ <span class="hljs-keyword">DROP</span> [ <span class="hljs-keyword">COLUMN</span> ] <span class="hljs-operator">&lt;</span>列名<span class="hljs-operator">&gt;</span> [CASCADE<span class="hljs-operator">|</span>RESTRICT] ]<br>[ <span class="hljs-keyword">DROP</span> <span class="hljs-keyword">CONSTRAINT</span> <span class="hljs-operator">&lt;</span>完整性约束名<span class="hljs-operator">&gt;</span> [CASCADE<span class="hljs-operator">|</span>RESTRICT] ]<br>[ RENAME <span class="hljs-keyword">COLUMN</span> <span class="hljs-operator">&lt;</span>列名<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">TO</span> <span class="hljs-operator">&lt;</span>新列名<span class="hljs-operator">&gt;</span> ]<br>[ <span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">COLUMN</span> <span class="hljs-operator">&lt;</span>列名<span class="hljs-operator">&gt;</span> TYPE <span class="hljs-operator">&lt;</span>数据类型<span class="hljs-operator">&gt;</span> ];<br></code></pre></td></tr></table></figure>
 <ul>
-<li>&lt;表名&gt;：要修改的基本表</li>
-<li>ADD 子句：增加新列、新的列完整性约束条件、新的表完整性约束条件</li>
-<li>DROP CONSTRAINT 子句：删除指定的完整性约束条件</li>
-<li>ALTER COLUMN 子句：用于修改列名和数据类型</li>
+<li><strong>&lt;表名&gt;</strong>：要修改的基本表</li>
+<li><strong>ADD 子句</strong>：增加新列、新的列完整性约束条件、新的表完整性约束条件
+<ul>
+<li>不论基本表中原来是否已有数据，新增加的列一律为空值</li>
 </ul>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER TABLE</span> Student <span class="hljs-keyword">ADD</span> S_entrance <span class="hljs-type">DATE</span>;<br><br><span class="hljs-keyword">ALTER TABLE</span> Student <span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">COLUMN</span> Sage <span class="hljs-type">INT</span>;<br><br><span class="hljs-keyword">ALTER TABLE</span> Course <span class="hljs-keyword">ADD</span> <span class="hljs-keyword">UNIQUE</span>(Cname);<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>DROP COLUMN 子句</strong>：用于删除表中的列
+<ul>
+<li>如果指定了 <strong>CASCADE</strong> 短语，则自动删除引用了该列的其他对象</li>
+<li>如果指定了 <strong>RESTRICT</strong> 短语，则如果该列被其他对象引用，关系数据库管理系统将拒绝删除该列</li>
+</ul>
+</li>
+<li><strong>DROP CONSTRAINT 子句</strong>：删除指定的完整性约束条件</li>
+<li><strong>RENAME COLUMN 子句</strong>：用于修改列名</li>
+<li><strong>ALTER COLUMN 子句</strong>：用于修改列的数据类型</li>
+</ul>
+</li>
+<li><strong>例</strong>：向 Student 表增加“入学时间”列，其数据类型为日期型<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER TABLE</span> Student <span class="hljs-keyword">ADD</span> S_entrance <span class="hljs-type">DATE</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>例</strong>：将年龄的数据类型由字符型（假设原来的数据类型是字符型）改为整数<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER TABLE</span> Student <span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">COLUMN</span> Sage TYPE <span class="hljs-type">INT</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>例</strong>：增加课程名称必须取唯一值的约束条件<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER TABLE</span> Course <span class="hljs-keyword">ADD</span> <span class="hljs-keyword">UNIQUE</span>(Cname);<br></code></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
@@ -2764,10 +2859,11 @@
 <ul>
 <li><strong>基本语法</strong>：<code>DROP TABLE &lt;表名&gt; [RESTRICT|CASCADE];</code>
 <ul>
-<li><strong>RESTRICT</strong>：删除表是有限制的（默认）
+<li><strong>RESTRICT</strong>：删除表是有限制的
 <ul>
 <li>欲删除的基本表不能被其它表的约束所引用</li>
 <li>如果存在依赖该表的对象，则此表不能被删除</li>
+<li><strong>缺省情况是 RESTRICT</strong></li>
 </ul>
 </li>
 <li><strong>CASCADE</strong>：删除该表没有限制
@@ -2776,7 +2872,12 @@
 </ul>
 </li>
 </ul>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TABLE</span> Student CASCADE;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>例</strong>：删除 Student 表<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TABLE</span> Student CASCADE;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>基本表定义被删除，数据被删除</li>
+<li>表上建立的索引、视图、触发器等一般也将被删除</li>
+</ul>
 </li>
 </ul>
 </li>
@@ -2786,9 +2887,9 @@
 <li>
 <p><strong>建立与删除索引</strong>：</p>
 <ul>
-<li>建立索引是加快查询速度的有效手段（内模式的范畴）
+<li>建立索引是<strong>加快查询速度</strong>的有效手段（内模式的范畴）
 <ul>
-<li>顺序文件上的索引、B+树索引、hash索引、位图索引，等等</li>
+<li>顺序文件上的索引、B+ 树索引、hash 索引、位图索引，等等</li>
 </ul>
 </li>
 <li><strong>建立索引</strong>：
@@ -2797,7 +2898,7 @@
 <li>有些 DBMS 自动建立以下列上的索引：PRIMARY KEY、UNIQUE</li>
 </ul>
 </li>
-<li><strong>使用索引</strong>：DBMS 自动选择是否使用索引以及使用哪些索引</li>
+<li><strong>使用和维护索引</strong>：由 DBMS 自动完成</li>
 </ul>
 </li>
 <li>
@@ -2806,14 +2907,16 @@
 <li><strong>基本语法</strong>：<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> [<span class="hljs-keyword">UNIQUE</span>] [CLUSTER] INDEX <span class="hljs-operator">&lt;</span>索引名<span class="hljs-operator">&gt;</span> <br><span class="hljs-keyword">ON</span> <span class="hljs-operator">&lt;</span>表名<span class="hljs-operator">&gt;</span>(<span class="hljs-operator">&lt;</span>列名<span class="hljs-operator">&gt;</span>[<span class="hljs-operator">&lt;</span>次序<span class="hljs-operator">&gt;</span>][,<span class="hljs-operator">&lt;</span>列名<span class="hljs-operator">&gt;</span>[<span class="hljs-operator">&lt;</span>次序<span class="hljs-operator">&gt;</span>] ]...);<br></code></pre></td></tr></table></figure>
 <ul>
 <li>用&lt;表名&gt;指定要建索引的基本表名字</li>
-<li>索引可以建立在该表的一列或多列上，各列名之间用逗号分隔</li>
-<li>用&lt;次序&gt;指定索引值的排列次序，升序：ASC，降序：DESC（缺省值：ASC）</li>
+<li>索引可以建立在该表的<strong>一列或多列</strong>上，各列名之间用逗号分隔</li>
+<li>用&lt;次序&gt;指定索引值的排列次序，升序：ASC，降序：DESC（<strong>缺省值：ASC</strong>）</li>
 <li>UNIQUE 表明此索引的每一个索引值只对应唯一的数据记录</li>
-<li>CLUSTER 表示要建立的索引是聚簇索引</li>
+<li>CLUSTER 表示要建立的索引是<strong>聚簇索引</strong></li>
 </ul>
 </li>
-<li><strong>聚簇索引</strong>：建立聚簇索引后，基表中数据也需要按指定的聚簇属性值的升序或降序存放，也即<strong>聚簇索引的索引项顺序与表中记录的物理顺序一致</strong><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> CLUSTER INDEX Stusname <span class="hljs-keyword">ON</span> Student(Sname);<br></code></pre></td></tr></table></figure>
+<li><strong>聚簇索引</strong>：建立聚簇索引后，基表中数据也需要按指定的聚簇属性值的升序或降序存放，也即<strong>聚簇索引的索引项顺序与表中记录的物理顺序一致</strong>
 <ul>
+<li><strong>例</strong>：在 Student 表的 Sname（姓名）列上建立一个聚簇索引<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> CLUSTER INDEX Stusname <span class="hljs-keyword">ON</span> Student(Sname);<br></code></pre></td></tr></table></figure>
+</li>
 <li>在最经常查询的列上建立聚簇索引以提高查询效率</li>
 <li>一个基本表上最多只能建立一个聚簇索引</li>
 <li>经常更新的列不宜建立聚簇索引</li>
@@ -2821,32 +2924,48 @@
 </li>
 <li><strong>唯一值索引</strong>：
 <ul>
-<li>对于已含重复值的属性列不能建 UNIQUE 索引</li>
+<li>对于已含重复值的属性列不能建 <strong>UNIQUE 索引</strong></li>
 <li>对某个列建立 UNIQUE 索引后，插入新记录时 DBMS 会自动检查新记录在该列上是否取了重复值（这相当于增加了一个 UNIQUE 约束）</li>
+<li><strong>例</strong>：为学生-课程数据库中的 Student，Course，SC 三个表建立索引，其中 Student 表按学号升序建唯一索引，Course 表按课程号升序建唯一索引，SC 表按学号升序和课程号降序建唯一索引<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">UNIQUE</span> INDEX Stusno <span class="hljs-keyword">ON</span> Student(Sno);<br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">UNIQUE</span> INDEX Coucno <span class="hljs-keyword">ON</span> Course(Cno);<br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">UNIQUE</span> INDEX SCno <span class="hljs-keyword">ON</span> SC(Sno <span class="hljs-keyword">ASC</span>, Cno <span class="hljs-keyword">DESC</span>);<br></code></pre></td></tr></table></figure>
+</li>
 </ul>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">UNIQUE</span> INDEX Stusno <span class="hljs-keyword">ON</span> Student(Sno);<br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">UNIQUE</span> INDEX Coucno <span class="hljs-keyword">ON</span> Course(Cno);<br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">UNIQUE</span> INDEX SCno <span class="hljs-keyword">ON</span> SC(Sno <span class="hljs-keyword">ASC</span>，Cno <span class="hljs-keyword">DESC</span>);<br></code></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
 <li>
 <p><strong>修改索引</strong>:</p>
 <ul>
-<li><strong>基本语法</strong>：<code>ALTER INDEX &lt;旧索引名&gt; RENAME TO &lt;新索引名&gt;;</code><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER</span> INDEX Scno RENAME <span class="hljs-keyword">TO</span> SCSno;<br></code></pre></td></tr></table></figure>
+<li><strong>基本语法</strong>：<code>ALTER INDEX &lt;旧索引名&gt; RENAME TO &lt;新索引名&gt;;</code></li>
+<li><strong>例</strong>：将 SC 表的 SCno 索引名改为 SCSno<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER</span> INDEX Scno RENAME <span class="hljs-keyword">TO</span> SCSno;<br></code></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
 <li>
 <p><strong>删除索引</strong>：</p>
 <ul>
-<li><strong>基本语法</strong>：<code>DROP INDEX &lt;索引名&gt;;</code><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DROP</span> INDEX Stusname;<br></code></pre></td></tr></table></figure>
+<li><strong>基本语法</strong>：<code>DROP INDEX &lt;索引名&gt;;</code></li>
+<li><strong>例</strong>：删除 Student 表的 Stusname 索引<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DROP</span> INDEX Stusname;<br></code></pre></td></tr></table></figure>
 </li>
-<li>删除索引时，系统会从数据字典中删去有关该索引的描述</li>
+<li>删除索引时，系统会从<strong>数据字典中</strong>删去有关该索引的描述</li>
 </ul>
 </li>
 </ul>
 <h3 id="3-数据查询">3. 数据查询</h3>
 <ul>
-<li><strong>基本语法</strong>：<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> [<span class="hljs-keyword">ALL</span><span class="hljs-operator">|</span><span class="hljs-keyword">DISTINCT</span>] <span class="hljs-operator">&lt;</span>目标列表达式<span class="hljs-operator">&gt;</span>[,<span class="hljs-operator">&lt;</span>目标列表达式<span class="hljs-operator">&gt;</span>] ...<br><span class="hljs-keyword">FROM</span> <span class="hljs-operator">&lt;</span>表名或视图名<span class="hljs-operator">&gt;</span>[,<span class="hljs-operator">&lt;</span>表名或视图名<span class="hljs-operator">&gt;</span>...]<span class="hljs-operator">|</span>(<span class="hljs-operator">&lt;</span><span class="hljs-keyword">SELECT</span>语句<span class="hljs-operator">&gt;</span>)[<span class="hljs-keyword">AS</span>] <span class="hljs-operator">&lt;</span>别名<span class="hljs-operator">&gt;</span><br>[<span class="hljs-keyword">WHERE</span> <span class="hljs-operator">&lt;</span>条件表达式<span class="hljs-operator">&gt;</span>]<br>[<span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> <span class="hljs-operator">&lt;</span>列名<span class="hljs-number">1</span><span class="hljs-operator">&gt;</span> [<span class="hljs-keyword">HAVING</span> <span class="hljs-operator">&lt;</span>条件表达式<span class="hljs-operator">&gt;</span>]]<br>[<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-operator">&lt;</span>列名<span class="hljs-number">2</span><span class="hljs-operator">&gt;</span> [<span class="hljs-keyword">ASC</span><span class="hljs-operator">|</span><span class="hljs-keyword">DESC</span>]];<br></code></pre></td></tr></table></figure>
+<li>
+<p><strong>基本语法</strong>：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> [<span class="hljs-keyword">ALL</span><span class="hljs-operator">|</span><span class="hljs-keyword">DISTINCT</span>] <span class="hljs-operator">&lt;</span>目标列表达式<span class="hljs-operator">&gt;</span>[,<span class="hljs-operator">&lt;</span>目标列表达式<span class="hljs-operator">&gt;</span>] ...<br><span class="hljs-keyword">FROM</span> <span class="hljs-operator">&lt;</span>表名或视图名<span class="hljs-operator">&gt;</span>[,<span class="hljs-operator">&lt;</span>表名或视图名<span class="hljs-operator">&gt;</span>...]<span class="hljs-operator">|</span>(<span class="hljs-operator">&lt;</span><span class="hljs-keyword">SELECT</span>语句<span class="hljs-operator">&gt;</span>)[<span class="hljs-keyword">AS</span>] <span class="hljs-operator">&lt;</span>别名<span class="hljs-operator">&gt;</span><br>[<span class="hljs-keyword">WHERE</span> <span class="hljs-operator">&lt;</span>条件表达式<span class="hljs-operator">&gt;</span>]<br>[<span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> <span class="hljs-operator">&lt;</span>列名<span class="hljs-number">1</span><span class="hljs-operator">&gt;</span> [<span class="hljs-keyword">HAVING</span> <span class="hljs-operator">&lt;</span>条件表达式<span class="hljs-operator">&gt;</span>]]<br>[<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-operator">&lt;</span>列名<span class="hljs-number">2</span><span class="hljs-operator">&gt;</span> [<span class="hljs-keyword">ASC</span><span class="hljs-operator">|</span><span class="hljs-keyword">DESC</span>]]<br>[LIMIT <span class="hljs-operator">&lt;</span>行数<span class="hljs-number">1</span><span class="hljs-operator">&gt;</span> [<span class="hljs-keyword">OFFSET</span> <span class="hljs-operator">&lt;</span>行数<span class="hljs-number">2</span><span class="hljs-operator">&gt;</span>]];<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>执行过程</strong>：</p>
+<ul>
+<li>读取 FROM 子句中的基本表、视图的数据，执行<strong>笛卡尔积</strong>操作</li>
+<li><strong>选择</strong>满足 WHERE 子句中给出的条件表达式的元组</li>
+<li>按 GROUP 子句中指定列的值分组，同时提取满足 HAVING 子句中组条件表达式的那些组</li>
+<li>按 SELECT 子句中给出的列名或列表达式求值输出（<strong>投影</strong>）</li>
+<li>ORDER 子句对<strong>输出的目标表</strong>进行排序（按 ASC 升序排列，按 DESC 降序排列）</li>
+<li>LIMIT 子句限制 SELECT 语句查询结果的数量为 &lt;行数1&gt; 行，OFFSET &lt;行数2&gt;，表示在计算 &lt;行数1&gt; 行前忽略 &lt;行数2&gt; 行</li>
+</ul>
 </li>
 </ul>
 <h4 id="3-1-单表查询">3.1 单表查询</h4>
@@ -2868,11 +2987,9 @@
 </li>
 </ul>
 </li>
-<li><strong>查询经过计算的值</strong>：SELECT 子句的<code>&lt;目标列表达式&gt;</code>为表达式（算术表达式、字符串常量、函数、列别名）
+<li><strong>查询经过计算的值</strong>：SELECT 子句的 <strong><code>&lt;目标列表达式&gt;</code></strong> 为表达式（算术表达式、字符串常量、函数、列别名）
 <ul>
-<li><strong>例</strong>：查全体学生的姓名及其出生年份<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname, <span class="hljs-number">2014</span><span class="hljs-operator">-</span>Sage<br><span class="hljs-keyword">FROM</span> Student;<br></code></pre></td></tr></table></figure>
-</li>
-<li><strong>例</strong>：查询全体学生的姓名、出生年份和所有系，要求用小写字母表示所有系名<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname, <span class="hljs-string">&#x27;Year of Birth: &#x27;</span>, <span class="hljs-number">2014</span><span class="hljs-operator">-</span>Sage <span class="hljs-built_in">LOWER</span>(Sdept) <br><span class="hljs-keyword">FROM</span> Student;<br></code></pre></td></tr></table></figure>
+<li><strong>例</strong>：查询全体学生的姓名、出生年份和所有系，要求用小写字母表示所有系名<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname, <span class="hljs-string">&#x27;Year of Birth: &#x27;</span>, <span class="hljs-number">2026</span><span class="hljs-operator">-</span>Sage <span class="hljs-built_in">LOWER</span>(Sdept) <br><span class="hljs-keyword">FROM</span> Student;<br></code></pre></td></tr></table></figure>
 </li>
 <li><strong>例</strong>：使用列别名改变查询结果的列标题<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname NAME, <span class="hljs-string">&#x27;Year of Birth: &#x27;</span> BIRTH, <span class="hljs-number">2014</span><span class="hljs-operator">-</span>Sage BIRTHDAY, ISLOWER(Sdept) DEPARTMENT <br><span class="hljs-keyword">FROM</span> Student;<br></code></pre></td></tr></table></figure>
 </li>
@@ -2884,7 +3001,7 @@
 <p><strong>选择表中的若干元组</strong>：</p>
 <ul>
 <li>
-<p><strong>消除取值重复的行</strong>：在 SELECT 子句中使用 <code>DISTINCT</code> 短语，缺省为 <code>ALL</code></p>
+<p><strong>消除取值重复的行</strong>：两个不同的元组投影到指定列侯，可能会变成相同的行；在 SELECT 子句中<strong>使用 <code>DISTINCT</code> 短语</strong>消除重复行，<strong>缺省为 <code>ALL</code></strong></p>
 <ul>
 <li><strong>例</strong>：查询选修了课程的学生学号<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">DISTINCT</span> Sno<br><span class="hljs-keyword">FROM</span> SC;<br></code></pre></td></tr></table></figure>
 </li>
@@ -2897,29 +3014,27 @@
 <li>
 <p><strong>比较大小</strong>：</p>
 <ul>
-<li><strong>例</strong>：查询计算机科学系全体学生的名单<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sdept<span class="hljs-operator">=</span>‘CS’;<br></code></pre></td></tr></table></figure>
+<li><strong>例</strong>：查询计算机科学系全体学生的姓名<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sdept<span class="hljs-operator">=</span>‘CS’;<br></code></pre></td></tr></table></figure>
 </li>
-<li><strong>例</strong>：查询所有年龄在 20 岁以下的学生姓名及其年龄<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname，Sage<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sage <span class="hljs-operator">&lt;</span> <span class="hljs-number">20</span>;<br></code></pre></td></tr></table></figure>
-</li>
-<li><strong>例</strong>：查询考试成绩有不及格的学生的学号<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">DISTINCT</span> Sno<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">WHERE</span> Grade<span class="hljs-operator">&lt;</span><span class="hljs-number">60</span>;<br></code></pre></td></tr></table></figure>
+<li><strong>例</strong>：查询考试成绩有不及格的学生学号<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">DISTINCT</span> Sno<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">WHERE</span> Grade<span class="hljs-operator">&lt;</span><span class="hljs-number">60</span>;<br></code></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
 <li>
-<p><strong>确定范围</strong>：使用谓词 <code>BETWEEN ... AND ...</code></p>
+<p><strong>确定范围</strong>：使用谓词 <code>BETWEEN ... AND ...</code> 或 <code>NOT BETWEEN ... AND ...</code></p>
 <ul>
-<li><strong>例</strong>：查询年龄在 20-23 岁（包括 20 岁和 23 岁）之间的学生的姓名、系别和年龄<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname，Sdept，Sage<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sage <span class="hljs-keyword">BETWEEN</span> <span class="hljs-number">20</span> <span class="hljs-keyword">AND</span> <span class="hljs-number">23</span>;<br></code></pre></td></tr></table></figure>
+<li><strong>例</strong>：查询年龄在 20-23 岁（包括 20 岁和 23 岁）之间的学生的姓名、系别和年龄<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname, Sdept, Sage<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sage <span class="hljs-keyword">BETWEEN</span> <span class="hljs-number">20</span> <span class="hljs-keyword">AND</span> <span class="hljs-number">23</span>;<br></code></pre></td></tr></table></figure>
 </li>
-<li><strong>例</strong>：查询年龄不在 20-23 岁之间的学生姓名、系别和年龄<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname，Sdept，Sage<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sage <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">BETWEEN</span> <span class="hljs-number">20</span> <span class="hljs-keyword">AND</span> <span class="hljs-number">23</span>;<br></code></pre></td></tr></table></figure>
+<li><strong>例</strong>：查询年龄不在 20-23 岁之间的学生姓名、系别和年龄<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname, Sdept, Sage<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sage <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">BETWEEN</span> <span class="hljs-number">20</span> <span class="hljs-keyword">AND</span> <span class="hljs-number">23</span>;<br></code></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
 <li>
-<p><strong>确定集合</strong>：使用谓词 <code>IN &lt;值表&gt;</code></p>
+<p><strong>确定集合</strong>：使用谓词 <code>IN &lt;值表&gt;</code> 或 <code>NOT IN &lt;值表&gt;</code>，其中 <code>&lt;值表&gt;</code> 是用逗号分隔的一组取值</p>
 <ul>
-<li><strong>例</strong>：查询信息系（IS）、数学系（MA）和计算机科学系（CS）学生的姓名和性别<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname，Ssex<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sdept <span class="hljs-keyword">IN</span> (<span class="hljs-string">&#x27;IS&#x27;</span>, <span class="hljs-string">&#x27;MA&#x27;</span>, <span class="hljs-string">&#x27;CS&#x27;</span>);<br></code></pre></td></tr></table></figure>
+<li><strong>例</strong>：查询信息系（IS）、数学系（MA）和计算机科学系（CS）学生的姓名和性别<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname, Ssex<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sdept <span class="hljs-keyword">IN</span> (<span class="hljs-string">&#x27;IS&#x27;</span>, <span class="hljs-string">&#x27;MA&#x27;</span>, <span class="hljs-string">&#x27;CS&#x27;</span>);<br></code></pre></td></tr></table></figure>
 </li>
-<li><strong>例</strong>：查询既不是信息系、数学系，也不是计算机科学系的学生的姓名和性别<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname，Ssex<br><span class="hljs-keyword">FROM</span> Student <span class="hljs-keyword">WHERE</span> Sdept <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">IN</span> (<span class="hljs-string">&#x27;IS&#x27;</span>, <span class="hljs-string">&#x27;MA&#x27;</span>, <span class="hljs-string">&#x27;CS&#x27;</span>);<br></code></pre></td></tr></table></figure>
+<li><strong>例</strong>：查询既不是信息系、数学系，也不是计算机科学系的学生的姓名和性别<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname, Ssex<br><span class="hljs-keyword">FROM</span> Student <span class="hljs-keyword">WHERE</span> Sdept <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">IN</span> (<span class="hljs-string">&#x27;IS&#x27;</span>, <span class="hljs-string">&#x27;MA&#x27;</span>, <span class="hljs-string">&#x27;CS&#x27;</span>);<br></code></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
@@ -2929,7 +3044,7 @@
 <li><strong>语法</strong>：<code>[NOT] LIKE ‘&lt;匹配串&gt;’ [ESCAPE ‘ &lt;换码字符&gt;’]</code>
 <ul>
 <li>查找指定的属性值与 &lt;匹配串&gt; 相匹配的元组</li>
-<li><strong>匹配串</strong>：固定字符串或含通配符的字符串</li>
+<li>匹配串：<strong>固定字符串</strong>或<strong>含通配符的字符串</strong></li>
 <li>当匹配模板为固定字符串时，用 <code>=</code> 运算符取代 <code>LIKE</code> 谓词；用 <code>!=</code> 或 <code>&lt;&gt;</code> 运算符取代 <code>NOT LIKE</code> 谓词</li>
 </ul>
 </li>
@@ -2942,25 +3057,25 @@
 </li>
 <li><strong>通配符</strong>：
 <ul>
-<li><strong>% (百分号)</strong>：代表任意长度（长度可以为0）的字符串
+<li><strong>% (百分号)</strong>：代表**任意长度（长度可以为 0）**的字符串
 <ul>
-<li><strong>例</strong>：<code>a%b</code> 表示以 <code>a</code> 开头，以 <code>b</code> 结尾的任意长度的字符串；如 acb，addgb，ab 等都满足该匹配串</li>
+<li><strong>例</strong>：<code>a%b</code> 表示以 <code>a</code> 开头，以 <code>b</code> 结尾的任意长度的字符串，如 acb、addgb、ab 等都满足该匹配串</li>
 </ul>
 </li>
-<li><strong>_ (下横线)</strong>：代表任意单个字符
+<li><strong>_ (下横线)</strong>：代表<strong>任意单个字符</strong>
 <ul>
-<li><strong>例</strong>：<code>a_b</code> 表示以 <code>a</code> 开头，以 <code>b</code> 结尾的长度为 3 的任意字符串；如 acb，afb 等都满足该匹配串</li>
+<li><strong>例</strong>：<code>a_b</code> 表示以 <code>a</code> 开头，以 <code>b</code> 结尾的长度为 3 的任意字符串，如 acb，afb 等都满足该匹配串</li>
 </ul>
 </li>
 </ul>
 </li>
 <li><strong>匹配串为含通配符的字符串</strong>：
 <ul>
-<li><strong>例</strong>：查询所有姓刘学生的姓名、学号和性别<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname, Sno, Ssex<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sname <span class="hljs-keyword">LIKE</span> ‘刘<span class="hljs-operator">%</span>’; <span class="hljs-comment">/*%表示任意长度*/</span><br></code></pre></td></tr></table></figure>
+<li><strong>例</strong>：查询所有姓刘学生的姓名、学号和性别<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname, Sno, Ssex<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sname <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;刘%&#x27;</span>; <span class="hljs-comment">/*%表示任意长度*/</span><br></code></pre></td></tr></table></figure>
 </li>
-<li><strong>例</strong>：查询姓&quot;欧阳&quot;且全名为三个汉字的学生的姓名<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sname <span class="hljs-keyword">LIKE</span> ‘欧阳_ _’; <span class="hljs-comment">/*__代表任意单个字符*/</span><br></code></pre></td></tr></table></figure>
+<li><strong>例</strong>：查询姓&quot;欧阳&quot;且全名为三个汉字的学生的姓名<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sname <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;欧阳_ _&#x27;</span>; <span class="hljs-comment">/*_ _代表任意单个字符*/</span><br></code></pre></td></tr></table></figure>
 </li>
-<li><strong>例</strong>：查询名字中第2个字为&quot;阳&quot;字的学生的姓名和学号<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname, Sno<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sname <span class="hljs-keyword">LIKE</span> ‘_ _阳<span class="hljs-operator">%</span>’;<br></code></pre></td></tr></table></figure>
+<li><strong>例</strong>：查询名字中第2个字为&quot;阳&quot;字的学生的姓名和学号<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname, Sno<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sname <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;_ _阳%&#x27;</span>;<br></code></pre></td></tr></table></figure>
 </li>
 <li><strong>例</strong>：查询所有不姓刘的学生姓名<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname，Sno，Ssex<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sname <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;刘%&#x27;</span>;<br></code></pre></td></tr></table></figure>
 </li>
@@ -2977,7 +3092,7 @@
 </ul>
 </li>
 <li>
-<p><strong>涉及空值的查询</strong>：使用谓词 <code>IS NULL</code> 或 <code>IS NOT NULL</code>；“IS NULL” 不能用 “= NULL” 代替</p>
+<p><strong>涉及空值的查询</strong>：使用谓词 <strong><code>IS NULL</code></strong> 或 <strong><code>IS NOT NULL</code></strong>；<code>IS NULL</code> 不能用 <code>= NULL</code> 代替</p>
 <ul>
 <li><strong>例</strong>：某些学生选修课程后没有参加考试，所以有选课记录，但没有考试成绩查询缺少成绩的学生学号和相应课程号<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno，Cno<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">WHERE</span> Grade <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span>;<br></code></pre></td></tr></table></figure>
 </li>
@@ -2986,11 +3101,15 @@
 </ul>
 </li>
 <li>
-<p><strong>多重条件查询</strong>：用逻辑运算符 <code>AND</code> 和 <code>OR</code> 来联结多个查询条件，<code>AND</code> 的优先级高于 <code>OR</code>，可以用括号改变优先级</p>
+<p><strong>多重条件查询</strong>：用逻辑运算符 <strong><code>AND</code></strong> 和 <strong><code>OR</code></strong> 来联结多个查询条件</p>
 <ul>
+<li><strong><code>AND</code> 的优先级高于 <code>OR</code></strong>，<strong>可以用括号改变优先级</strong></li>
+<li>可用来实现多种其他谓词</li>
 <li><strong>例</strong>：查询计算机系年龄在 20 岁以下的学生姓名<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sdept<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;CS&#x27;</span> <span class="hljs-keyword">AND</span> Sage<span class="hljs-operator">&lt;</span><span class="hljs-number">20</span>;<br></code></pre></td></tr></table></figure>
 </li>
-<li><strong>例</strong>：查询信息系（IS）、数学系（MA）和计算机科学系（CS）学生的姓名和性别<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname，Ssex<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sdept<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;IS&#x27;</span> <span class="hljs-keyword">OR</span> Sdept<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;MA&#x27;</span> <span class="hljs-keyword">OR</span> Sdept<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;CS&#x27;</span>;<br></code></pre></td></tr></table></figure>
+<li><strong>例</strong>：查询信息系（IS）、数学系（MA）和计算机科学系（CS）学生的姓名和性别<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname, Ssex<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sdept<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;IS&#x27;</span> <span class="hljs-keyword">OR</span> Sdept<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;MA&#x27;</span> <span class="hljs-keyword">OR</span> Sdept<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;CS&#x27;</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>例</strong>：查询 1 号课程中考试成绩小于 60 或大于 90 的学生学号<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">WHERE</span> (Grade<span class="hljs-operator">&lt;</span><span class="hljs-number">60</span> <span class="hljs-keyword">or</span> Grade<span class="hljs-operator">&gt;</span><span class="hljs-number">90</span>) <span class="hljs-keyword">and</span> Cno<span class="hljs-operator">=</span><span class="hljs-number">1</span>;<br></code></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
@@ -3004,8 +3123,8 @@
 <li><strong>语法</strong>：使用 <code>ORDER BY</code>子句
 <ul>
 <li>可以按一个或多个属性列排序</li>
-<li>升序：<code>ASC</code>；降序：<code>DESC</code>；缺省值为升序</li>
-<li>当排序列含空值时
+<li>升序：<code>ASC</code>；降序：<code>DESC</code>；<strong>缺省值为升序</strong></li>
+<li><strong>当排序列含空值</strong>时，显示的次序由具体系统实现决定
 <ul>
 <li>ASC：排序列为空值的元组最后显示</li>
 <li>DESC：排序列为空值的元组最先显示</li>
@@ -3015,14 +3134,14 @@
 </li>
 <li><strong>例</strong>：查询选修了 3 号课程的学生的学号及其成绩，查询结果按分数降序排列<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno, Grade<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">WHERE</span> Cno<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;3&#x27;</span><br><span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> Grade <span class="hljs-keyword">DESC</span>;<br></code></pre></td></tr></table></figure>
 </li>
-<li><strong>例</strong>：查询全体学生情况，查询结果按所在系的系号升序排列，同一系中的学生按年龄降序排列<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> Sdept，Sage <span class="hljs-keyword">DESC</span>;<br></code></pre></td></tr></table></figure>
+<li><strong>例</strong>：查询全体学生情况，查询结果按所在系的系号升序排列，同一系中的学生按年龄降序排列<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> Sdept, Sage <span class="hljs-keyword">DESC</span>;<br></code></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
 <li>
 <p><strong>使用聚集函数</strong>：</p>
 <ul>
-<li><strong>5 类主要聚集函数</strong>：
+<li><strong>5 类主要聚集函数</strong>：除 <code>COUNT (*)</code> 外，都只处理非空值，空值自动忽略
 <ul>
 <li><strong>计数</strong>：
 <ul>
@@ -3058,7 +3177,7 @@
 </li>
 <li><strong>例</strong>：查询学生 201215012 选修课程的总学分数<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">SUM</span>(Ccredit)<br><span class="hljs-keyword">FROM</span> SC, Course<br><span class="hljs-keyword">WHERE</span> Sno<span class="hljs-operator">=</span><span class="hljs-string">&#x27;201215012&#x27;</span> <span class="hljs-keyword">AND</span> SC.Cno<span class="hljs-operator">=</span>Course.Cno;<br></code></pre></td></tr></table></figure>
 </li>
-<li><strong>注意</strong>：WHERE 子句中不能用聚集函数作为条件表达式</li>
+<li><strong>WHERE 子句中不能用聚集函数作为条件表达式</strong>，因为 WHERE 子句对每一个元组进行条件过滤，而不是对集合进行条件过滤</li>
 </ul>
 </li>
 <li>
@@ -3078,18 +3197,39 @@
 </li>
 <li><strong>使用 HAVING 短语筛选最终输出结果</strong>：
 <ul>
-<li><strong>例</strong>：查询选修了 3 门以上课程的学生学号<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> Sno<br><span class="hljs-keyword">HAVING</span> <span class="hljs-built_in">COUNT</span>(<span class="hljs-operator">*</span>) <span class="hljs-operator">&gt;</span><span class="hljs-number">3</span>;<br></code></pre></td></tr></table></figure>
+<li><strong>例</strong>：查询选修了 3 门以上课程的学生学号<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> Sno<br><span class="hljs-keyword">HAVING</span> <span class="hljs-built_in">COUNT</span>(<span class="hljs-operator">*</span>)<span class="hljs-operator">&gt;</span><span class="hljs-number">3</span>;<br></code></pre></td></tr></table></figure>
 </li>
 <li><strong>例</strong>：查询平均成绩大于等于 90 分的学生学号和平均成绩<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno, <span class="hljs-built_in">AVG</span>(Grade)<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> Sno<br><span class="hljs-keyword">HAVING</span> <span class="hljs-built_in">AVG</span>(Grade)<span class="hljs-operator">&gt;=</span><span class="hljs-number">90</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>例</strong>：查询有两门及以上不及格课同学的学号和其平均成绩<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno, <span class="hljs-built_in">AVG</span>(GRADE)<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">WHERE</span> Sno <span class="hljs-keyword">in</span><br>      (<span class="hljs-keyword">SELECT</span> Sno<br>       <span class="hljs-keyword">FROM</span> SC<br>       <span class="hljs-keyword">WHERE</span> Grade<span class="hljs-operator">&lt;</span><span class="hljs-number">60</span><br>       <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> Sno<br>       <span class="hljs-keyword">HAVING</span> <span class="hljs-built_in">COUNT</span>(<span class="hljs-operator">*</span>)<span class="hljs-operator">&gt;</span><span class="hljs-number">2</span>)<br><span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> Sno;<br></code></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
 <li><strong>注意</strong>：
 <ul>
 <li>聚集函数只能用于 SELECT 子句和 GROUP BY 中的 HAVING 子句</li>
-<li>WHERE 子句作用于基本表或视图，选择满足条件的元组</li>
-<li>HAVING 短语作用于组，从分好的组中选择满足条件的组</li>
+<li><strong>WHERE 子句作用于基本表或视图</strong>，选择满足条件的元组</li>
+<li><strong>HAVING 短语作用于分组</strong>，从分好的组中选择满足条件的组</li>
 </ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>LIMIT 子句</strong>：用于限制 SELECT 语句查询结果的（元组）数量</p>
+<ul>
+<li><strong>语法</strong>：<code>LIMIT &lt;行数1&gt; [OFFSET &lt;行数2&gt;];</code>
+<ul>
+<li>语义是忽略前 <code>&lt;行数2&gt;</code> 行，然后取 <code>&lt;行数1&gt;</code> 作为查询结果数据</li>
+<li>OFFSET 可以省略，代表不忽略任何行</li>
+<li>LIMIT 子句经常和 ORDER BY 子句一起使用</li>
+</ul>
+</li>
+<li><strong>例</strong>：查询选修了数据库课程的成绩排名前 10 名的学生学号<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno<br><span class="hljs-keyword">FROM</span> SC, Course<br><span class="hljs-keyword">WHERE</span> Course.Cname<span class="hljs-operator">=</span><span class="hljs-string">&#x27;数据库&#x27;</span> <span class="hljs-keyword">AND</span> SC.Cno<span class="hljs-operator">=</span>Course.Cno<br><span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> Grade <span class="hljs-keyword">DESC</span><br>LIMIT <span class="hljs-number">10</span>;  <span class="hljs-comment">/*取前10行数据为查询结果*/</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>ORDER BY 可以使用不在 SELECT 列表中的列进行排序，这是 SQL 标准允许的</li>
+</ul>
+</li>
+<li><strong>例</strong>：查询平均成绩排名在 3-7 名的学生学号和平均成绩<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno, <span class="hljs-built_in">AVG</span>(Grade)<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> Sno<br><span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-built_in">AVG</span>(Grade) <span class="hljs-keyword">DESC</span><br>LIMIT <span class="hljs-number">5</span> <span class="hljs-keyword">OFFSET</span> <span class="hljs-number">2</span>; <span class="hljs-comment">/*取5行数据，忽略前2行，之后为查询结果数据*/</span><br></code></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
@@ -7994,6 +8134,8 @@
 </ul>
 </li>
 </ul>
+<h2 id="第十二章-并发控制">第十二章 并发控制</h2>
+<h3 id="1-并发控制概述">1. 并发控制概述</h3>
 <h2 id="参考资料">参考资料</h2>
 <p>本文参考上海交通大学《数据库技术》课程 CS3321 郭捷老师的 PPT 课件整理。</p>
 
