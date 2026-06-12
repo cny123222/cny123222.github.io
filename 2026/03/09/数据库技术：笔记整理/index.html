@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/db.png">
 <meta property="article:published_time" content="2026-03-09T08:30:32.000Z">
-<meta property="article:modified_time" content="2026-06-11T16:40:05.195Z">
+<meta property="article:modified_time" content="2026-06-12T07:29:00.733Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          71k words
+          73k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          596 mins
+          606 mins
         
       </span>
     
@@ -366,7 +366,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on June 12, 2026 am
+                    Last updated on June 12, 2026 pm
                   
                 
               </p>
@@ -4421,12 +4421,68 @@
 </li>
 </ul>
 <h3 id="4-动态-SQL">4. 动态 SQL</h3>
+<ul>
+<li>
+<p><strong>静态 SQL 语言</strong>：</p>
+<ul>
+<li><strong>示例</strong>：<code>exec sql select Sname, Sage into :vSname, :vSage_from Student whereSname =:specName;</code> <code>specName[10j=&quot;张三&quot;;</code></li>
+<li><strong>特点</strong>：SQL 语句在程序中已经按要求写好，只需把一些参数通过变量（高级语言程序语句中<strong>不带冒号</strong>）传送给嵌入式 SQL 语句即可（嵌入式 SQL 语句中<strong>带冒号</strong>）</li>
+</ul>
+</li>
+<li>
+<p><strong>动态 SQL 语言</strong>：</p>
+<ul>
+<li>
+<p><strong>特点</strong>：允许在程序运行过程中临时&quot;组装&quot;SQL语句，支持<strong>动态组装 SQL 语句</strong>和<strong>动态参数</strong>两种形式，给开发者提供设计任意 SQL 语句的能力</p>
+</li>
+<li>
+<p><strong>例</strong>：创建基本表 TEST</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">EXEC</span> <span class="hljs-keyword">SQL</span> <span class="hljs-keyword">BEGIN</span> <span class="hljs-keyword">DECLARE</span> SECTION; <span class="hljs-comment">/*SQL语句主变量，内容是创建表的SQL语句*/</span><br>  const <span class="hljs-type">char</span> <span class="hljs-operator">*</span>stmt<span class="hljs-operator">=</span>&quot;CREATE TABLE test(a int);&quot;;<br><span class="hljs-keyword">EXEC</span> <span class="hljs-keyword">SQL</span> <span class="hljs-keyword">END</span> <span class="hljs-keyword">DECLARE</span> SECTION;<br>...<br><span class="hljs-keyword">EXEC</span> <span class="hljs-keyword">SQL</span> <span class="hljs-keyword">EXECUTE</span> IMMEDIATE :stmt; <span class="hljs-comment">/*执行动态SQL语句 */</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>必要性</strong>：动态构造 SQL 语句是应用程序员必须掌握的重要手段</p>
+<ul>
+<li><strong>例</strong>：编写由用户确定检索条件的应用程序</li>
+</ul>
+</li>
+<li>
+<p><strong>编程实例</strong>：已知关系：Customers(Cid, Cname, City, discnt)，从 Customers 表中删除满足条件的行</p>
+<p><img src="6-%E5%8A%A8%E6%80%81SQL%E5%AE%9E%E4%BE%8B.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>假设用户界面上的输入存入下面变量：
+<ul>
+<li><code>char Vcname[];</code></li>
+<li><code>char Vcity[];</code></li>
+<li><code>double range_from, range_to;</code></li>
+<li><code>int Cname_chose, City_chose, Discnt_chose;</code></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><code class="hljs sql">#include<span class="hljs-operator">&lt;</span>stdio.h<span class="hljs-operator">&gt;</span><br>#include &quot;prompt.h&quot;<br><span class="hljs-type">char</span> Vcname[];<br><span class="hljs-type">char</span> Vcity[];<br><span class="hljs-keyword">double</span> range_from, range_to;<br><span class="hljs-type">int</span> Cname_chose, City_chose, Discnt_chose;<br>Cname_chose<span class="hljs-operator">=</span><span class="hljs-number">0</span>; City_chose<span class="hljs-operator">=</span><span class="hljs-number">0</span>; Discnt_chose<span class="hljs-operator">=</span><span class="hljs-number">0</span>;<br><span class="hljs-type">int</span> sql_sign<span class="hljs-operator">=</span><span class="hljs-number">0</span>;<br><span class="hljs-type">char</span> continue_sign[];<br><br><span class="hljs-keyword">EXEC</span> <span class="hljs-keyword">SQL</span> INCLUDE SQLCA; <span class="hljs-comment">/*定义SQL通信区*/</span><br><span class="hljs-keyword">EXEC</span> <span class="hljs-keyword">SQL</span> <span class="hljs-keyword">BEGIN</span> <span class="hljs-keyword">DECLARE</span> SECTION; <span class="hljs-comment">/*主变量说明开始*/</span><br>  <span class="hljs-type">char</span> user_name[<span class="hljs-number">20</span>],user_pwd[<span class="hljs-number">20</span>];<br>  <span class="hljs-type">char</span> sqltext[ ]<span class="hljs-operator">=</span>&quot;Delete from customers where&quot;; <span class="hljs-comment">/*动态SQL字符串初值*/</span><br><span class="hljs-keyword">EXEC</span> <span class="hljs-keyword">SQL</span> <span class="hljs-keyword">END</span> <span class="hljs-keyword">DECLARE</span> SECTION; <span class="hljs-comment">/*主变量说明结束*/</span><br><br><span class="hljs-type">int</span> main () <span class="hljs-comment">/*C语言主程序开始*/</span><br>&#123;<br>  <span class="hljs-keyword">EXEC</span> <span class="hljs-keyword">SQL</span> <span class="hljs-keyword">WHENEVER</span> SQLERROR GOTO report_error; <span class="hljs-comment">/*SQL错误捕获语句*/</span><br>  strcpy(user_name, &quot;poneilsql&quot;);<br>  strcpy(user_pwd, &quot;XXXX&quot;);<br>  <span class="hljs-keyword">EXEC</span> <span class="hljs-keyword">SQL</span> <span class="hljs-keyword">CONNECT</span> :<span class="hljs-keyword">user</span> name identified <span class="hljs-keyword">by</span> :user_pwd; <span class="hljs-comment">/*连接SQL数据库*/</span><br>  while(<span class="hljs-number">1</span>) &#123;<br>    memset(Vcname,<span class="hljs-string">&#x27;\0&#x27;</span>,<span class="hljs-number">20</span>); <span class="hljs-comment">/*字符串初始化*/</span><br>    memset(Vcity,<span class="hljs-string">&#x27;\0&#x27;</span>,<span class="hljs-number">20</span>); <span class="hljs-comment">/*字符串初始化*/</span><br>    if(GetCname(Vcname)) Cname_chose<span class="hljs-operator">=</span><span class="hljs-number">1</span>; <span class="hljs-comment">/*界面获取Cname值*/</span><br>    if(GetCity(Vcity)) City_chose<span class="hljs-operator">=</span><span class="hljs-number">1</span>; <span class="hljs-comment">/*界面获取City值*/</span><br>    if(GetDiscntRange(<span class="hljs-operator">&amp;</span>range_from,<span class="hljs-operator">&amp;</span>range_to)) Discnt_chose<span class="hljs-operator">=</span><span class="hljs-number">1</span>; <span class="hljs-comment">/*界面获取Discnt区间值*/</span><br><br>    <span class="hljs-comment">/*如果选择了Cname，构造sqltext字符串*/</span><br>    if(Cname_chose)&#123;<br>      sql_sign<span class="hljs-operator">=</span><span class="hljs-number">1</span>;<br>      strcat(sqltext,&quot;Cname=\&#x27;&quot;);<br>      strcat(sqltext, Vcname);<br>      strcat(sqltext, &quot;\&#x27;&quot;);<br>    &#125;<br>    <span class="hljs-comment">/*如果选择了City，构造sqltext字符串*/</span><br>    if(City_chose)&#123;<br>      sql_sign<span class="hljs-operator">=</span><span class="hljs-number">1</span>;<br>      if(Cname_chose)<br>        strcat(sqltext,&quot;and City = \&#x27;&quot;);<br>      <span class="hljs-keyword">else</span><br>        strcat(sqltext, &quot;City = \&#x27;&quot;);<br>        strcat(sqltext, Vcity);<br>        strcat(sqltext, &quot;\&#x27;&quot;);<br>    &#125;<br>    <span class="hljs-comment">/*如果选择了Discnt区间值，构造sqltext字符串*/</span><br>    if(Discnt_chose)&#123;<br>      sql_sign<span class="hljs-operator">=</span><span class="hljs-number">1</span>;<br>      if(Cname_chose<span class="hljs-operator">=</span><span class="hljs-number">0</span> <span class="hljs-keyword">and</span> City_chose<span class="hljs-operator">=</span><span class="hljs-number">0</span>)<br>        strcat(sqltext, &quot;discnt &gt;&quot;);<br>      <span class="hljs-keyword">else</span><br>        strcat(sqltext, &quot;and (discnt &gt;&quot;);<br>      strcat(sqltext, dtoa(range_from));<br>      strcat(sqltext, &quot;and discnt &lt;&quot;);<br>      strcat(sqltext, dtoa(range_to));<br>      strcat(sqltext, &quot;)&quot;);<br>    &#125;<br>    <br>    if(sql_sign)&#123;<br>      <span class="hljs-keyword">EXEC</span> <span class="hljs-keyword">SQL</span> <span class="hljs-keyword">EXECUTE</span> IMMEDIATE :sqltext; <span class="hljs-comment">/*动态SQL语句执行*/</span><br>      <span class="hljs-keyword">EXEC</span> <span class="hljs-keyword">SQL</span> <span class="hljs-keyword">COMMIT</span> work; <span class="hljs-comment">/*事务提交*/</span><br>    &#125;<br>    scanf(&quot;continue(y/n)%1s&quot;,continue_sign); <span class="hljs-comment">/*用户输入是否继续执行的标志*/</span><br>    if (continue_sign<span class="hljs-operator">=</span>&quot;n&quot;) &#123;<br>      <span class="hljs-keyword">EXEC</span> <span class="hljs-keyword">SQL</span> <span class="hljs-keyword">COMMIT</span> <span class="hljs-keyword">release</span>; <span class="hljs-comment">/*断开数据库连接*/</span><br>      <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>; <span class="hljs-comment">/*退出循环*/</span><br>    &#125;<br>  &#125; <span class="hljs-comment">/*while结束*/</span><br><br>report_error:<br>  print_dberror();<br>  <span class="hljs-keyword">EXEC</span> <span class="hljs-keyword">SQL</span> <span class="hljs-keyword">ROLLBACK</span> <span class="hljs-keyword">release</span>;<br>  <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>&#125; <span class="hljs-comment">/*main结束*/</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>动态 SQL 的两种执行方式</strong>：如果 SQL 语句已经被构造在 host-variable 字符串变量中，则</p>
+<ul>
+<li><strong>立即执行语句</strong>：运行时编译并执行<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">EXEC</span> <span class="hljs-keyword">SQL</span> <span class="hljs-keyword">EXECUTE</span> IMMEDIATE :host<span class="hljs-operator">-</span>variable;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>动态参数（Prepare-Execute-Using 语句）</strong>：prepare 语句先编译，编译后的 SQL 语句允许动态参数，EXECUTE 语句执行，用 using 语句将动态参数值传送给编译好的 SQL 语句<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">EXEC</span> <span class="hljs-keyword">SQL</span> <span class="hljs-keyword">PREPARE</span> sql_temp <span class="hljs-keyword">FROM</span> :host<span class="hljs-operator">-</span>variable;<br><span class="hljs-keyword">EXEC</span> <span class="hljs-keyword">SQL</span> <span class="hljs-keyword">EXECUTE</span> sql_temp <span class="hljs-keyword">USING</span>:cond<span class="hljs-operator">-</span>variable;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>例</strong>：向 TEST 中插入元组<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">EXEC</span> <span class="hljs-keyword">SQL</span> <span class="hljs-keyword">BEGIN</span> <span class="hljs-keyword">DECLARE</span> SECTION; <br>  <span class="hljs-comment">/*声明SQL主变量内容是INSERT语句,包含动态参数(?)*/</span><br>  const <span class="hljs-type">char</span> <span class="hljs-operator">*</span>stmt<span class="hljs-operator">=</span>&quot;INSERT INT0 TEST VALUES(?);&quot;;<br><span class="hljs-keyword">EXEC</span> <span class="hljs-keyword">SQL</span> <span class="hljs-keyword">END</span> <span class="hljs-keyword">DECLARE</span> SECTION;<br><span class="hljs-keyword">EXEC</span> <span class="hljs-keyword">SQL</span> <span class="hljs-keyword">PREPARE</span> mystmt <span class="hljs-keyword">FROM</span>:stmt; <span class="hljs-comment">/*准备SQL语句，把字符串编译成mystmt*/</span><br>...<br><span class="hljs-keyword">EXEC</span> <span class="hljs-keyword">SQL</span> <span class="hljs-keyword">EXECUTE</span> mystmt <span class="hljs-keyword">USING</span> <span class="hljs-number">100</span>; <span class="hljs-comment">/*执行语句，设定INSERT语句插入值100*/</span><br><span class="hljs-keyword">EXEC</span> <span class="hljs-keyword">SQL</span> <span class="hljs-keyword">EXECUTE</span> mystmt <span class="hljs-keyword">USING</span> <span class="hljs-number">200</span>; <span class="hljs-comment">/*执行语句，设定INSERT语句插入值200*/</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 <h3 id="5-JDBC-编程">5. JDBC 编程</h3>
 <ul>
 <li>
 <p><strong>JDBC 工作原理概述</strong>：</p>
 <ul>
-<li><strong>JDBC (Java Database Connection)</strong>：
+<li>
+<p><strong>JDBC (Java Database Connection)</strong>：</p>
 <ul>
 <li>由于不同的数据库管理系统的存在，在某个关系数据库管理系统下编写的应用程序就不能在另一个关系数据库管理系统下运行</li>
 <li>许多应用程序需要共享多个部门的数据资源，访问不同的关系数据库管理系统</li>
@@ -4434,15 +4490,20 @@
 <li><strong>提供了一组访问数据库的应用程序编程接口</strong>（Application Programming Interface，API）</li>
 </ul>
 </li>
-<li><strong>JDBC 约束力</strong>：规范应用开发、规范关系数据库管理系统应用接口</li>
-<li><strong>JDBC 应用系统的体系结构</strong>：用户应用程序、JDBC 驱动程序管理器、数据源</li>
+<li>
+<p><strong>JDBC 约束力</strong>：规范应用开发、规范关系数据库管理系统应用接口</p>
+</li>
+<li>
+<p><strong>JDBC 应用系统的体系结构</strong>：用户应用程序、JDBC 驱动程序管理器、数据源</p>
+<p><img src="6-JDBC.png" srcset="/img/loading.gif" lazyload alt=""></p>
+</li>
 </ul>
 </li>
 <li>
 <p><strong>JDBC API 基础</strong>：</p>
 <ul>
 <li>
-<p><strong>JDBC 中的常用类</strong>：JDBC 进行应用程序开发涉及到的所有类都包含在 java.sql 包中，不同的 JDBC 版本接口名和使用略有差异</p>
+<p><strong>JDBC 中的常用类</strong>：</p>
 <table>
 <thead>
 <tr>
@@ -4491,79 +4552,87 @@
 </table>
 </li>
 <li>
-<p><strong>数据类型</strong>：</p>
-<ul>
-<li><strong>SQL 数据类型</strong>：用于数据源，VARCHAR、CHAR、BIT、NUMERIC、DATE 等</li>
-<li><strong>Java 数据类型</strong>：用于应用程序的 Java 代码，String、boolean、BigDecimal、byte、short、int 等</li>
-<li>由数据库管理系统的驱动程序完成自身数据类型和 JDBC 标准数据类型的映射</li>
-</ul>
+<p><strong>数据类型</strong>：由数据库管理系统的<strong>驱动程序</strong>完成自身数据类型和 JDBC 标准数据类型的映射</p>
 </li>
 </ul>
 </li>
 <li>
 <p><strong>使用 JDBC 操纵数据库的工作流程</strong>：</p>
 <ul>
-<li><strong>步骤 1</strong>：加载驱动程序
+<li><strong>步骤 1</strong>：<strong>加载驱动程序</strong>
 <ul>
 <li>驱动程序在 JDBC API 中实现定义数据交互的接口</li>
+<li><strong>例</strong>：对 Kingbase、Oracle、SQL Server 加载数据库驱动<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java">Class.forName(<span class="hljs-string">&quot;com.kingbase.Driver&quot;</span>); <span class="hljs-comment">/* Kingbase */</span><br>Class.forName(<span class="hljs-string">&quot;oracle.jdbc.OracleDriver&quot;</span>); <span class="hljs-comment">/* Oracle */</span><br>Class.forName(<span class="hljs-string">&quot;com.microsoft.jdbc.sqlserver.SQLServerDriver&quot;</span>); <span class="hljs-comment">/* SQL Server */</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>JDBC 4.0 及以后版本不再需要使用 <strong><code>Class.forName()</code></strong> 显式地加载 JDBC 驱动程序</li>
 </ul>
 </li>
-<li><strong>步骤 2</strong>：设置待连接数据库的 URL，并建立与数据库连接
+<li><strong>步骤 2</strong>：定义连接的 URL 地址，利用生成的 URL <strong>建立与数据库的连接</strong>
 <ul>
-<li>加载驱动后，可以通过 URL 地址与数据库建立连接</li>
-<li>URL 包含了连接数据库所需的协议、子协议和数据库名称，定义格式为：<code>&lt;协议名&gt;:&lt;子协议名&gt;:&lt;数据库名称&gt;</code></li>
+<li>加载驱动后，可以通过 <strong>URL 地址</strong>与数据库建立连接</li>
+<li>URL 包含了连接数据库所需的<strong>协议、子协议和数据库名称</strong>，定义格式为：<code>&lt;协议名&gt;:&lt;子协议名&gt;:&lt;数据库名称&gt;</code></li>
+<li><strong>例</strong>：定义与 Kingbase、Oracle、SQL Server 数据库连接的 URL<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java">strURL = <span class="hljs-string">&quot;jdbc:kingbase://&quot;</span> + 服务器名 + <span class="hljs-string">&quot;:&quot;</span> + 端口号 + <span class="hljs-string">&quot;/&quot;</span> + 数据库名;<br>strURL = <span class="hljs-string">&quot;jdbc:oracle:thin:@&quot;</span> + 服务器名 + <span class="hljs-string">&quot;:&quot;</span> + 端口号 + <span class="hljs-string">&quot;:&quot;</span> + 数据库名<br>strURL = <span class="hljs-string">&quot;jdbc:microsoft:sqlserver://&quot;</span> + 服务器名 + <span class="hljs-string">&quot;:&quot;</span> + 端口号 + <span class="hljs-string">&quot;:&quot;</span> + 数据库名<br></code></pre></td></tr></table></figure>
+<ul>
+<li>Kingbase、Oracle、SQL Server 的默认端口号分别为 54321、1521、1433</li>
 </ul>
 </li>
-<li><strong>步骤 3</strong>：执行SQL语句
-<ul>
-<li><strong>静态语句执行类对象(Statement)</strong></li>
-<li><strong>派生执行类对象</strong>：
-<ul>
-<li><strong>动态语句执行类(PreparedStatement)</strong>：执行动态的 SQL 语句</li>
-<li><strong>存储过程执行类(CallableStatement)</strong>：执行数据库存储过程</li>
+<li><strong>例</strong>：建立与 Kingbase 数据库的连接，假定服务器地址为192.168.0.118，端口为 54321，数据库名为 DB-Student，用户名为 Info001，密码为 123456<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">strURL</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;jdbc:kingbase:// 192.168.0.118:54321/DB-Student&quot;</span>;<br><span class="hljs-type">Connection</span> <span class="hljs-variable">conn</span> <span class="hljs-operator">=</span> DriverManager.getConnection(strURL, <span class="hljs-string">&quot;Info001&quot;</span>, <span class="hljs-string">&quot;123456&quot;</span>);<br></code></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
-<li><strong>执行方法</strong>：
+<li><strong>步骤 3</strong>：创建语句执行类对象，<strong>执行 SQL 语句</strong>
+<ul>
+<li>静态语句执行类对象(<strong>Statement</strong>)：执行静态的 SQL 语句</li>
+<li>派生执行类对象：
+<ul>
+<li>动态语句执行类(<strong>PreparedStatement</strong>)：执行动态的 SQL 语句</li>
+<li>存储过程执行类(<strong>CallableStatement</strong>)：执行数据库存储过程</li>
+</ul>
+</li>
+<li>执行方法：
 <ul>
 <li><code>ResultSet executeQuery()</code>: 执行数据库查询语句</li>
 <li><code>int executeUpdate()</code>: 处理增、删、改以及定义语句</li>
 <li><code>boolean execute()</code>: 处理存储过程或动态 SQL 语句</li>
 </ul>
 </li>
-<li><strong>SQL 注入防御</strong>：预编译；正则过滤，输入验证，框架</li>
+<li><strong>例</strong>：使用 JDBC 向课堂评价表中插入一条记录，课程评价关系模式为 ClassAssess(Sno, Tno, Tcno, Assess, CAtype, Feedback)<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">PreparedStatement</span> <span class="hljs-variable">stmt</span> <span class="hljs-operator">=</span> conn.prepareStatement(<span class="hljs-string">&quot;INSERT INTO SC VALUES(?,?,?,?,?,?)&quot;</span>);<br><span class="hljs-comment">/* 生成PreparedStatement类对象中的动态参数，注意第六个字段Feedback，未设置输入值 */</span><br>stmt.setString(<span class="hljs-number">1</span>, <span class="hljs-string">&quot;20180001&quot;</span>); <span class="hljs-comment">/*设置学生学号*/</span><br>stmt.setString(<span class="hljs-number">2</span>, <span class="hljs-string">&quot;19950018&quot;</span>); <span class="hljs-comment">/*设置职工号*/</span><br>stmt.setString(<span class="hljs-number">3</span>, <span class="hljs-string">&quot;81001-01&quot;</span>); <span class="hljs-comment">/*设置教学班号*/</span><br>stmt.setString(<span class="hljs-number">4</span>, <span class="hljs-string">&quot;老师讲得很出色&quot;</span>); <span class="hljs-comment">/*设置学生评价意见*/</span><br>stmt.setBoolean(<span class="hljs-number">5</span>, <span class="hljs-literal">true</span>); <span class="hljs-comment">/*设置学生评价意见类型*/</span><br>stmt.executeUpdate();<br></code></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
-<li><strong>步骤 4</strong>：处理结果集，并处理用户逻辑
+<li><strong>步骤 4</strong>：<strong>处理结果集</strong>
 <ul>
 <li><code>ResultSet</code>: 结果集合类对象
 <ul>
-<li><code>.GetXXX(参数)</code>：获取元组的属性值，<code>XXX</code> 代表某种数据类型；可以指定参数为列号（JDBC 的列从 1 开始）或列名</li>
-<li><strong>游标(cursor)</strong>：JDBC 处理结果集的机制</li>
+<li><code>getXXX(参数)</code>：获取元组的属性值，<code>XXX</code> 代表某种数据类型；可以指定参数为列号（JDBC 的列从 1 开始）或列名</li>
+<li>游标(cursor)：JDBC 处理结果集的机制
+<ul>
+<li>TYPE_FORWARD_ONLY：只能向下滚动(默认类型)</li>
+<li>TYPE_SCROLL_INSENSITIVE/SENSITIVE：<strong>双向滚动，区别为是否同步数据库更新操作</strong></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><strong>步骤 5</strong>：释放资源
+<li><strong>例</strong>：遍历教师职工号为 19950018，教学班号为 81001-01 的学生课程评价详情<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">SQL</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;SELECT Sno, Assess, CAtype, Feedback FROM ClassAssess WHERE Tno=&#x27;19950018&#x27; AND TCo = &#x27;81001-01&#x27;&quot;</span>;<br><span class="hljs-type">ResultSet</span> <span class="hljs-variable">rs</span> <span class="hljs-operator">=</span> stmt.executeQuery(SQL);<br><span class="hljs-keyword">while</span>(rs.next())&#123;<br>  <span class="hljs-type">String</span> <span class="hljs-variable">Sno</span> <span class="hljs-operator">=</span> rs.getString(<span class="hljs-string">&quot;Sno&quot;</span>); <span class="hljs-comment">/*等价于rs.getString(1)*/</span><br>  <span class="hljs-type">String</span> <span class="hljs-variable">strAssess</span> <span class="hljs-operator">=</span> rs.getString(<span class="hljs-string">&quot;Assess&quot;</span>); <span class="hljs-comment">/*等价于rs.getString(2) */</span><br>  Boolean bCAtype= rs.getBoolean(<span class="hljs-string">&quot;CAtype&quot;</span>); <span class="hljs-comment">/*等价rs.getBoolean (3) */</span><br>  <span class="hljs-type">String</span> <span class="hljs-variable">strFeedback</span> <span class="hljs-operator">=</span> rs.getString(<span class="hljs-string">&quot;Feedback&quot;</span>); <span class="hljs-comment">/*等价于rs.getString(4) */</span><br>  System.out.printf(<span class="hljs-string">&quot;[%s,%b,%s]%n&quot;</span>, strAssess, bCAtype, strFeedback);<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><strong>步骤 5</strong>：<strong>释放资源</strong>
 <ul>
 <li>执行结束后，将与数据库进行交互的对象释放</li>
-<li><strong>释放资源有标准的顺序</strong>：
+<li>释放资源有标准的顺序：
 <ul>
 <li>关闭结果集：<code>ResultSet.close()</code></li>
 <li>关闭语句执行类对象：<code>Statement.close()</code></li>
 <li>释放数据库连接对象：<code>Connection.close()</code></li>
 </ul>
 </li>
-<li><strong>释放资源的 Coding Tips</strong>：
-<ul>
-<li>Connection 对象在应用程序中较为稀有，尽量做到晚创建，早释放</li>
-<li>推荐在 finally 代码块中释放资源，以满足异常处理机制（finally 语句在什么情况下都会执行,确保一定会释放资源）</li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
-</li>
-</ul>
+<p><img src="6-%E5%B5%8C%E5%85%A5%E5%BC%8F-JDBC.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <h2 id="第六章-数据库设计">第六章 数据库设计</h2>
 <h3 id="1-数据库设计概述">1. 数据库设计概述</h3>
 <ul>
