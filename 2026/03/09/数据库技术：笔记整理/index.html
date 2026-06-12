@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/db.png">
 <meta property="article:published_time" content="2026-03-09T08:30:32.000Z">
-<meta property="article:modified_time" content="2026-06-12T09:20:02.009Z">
+<meta property="article:modified_time" content="2026-06-12T13:08:27.750Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="知识点整理">
@@ -259,7 +259,7 @@
         
         
         
-          650 mins
+          655 mins
         
       </span>
     
@@ -4316,7 +4316,7 @@
 <ul>
 <li>嵌入式 SQL 语句中可使用主语言的程序变量来输入或输出数据，SQL 语句中使用的主语言程序变量简称为<strong>主变量</strong><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">exec</span> <span class="hljs-keyword">sql</span> <span class="hljs-keyword">select</span> Sname, Sage <span class="hljs-keyword">into</span> :vSname, :vSage <span class="hljs-keyword">from</span> Student whereSname<span class="hljs-operator">=</span>:aspecName;<br></code></pre></td></tr></table></figure>
 </li>
-<li>这些变量必须在 SQL 语句 BEGIN DECLARE SECTION 与 END DECLARE SECTION 之间进行特殊的声明<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">exec</span> <span class="hljs-keyword">sql</span> <span class="hljs-keyword">begin</span> <span class="hljs-keyword">declare</span> section;<br><span class="hljs-type">char</span> vSname[<span class="hljs-number">10</span>],specName[<span class="hljs-number">10</span>]<span class="hljs-operator">=</span> &quot;张三&quot;;<br><span class="hljs-type">int</span> vSage;<br><span class="hljs-keyword">exec</span> <span class="hljs-keyword">sql</span> <span class="hljs-keyword">end</span> <span class="hljs-keyword">declare</span> section;<br></code></pre></td></tr></table></figure>
+<li>这些变量必须在 SQL 语句 BEGIN DECLARE SECTION 与 END DECLARE SECTION 之间进行特殊的声明<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">exec</span> <span class="hljs-keyword">sql</span> <span class="hljs-keyword">begin</span> <span class="hljs-keyword">declare</span> section;<br><span class="hljs-type">char</span> vSname[<span class="hljs-number">10</span>], specName[<span class="hljs-number">10</span>]<span class="hljs-operator">=</span> &quot;张三&quot;;<br><span class="hljs-type">int</span> vSage;<br><span class="hljs-keyword">exec</span> <span class="hljs-keyword">sql</span> <span class="hljs-keyword">end</span> <span class="hljs-keyword">declare</span> section;<br></code></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
@@ -4447,7 +4447,7 @@
 </li>
 <li>
 <p><strong>编程实例</strong>：已知关系：Customers(Cid, Cname, City, discnt)，从 Customers 表中删除满足条件的行</p>
-<p><img src="6-%E5%8A%A8%E6%80%81SQL%E5%AE%9E%E4%BE%8B.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="5-%E5%8A%A8%E6%80%81SQL%E5%AE%9E%E4%BE%8B.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <ul>
 <li>假设用户界面上的输入存入下面变量：
 <ul>
@@ -4495,7 +4495,7 @@
 </li>
 <li>
 <p><strong>JDBC 应用系统的体系结构</strong>：用户应用程序、JDBC 驱动程序管理器、数据源</p>
-<p><img src="6-JDBC.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="5-JDBC.png" srcset="/img/loading.gif" lazyload alt=""></p>
 </li>
 </ul>
 </li>
@@ -4632,30 +4632,31 @@
 </ul>
 </li>
 </ul>
-<p><img src="6-%E5%B5%8C%E5%85%A5%E5%BC%8F-JDBC.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="5-%E5%B5%8C%E5%85%A5%E5%BC%8F-JDBC.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <h2 id="第六章-数据库设计">第六章 数据库设计</h2>
 <h3 id="1-数据库设计概述">1. 数据库设计概述</h3>
 <ul>
 <li>
 <p><strong>数据库设计</strong>：</p>
 <ul>
-<li>数据库设计是指对于一个给定的应用环境，构造（设计）优化的数据库逻辑模式和物理结构，并据此建立数据库及其应用系统，使之能够有效地存储和管理数据，满足各种用户的应用需求，包括信息管理要求和数据操作要求</li>
-<li><strong>目标</strong>：为用户和各种应用系统提供一个信息基础设施和高效率的运行环境</li>
+<li><strong>含义</strong>：对于一个<strong>给定的应用环境</strong>，构造（设计）优化的数据库<strong>逻辑模式</strong>和<strong>物理结构</strong>，并据此建立数据库及其<strong>应用系统</strong>，使之能够有效地存储和管理数据，满足各种用户的<strong>应用需求</strong>，包括信息管理要求和数据操作要求</li>
+<li><strong>目标</strong>：为用户和各种应用系统提供一个<strong>信息基础设施</strong>和<strong>高效率的运行环境</strong></li>
 </ul>
 </li>
 <li>
-<p><strong>数据库设计的特点</strong>：</p>
+<p><strong>数据库设计的特点</strong>：数据库建设是硬件、软件和干件的结合</p>
 <ul>
-<li>数据库建设是硬件、软件和干件的结合
+<li><strong>三分技术，七分管理，十二分基础数据</strong></li>
+<li>干件：技术与管理的界面</li>
+<li><strong>管理</strong>：
 <ul>
-<li>三分技术，七分管理，十二分基础数据</li>
-<li>技术与管理的界面称之为“干件”</li>
+<li>数据库设计作为一个大型工程项目本身的项目管理</li>
+<li>项目所属企业（即应用部门）的业务管理</li>
 </ul>
 </li>
-<li>数据库设计应该与应用系统设计相结合
+<li><strong>基础数据</strong>：
 <ul>
-<li><strong>结构（数据）设计</strong>：设计数据库框架或数据库结构</li>
-<li><strong>行为（处理）设计</strong>：设计应用程序、事务处理等</li>
+<li>数据的收集、整理、组织和不断更新</li>
 </ul>
 </li>
 </ul>
@@ -4663,28 +4664,29 @@
 <li>
 <p><strong>数据库设计的基本步骤</strong>：</p>
 <ul>
-<li><strong>数据库设计分 6 个阶段</strong>：
+<li><strong>6 个阶段</strong>：
 <ul>
-<li>需求分析</li>
-<li>概念结构设计</li>
-<li>逻辑结构设计</li>
-<li>物理结构设计</li>
-<li>数据库实施</li>
-<li>数据库运行和维护</li>
+<li><strong>需求分析</strong>：整个设计的基础，最困难、最耗时</li>
+<li><strong>概念结构设计</strong>：对用户需求进行综合、归纳与抽象，形成一个独立于具体 DBMS 的概念模型</li>
+<li><strong>逻辑结构设计</strong>：将概念结构转换为某个 DBMS 所支持的数据模型，并对其进行优化</li>
+<li><strong>物理结构设计</strong>：为逻辑数据模型选取一个最适合应用环境的物理结构（包括存储结构和存取方法）</li>
+<li><strong>数据库实施</strong>：运用 DBMS 提供的数据语言、工具及宿主语言，根据逻辑设计和物理设计的结果，建立数据库、编制与调试应用程序、组织数据入库、并进行试运行</li>
+<li><strong>数据库运行和维护</strong>：在数据库系统运行过程中必须不断地对其进行评价、调整与修改</li>
 </ul>
 </li>
-<li>需求分析和概念设计独立于任何数据库管理系统</li>
-<li>逻辑设计和物理设计与选用的 DBMS 密切相关</li>
+<li>设计一个完善的数据库应用系统往往是上述<strong>六个阶段的不断反复</strong></li>
+<li>在设计过程中把<strong>数据库的设计</strong>和<strong>对数据库中数据处理的设计</strong>紧密结合起来</li>
+<li>将这两个方面的需求分析、抽象、设计、实现在各个阶段同时进行，相互参照，相互补充，以完善两方面的设计</li>
 </ul>
 </li>
 </ul>
 <h3 id="2-需求分析">2. 需求分析</h3>
 <ul>
 <li>
-<p><strong>需求分析</strong>：</p>
+<p><strong>需求分析</strong>：需求分析就是分析用户的需要与要求</p>
 <ul>
-<li>需求分析就是分析用户的需要与要求</li>
-<li>需求分析是设计数据库的起点</li>
+<li><strong>主要目标</strong>：理解企业、理解企业业务过程与数据处理流程、理解数据处理的性能需求</li>
+<li>需求分析是<strong>设计数据库的起点</strong></li>
 <li>需求分析的结果是否准确地反映了用户的实际要求，将直接影响到后面各个阶段的设计，并影响到设计结果是否合理和实用</li>
 </ul>
 </li>
@@ -4699,9 +4701,9 @@
 </ul>
 </li>
 <li>
-<p><strong>需求分析的重点</strong>：是“数据”和“处理”，调查、收集与分析用户在数据管理中：</p>
+<p><strong>需求分析的重点</strong>：“<strong>数据需求的理解</strong>”和“<strong>处理规则需求的理解</strong>”，调查、收集与分析用户在数据管理中：</p>
 <ul>
-<li>信息要求（查询内容与性质）</li>
+<li>信息要求（查询内容与性质）<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> 数据要求（存储哪些数据）</li>
 <li>处理要求（功能、响应时间、方式）</li>
 <li>安全性与完整性要求</li>
 </ul>
@@ -4709,58 +4711,79 @@
 <li>
 <p><strong>需求分析的难点</strong>：</p>
 <ul>
-<li><strong>确定用户最终需求的难点</strong>：
+<li>确定用户最终需求的难点：
 <ul>
-<li>用户缺少计算机知识，无法一下子准确地表达自己的需求，他们所提出的需求往往不断地变化</li>
-<li>设计人员缺少用户的专业知识，不易理解用户的真正需求，甚至误解用户的需求</li>
-<li>新的硬件、软件技术的出现也会使用户需求发生变化</li>
+<li><strong>用户</strong>缺少计算机知识，无法一下子准确地表达自己的需求，他们所提出的需求往往不断地变化</li>
+<li><strong>设计人员</strong>缺少用户的专业知识，不易理解用户的真正需求，甚至误解用户的需求</li>
+<li>新的硬件、软件技术的出现也会使用户<strong>需求发生变化</strong></li>
 </ul>
 </li>
-<li><strong>解决方法</strong>：
+<li>解决方法：
 <ul>
-<li>设计人员必须采用有效的方法，与用户不断深入地进行交流，才能逐步得以确定用户的实际需求</li>
+<li>设计人员必须采用有效的方法，与用户<strong>不断深入地进行交流</strong>，才能逐步得以确定用户的实际需求</li>
 </ul>
 </li>
 </ul>
 </li>
 <li>
-<p><strong>需求分析的方法</strong>：</p>
+<p><strong>需求分析的方法</strong>：调查用户需求的具体步骤如下</p>
 <ul>
-<li>调查清楚用户的实际需求并进行初步分析</li>
-<li>与用户达成共识</li>
-<li><strong>进一步分析与表达这些需求</strong>：
+<li>调查组织机构的总体情况</li>
+<li>熟悉各部门的业务活动情况</li>
+<li>明确用户对新系统的要求</li>
+<li>确定新系统的边界，生成数据字典及用户需求分析报告</li>
+</ul>
+</li>
+<li>
+<p><strong>进一步分析与表达用户需求</strong>：</p>
 <ul>
-<li><strong>分析和表达用户的需求的常用方法</strong>：结构化分析方法（Structured Analysis，SA 方法）
+<li>
+<p>分析和表达用户的需求的常用方法：结构化分析方法（Structured Analysis，SA 方法）</p>
 <ul>
 <li>从最上层的系统组织机构入手</li>
 <li>自顶向下、逐层分解</li>
 <li>用数据流图和数据字典描述系统</li>
 </ul>
 </li>
-<li>首先把任何一个系统都抽象为信息要求、处理要求</li>
-<li><strong>分解处理功能和数据</strong>：
+<li>
+<p><strong>第一步</strong>：首先把任何一个系统都抽象为：</p>
+<p><img src="6-%E6%95%B0%E6%8D%AE%E6%B5%81.png" srcset="/img/loading.gif" lazyload alt=""></p>
+</li>
+<li>
+<p><strong>第二步</strong>：分解处理功能和数据，尤其注意<strong>业务规则</strong>和<strong>属性处理规则</strong>：</p>
 <ul>
 <li><strong>分解处理功能</strong>：将处理功能的具体内容分解为若干子功能</li>
 <li><strong>分解数据</strong>：处理功能逐步分解同时，逐级分解所用数据，形成若干层次的数据流图</li>
 <li><strong>表达方法</strong>：
 <ul>
-<li><strong>处理逻辑</strong>：用判定表或判定树来描述</li>
-<li><strong>数据</strong>：用数据字典来描述</li>
+<li>处理逻辑：用判定表或判定树来描述</li>
+<li>数据：用数据字典来描述</li>
 </ul>
 </li>
 </ul>
 </li>
-<li>将分析结果再次提交给用户，征得用户的认可</li>
-</ul>
+<li>
+<p><strong>第三步</strong>：将分析结果（需求分析报告、数据流图等）再次提交给用户，征得用户的认可</p>
 </li>
 </ul>
 </li>
 <li>
 <p><strong>数据字典的用途</strong>：</p>
 <ul>
-<li>数据字典是各类数据<strong>描述</strong>的集合</li>
-<li>数据字典是进行详细的数据收集和数据分析所获得的主要结果</li>
+<li>数据字典，又称系统目录，是各类数据<strong>描述</strong>的集合（<strong>元数据</strong>）</li>
+<li>数据字典是进行详细的<strong>数据收集</strong>和<strong>数据分析</strong>所获得的主要结果</li>
+<li>不同的 DBMS 中数据字典存储方式可能不同，但有些信息会对 DBA 公开，这些公开信息，DBA 可用一些特殊的 SQL 命令来检索</li>
 <li>数据字典在数据库设计中占有很重要的地位</li>
+<li>数据字典是关系数据库管理系统内部的一组系统表，它记录了数据库中所有<strong>定义</strong>信息：关系模式/表定义、视图定义、索引定义、完整性约束定义、各类用户对数据库的操作权限、统计信息等</li>
+<li>关系数据库管理系统在执行 SQL 的数据定义语句时，就是在更新数据字典表中的相应信息</li>
+<li>查询优化和查询处理时，关系数据库管理系统要根据数据字典中的信息执行处理算法和优化算法</li>
+</ul>
+</li>
+<li>
+<p><strong>数据字典的组成</strong>：</p>
+<ul>
+<li>数据字典也是存储在磁盘上的关系，专为内存高效访问设计的特定数据结构</li>
+<li>数据字典常见组成：关系定义表、属性表、视图表、视图属性表、视图表达式表、用户表、存取权限表</li>
 </ul>
 </li>
 <li>
@@ -4770,39 +4793,39 @@
 <ul>
 <li>数据项是数据的最小组成单位</li>
 <li>若干个数据项可以组成一个数据结构</li>
-<li>数据字典通过对数据项和数据结构的定义来描述数据流、数据存储的逻辑内容</li>
+<li>数据字典通过对<strong>数据项</strong>和<strong>数据结构</strong>的定义来描述数据流、数据存储的逻辑内容</li>
 </ul>
 </li>
 <li><strong>数据项</strong>：
 <ul>
 <li>数据项是不可再分的数据单位</li>
 <li><strong>对数据项的描述</strong>：数据项描述＝｛数据项名，数据项含义说明，别名，数据类型，长度，取值范围，取值含义，与其他数据项的逻辑关系，数据项之间的联系｝</li>
-<li>取值范围、与其他数据项的逻辑关系定义了数据的完整性约束条件</li>
+<li>取值范围、与其他数据项的逻辑关系定义了<strong>数据的完整性约束条件</strong></li>
 </ul>
 </li>
 <li><strong>数据结构</strong>：
 <ul>
-<li>数据结构反映了数据之间的组合关系</li>
+<li>数据结构反映了<strong>数据之间的组合关系</strong></li>
 <li>一个数据结构可以由若干个数据项组成，也可以由若干个数据结构组成，或由若干个数据项和数据结构混合组成</li>
 <li><strong>对数据结构的描述</strong>：数据结构描述＝｛数据结构名，含义说明，组成:｛数据项或数据结构｝｝</li>
 </ul>
 </li>
 <li><strong>数据流</strong>：
 <ul>
-<li>数据流是数据结构在系统内传输的路径</li>
+<li>数据流是<strong>数据结构在系统内传输的路径</strong></li>
 <li><strong>对数据流的描述</strong>：数据流描述＝｛数据流名，说明，数据流来源，数据流去向，组成:｛数据结构｝，平均流量，高峰期流量｝
 <ul>
-<li>数据流来源是说明该数据流来自哪个过程</li>
-<li>数据流去向是说明该数据流将到哪个过程去</li>
-<li>平均流量是指在单位时间（每天、每周、每月等）里的传输次数</li>
-<li>高峰期流量则是指在高峰时期的数据流量</li>
+<li>数据流来源：说明该数据流来自哪个过程</li>
+<li>数据流去向：说明该数据流将到哪个过程去</li>
+<li>平均流量：指在单位时间（每天、每周、每月等）里的传输次数</li>
+<li>高峰期流量：指在高峰时期的数据流量</li>
 </ul>
 </li>
 </ul>
 </li>
 <li><strong>数据存储</strong>：
 <ul>
-<li>数据存储是数据结构停留或保存的地方，也是数据流的来源和去向之一</li>
+<li>数据存储是<strong>数据结构停留</strong>或<strong>保存</strong>的地方，也是数据流的来源和去向之一</li>
 <li><strong>对数据存储的描述</strong>：数据存储描述＝｛数据存储名，说明，编号，输入的数据流，输出的数据流，组成:｛数据结构｝，数据量，存取频度，存取方式｝
 <ul>
 <li>输入的数据流：指出数据来源</li>
@@ -4815,17 +4838,10 @@
 </li>
 <li><strong>处理过程</strong>：
 <ul>
-<li>处理过程的具体处理逻辑一般用判定表或判定树来描述，数据字典中只需要描述处理过程的说明性信息</li>
+<li>处理过程的具体处理逻辑一般用<strong>判定表</strong>或<strong>判定树</strong>来描述，数据字典中只需要描述处理过程的说明性信息</li>
 <li><strong>处理过程说明信息的描述</strong>：处理过程描述＝｛处理过程名，说明，输入:｛数据流｝，输出:｛数据流｝，处理:｛简要说明｝｝</li>
 </ul>
 </li>
-</ul>
-</li>
-<li>
-<p><strong>数据字典</strong>：</p>
-<ul>
-<li>数据字典是关于数据库中数据的描述，是元数据，而不是数据本身</li>
-<li>数据字典在需求分析阶段建立，在数据库设计过程中不断修改、充实、完善</li>
 </ul>
 </li>
 </ul>
@@ -4834,27 +4850,16 @@
 <li>
 <p><strong>概念结构</strong>：</p>
 <ul>
-<li><strong>什么是概念结构设计</strong>：
-<ul>
-<li>需求分析阶段描述的用户应用需求是现实世界的具体需求</li>
-<li>将需求分析得到的用户需求抽象为信息结构即概念模型的过程就是概念结构设计</li>
-<li>概念结构是各种数据模型的共同基础，它比数据模型更独立于机器，更抽象，从而更加稳定</li>
-<li>概念结构设计是整个数据库设计的关键</li>
-</ul>
-</li>
 <li><strong>概念结构设计的特点</strong>：
 <ul>
-<li>能真实、充分地反映现实世界，包括事物和事物之间的联系，能满足用户对数据的处理要求</li>
-<li>易于理解，从而可以用它和不熟悉计算机的用户交换意见</li>
-<li>易于更改，当应用环境和应用要求改变时，容易对概念模型修改和扩充</li>
-<li>易于向关系、网状、层次等各种数据模型转换</li>
+<li><strong>能真实、充分地反映现实世界</strong>，包括事物和事物之间的联系，能满足用户对数据的处理要求</li>
+<li><strong>易于理解</strong>，从而可以用它和不熟悉计算机的用户交换意见</li>
+<li><strong>易于更改</strong>，当应用环境和应用要求改变时，容易对概念模型修改和扩充</li>
+<li>易于向关系、网状、层次等<strong>各种数据模型转换</strong></li>
 </ul>
 </li>
-<li><strong>描述概念模型的工具</strong>：E-R 模型</li>
+<li><strong>描述概念模型的工具</strong>：最常用的是<strong>实体-联系模型</strong> (Entity-Relationship model，简称 <strong>E-R 模型</strong>) ，是 P.P.S.Chen 于 1976 年提出的</li>
 </ul>
-</li>
-<li>
-<p><strong>两个实体之间的联系</strong>：1:1 联系、1:n 联系、m:n 联系</p>
 </li>
 <li>
 <p><strong>概念结构设计的四类方法</strong>：</p>
@@ -4862,18 +4867,17 @@
 <li><strong>自顶向下</strong>：首先定义全局概念结构的框架，然后逐步细化</li>
 <li><strong>自底向上</strong>：首先定义各局部应用的概念结构，然后将它们集成起来，得到全局概念结构</li>
 <li><strong>逐步扩张</strong>：首先定义最重要的核心概念结构，然后向外扩充，以滚雪球的方式逐步生成其他概念结构，直至总体概念结构</li>
-<li><strong>混合策略</strong>：将自顶向下和自底向上相结合，用自顶向下策略设计一个全局概念结构的框架，以它为骨架集成由自底向上策略中设计的各局部概念结构</li>
+<li><strong>混合策略</strong>：将自顶向下和自底向上相结合，用<strong>自顶向下策略设计一个全局概念结构的框架</strong>，以它为骨架集成由自底向上策略中设计的各局部概念结构</li>
 </ul>
 </li>
 <li>
 <p><strong>概念结构设计的方法与步骤</strong>：</p>
 <ul>
-<li><strong>常用策略</strong>：自顶向下地进行需求分析，自底向上地设计概念结构</li>
+<li><strong>常用策略</strong>：<strong>自顶向下</strong>地进行需求分析，<strong>自底向上</strong>地设计概念结构</li>
 <li><strong>自底向上设计概念结构的步骤</strong>：
 <ul>
 <li><strong>第 1 步</strong>：抽象数据并设计局部视图</li>
 <li><strong>第 2 步</strong>：集成局部视图，得到全局概念结构</li>
-<li><strong>第 3 步</strong>：验证整体概念结构</li>
 </ul>
 </li>
 </ul>
@@ -4881,9 +4885,13 @@
 <li>
 <p><strong>数据抽象</strong>：</p>
 <ul>
-<li><strong>数据抽象的主要功能</strong>：
+<li><strong>概念结构</strong>：是对现实世界的一种抽象（信息的取舍）
 <ul>
-<li>对需求分析阶段收集到的数据进行分类、组织（聚集），形成
+<li>从实际的人、物、事和概念中抽取所关心的共同特性，忽略非本质的细节</li>
+<li>把这些特性用各种概念精确地加以描述，实现统一的概念与统一的表达方法，这些概念组成了某种数据模型</li>
+</ul>
+</li>
+<li><strong>数据抽象的主要功能</strong>：对需求分析阶段收集到的数据进行分类、组织（聚集），形成
 <ul>
 <li>实体</li>
 <li>实体的属性、标识实体的码</li>
@@ -4892,29 +4900,27 @@
 </li>
 </ul>
 </li>
-</ul>
-</li>
 <li>
 <p><strong>局部视图设计</strong>：</p>
 <ul>
-<li><strong>选择局部应用</strong>：在多层的数据流图中选择一个适当层次的数据流图，作为设计分 E-R 图的出发点
+<li><strong>选择局部应用</strong>：在多层的数据流图中选择一个<strong>适当层次的数据流图</strong>，作为设计分 E-R 图的出发点
 <ul>
-<li>通常以中层数据流图作为设计分 E-R 图的依据</li>
+<li>通常以<strong>中层数据流图</strong>作为设计分 E-R 图的依据</li>
 </ul>
 </li>
 <li><strong>逐一设计分 E-R 图</strong>：
 <ul>
 <li><strong>任务</strong>：
 <ul>
-<li>将各局部应用涉及的数据分别从数据字典中抽取出来</li>
-<li>参照数据流图，标定各局部应用中的实体、实体的属性、标识实体的码</li>
-<li>确定实体之间的联系及其类型（1:1，1:n，m:n）</li>
+<li>将各局部应用涉及的数据分别<strong>从数据字典中</strong>抽取出来</li>
+<li>参照数据流图，标定<strong>各局部应用中的实体</strong>、实体的属性、标识实体的码</li>
+<li>确定实体之间的<strong>联系</strong>及其<strong>类型</strong>（1:1，1:n，m:n）</li>
 </ul>
 </li>
-<li><strong>区分实体和属性</strong>：为了简化 E-R 图的处置，现实世界中的事物凡能够作为属性对待的，应尽量作为属性
+<li><strong>实体与属性的划分原则</strong>：为了简化 E-R 图的处置，现实世界中的事物凡能够作为属性对待的，<strong>应尽量作为属性</strong>
 <ul>
-<li>属性不能再具有需要描述的性质，即属性必须是不可分的数据项，不能再由另一些属性组成</li>
-<li>属性不能与其他实体具有联系，联系只发生在实体之间</li>
+<li><strong>属性不能再具有需要描述的性质</strong>，即属性必须是不可分的数据项，不能再由另一些属性组成</li>
+<li><strong>属性不能与其他实体具有联系</strong>，联系只发生在实体之间</li>
 <li>符合上述两条特性的事物一般作为属性对待</li>
 </ul>
 </li>
@@ -4926,18 +4932,13 @@
 <p><strong>视图的集成</strong>：</p>
 <ul>
 <li>各个局部视图即分 E-R 图建立好后，还需要对它们进行合并，集成为一个整体的数据概念结构，即总 E-R 图</li>
-<li><strong>视图集成的两种方式</strong>：
+<li><strong>视图集成的方式</strong>：<strong>逐步累积式</strong>，首先集成两个局部视图（通常是比较关键的两个），以后每次将一个新的局部视图集成进来</li>
+<li><strong>各分 E-R 图的冲突</strong>：分为<strong>属性冲突、命名冲突、结构冲突</strong>
 <ul>
-<li><strong>多个分 E-R 图一次集成</strong>：一次集成多个分 E-R 图，通常用于局部视图比较简单时</li>
-<li><strong>逐步累积式</strong>：首先集成两个局部视图（通常是比较关键的两个），以后每次将一个新的局部视图集成进来</li>
-</ul>
-</li>
-<li><strong>各分 E-R 图存在冲突</strong>：属性冲突、命名冲突、结构冲突
+<li>合并分 E-R 图的主要工作与关键：合理消除各分 E-R 图的冲突</li>
+<li><strong>属性冲突</strong>：分为两类
 <ul>
-<li><strong>合并分 E-R 图的主要工作与关键</strong>：合理消除各分 E-R 图的冲突</li>
-<li><strong>属性冲突</strong>：
-<ul>
-<li><strong>属性域冲突</strong>：属性值的类型、取值范围或取值集合不同
+<li><strong>属性域冲突</strong>：属性值的<strong>类型</strong>、<strong>取值范围</strong>或<strong>取值集合</strong>不同
 <ul>
 <li><strong>例</strong>：某些部门（即局部应用）以出生日期形式表示学生的年龄，而另一些部门（即局部应用）用整数形式表示学生的年龄</li>
 </ul>
@@ -4949,24 +4950,24 @@
 </li>
 </ul>
 </li>
-<li><strong>命名冲突</strong>：
+<li><strong>命名冲突</strong>：分为两类
 <ul>
 <li><strong>同名异义</strong>：不同意义的对象在不同的局部应用中具有相同的名字
 <ul>
 <li><strong>例</strong>：局部应用 A 中将教室称为房间，局部应用 B 中将学生宿舍称为房间</li>
 </ul>
 </li>
-<li><strong>异名同义（一义多名）</strong>：同一意义的对象在不同的局部应用中具有不同的名字
+<li><strong>异名同义</strong>（一义多名）：同一意义的对象在不同的局部应用中具有不同的名字
 <ul>
 <li><strong>例</strong>：有的部门把教科书称为课本，有的部门则把教科书称为教材</li>
 </ul>
 </li>
 </ul>
 </li>
-<li><strong>结构冲突</strong>：
+<li><strong>结构冲突</strong>：分为三类
 <ul>
-<li>同一对象在不同应用中具有不同的抽象</li>
-<li>同一实体在不同分 E-R 图中所包含的<strong>属性个数</strong>和<strong>属性排列次序</strong>不完全相同</li>
+<li>同一对象在不同应用中具有不同的抽象（某应用是实体，某应用是属性）</li>
+<li><strong>同一实体在不同分 E-R 图中所包含的属性个数和属性排列次序不完全相同</strong></li>
 <li>实体之间的联系在不同局部视图中呈现不同的类型</li>
 </ul>
 </li>
@@ -4992,6 +4993,7 @@
 -40.5-119-75.5s-58.3-74.8-73-119.5c-4.7-14-8.3-27.3-11-40-1.3-6.7-3.2-10.8-5.5
 -12.5-2.3-1.7-7.5-2.5-15.5-2.5-14 0-21 3.7-21 11 0 2 2 10.3 6 25 20.7 83.3 67
  151.7 139 205zm0 0v40h399900v-40z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.011em;"><span></span></span></span></span></span></span></span></span> 基本 E-R 图</li>
+<li>可能存在<strong>冗余的数据</strong>和<strong>冗余的实体间联系</strong></li>
 </ul>
 </li>
 <li><strong>冗余</strong>：
@@ -5003,13 +5005,13 @@
 </li>
 <li><strong>消除冗余的方法</strong>：
 <ul>
-<li><strong>分析方法</strong>：以数据字典和数据流图为依据，根据数据字典中关于数据项之间逻辑关系的说明来消除冗余</li>
-<li><strong>效率 VS 冗余信息</strong>：需要根据用户的整体需求来确定
+<li><strong>分析方法</strong>：<strong>以数据字典和数据流图为依据</strong>，根据数据字典中关于数据项之间逻辑关系的说明来消除冗余
 <ul>
+<li><strong>效率 VS 冗余信息</strong>：需要根据用户的整体需求来确定</li>
 <li>若人为地保留了一些冗余数据，则应把数据字典中数据关联的说明作为<strong>完整性约束条件</strong></li>
 </ul>
 </li>
-<li><strong>规范化理论</strong>：函数依赖的概念提供了消除冗余联系的形式化工具
+<li><strong>规范化理论</strong>：<strong>函数依赖</strong>的概念提供了消除冗余联系的形式化工具
 <ul>
 <li><strong>方法</strong>：
 <ol>
@@ -5030,7 +5032,7 @@
 <ul>
 <li>整体概念结构<strong>内部必须具有一致性</strong>，不存在互相矛盾的表达</li>
 <li>整体概念结构能<strong>准确地反映原来的每个视图结构</strong>，包括属性、实体及实体间的联系</li>
-<li>整体概念结构能满足需要分析阶段所确定的所有要求</li>
+<li>整体概念结构能满足需要分析阶段所确定的<strong>所有要求</strong></li>
 </ul>
 </li>
 </ul>
@@ -5040,7 +5042,7 @@
 <p><strong>逻辑结构设计</strong>：</p>
 <ul>
 <li>
-<p><strong>逻辑结构设计的任务</strong>：把概念结构设计阶段设计好的基本 E-R 图转换为与选用 DBMS 产品所支持的数据模型相符合的逻辑结构</p>
+<p><strong>逻辑结构设计的任务</strong>：把概念结构设计阶段设计好的基本 E-R 图转换为与选用 DBMS 产品所<strong>支持的数据模型</strong>相符合的逻辑结构</p>
 </li>
 <li>
 <p><strong>逻辑结构设计的步骤</strong>：</p>
@@ -5054,7 +5056,7 @@
 <li><strong>转换内容</strong>：
 <ul>
 <li>E-R 图由<strong>实体</strong>、实体的<strong>属性</strong>和实体之间的<strong>联系</strong>三个要素组成</li>
-<li>关系模型的逻辑结构是一组<strong>关系模式</strong>的集合</li>
+<li>关系模型的逻辑结构是<strong>一组关系模式</strong>的集合</li>
 <li>将 E-R 图转换为关系模型：将实体、实体的属性和实体之间的联系转化为关系模式</li>
 </ul>
 </li>
@@ -5119,7 +5121,7 @@
 <li>具有<strong>相同码</strong>的关系模式可合并：
 <ul>
 <li><strong>目的</strong>：减少系统中的关系个数</li>
-<li><strong>合并方法</strong>：将其中一个关系模式的全部属性加入到另一个关系模式中，然后去掉其中的同义属性（可能同名也 可能不同名），并适当调整属性的次序</li>
+<li><strong>合并方法</strong>：将其中一个关系模式的全部属性加入到另一个关系模式中，然后去掉其中的同义属性（可能同名也可能不同名），并适当调整属性的次序</li>
 </ul>
 </li>
 </ul>
@@ -5129,7 +5131,7 @@
 <ul>
 <li>数据库逻辑设计的结果不是唯一的</li>
 <li>得到初步数据模型后，还应该适当地修改、调整数据模型的结构，以进一步提高数据库应用系统的性能，这就是<strong>数据模型的优化</strong></li>
-<li>关系数据模型的优化通常以<strong>规范化理论</strong>为指导</li>
+<li>范式低的关系容易出现：数据冗余、插入、删除、更新异常，关系数据模型的优化通常以<strong>规范化理论</strong>（数据依赖理论、关系规范理论、模式分解理论）为指导</li>
 <li><strong>优化数据模型的方法</strong>：
 <ul>
 <li><strong>确定数据依赖</strong>：按需求分析阶段所得到的语义，分别写出每个关系模式内部各属性之间的数据依赖以及不同关系模式属性之间数据的依赖</li>
@@ -5148,16 +5150,14 @@
 </li>
 <li>按照需求分析阶段得到的各种应用对数据处理的要求，对关系模式进行<strong>必要的分解</strong>，以提高数据操作的效率和存储空间的利用率
 <ul>
-<li><strong>水平分解</strong>：
+<li><strong>水平分解</strong>：把(基本)关系的元组分为若干子集合，定义每个子集合为一个子关系，以提高系统的效率
 <ul>
-<li>把(基本)关系的元组分为若干子集合，定义每个子集合为一个子关系，以提高系统的效率</li>
-<li><strong>水平分解的适用范围</strong>：满足“80/20原则”的应用；并发事务经常存取不相交的数据</li>
+<li><strong>适用范围</strong>：满足“<strong>80/20原则</strong>”的应用；并发事务经常存取<strong>不相交的数据</strong></li>
 </ul>
 </li>
-<li><strong>垂直分解</strong>：
+<li><strong>垂直分解</strong>：把关系模式 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi></mrow><annotation encoding="application/x-tex">R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span> 的属性分解为若干子集合，形成若干子关系模式
 <ul>
-<li>把关系模式 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi></mrow><annotation encoding="application/x-tex">R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span> 的属性分解为若干子集合，形成若干子关系模式</li>
-<li><strong>垂直分解的原则</strong>：取决于分解后 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi></mrow><annotation encoding="application/x-tex">R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span> 上的所有事务的<strong>总效率是否得到了提高</strong></li>
+<li><strong>原则</strong>：取决于分解后 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi></mrow><annotation encoding="application/x-tex">R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span> 上的所有事务的<strong>总效率是否得到了提高</strong></li>
 </ul>
 </li>
 </ul>
@@ -5169,11 +5169,11 @@
 <li>
 <p><strong>设计用户子模式</strong>：</p>
 <ul>
-<li>定义数据库全局模式主要是从系统的<strong>时间效率、空间效率、易维护</strong>等角度出发</li>
+<li>定义数据库全局模式主要是从系统的<strong>时间效率</strong>、<strong>空间效率</strong>、<strong>易维护</strong>等角度出发</li>
 <li>定义<strong>用户外模式</strong>时应注重考虑用户的习惯与方便，包括：
 <ul>
 <li>使用更符合用户习惯的别名</li>
-<li>针对<strong>不同级别的用户定义不同的 View</strong>，以满足系统对安全性的要求</li>
+<li>针对<strong>不同级别的用户定义不同的视图</strong>，以满足系统对安全性的要求</li>
 <li>简化用户对系统的使用</li>
 </ul>
 </li>
@@ -5186,7 +5186,7 @@
 <p><strong>数据库的物理设计</strong>：</p>
 <ul>
 <li>
-<p>数据库在物理设备上的<strong>存储结构</strong>与<strong>存取方法</strong>称为数据库的物理结构，它依赖于选定的数据库管理系统</p>
+<p>数据库在物理设备上的<strong>存储结构</strong>与<strong>存取方法</strong>称为数据库的物理结构，它<strong>依赖于选定的数据库管理系统</strong></p>
 </li>
 <li>
 <p>为一个给定的逻辑数据模型选取一个<strong>最适合应用环境</strong>的物理结构的过程，就是数据库的物理设计</p>
