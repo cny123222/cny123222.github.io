@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/db.png">
 <meta property="article:published_time" content="2026-03-09T08:30:32.000Z">
-<meta property="article:modified_time" content="2026-06-11T14:01:53.979Z">
+<meta property="article:modified_time" content="2026-06-11T16:40:05.195Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          69k words
+          71k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          577 mins
+          596 mins
         
       </span>
     
@@ -366,7 +366,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on June 11, 2026 pm
+                    Last updated on June 12, 2026 am
                   
                 
               </p>
@@ -4031,8 +4031,8 @@
 </li>
 </ul>
 </li>
-<li>
-<p><strong>引入新的内置函数</strong>：</p>
+</ul>
+<h4 id="2-2-引入新的内置函数">2.2 引入新的内置函数</h4>
 <ul>
 <li><strong>SQL 常用的内置函数</strong>：
 <ul>
@@ -4040,37 +4040,29 @@
 <li>聚合函数（如求和、求平均函数等）</li>
 <li>字符串函数（如求字符串长度、求子串函数等）</li>
 <li>日期和时间函数（如返回当前日期函数等）</li>
-<li>格式化函数（如字符串转IP地址函数等）</li>
+<li>格式化函数（如字符串转 IP 地址函数等）</li>
 <li>控制流函数（如逻辑判断函数等）</li>
 <li>加密函数（如使用密钥对字符串加密函数等）</li>
 <li>系统信息函数（如返回当前数据库名、服务器版本函数等）</li>
 </ul>
 </li>
-<li><strong>例</strong>：打印一周内将过生日的学生信息<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno, Sname, Ssex, Sbirthdate, Smajor<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> to_date(to_char(<span class="hljs-built_in">current_date</span>,<br><span class="hljs-string">&#x27;yyyy&#x27;</span>) <span class="hljs-operator">||</span> <span class="hljs-string">&#x27;-&#x27;</span> <span class="hljs-operator">||</span><br>to_char(Sbirthdate,<br><span class="hljs-string">&#x27;mm-dd&#x27;</span>))<br><span class="hljs-keyword">BETWEEN</span> <span class="hljs-built_in">CURRENT_DATE</span> <span class="hljs-keyword">AND</span> <span class="hljs-built_in">CURRENT_DATE</span> <span class="hljs-operator">+</span> <span class="hljs-type">INTERVAL</span> <span class="hljs-string">&#x27;7&#x27;</span> <span class="hljs-keyword">DAY</span>;<br></code></pre></td></tr></table></figure>
+<li><strong>例</strong>：打印一周内将过生日的学生信息<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno, Sname, Ssex, Sbirthdate, Smajor<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> to_date(to_char(<span class="hljs-built_in">current_date</span>, <span class="hljs-string">&#x27;yyyy&#x27;</span>) <span class="hljs-operator">||</span> <span class="hljs-string">&#x27;-&#x27;</span> <span class="hljs-operator">||</span> to_char(Sbirthdate, <span class="hljs-string">&#x27;mm-dd&#x27;</span>))<br><span class="hljs-keyword">BETWEEN</span> <span class="hljs-built_in">CURRENT_DATE</span> <span class="hljs-keyword">AND</span> <span class="hljs-built_in">CURRENT_DATE</span> <span class="hljs-operator">+</span> <span class="hljs-type">INTERVAL</span> <span class="hljs-string">&#x27;7&#x27;</span> <span class="hljs-keyword">DAY</span>;<br></code></pre></td></tr></table></figure>
 </li>
 </ul>
-</li>
+<h4 id="2-3-过程化-SQL">2.3 过程化 SQL</h4>
+<ul>
 <li>
 <p><strong>引入 PL/SQL 与存储过程/存储函数</strong>：</p>
 <ul>
-<li>关系数据库管理系统中引入 PL/SQL、存储过程和自定义函数等方法，使得用户可以自定义程序逻辑，开发完成业务逻辑复杂的应用系统</li>
+<li>关系数据库管理系统中引入 PL/SQL(Procedural Language/SQL，过程化 SQL 语言)、存储过程和自定义函数等方法，使得用户可以<strong>自定义程序逻辑</strong>，开发完成业务逻辑复杂的应用系统</li>
 </ul>
 </li>
-</ul>
-<h4 id="1-3-通过高级语言实现复杂应用">1.3 通过高级语言实现复杂应用</h4>
-<ul>
-<li><strong>通过动态链接库调用的方式</strong>：关系数据库管理系统的功能被包装成一个子程序，由应用程序通过动态链接库调用来获得数据管理的功能</li>
-<li><strong>基于嵌入式 SQL 的方式</strong>：将 SQL 嵌入到高级语言中混合编程，SQL 语句负责操纵数据库，高级语言语句负责控制逻辑流程</li>
-<li><strong>基于 ODBC/JDBC 的中间件方式</strong>：建立了连接不同数据库的一组规范；无论使用什么数据库，都采用同样的一组 API 来访问数据库</li>
-</ul>
-<h3 id="3-嵌入式-SQL">3. 嵌入式 SQL</h3>
-<ul>
 <li>
 <p><strong>过程化 SQL 的块结构</strong>：</p>
 <ul>
 <li><strong>过程化 SQL</strong>：SQL 的扩展，增加了过程化语句功能
 <ul>
-<li>基本结构是块</li>
+<li>基本结构是<strong>块</strong>，每个块可以包含<strong>定义部分</strong>和<strong>执行部分</strong></li>
 <li>块之间可以互相嵌套</li>
 <li>每个块完成一个逻辑操作</li>
 </ul>
@@ -4083,7 +4075,7 @@
 <li>当基本块执行结束时，定义就不再存在</li>
 </ul>
 </li>
-<li><strong>执行部分</strong>：<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">BEGIN</span><br>  <span class="hljs-keyword">SQL</span> 语句、过程化 <span class="hljs-keyword">SQL</span> 的流程控制语句<br>EXCEPTION<br>  异常处理部分 <br><span class="hljs-keyword">END</span>;<br></code></pre></td></tr></table></figure>
+<li><strong>执行部分</strong>：<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">BEGIN</span><br>  <span class="hljs-keyword">SQL</span> 语句、过程化 <span class="hljs-keyword">SQL</span> 的流程控制语句<br>  EXCEPTION<br>  异常处理部分 <br><span class="hljs-keyword">END</span>;<br></code></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
@@ -4101,7 +4093,7 @@
 <li><strong>常量定义</strong>：
 <ul>
 <li><code>常量名 数据类型 CONSTANT :=常量表达式</code></li>
-<li>常量必须要赋予一个值，并且该值在存在期间或常量的作用域内不能改变（如果试图修改它，过程化 SQL 将返回一个异常）</li>
+<li>常量必须要赋予一个值，并且该值在存在期间或常量的作用域内<strong>不能改变</strong>（如果试图修改它，过程化 SQL 将返回一个异常）</li>
 </ul>
 </li>
 <li><strong>赋值语句</strong>：<code>变量名称 :=表达式</code></li>
@@ -4110,30 +4102,30 @@
 <li>
 <p><strong>流程控制</strong>：过程化 SQL 功能</p>
 <ul>
-<li><strong>条件控制语句</strong>：IF-THEN，IF-THEN-ELSE 和嵌套的 IF 语句
+<li><strong>条件控制语句</strong>：<strong>IF-THEN</strong>、<strong>IF-THEN-ELSE</strong> 和<strong>嵌套的 IF 语句</strong>
 <ul>
-<li>（1）<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql">IF <span class="hljs-keyword">condition</span> <span class="hljs-keyword">THEN</span><br>Sequence_of_statements;<br><span class="hljs-keyword">END</span> IF;<br></code></pre></td></tr></table></figure>
+<li>（1）<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql">IF <span class="hljs-keyword">condition</span> <span class="hljs-keyword">THEN</span><br>  Sequence_of_statements;<br><span class="hljs-keyword">END</span> IF;<br></code></pre></td></tr></table></figure>
 </li>
-<li>（2）<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql">IF <span class="hljs-keyword">condition</span> <span class="hljs-keyword">THEN</span><br>Sequence_of_statements1;<br><span class="hljs-keyword">ELSE</span><br>Sequence_of_statements2;<br><span class="hljs-keyword">END</span> IF;<br></code></pre></td></tr></table></figure>
+<li>（2）<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql">IF <span class="hljs-keyword">condition</span> <span class="hljs-keyword">THEN</span><br>  Sequence_of_statements1;<br><span class="hljs-keyword">ELSE</span><br>  Sequence_of_statements2;<br><span class="hljs-keyword">END</span> IF;<br></code></pre></td></tr></table></figure>
 </li>
 <li>（3）在 THEN 和 ELSE 子句中还可以再包含 IF 语句，即 IF 语句可以嵌套</li>
 </ul>
 </li>
-<li><strong>循环控制语句</strong>：LOOP，WHILE-LOOP 和 FOR-LOOP
+<li><strong>循环控制语句</strong>：<strong>LOOP</strong>、<strong>WHILE-LOOP</strong> 和 <strong>FOR-LOOP</strong>
 <ul>
-<li>（1）简单的循环语句 LOOP  <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql">LOOP<br>Sequence_of_statements;<br><span class="hljs-keyword">END</span> LOOP;<br></code></pre></td></tr></table></figure>
+<li>（1）简单的循环语句 LOOP  <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql">LOOP<br>  Sequence_of_statements;<br><span class="hljs-keyword">END</span> LOOP;<br></code></pre></td></tr></table></figure>
 <ul>
 <li>多数数据库服务器的过程化 SQL 都提供 EXIT、BREAK 或 LEAVE 等循环结束语句，保证 LOOP 语句块能够在适当的条件下提前结束</li>
 </ul>
 </li>
-<li>（2）WHILE-LOOP<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql">WHILE <span class="hljs-keyword">condition</span> LOOP<br>Sequence_of_statements;<br><span class="hljs-keyword">END</span> LOOP;<br></code></pre></td></tr></table></figure>
+<li>（2）WHILE-LOOP<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql">WHILE <span class="hljs-keyword">condition</span> LOOP<br>  Sequence_of_statements;<br><span class="hljs-keyword">END</span> LOOP;<br></code></pre></td></tr></table></figure>
 <ul>
 <li>每次执行循环体语句之前，首先对条件进行求值</li>
 <li>如果条件为真，则执行循环体内的语句序列</li>
 <li>如果条件为假，则跳过循环并把控制传递给下一个语句</li>
 </ul>
 </li>
-<li>（3）FOR-LOOP<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">FOR</span> count <span class="hljs-keyword">IN</span> [REVERSE] bound1 … bound2 LOOP<br>Sequence_of_statements;<br><span class="hljs-keyword">END</span> LOOP;<br></code></pre></td></tr></table></figure>
+<li>（3）FOR-LOOP<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">FOR</span> count <span class="hljs-keyword">IN</span> [REVERSE] bound1 … bound2 LOOP<br>  Sequence_of_statements;<br><span class="hljs-keyword">END</span> LOOP;<br></code></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
@@ -4150,28 +4142,29 @@
 <ul>
 <li><strong>游标</strong>：
 <ul>
+<li>游标是 RDBMS 为应用系统开设的<strong>一个数据缓冲区</strong>，每个游标都有一个名字和一个指针</li>
 <li>在过程化 SQL 中，如果 SELECT 语句只返回一条记录，可以将该结果存放到变量中</li>
-<li>当查询返回多条记录时，就要使用游标对结果集进行处理，一个游标与一个 SQL 语句相关联</li>
+<li>当查询返回多条记录时，就要<strong>使用游标对结果集进行处理</strong>，一个游标与一个 SQL 语句相关联</li>
 </ul>
 </li>
 <li><strong>游标的用户接口</strong>：
 <ul>
 <li><strong>声明游标</strong>：<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DECLARE</span> 游标名 [(参数<span class="hljs-number">1</span> 数据类型, 参数<span class="hljs-number">2</span> 数据类型, ...)] <br><span class="hljs-keyword">CURSOR</span> <span class="hljs-keyword">FOR</span> <br><span class="hljs-keyword">SELECT</span>语句;<br></code></pre></td></tr></table></figure>
 <ul>
-<li>定义游标仅仅是一条说明性语句，这时关系数据库管理系统并不执行 SELECT 语句</li>
+<li><strong>定义游标</strong>仅仅是一条<strong>说明性语句</strong>，这时关系数据库管理系统并不执行 SELECT 语句</li>
 </ul>
 </li>
 <li><strong>打开游标</strong>：<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">OPEN</span> 游标名[(参数<span class="hljs-number">1</span> 数据类型, 参数<span class="hljs-number">2</span> 数据类型, ...)];<br></code></pre></td></tr></table></figure>
 <ul>
-<li>打开游标实际上是执行相应的 SELECT 语句，把查询结果取到缓冲区中</li>
+<li><strong>打开游标</strong>实际上是<strong>执行相应的 SELECT 语句</strong>，把查询结果取到缓冲区中</li>
 <li>这时游标处于活动状态，指针指向查询结果集中的第一条记录</li>
 </ul>
 </li>
 <li><strong>使用游标</strong>：<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">FETCH</span> 游标名 <span class="hljs-keyword">INTO</span> 变量<span class="hljs-number">1</span>[, 变量<span class="hljs-number">2</span>, ...];<br></code></pre></td></tr></table></figure>
 <ul>
 <li>变量必须与 SELECT 语句中的目标列表达式一一对应</li>
-<li>用 FETCH 语句把游标指针向前推进一条记录，同时将缓冲区中的当前记录取出来送至变量供过程化 SQL 进一步处理</li>
-<li>循环执行 FETCH 语句，逐条取出结果集中的行进行处理</li>
+<li>用 FETCH 语句<strong>把游标指针向前推进一条记录</strong>，同时将缓冲区中的<strong>当前记录</strong>取出来送至变量供过程化 SQL 进一步处理</li>
+<li><strong>循环执行 FETCH 语句</strong>，逐条取出结果集中的行进行处理</li>
 </ul>
 </li>
 <li><strong>关闭游标</strong>：<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CLOSE</span> 游标名;<br></code></pre></td></tr></table></figure>
@@ -4182,17 +4175,17 @@
 </li>
 </ul>
 </li>
-<li><strong>例</strong>：根据给定学号 20180001，使用游标输出该学生的全部选课记录<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DECLARE</span><br>  CnoOfStudent <span class="hljs-type">CHAR</span>(<span class="hljs-number">10</span>);<br>  GradeOfStudent <span class="hljs-type">INT</span>;<br>  mycursor <span class="hljs-keyword">CURSOR</span> <span class="hljs-keyword">FOR</span><br>    <span class="hljs-keyword">SELECT</span> Cno,Grade <span class="hljs-keyword">FROM</span> SC <span class="hljs-keyword">WHERE</span> Sno <span class="hljs-operator">=</span> ‘<span class="hljs-number">20180001</span>’;<br><br><span class="hljs-keyword">BEGIN</span><br><span class="hljs-keyword">OPEN</span> mycursor; <span class="hljs-comment">/*打开游标*/</span><br>  LOOP <span class="hljs-comment">/*循环遍历游标*/</span><br>    <span class="hljs-keyword">FETCH</span> mycursor <span class="hljs-keyword">INTO</span> CnoOfStudent, GradeOfStudent; <span class="hljs-comment">/*检索游标*/</span><br>    EXIT <span class="hljs-keyword">WHEN</span> mycursor<span class="hljs-operator">%</span>NOTFOUND;<br>    RAISE NOTICE <span class="hljs-string">&#x27;Sno:20180001, Cno:%, Grade:%&#x27;</span>, CnoOfStudent, GradeOfStudent;<br>  <span class="hljs-keyword">END</span> LOOP;<br>  <span class="hljs-keyword">CLOSE</span> mycursor; <span class="hljs-comment">/*关闭游标*/</span><br><span class="hljs-keyword">END</span>;<br></code></pre></td></tr></table></figure>
+<li><strong>例</strong>：根据给定学号 20180001，使用游标输出该学生的全部选课记录<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DECLARE</span><br>  CnoOfStudent <span class="hljs-type">CHAR</span>(<span class="hljs-number">10</span>);<br>  GradeOfStudent <span class="hljs-type">INT</span>;<br>  mycursor <span class="hljs-keyword">CURSOR</span> <span class="hljs-keyword">FOR</span><br>    <span class="hljs-keyword">SELECT</span> Cno,Grade <span class="hljs-keyword">FROM</span> SC <span class="hljs-keyword">WHERE</span> Sno <span class="hljs-operator">=</span> ‘<span class="hljs-number">20180001</span>’;<br><br><span class="hljs-keyword">BEGIN</span><br>  <span class="hljs-keyword">OPEN</span> mycursor; <span class="hljs-comment">/*打开游标*/</span><br>  LOOP <span class="hljs-comment">/*循环遍历游标*/</span><br>    <span class="hljs-keyword">FETCH</span> mycursor <span class="hljs-keyword">INTO</span> CnoOfStudent, GradeOfStudent; <span class="hljs-comment">/*检索游标*/</span><br>    EXIT <span class="hljs-keyword">WHEN</span> mycursor<span class="hljs-operator">%</span>NOTFOUND;<br>    RAISE NOTICE <span class="hljs-string">&#x27;Sno:20180001, Cno:%, Grade:%&#x27;</span>, CnoOfStudent, GradeOfStudent;<br>  <span class="hljs-keyword">END</span> LOOP;<br>  <span class="hljs-keyword">CLOSE</span> mycursor; <span class="hljs-comment">/*关闭游标*/</span><br><span class="hljs-keyword">END</span>;<br></code></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
-<li>
-<p><strong>存储过程</strong>：</p>
+</ul>
+<h4 id="2-4-存储过程">2.4 存储过程</h4>
 <ul>
 <li><strong>存储过程</strong>：
 <ul>
-<li>类似于高级语言程序，过程化 SQL 程序也可以被命名和编译，并保存在数据库中，称为存储过程（stored procedure）或存储函数（stored function），供其他过程化 SQL 调用</li>
-<li>存储过程或存储函数也是一类数据库的对象，需要有创建、删除等语句，这里的存储函数指自定义函数</li>
+<li>类似于高级语言程序，过程化 SQL 程序也可以被命名和编译，并保存在数据库中，称为<strong>存储过程</strong>(stored procedure) 或<strong>存储函数</strong>(stored function)，供其他过程化 SQL 调用</li>
+<li>存储过程或存储函数也是一类<strong>数据库的对象</strong>，需要有创建、删除等语句，这里的<strong>存储函数指自定义函数</strong></li>
 </ul>
 </li>
 <li><strong>存储过程的用户接口</strong>：
@@ -4201,12 +4194,12 @@
 <ul>
 <li><strong>语法</strong>：<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">OR</span> REPLACE <span class="hljs-keyword">PROCEDURE</span> 过程名(<br>  [[<span class="hljs-keyword">IN</span><span class="hljs-operator">|</span><span class="hljs-keyword">OUT</span><span class="hljs-operator">|</span><span class="hljs-keyword">INOUT</span>] 参数<span class="hljs-number">1</span> 数据类型,<br>  [<span class="hljs-keyword">IN</span><span class="hljs-operator">|</span><span class="hljs-keyword">OUT</span><span class="hljs-operator">|</span><span class="hljs-keyword">INOUT</span>] 参数<span class="hljs-number">2</span> 数据类型, ...]<br>) <span class="hljs-comment">/*存储过程首部*/</span><br><span class="hljs-keyword">AS</span> <span class="hljs-operator">&lt;</span>过程化<span class="hljs-keyword">SQL</span>块<span class="hljs-operator">&gt;</span>; <span class="hljs-comment">/*存储过程体，描述该存储过程的操作*/</span><br></code></pre></td></tr></table></figure>
 <ul>
-<li><strong>过程名</strong>：数据库服务器合法的对象标识</li>
-<li><strong>参数列表</strong>：存储过程提供了 IN、OUT、INOUT 三种参数模式，分别对应输入、输出、输入输出三种语义，不声明参数模式时，缺省为 IN 类型；输入参数在被调用时需要指定参数值，输出参数调用时不传入参数值，而是作为返回值返回；输入输出参数调用时需要传入初始值，并会返回操作后的最终值；参数列表中需要指定参数模式、参数名、以及参数的数据类型</li>
-<li><strong>过程体</strong>：是一个&lt;过程化SQL块&gt;，包括声明部分和可执行语句部分</li>
+<li>过程名：数据库服务器合法的对象标识</li>
+<li>参数列表：存储过程提供了 <strong>IN、OUT、INOUT</strong> 三种参数模式，分别对应输入、输出、输入输出三种语义，不声明参数模式时，<strong>缺省为 IN 类型</strong>；输入参数在被调用时需要指定参数值，输出参数调用时不传入参数值，而是作为返回值返回；输入输出参数调用时需要传入初始值，并会返回操作后的最终值；参数列表中需要指定参数模式、参数名、以及参数的数据类型</li>
+<li>过程体：是一个&lt;过程化SQL块&gt;，包括声明部分和可执行语句部分</li>
 </ul>
 </li>
-<li><strong>例</strong>：给定学生学号，计算学生的平均学分绩点 GPA<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">OR</span> REPLACE <span class="hljs-keyword">PROCEDURE</span> compGPA( <span class="hljs-comment">/*定义存储过compGPA*/</span><br>  <span class="hljs-keyword">IN</span> inSno <span class="hljs-type">CHAR</span>(<span class="hljs-number">10</span>), <span class="hljs-comment">/*输入参数：学生学号inSno*/</span><br>  <span class="hljs-keyword">OUT</span> outGPA <span class="hljs-type">FLOAT</span>) <span class="hljs-comment">/*输出参数：平均学分绩outGPA*/</span><br><span class="hljs-keyword">AS</span><br><span class="hljs-keyword">DECLARE</span><br>  courseGPA <span class="hljs-type">INT</span>; <span class="hljs-comment">/*声明变量courseGPA，临时存储课程学分绩 */</span><br>  totalGPA <span class="hljs-type">INT</span>; <span class="hljs-comment">/*声明变量totalGPA，临时存储总学分绩 */</span><br>  totalCredit <span class="hljs-type">INT</span>; <span class="hljs-comment">/*声明变量totalCredit，临时存储总学分*/</span><br>  grade <span class="hljs-type">INT</span>; <span class="hljs-comment">/*声明变量grade，临时存储学生成绩 */</span><br>  credit <span class="hljs-type">INT</span>; <span class="hljs-comment">/*声明变量credit ，临时存储课程学分 */</span><br>  mycursor <span class="hljs-keyword">CURSOR</span> <span class="hljs-keyword">FOR</span> <span class="hljs-comment">/*声明游标mycursor */</span><br>  <span class="hljs-keyword">SELECT</span> Ccredit, grade <span class="hljs-keyword">FROM</span> SC, Course<br>  <span class="hljs-keyword">WHERE</span> Sno <span class="hljs-operator">=</span> inSno <span class="hljs-keyword">and</span> SC.Cno <span class="hljs-operator">=</span> Course.Cno;<br>  <span class="hljs-keyword">BEGIN</span><br>    totalGPA :<span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>    totalCredit :<span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">OPEN</span> mycursor; <span class="hljs-comment">/*打开游标mycursor */</span><br>    LOOP <span class="hljs-comment">/*循环遍历游标*/</span><br>      <span class="hljs-keyword">FETCH</span> mycursor <span class="hljs-keyword">INTO</span> credit, grade; <span class="hljs-comment">/*检索游标*/</span><br>      EXIT <span class="hljs-keyword">WHEN</span> mycursor<span class="hljs-operator">%</span>NOTFOUND;<br>      IF grade <span class="hljs-keyword">BETWEEN</span> <span class="hljs-number">90</span> <span class="hljs-keyword">AND</span> <span class="hljs-number">100</span> <span class="hljs-keyword">THEN</span> courseGPA :<span class="hljs-operator">=</span> <span class="hljs-number">4.0</span>;<br>      ELSIF grade <span class="hljs-keyword">BETWEEN</span> <span class="hljs-number">80</span> <span class="hljs-keyword">AND</span> <span class="hljs-number">89</span> <span class="hljs-keyword">THEN</span> courseGPA :<span class="hljs-operator">=</span> <span class="hljs-number">3.0</span>;<br>      ELSIF grade <span class="hljs-keyword">BETWEEN</span> <span class="hljs-number">70</span> <span class="hljs-keyword">AND</span> <span class="hljs-number">72</span> <span class="hljs-keyword">THEN</span> courseGPA :<span class="hljs-operator">=</span> <span class="hljs-number">2.0</span>;<br>      ELSIF grade <span class="hljs-keyword">BETWEEN</span> <span class="hljs-number">60</span> <span class="hljs-keyword">AND</span> <span class="hljs-number">69</span> <span class="hljs-keyword">THEN</span> courseGPA :<span class="hljs-operator">=</span> <span class="hljs-number">1.0</span>;<br>      <span class="hljs-keyword">ELSE</span> courseGPA :<span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>      <span class="hljs-keyword">END</span> IF; <span class="hljs-comment">/*参照表6.2，根据成绩找出某门课程对应的学分绩点*/</span><br>      totalGPA :<span class="hljs-operator">=</span> totalGPA <span class="hljs-operator">+</span> courseGPA <span class="hljs-operator">*</span> credit;<br>      totalCredit :<span class="hljs-operator">=</span> totalCredit <span class="hljs-operator">+</span> credit;<br>    <span class="hljs-keyword">END</span> LOOP;<br>    <span class="hljs-keyword">CLOSE</span> mycursor; <span class="hljs-comment">/*关闭游标mycursor */</span><br>    outGPA :<span class="hljs-operator">=</span> <span class="hljs-number">1.0</span> <span class="hljs-operator">*</span> totalGPA <span class="hljs-operator">/</span> totalCredit;<br>  <span class="hljs-keyword">END</span>;<br></code></pre></td></tr></table></figure>
+<li><strong>例</strong>：给定学生学号，计算学生的平均学分绩点 GPA<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">OR</span> REPLACE <span class="hljs-keyword">PROCEDURE</span> compGPA( <span class="hljs-comment">/*定义存储过程compGPA*/</span><br>  <span class="hljs-keyword">IN</span> inSno <span class="hljs-type">CHAR</span>(<span class="hljs-number">10</span>), <span class="hljs-comment">/*输入参数：学生学号inSno*/</span><br>  <span class="hljs-keyword">OUT</span> outGPA <span class="hljs-type">FLOAT</span>) <span class="hljs-comment">/*输出参数：平均学分绩outGPA*/</span><br><span class="hljs-keyword">AS</span><br><span class="hljs-keyword">DECLARE</span><br>  courseGPA <span class="hljs-type">INT</span>; <span class="hljs-comment">/*声明变量courseGPA，临时存储课程学分绩 */</span><br>  totalGPA <span class="hljs-type">INT</span>; <span class="hljs-comment">/*声明变量totalGPA，临时存储总学分绩 */</span><br>  totalCredit <span class="hljs-type">INT</span>; <span class="hljs-comment">/*声明变量totalCredit，临时存储总学分*/</span><br>  grade <span class="hljs-type">INT</span>; <span class="hljs-comment">/*声明变量grade，临时存储学生成绩 */</span><br>  credit <span class="hljs-type">INT</span>; <span class="hljs-comment">/*声明变量credit ，临时存储课程学分 */</span><br>  mycursor <span class="hljs-keyword">CURSOR</span> <span class="hljs-keyword">FOR</span> <span class="hljs-comment">/*声明游标mycursor */</span><br>  <span class="hljs-keyword">SELECT</span> Ccredit, grade <span class="hljs-keyword">FROM</span> SC, Course<br>  <span class="hljs-keyword">WHERE</span> Sno <span class="hljs-operator">=</span> inSno <span class="hljs-keyword">and</span> SC.Cno <span class="hljs-operator">=</span> Course.Cno;<br>  <span class="hljs-keyword">BEGIN</span><br>    totalGPA :<span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>    totalCredit :<span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">OPEN</span> mycursor; <span class="hljs-comment">/*打开游标mycursor */</span><br>    LOOP <span class="hljs-comment">/*循环遍历游标*/</span><br>      <span class="hljs-keyword">FETCH</span> mycursor <span class="hljs-keyword">INTO</span> credit, grade; <span class="hljs-comment">/*检索游标*/</span><br>      EXIT <span class="hljs-keyword">WHEN</span> mycursor<span class="hljs-operator">%</span>NOTFOUND;<br>      IF grade <span class="hljs-keyword">BETWEEN</span> <span class="hljs-number">90</span> <span class="hljs-keyword">AND</span> <span class="hljs-number">100</span> <span class="hljs-keyword">THEN</span> courseGPA :<span class="hljs-operator">=</span> <span class="hljs-number">4.0</span>;<br>      ELSIF grade <span class="hljs-keyword">BETWEEN</span> <span class="hljs-number">80</span> <span class="hljs-keyword">AND</span> <span class="hljs-number">89</span> <span class="hljs-keyword">THEN</span> courseGPA :<span class="hljs-operator">=</span> <span class="hljs-number">3.0</span>;<br>      ELSIF grade <span class="hljs-keyword">BETWEEN</span> <span class="hljs-number">70</span> <span class="hljs-keyword">AND</span> <span class="hljs-number">72</span> <span class="hljs-keyword">THEN</span> courseGPA :<span class="hljs-operator">=</span> <span class="hljs-number">2.0</span>;<br>      ELSIF grade <span class="hljs-keyword">BETWEEN</span> <span class="hljs-number">60</span> <span class="hljs-keyword">AND</span> <span class="hljs-number">69</span> <span class="hljs-keyword">THEN</span> courseGPA :<span class="hljs-operator">=</span> <span class="hljs-number">1.0</span>;<br>      <span class="hljs-keyword">ELSE</span> courseGPA :<span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>      <span class="hljs-keyword">END</span> IF; <span class="hljs-comment">/*参照表6.2，根据成绩找出某门课程对应的学分绩点*/</span><br>      totalGPA :<span class="hljs-operator">=</span> totalGPA <span class="hljs-operator">+</span> courseGPA <span class="hljs-operator">*</span> credit;<br>      totalCredit :<span class="hljs-operator">=</span> totalCredit <span class="hljs-operator">+</span> credit;<br>    <span class="hljs-keyword">END</span> LOOP;<br>    <span class="hljs-keyword">CLOSE</span> mycursor; <span class="hljs-comment">/*关闭游标mycursor */</span><br>    outGPA :<span class="hljs-operator">=</span> <span class="hljs-number">1.0</span> <span class="hljs-operator">*</span> totalGPA <span class="hljs-operator">/</span> totalCredit;<br>  <span class="hljs-keyword">END</span>;<br></code></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
@@ -4215,13 +4208,13 @@
 <li><strong>语法</strong>：<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CALL</span><span class="hljs-operator">/</span>PERFORM [<span class="hljs-keyword">PROCEDURE</span>] 过程名([参数<span class="hljs-number">1</span>,参数<span class="hljs-number">2</span>,...]);<br></code></pre></td></tr></table></figure>
 <ul>
 <li>使用 CALL 或者 PERFORM 等方式激活存储过程的执行</li>
-<li>在过程化 SQL 中，数据库服务器支持在过程体中调用其他存储过程</li>
+<li>在过程化 SQL 中，数据库服务器支持<strong>在过程体中调用其他存储过程</strong></li>
 </ul>
 </li>
 <li><strong>例</strong>：查询学号为“20180001”学生的课程 GPA<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DECLARE</span> outGPA <span class="hljs-type">FLOAT</span>;<br><span class="hljs-keyword">BEGIN</span><br>  <span class="hljs-keyword">CALL</span> compGPA(‘<span class="hljs-number">20180001</span>’, outGPA);<br>  RAISE NOTICE ‘GPA: <span class="hljs-operator">%</span>’, outGPA;<br><span class="hljs-keyword">END</span>;<br></code></pre></td></tr></table></figure>
 <ul>
 <li>在调用含有输入参数和输入输出参数的存储过程时，需要指定具体的参数值</li>
-<li>在调用含有输出参数的存储过程时，对应位置不需要传入参数值，但需要事先定义输出变量</li>
+<li>在调用含有输出参数的存储过程时，对应位置不需要传入参数值，但<strong>需要事先定义输出变量</strong></li>
 </ul>
 </li>
 </ul>
@@ -4240,19 +4233,17 @@
 </li>
 <li><strong>存储过程的优点</strong>：
 <ul>
-<li>运行效率高</li>
-<li>降低了客户机和服务器之间的通信量</li>
-<li>方便实施企业规则</li>
+<li><strong>运行效率高</strong>：在创建存储过程时就完成语法分析和优化工作</li>
+<li><strong>降低了客户机和服务器之间的通信量</strong>：客户机只需发出调用存储过程的名字和参数，服务器执行多条 SQL 命令，最终结果返回客户端</li>
+<li><strong>方便实施企业规则</strong>：把企业规则的运算程序写成存储过程放入服务器，既有利于集中控制，又方便维护</li>
 </ul>
 </li>
 </ul>
-</li>
-<li>
-<p><strong>存储函数</strong>：</p>
+<h4 id="2-5-存储函数">2.5 存储函数</h4>
 <ul>
-<li><strong>存储函数和存储过程的异同</strong>：
+<li><strong>存储函数（自定义函数）和存储过程的异同</strong>：
 <ul>
-<li><strong>同</strong>：都是持久性存储模块</li>
+<li><strong>同</strong>：都是持久性存储模块，创建过程类似</li>
 <li><strong>异</strong>：函数必须指定返回的类型</li>
 </ul>
 </li>
@@ -4269,6 +4260,164 @@
 </ul>
 </li>
 </ul>
+<h3 id="3-嵌入式-SQL">3. 嵌入式 SQL</h3>
+<ul>
+<li>
+<p><strong>关系数据库管理系统和应用程序的交互方式</strong>：</p>
+<ul>
+<li>通过<strong>动态链接库</strong>调用的方式（模块化）：关系数据库管理系统的功能被包装成一个子程序，由应用程序通过动态链接库调用来获得数据管理的功能</li>
+<li>基于<strong>嵌入式 SQL</strong> 的方式（预编译方法）：将 SQL 嵌入到高级语言（如Java、C++、Python）中混合编程，SQL 语句负责操纵数据库，高级语言语句负责控制逻辑流程</li>
+<li>基于 <strong>ODBC</strong>(Open Database Connectivity，开放数据库互连)/<strong>JDBC</strong>(Java 环境) 的中间件方式：建立了连接不同数据库的一组规范，并提供一组数据库应用编程接口 DBAPI；无论使用什么数据库，都采用同样的一组编程接口来访问数据库</li>
+</ul>
+</li>
+<li>
+<p><strong>嵌入式 SQL 语言</strong>：</p>
+<ul>
+<li><strong>高级语言 + SQL 语言</strong>：
+<ul>
+<li>既继承高级语言的<strong>过程控制性</strong></li>
+<li>又结合 SQL 语言的<strong>复杂结果集操作</strong>的非过程性</li>
+<li>同时又为数据库操作者提供安全可靠的操作方式：通过应用程序进行操作</li>
+</ul>
+</li>
+<li><strong>嵌入式 SQL 语言</strong>：
+<ul>
+<li>将 SQL 语言嵌入到某一种高级语言中使用</li>
+<li>高级语言（如 C/C++，Java，PowerBuilder 等），又称宿主语言</li>
+<li>嵌入在宿主语言的 SQL 与前面介绍的交互式 SQL 有一些不同操作</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>嵌入式 SQL 的基本处理过程</strong>：</p>
+<ul>
+<li>对于嵌入式 SQL，DBMS 采用<strong>预编译</strong>方法处理</li>
+<li>为了区分 SQL 和主语言语句，所有 SQL 语句必须加前缀，如 C 语言中 <code>EXEC SQL &lt;SQL语句&gt;</code></li>
+<li>含嵌入式 SQL 语句的主语言程序 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> DBMS 预处理程序扫描源程序，识别并转换嵌入式 SQL 语句为主语言函数调用语句 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> 转换后的主语言程序 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> 主语言编译程序编译处理 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> 目标语言程序</li>
+</ul>
+</li>
+<li>
+<p><strong>嵌入式 SQL 语言与交互式 SQL 语言的对比</strong>：</p>
+<ul>
+<li><strong>交互式 SQL 语言</strong>：<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> Sname, Sage <span class="hljs-keyword">from</span> Student <span class="hljs-keyword">where</span> Sname<span class="hljs-operator">=</span><span class="hljs-string">&#x27;张三&#x27;</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>嵌入式 SQL 语言</strong>：以宿主语言 C 语言为例<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">exec</span> <span class="hljs-keyword">sql</span> <span class="hljs-keyword">select</span> Sname, Sage <span class="hljs-keyword">into</span> :vSname, :vSage <span class="hljs-keyword">from</span> Studentwhere Sname<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;张三&#x27;</span>;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong><code>exec sql</code></strong> 引导 SQL 语句：提供给 C 编译器，以便对 SQL 语句预编译成 C 编译器可识别的语句</li>
+<li><strong><code>into</code></strong> 子句：用于指出接收 SQL 语句检索结果的程序变量</li>
+<li><strong>冒号引导</strong>的高级语言变量，如：<code>:vSname</code>，<code>:vSage</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>变量的声明与使用</strong>：</p>
+<ul>
+<li>嵌入式 SQL 语句中可使用主语言的程序变量来输入或输出数据，SQL 语句中使用的主语言程序变量简称为<strong>主变量</strong><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">exec</span> <span class="hljs-keyword">sql</span> <span class="hljs-keyword">select</span> Sname, Sage <span class="hljs-keyword">into</span> :vSname, :vSage <span class="hljs-keyword">from</span> Student whereSname<span class="hljs-operator">=</span>:aspecName;<br></code></pre></td></tr></table></figure>
+</li>
+<li>这些变量必须在 SQL 语句 BEGIN DECLARE SECTION 与 END DECLARE SECTION 之间进行特殊的声明<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">exec</span> <span class="hljs-keyword">sql</span> <span class="hljs-keyword">begin</span> <span class="hljs-keyword">declare</span> section;<br><span class="hljs-type">char</span> vSname[<span class="hljs-number">10</span>],specName[<span class="hljs-number">10</span>]<span class="hljs-operator">=</span> &quot;张三&quot;;<br><span class="hljs-type">int</span> vSage;<br><span class="hljs-keyword">exec</span> <span class="hljs-keyword">sql</span> <span class="hljs-keyword">end</span> <span class="hljs-keyword">declare</span> section;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>游标的定义与使用</strong>：如何读取单行数据和多行数据</p>
+<ul>
+<li><strong>检索单行结果</strong>，可将结果直接传送到宿主程序的变量中(INTO 子句)<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">exec</span> <span class="hljs-keyword">sql</span> <span class="hljs-keyword">select</span> Sname, Sage <span class="hljs-keyword">into</span> :vSname, :vSage <span class="hljs-keyword">from</span> Student <span class="hljs-keyword">where</span> Sname<span class="hljs-operator">=</span><span class="hljs-string">&#x27;张三&#x27;</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>检索多行结果</strong>，则需要使用游标(Cursor)</li>
+</ul>
+</li>
+<li>
+<p><strong>数据库记录的删除与更新</strong>：</p>
+<ul>
+<li><strong>数据库记录的删除</strong>：一种是<strong>查找删除</strong>（与交互式 DELETE 语句相同），一种是<strong>定位删除（游标）</strong>
+<ul>
+<li><strong>查找删除</strong>：<code>EXEC SQL DELETE from student where Sno='95001';</code></li>
+<li><strong>定位删除</strong>：<code>EXEC SQL DELETE from student where current of cursor;</code></li>
+</ul>
+</li>
+<li><strong>数据库记录的更新</strong>：一种是<strong>查找更新</strong>（与交互式 Update 语句相同），一种是<strong>定位更新（游标）</strong>
+<ul>
+<li><strong>查找更新</strong>：<code>EXEC SQL UPDATE student set Sdept='CS' where Sdept='IS';</code></li>
+<li><strong>定位更新</strong>：<code>EXEC SQL UPDATE student set Sdept='CS' where current of cursor;</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>SQL 执行的提交与撤销</strong>：SQL 语句在执行过程中，必须有提交和撤销语句才能让 DBMS 确认其操作结果是否有效</p>
+<ul>
+<li><strong>SQL 执行的提交</strong>：<code>EXEC SQL COMMIT work;</code></li>
+<li><strong>SQL 执行的撤销</strong>：<code>EXEC SQL ROLLBACK work;</code></li>
+<li>很多 DBMS 都设计了捆绑提交/撤销与断开连接在一起的语句，以保证在断开连接前让用户确认提交或撤销先前工作</li>
+</ul>
+</li>
+<li>
+<p><strong>状态捕获及错误处理机制</strong>：</p>
+<ul>
+<li>状态，是嵌入式 SQL 语句的执行状态，尤其指一些出错状态，有时程序需要知道这些状态并对这些状态进行处理</li>
+<li>嵌入式 SQL 程序中，状态捕获及处理由三部分构成：
+<ul>
+<li><strong>设置 SQL 通信区</strong>：一般在嵌入式 SQL 程序的开始处设置 <code>EXEC SQL INCLUDE SQLCA</code></li>
+<li><strong>设置状态捕获语句</strong>：在嵌入式 SQL 程序的任何位置都可设置，可多次设置，但有作用域 <code>EXEC SQL WHENEVER SQLERROR goto REPORT_ERROR;</code></li>
+<li><strong>状态处理语句</strong>：某一段程序以应对 SQL 操作的某种状态 <code>REPORT_ERROR: EXEC SQL ROLLBACK;</code></li>
+</ul>
+</li>
+<li><strong>SQL 通信区</strong>：SQLCA
+<ul>
+<li>SQL 语句执行后，系统要反馈给应用程序若干信息，主要包括描述系统当前工作状态和运行环境的各种数据；这些信息将送到 <strong>SQL 通信区</strong>中，应用程序从 SQL 通信区中取出这些状态信息，据此决定接下来执行语句</li>
+<li>SQL 通信区是一个<strong>具 C 语言结构形式的内存信息区</strong>，在应用程序中用 <strong><code>EXEC SQL INCLUDE SQLCA</code></strong> 加以定义；SQL 通信区中有一个变量 <strong>SQLCODE</strong>，用来记录 SQL 语句的执行状态，便于宿主程序读取与处理</li>
+<li>应用程序每执行完一条 SQL 语句之后都应该测试一下 SQLCODE 的值，以了解该 SQL 语句执行情况并做相应处理
+<ul>
+<li>如果 SQLCODE 等于预定义的常量 SUCCESS，则表示 SQL 语句成功</li>
+<li>否则在 SQLCODE 存放错误代码，程序员可以根据错误代码查找问题</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>状态捕获语句</strong>：<code>EXEC SQL WHENEVER condition action</code>
+<ul>
+<li>WHENEVER 语句的作用是设置“条件陷阱”，该语句会对其后面的所有由 EXEC SQL 语句所引起的对数据库系统的调用，自动检查它是否满条件 condition</li>
+<li>常见的 condition 有：
+<ul>
+<li><strong>SQLERROR</strong>：检测是否有 SQL 语句出错，具体意义依赖于特定的 DBMS</li>
+<li><strong>NOT FOUND</strong>：执行某一 SQL 语句后，没有相应的结果记录出见</li>
+<li><strong>SQLWARNING</strong>：不是错误，但应引起注意的条件</li>
+</ul>
+</li>
+<li>如果满足 condition，则要采取一些动作(action)：
+<ul>
+<li><strong>CONTINUE</strong>：忽略条件或错误，继续执行</li>
+<li><strong>GOTO 标号</strong>：转移到标号所指示的语句，去进行相应处理</li>
+<li><strong>STOP</strong>：终止程序运行，撤销当前工作，断开数据库连接</li>
+<li><strong>DO 函数或 CALL 函数</strong>：调用宿主程序的函数进行处理，函数返回后从引发该 condition 的 EXEC SQL 语句之后的语句继续进行</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>建立和关闭数据库连接</strong>：</p>
+<ul>
+<li><strong>建立连接</strong>：嵌入式 SQL 程序执行之前，首先要与数据库建立连接<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">EXEC</span> <span class="hljs-keyword">SQL</span> <span class="hljs-keyword">CONNECT</span> <span class="hljs-keyword">TO</span> target[<span class="hljs-keyword">AS</span> connection<span class="hljs-operator">-</span>name][<span class="hljs-keyword">USER</span> <span class="hljs-keyword">user</span><span class="hljs-operator">-</span>name];<br></code></pre></td></tr></table></figure>
+<ul>
+<li>target 是要连接的数据库服务器，它可以是一个常见的服务器标识串，如 <code>&lt;dbname&gt;@&lt;hostname&gt;:&lt;port&gt;</code>，可以是包含服务器标识的 SQL 串常量，也可以是 DEFAULT</li>
+<li>Connection-name 是可选的连接名，连接名必须是一个有效的标识符，主要用来识别一个程序内同时建立的多个连接，如果在整个程序内只有一个连接，也可以不指定连接名</li>
+</ul>
+</li>
+<li><strong>关闭连接</strong>：嵌入式 SQL 程序执行之后，需要关闭数据库连接<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">EXEC</span> <span class="hljs-keyword">SQL</span> <span class="hljs-keyword">DISCONNECT</span> [connection<span class="hljs-operator">-</span>name];<br></code></pre></td></tr></table></figure>
+<ul>
+<li>当某个连接上的所有数据库操作完成后，应用程序应该主动释放所占用的连接资源</li>
+<li>connection-name 是 EXEC SQL CONNECT 所建立的数据库连接</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>例</strong>：依次检查某个系的学生记录，交互式更新某些学生年龄</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">EXEC</span> <span class="hljs-keyword">SQL</span> <span class="hljs-keyword">BEGIN</span> <span class="hljs-keyword">DECLARE</span> SECTION; <span class="hljs-comment">/*主变量说明开始*/</span><br>  <span class="hljs-type">char</span> deptname[<span class="hljs-number">20</span>];<br>  <span class="hljs-type">char</span> hsno[<span class="hljs-number">9</span>];<br>  <span class="hljs-type">char</span> hsname[<span class="hljs-number">20</span>];<br>  <span class="hljs-type">char</span> hssex[<span class="hljs-number">2</span>];<br>  <span class="hljs-type">int</span> HSage;<br>  <span class="hljs-type">int</span> NEWAGE;<br><span class="hljs-keyword">EXEC</span> <span class="hljs-keyword">SQL</span> <span class="hljs-keyword">END</span> <span class="hljs-keyword">DECLARE</span> SECTION; <span class="hljs-comment">/*主变量说明结束*/</span><br>long SQLCODE;<br><span class="hljs-keyword">EXEC</span> <span class="hljs-keyword">SQL</span> INCLUDE SQLCODE; <span class="hljs-comment">/*定义SQL通信区*/</span><br><span class="hljs-type">int</span> main (void) <span class="hljs-comment">/*C语言主程序开始*/</span><br>&#123; <span class="hljs-type">int</span> count<span class="hljs-operator">=</span><span class="hljs-number">0</span>;<br>  <span class="hljs-type">char</span> yn; <span class="hljs-comment">/*变量yn代表yes或no*/</span><br>  printf (&quot;Please choose the department name (CS/MA/IS):&quot;);<br>  scanf (&quot;%os&quot;, <span class="hljs-operator">&amp;</span>deptname); <span class="hljs-comment">/*为主变量deptname赋值*/</span><br>  <span class="hljs-keyword">EXEC</span> <span class="hljs-keyword">SQL</span> <span class="hljs-keyword">CONNECT</span> <span class="hljs-keyword">TO</span> TEST<span class="hljs-variable">@locaIhost</span>:<span class="hljs-number">54321</span> <span class="hljs-keyword">USER</span> &quot;SYSTEM&quot;<span class="hljs-operator">/</span>&quot;MANAGER&quot;; <span class="hljs-comment">/*连接数据库*/</span><br>  <span class="hljs-keyword">EXEC</span> <span class="hljs-keyword">SQL</span> <span class="hljs-keyword">DECLARE</span> SX <span class="hljs-keyword">CURSOR</span> <span class="hljs-keyword">FOR</span> <span class="hljs-comment">/*定义游标SX*/</span> <br>    <span class="hljs-keyword">SELECT</span> Sno,Sname,Ssex,Sage <span class="hljs-comment">/*SX对应的语句*/</span><br>    <span class="hljs-keyword">FROM</span> Student<br>    <span class="hljs-keyword">WHERE</span> SDept<span class="hljs-operator">=</span>:deptname;<br>  <span class="hljs-keyword">EXEC</span> <span class="hljs-keyword">SQL</span> <span class="hljs-keyword">OPEN</span> SX; <span class="hljs-comment">/*打开游标SX,指向查询结果的第一行*/</span><br>  <span class="hljs-keyword">for</span> (;;) <span class="hljs-comment">/*用循环结构逐条处理结果集中的记录*/</span><br>  &#123; <span class="hljs-keyword">EXEC</span> <span class="hljs-keyword">SQL</span> <span class="hljs-keyword">FETCH</span> SX <span class="hljs-keyword">INTO</span> :HSno,HSname, HSsex, HSage; <span class="hljs-comment">/*推进游标,将当前数据放入主变量*/</span><br>  if (SQLCA.SQLCODE<span class="hljs-operator">!=</span><span class="hljs-number">0</span>) <span class="hljs-comment">/*SQLCODE!=0,表示操作不成功*/</span><br>    break; <span class="hljs-comment">/*利用SQLCA中的状态信息决定何时退出循环*/</span><br>  if (count<span class="hljs-operator">+</span><span class="hljs-operator">+</span><span class="hljs-operator">=</span><span class="hljs-operator">=</span><span class="hljs-number">0</span>) <span class="hljs-comment">/*如果是第一行的话,先打出行头*/</span><br>    printf (&quot;\n%o-10s%-20s%-10s%o-10sln&quot;,&quot;Sno&quot;,&quot;Sname&quot;,&quot;Ssex&quot;,&quot;Sage&quot;);<br>  printf (&quot;%-10s%-20s%-10s%-10din&quot;,HSno,HSname,HSsex,HSage); <span class="hljs-comment">/*打印查询结果*/</span><br>  printf(&quot;UPDATEAGE(y/n)?&quot;); <span class="hljs-comment">/*询问用户是否要更新该学生的年龄*/</span>do &#123;scanf(&quot;%oc&quot;,<span class="hljs-operator">&amp;</span>yn);&#125;<br>  while(yn<span class="hljs-operator">!=</span><span class="hljs-string">&#x27;N&#x27;</span><span class="hljs-operator">&amp;&amp;</span>yn<span class="hljs-operator">!=</span><span class="hljs-string">&#x27;n&#x27;</span><span class="hljs-operator">&amp;&amp;</span>yn<span class="hljs-operator">!=</span><span class="hljs-string">&#x27;Y&#x27;</span><span class="hljs-operator">&amp;&amp;</span>yn<span class="hljs-operator">!=</span><span class="hljs-string">&#x27;y&#x27;</span>); <span class="hljs-comment">/*原地循环(等待)，直到用户输入*/</span><br>  if (yn<span class="hljs-operator">=</span><span class="hljs-operator">=</span><span class="hljs-string">&#x27;y&#x27;</span> <span class="hljs-operator">||</span> yn<span class="hljs-operator">=</span><span class="hljs-operator">=</span><span class="hljs-string">&#x27;Y&#x27;</span>) <span class="hljs-comment">/*如果选择更新操作*/</span><br>    &#123;printf(&quot;INPUT NEW AGE:&quot;);<br>    scanf(&quot;%d&quot;,<span class="hljs-operator">&amp;</span>NEWAGE); <span class="hljs-comment">/*用户输入新年龄到主变量中*/</span><br>    <span class="hljs-keyword">EXEC</span> <span class="hljs-keyword">SQL</span> <span class="hljs-keyword">UPDATE</span> Student <span class="hljs-comment">/*嵌入式SQL更新语句*/</span><br>      <span class="hljs-keyword">SET</span> Sage<span class="hljs-operator">=</span>:NEWAGE<br>      <span class="hljs-keyword">WHERE</span> <span class="hljs-keyword">CURRENT</span> <span class="hljs-keyword">OF</span> SX; <span class="hljs-comment">/*对当前游标指向的学生年龄进行更新*/</span><br>    &#125;&#125;<br>  <span class="hljs-keyword">EXEC</span> <span class="hljs-keyword">SQL</span> <span class="hljs-keyword">CLOSE</span> SX; <span class="hljs-comment">/*关闭游标SX,不再和查询结果对应*/</span><br>  <span class="hljs-keyword">EXEC</span> <span class="hljs-keyword">SQL</span> <span class="hljs-keyword">COMMIT</span> WORK; <span class="hljs-comment">/*提交更新*/</span><br>  <span class="hljs-keyword">EXEC</span> <span class="hljs-keyword">SQL</span> <span class="hljs-keyword">DISCONNECT</span> TEST; <span class="hljs-comment">/*断开数据库连接*/</span><br>&#125;<br></code></pre></td></tr></table></figure>
 </li>
 </ul>
 <h3 id="4-动态-SQL">4. 动态 SQL</h3>
