@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/db.png">
 <meta property="article:published_time" content="2026-03-09T08:30:32.000Z">
-<meta property="article:modified_time" content="2026-06-13T12:10:09.048Z">
+<meta property="article:modified_time" content="2026-06-13T13:13:57.408Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="知识点整理">
@@ -6189,7 +6189,7 @@
 <li><strong>例</strong>：
 <ul>
 <li>高权限用户(如机密级)修改某个非敏感的系统状态(如：插入一条数据、更新一行、持有锁)</li>
-<li>低权限用户(如内部级)可以观察这个状态的变化(例如:查询被阻塞的时间、发现错误代码、感知响应延迟)</li>
+<li>低权限用户(如内部级)可以观察这个状态的变化(例如：查询被阻塞的时间、发现错误代码、感知响应延迟)</li>
 <li>通过事先约定的编码方案，高低权限用户之间就能传递比特信息(0/1)，从而泄露敏感数据</li>
 </ul>
 </li>
@@ -6209,16 +6209,17 @@
 <li>
 <p><strong>数据库完整性和数据库安全性的区别</strong>：</p>
 <ul>
-<li><strong>数据库完整性</strong>：
-<ul>
-<li>防止数据库中存在不符合语义的数据和不正确的数据；</li>
-<li><strong>检查和控制的防范对象</strong>：不合语义的、不正确的数据，防止它们进入数据库</li>
-</ul>
-</li>
 <li><strong>数据库安全性</strong>：
 <ul>
-<li>保护数据库，防止恶意破坏和非法存取</li>
+<li><strong>目标</strong>：保护数据库，防止恶意破坏和非法存取</li>
 <li><strong>检查和控制的防范对象</strong>：非法用户和非法操作，防止他们对数据库数据的非法存取</li>
+</ul>
+</li>
+<li><strong>数据库完整性</strong>：
+<ul>
+<li><strong>产生原因</strong>：不正当的数据库操作，如输入错误、操作失误、程序处理失误等</li>
+<li><strong>目标</strong>：DBMS 自动防止数据库中存在不符合语义数据和不正确数据</li>
+<li><strong>检查和控制的防范对象</strong>：不合语义的、不正确的数据，防止它们进入数据库</li>
 </ul>
 </li>
 </ul>
@@ -6271,7 +6272,7 @@
 <td style="text-align:center">静 态</td>
 <td style="text-align:center">列定义（类型、格式、值域、空值）</td>
 <td style="text-align:center">元组的属性之间应满足的条件</td>
-<td style="text-align:center">实体完整性约束参照完整性约束函数依赖约束统计约束</td>
+<td style="text-align:center">实体完整性约束、参照完整性约束、函数依赖约束、统计约束、内容约束</td>
 </tr>
 <tr>
 <td style="text-align:center">动 态</td>
@@ -6386,12 +6387,12 @@
 <li><strong>级联 (CASCADE)</strong>：当删除或修改被参照表的一个元组导致与参照表不一致时，删除或修改参照表中所有导致不一致的元组</li>
 <li><strong>设置为空值 (SET NULL)</strong>：当删除或修改被参照表的一个元组导致与参照表不一致时，将参照表中所有造成不一致的元组的对应属性设置为空值
 <ul>
-<li><strong>外码是否可以接受空值的问题</strong>：依赖于应用环境的语义（系统提供定义外码的机制，定义外码列是否允许空值的机制）</li>
+<li>外码是否可以接受空值：依赖于应用环境的语义（实现参照完整性：系统提供定义外码的机制，定义外码列是否允许空值的机制）</li>
 </ul>
 </li>
 </ul>
 </li>
-<li><strong>例</strong>：建立表 SC<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> SC<br>  (Sno <span class="hljs-type">CHAR</span>(<span class="hljs-number">9</span>)　<span class="hljs-keyword">NOT NULL</span>,<br>  Cno <span class="hljs-type">CHAR</span>(<span class="hljs-number">4</span>) <span class="hljs-keyword">NOT NULL</span>,<br>  Grade <span class="hljs-type">SMALLINT</span>,<br>  <span class="hljs-keyword">PRIMARY KEY</span> (Sno, Cno), <span class="hljs-comment">/*表级定义实体完整性，Sno、Con 都不能取空值 */</span> <br>  <span class="hljs-keyword">FOREIGN KEY</span> (Sno) <span class="hljs-keyword">REFERENCES</span> Student(Sno) <span class="hljs-comment">/* 在表级定义参照完整性 */</span><br>    <span class="hljs-keyword">ON</span> <span class="hljs-keyword">DELETE</span> CASCADE 　 <span class="hljs-comment">/* 删除 Student 元组时，级联删除 SC 中相应元组 */</span><br>    <span class="hljs-keyword">ON</span> <span class="hljs-keyword">UPDATE</span> CASCADE, 　<span class="hljs-comment">/* 更新 Student 表中 Sno 时，级联更新 SC 中相应元组 */</span><br>  <span class="hljs-keyword">FOREIGN KEY</span> (Cno) <span class="hljs-keyword">REFERENCES</span> Course(Cno) <span class="hljs-comment">/* 在表级定义参照完整性 */</span><br>    <span class="hljs-keyword">ON</span> <span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">NO</span> ACTION <span class="hljs-comment">/* 删除 Course 元组造成与 SC 表不一致时，拒绝删除 */</span><br>    <span class="hljs-keyword">ON</span> <span class="hljs-keyword">UPDATE</span> CASCADE, 　 <span class="hljs-comment">/* 更新 Course 表中 Cno 时，级联更新 SC 中相应元组 */</span><br>  );<br></code></pre></td></tr></table></figure>
+<li><strong>例</strong>：建立表 SC<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> SC<br>  (Sno <span class="hljs-type">CHAR</span>(<span class="hljs-number">9</span>)　<span class="hljs-keyword">NOT NULL</span>,<br>  Cno <span class="hljs-type">CHAR</span>(<span class="hljs-number">4</span>) <span class="hljs-keyword">NOT NULL</span>,<br>  Grade <span class="hljs-type">SMALLINT</span>,<br>  <span class="hljs-keyword">PRIMARY KEY</span> (Sno, Cno), <span class="hljs-comment">/* 表级定义实体完整性，Sno、Con 都不能取空值 */</span> <br>  <span class="hljs-keyword">FOREIGN KEY</span> (Sno) <span class="hljs-keyword">REFERENCES</span> Student(Sno) <span class="hljs-comment">/* 在表级定义参照完整性 */</span><br>    <span class="hljs-keyword">ON</span> <span class="hljs-keyword">DELETE</span> CASCADE 　 <span class="hljs-comment">/* 删除 Student 元组时，级联删除 SC 中相应元组 */</span><br>    <span class="hljs-keyword">ON</span> <span class="hljs-keyword">UPDATE</span> CASCADE, 　<span class="hljs-comment">/* 更新 Student 表中 Sno 时，级联更新 SC 中相应元组 */</span><br>  <span class="hljs-keyword">FOREIGN KEY</span> (Cno) <span class="hljs-keyword">REFERENCES</span> Course(Cno) <span class="hljs-comment">/* 在表级定义参照完整性*/</span><br>    <span class="hljs-keyword">ON</span> <span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">NO</span> ACTION <span class="hljs-comment">/* 删除 Course 元组造成与 SC 表不一致时，拒绝删除 */</span><br>    <span class="hljs-keyword">ON</span> <span class="hljs-keyword">UPDATE</span> CASCADE, 　 <span class="hljs-comment">/* 更新 Course 表中 Cno 时，级联更新 SC 中相应元组 */</span><br>  );<br></code></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
@@ -6399,7 +6400,7 @@
 <h3 id="4-用户定义的完整性">4. 用户定义的完整性</h3>
 <ul>
 <li>
-<p><strong>用户定义的完整性</strong>：针对某一具体应用的数据必须满足的语义要求</p>
+<p><strong>用户定义的完整性</strong>：针对<strong>某一具体应用</strong>的数据必须满足的语义要求</p>
 <ul>
 <li><strong>用户定义的完整性的两类方法</strong>：
 <ul>
@@ -6410,7 +6411,7 @@
 </ul>
 </li>
 <li>
-<p><strong>属性上的约束条件</strong>：用 CREATE TABLE 语句在建表时定义用户完整性约束，可定义三类属性上的完整性约束：</p>
+<p><strong>属性上的约束条件</strong>：用 CREATE TABLE 语句在建表时定义用户完整性约束，可定义三类<strong>属性上的完整性约束</strong>：</p>
 <ul>
 <li><strong>列值非空（NOT NULL 短语）</strong>：
 <ul>
@@ -6426,9 +6427,9 @@
 </li>
 <li><strong>检查列值是否满足一个条件表达式（CHECK 短语）</strong>：
 <ul>
-<li><strong>例</strong>： 建立学生登记表 Student，要求年龄 &lt;29，性别只能是‘男’或‘女’，姓名非空<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> Student 　　 <br>  (Sno NUMBER(<span class="hljs-number">5</span>) <span class="hljs-keyword">PRIMARY KEY</span>, 　<span class="hljs-comment">/* 在列级定义主码 */</span><br>  Sname <span class="hljs-type">CHAR</span>(<span class="hljs-number">20</span>) <span class="hljs-keyword">NOT NULL</span>,　<span class="hljs-comment">/* Sname 属性不允许取空值 */</span><br>  Sage <span class="hljs-type">SMALLINT</span> <span class="hljs-keyword">CHECK</span> (Sage <span class="hljs-operator">&lt;</span> <span class="hljs-number">29</span>),　<span class="hljs-comment">/* Sage属性小于 29 */</span><br>  Ssex <span class="hljs-type">CHAR</span>(<span class="hljs-number">2</span>) <span class="hljs-keyword">CHECK</span> (Ssex <span class="hljs-keyword">IN</span> (‘男’,‘女’)) <span class="hljs-comment">/* Ssex 属性只允许取‘男’或‘女’ */</span><br>  );<br></code></pre></td></tr></table></figure>
+<li><strong>例</strong>： 建立学生登记表 Student，要求年龄 &lt;29，性别只能是‘男’或‘女’，姓名非空<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> Student 　　 <br>  (Sno NUMBER(<span class="hljs-number">5</span>) <span class="hljs-keyword">PRIMARY KEY</span>, 　<span class="hljs-comment">/* 在列级定义主码 */</span><br>  Sname <span class="hljs-type">CHAR</span>(<span class="hljs-number">20</span>) <span class="hljs-keyword">NOT NULL</span>,　<span class="hljs-comment">/* Sname 属性不允许取空值 */</span><br>  Sage <span class="hljs-type">SMALLINT</span> <span class="hljs-keyword">CHECK</span> (Sage <span class="hljs-operator">&lt;</span> <span class="hljs-number">29</span>),　<span class="hljs-comment">/* Sage属性小于 29 */</span><br>  Ssex <span class="hljs-type">CHAR</span>(<span class="hljs-number">2</span>) <span class="hljs-keyword">CHECK</span> (Ssex <span class="hljs-keyword">IN</span> (<span class="hljs-string">&#x27;男&#x27;</span>,<span class="hljs-string">&#x27;女&#x27;</span>)) <span class="hljs-comment">/* Ssex 属性只允许取‘男’或‘女’ */</span><br>  );<br></code></pre></td></tr></table></figure>
 </li>
-<li><strong>例</strong>：建立表SC，Grade的值在 0 和 100 之间<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> SC<br>  (Sno <span class="hljs-type">CHAR</span>(<span class="hljs-number">9</span>),　　　　　　　　　<br>  Cno <span class="hljs-type">CHAR</span>(<span class="hljs-number">4</span>),　　　　　　　　　　<br>  Grade <span class="hljs-type">SMALLINT</span> <span class="hljs-keyword">CHECK</span>(Grade<span class="hljs-operator">&gt;=</span><span class="hljs-number">0</span> <span class="hljs-keyword">AND</span> Grade <span class="hljs-operator">&lt;=</span><span class="hljs-number">100</span>),　<span class="hljs-comment">/* Grade取值范围 0-100 */</span><br>  <span class="hljs-keyword">PRIMARY KEY</span> (Sno, Cno), 　<br>  <span class="hljs-keyword">FOREIGN KEY</span> (Sno) <span class="hljs-keyword">REFERENCES</span> Student(Sno),<br>  <span class="hljs-keyword">FOREIGN KEY</span> (Cno) <span class="hljs-keyword">REFERENCES</span> Course(Cno));<br></code></pre></td></tr></table></figure>
+<li><strong>例</strong>：建立表 SC，Grade 的值在 0 和 100 之间<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> SC<br>  (Sno <span class="hljs-type">CHAR</span>(<span class="hljs-number">9</span>),　　　　　　　　　<br>  Cno <span class="hljs-type">CHAR</span>(<span class="hljs-number">4</span>),　　　　　　　　　　<br>  Grade <span class="hljs-type">SMALLINT</span> <span class="hljs-keyword">CHECK</span>(Grade<span class="hljs-operator">&gt;=</span><span class="hljs-number">0</span> <span class="hljs-keyword">AND</span> Grade<span class="hljs-operator">&lt;=</span><span class="hljs-number">100</span>),　<span class="hljs-comment">/* Grade取值范围 0-100 */</span><br>  <span class="hljs-keyword">PRIMARY KEY</span> (Sno, Cno), 　<br>  <span class="hljs-keyword">FOREIGN KEY</span> (Sno) <span class="hljs-keyword">REFERENCES</span> Student(Sno),<br>  <span class="hljs-keyword">FOREIGN KEY</span> (Cno) <span class="hljs-keyword">REFERENCES</span> Course(Cno));<br></code></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
@@ -6437,29 +6438,12 @@
 <li>
 <p><strong>元组上的约束条件</strong>：</p>
 <ul>
-<li>用 CREATE TABLE 语句在建表时定义用户完整性约束，可定义元组上的完整性约束
+<li>用 CREATE TABLE 语句在建表时定义用户完整性约束，可定义<strong>元组上的完整性约束</strong>
 <ul>
 <li>设置<strong>不同属性之间取值的相互约束条件</strong>（CHECK 短语）</li>
 </ul>
 </li>
-<li><strong>例</strong>：当学生的性别是男时，其名字不能以 Ms. 打头<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> Student<br>  (Sno <span class="hljs-type">CHAR</span>(<span class="hljs-number">9</span>), <br>  Sname <span class="hljs-type">CHAR</span>(<span class="hljs-number">20</span>) <span class="hljs-keyword">NOT NULL</span>， <span class="hljs-comment">/* Sname 非空值 */</span><br>  Ssex <span class="hljs-type">CHAR</span>(<span class="hljs-number">2</span>),<br>  Sage <span class="hljs-type">SMALLINT</span>，<br>  Sdept <span class="hljs-type">CHAR</span>(<span class="hljs-number">20</span>),<br>  <span class="hljs-keyword">PRIMARY KEY</span> (Sno),<br>  <span class="hljs-keyword">CHECK</span> (Ssex<span class="hljs-operator">=</span>‘女’<span class="hljs-keyword">OR</span> Sname <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">LIKE</span>‘MS.<span class="hljs-operator">%</span>’)<br>  );<br></code></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li>
-<p><strong>完整性小结</strong>：</p>
-<ul>
-<li><strong>提供定义完整性约束条件</strong>
-<ul>
-<li>CREATE TABLE 语句</li>
-<li>CREATE TRIGGER 语句</li>
-<li>可以定义很复杂的完整性约束条件</li>
-</ul>
-</li>
-<li><strong>自动执行相应的完整性检查</strong>：
-<ul>
-<li><strong>对于违反完整性约束条件的操作</strong>：拒绝执行或者执行事先定义的操作</li>
-</ul>
+<li><strong>例</strong>：当学生的性别是男时，其名字不能以 Ms. 打头<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> Student<br>  (Sno <span class="hljs-type">CHAR</span>(<span class="hljs-number">9</span>), <br>  Sname <span class="hljs-type">CHAR</span>(<span class="hljs-number">20</span>) <span class="hljs-keyword">NOT NULL</span>， <span class="hljs-comment">/* Sname 非空值 */</span><br>  Ssex <span class="hljs-type">CHAR</span>(<span class="hljs-number">2</span>),<br>  Sage <span class="hljs-type">SMALLINT</span>，<br>  Sdept <span class="hljs-type">CHAR</span>(<span class="hljs-number">20</span>),<br>  <span class="hljs-keyword">PRIMARY KEY</span> (Sno),<br>  <span class="hljs-keyword">CHECK</span> (Ssex<span class="hljs-operator">=</span><span class="hljs-string">&#x27;女&#x27;</span> <span class="hljs-keyword">OR</span> Sname <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;MS.%&#x27;</span>)<br>  );<br></code></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
@@ -6474,9 +6458,9 @@
 <li>可以灵活增加、删除一个完整性约束条件</li>
 </ul>
 </li>
-<li><strong>完整性约束命名子句</strong>：<code>CONSTRAINT &lt;完整性约束条件名&gt; &lt;完整性约束条件&gt;</code>
+<li><strong>一般格式</strong>：<code>CONSTRAINT &lt;完整性约束条件名&gt; &lt;完整性约束条件&gt;</code>
 <ul>
-<li>&lt;完整性约束条件&gt; 包括 NOT NULL、UNIQUE、PRIMARY KEY、FOREIGN KEY、CHECK 短语等</li>
+<li>&lt;完整性约束条件&gt; 包括 <strong>NOT NULL、UNIQUE、PRIMARY KEY、FOREIGN KEY、CHECK</strong> 短语等</li>
 </ul>
 </li>
 <li><strong>例</strong>：建立学生登记表 Student，要求学号在 90000～99999 之间，年龄 &lt; 30，性别只能是‘男’或‘女’，姓名非空<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> Student<br>  (Sno <span class="hljs-type">NUMERIC</span>(<span class="hljs-number">6</span>)<br>    <span class="hljs-keyword">CONSTRAINT</span> C1 <span class="hljs-keyword">CHECK</span> (Sno <span class="hljs-keyword">BETWEEN</span> <span class="hljs-number">90000</span> <span class="hljs-keyword">AND</span> <span class="hljs-number">99999</span>),<br>  Sname <span class="hljs-type">CHAR</span>(<span class="hljs-number">20</span>) <br>    <span class="hljs-keyword">CONSTRAINT</span> C2 <span class="hljs-keyword">NOT NULL</span>,<br>  Sage <span class="hljs-type">NUMERIC</span>(<span class="hljs-number">3</span>) <br>    <span class="hljs-keyword">CONSTRAINT</span> C3 <span class="hljs-keyword">CHECK</span> (Sage <span class="hljs-operator">&lt;</span> <span class="hljs-number">30</span>),<br>  Ssex <span class="hljs-type">CHAR</span>(<span class="hljs-number">2</span>)<br>    <span class="hljs-keyword">CONSTRAINT</span> C4 <span class="hljs-keyword">CHECK</span> (Ssex <span class="hljs-keyword">IN</span> (<span class="hljs-string">&#x27;男&#x27;</span>, <span class="hljs-string">&#x27;女&#x27;</span>)),<br>    <span class="hljs-keyword">CONSTRAINT</span> StudentKey <span class="hljs-keyword">PRIMARY KEY</span>(Sno));<br></code></pre></td></tr></table></figure>
@@ -6488,7 +6472,7 @@
 <li>
 <p><strong>修改表中的完整性限制</strong>：SQL 提供了 ALTER TABLE 子句，用来修改表中的完整性限制</p>
 <ul>
-<li><strong>例</strong>：去掉 Student 表中对性别的限制<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER TABLE</span> Student<br><span class="hljs-keyword">DROP</span> <span class="hljs-keyword">CONSTRAINT</span> C4;<br></code></pre></td></tr></table></figure>
+<li><strong>例</strong>：去掉 Student 表中对性别的限制<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER TABLE</span> Student<br>  <span class="hljs-keyword">DROP</span> <span class="hljs-keyword">CONSTRAINT</span> C4;<br></code></pre></td></tr></table></figure>
 </li>
 <li><strong>例</strong>：修改 Student 表中的约束条件，要求学号改为 900000～999999之间，年龄由小于 30 改为小于 40<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER TABLE</span> Student<br>  <span class="hljs-keyword">DROP</span> <span class="hljs-keyword">CONSTRAINT</span> C1;<br><span class="hljs-keyword">ALTER TABLE</span> Student<br>  <span class="hljs-keyword">ADD CONSTRAINT</span> C1 <span class="hljs-keyword">CHECK</span>(Sno <span class="hljs-keyword">BETWEEN</span> <span class="hljs-number">900000</span> <span class="hljs-keyword">AND</span> <span class="hljs-number">999999</span>);<br><span class="hljs-keyword">ALTER TABLE</span> Student<br>  <span class="hljs-keyword">DROP</span> <span class="hljs-keyword">CONSTRAINT</span> C3;<br><span class="hljs-keyword">ALTER TABLE</span> Student<br>  <span class="hljs-keyword">ADD CONSTRAINT</span> C3 <span class="hljs-keyword">CHECK</span>(Sage <span class="hljs-operator">&lt;</span> <span class="hljs-number">40</span>);<br></code></pre></td></tr></table></figure>
 </li>
@@ -6502,24 +6486,24 @@
 <ul>
 <li>SQL 提供了 <strong>CREATE ASSERTION 语句</strong>，通过声明性断言(declarative assertions) 来指定更具一般性的约束
 <ul>
-<li>可以定义涉及多个表或聚集操作比较复杂的完整性约束</li>
+<li>可以定义<strong>涉及多个表或聚集操作比较复杂</strong>的完整性约束</li>
 <li>断言创建后，任何对断言中所涉及关系的操作都会触发 RDBMS 对断言的检查，任何使断言不为真值的操作都会被拒绝执行</li>
 </ul>
 </li>
 <li><strong>一般格式</strong>：<code>CREATE ASSERTION &lt;断言名&gt; &lt;CHECK 子句&gt;</code>
 <ul>
-<li>每个断言都被赋予一个名字，<code>&lt;CHECK 子句&gt;</code> 中的约束条件与 WHERE 子句的条件表达式类似</li>
+<li>每个断言都被赋予一个名字，<strong><code>&lt;CHECK 子句&gt;</code> 中的约束条件与 WHERE 子句的条件表达式类似</strong></li>
 </ul>
 </li>
-<li><strong>例</strong>：限制数据库课程最多 60 名学生选修<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> ASSERTION ASSE_SC_DB_NUM<br>  <span class="hljs-keyword">CHECK</span> (<span class="hljs-number">60</span> <span class="hljs-operator">&gt;=</span> (<span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">count</span> (<span class="hljs-operator">*</span>) <span class="hljs-comment">/* 此断言的谓词涉及聚集操作count*/</span><br>    <span class="hljs-keyword">FROM</span> Course, SC<br>    <span class="hljs-keyword">WHERE</span> SC.CNO<span class="hljs-operator">=</span>COURSE.CNO <span class="hljs-keyword">AND</span> COURSE.CNAME <span class="hljs-operator">=</span>‘数据库’));<br></code></pre></td></tr></table></figure>
+<li><strong>例</strong>：限制数据库课程最多 60 名学生选修<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> ASSERTION ASSE_SC_DB_NUM<br>  <span class="hljs-keyword">CHECK</span> (<span class="hljs-number">60</span> <span class="hljs-operator">&gt;=</span> (<span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">count</span> (<span class="hljs-operator">*</span>) <span class="hljs-comment">/* 此断言的谓词涉及聚集操作 count */</span><br>    <span class="hljs-keyword">FROM</span> Course, SC<br>    <span class="hljs-keyword">WHERE</span> SC.CNO<span class="hljs-operator">=</span>COURSE.CNO <span class="hljs-keyword">AND</span> COURSE.CNAME<span class="hljs-operator">=</span><span class="hljs-string">&#x27;数据库&#x27;</span>));<br></code></pre></td></tr></table></figure>
 </li>
-<li><strong>例</strong>：限制每一门课程最多 60 名学生选修<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> ASSERTION ASSE_SC_CNUM1<br>  <span class="hljs-keyword">CHECK</span> (<span class="hljs-number">60</span> <span class="hljs-operator">&gt;=</span> <span class="hljs-keyword">ALL</span>(<span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">count</span> (<span class="hljs-operator">*</span>) <span class="hljs-comment">/* 此断言的谓词涉及聚集操作 count */</span><br>    <span class="hljs-keyword">FROM</span> SC <span class="hljs-comment">/* 和分组函数group by 的 SQL 语句 */</span><br>    <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">by</span> Cno));<br></code></pre></td></tr></table></figure>
+<li><strong>例</strong>：限制每一门课程最多 60 名学生选修<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> ASSERTION ASSE_SC_CNUM1<br>  <span class="hljs-keyword">CHECK</span> (<span class="hljs-number">60</span> <span class="hljs-operator">&gt;=</span> <span class="hljs-keyword">ALL</span>(<span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">count</span> (<span class="hljs-operator">*</span>) <span class="hljs-comment">/* 此断言的谓词涉及聚集操作 count */</span><br>    <span class="hljs-keyword">FROM</span> SC <span class="hljs-comment">/* 和分组函数 group by 的 SQL 语句 */</span><br>    <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">by</span> Cno));<br></code></pre></td></tr></table></figure>
 </li>
 <li><strong>例</strong>：限制每个学期每一门课程最多 60 名学生选修
 <ul>
-<li>首先修改 SC 表的模式,增加一个‘学期(TERM)’的属性<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER TABLE</span> SC <span class="hljs-comment">/* 先修改SC表，增加 TERM 属性，类型是DATE*/</span> <br>  <span class="hljs-keyword">ADD</span> TERM <span class="hljs-type">DATE</span>;<br></code></pre></td></tr></table></figure>
+<li>首先修改 SC 表的模式，增加一个‘学期(TERM)’的属性<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER TABLE</span> SC <span class="hljs-comment">/* 先修改 SC 表，增加 TERM 属性，类型是DATE */</span> <br>  <span class="hljs-keyword">ADD</span> TERM <span class="hljs-type">DATE</span>;<br></code></pre></td></tr></table></figure>
 </li>
-<li>然后定义断言<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> ASSERTION ASSE_SC_CNUM2<br>  <span class="hljs-keyword">CHECK</span> (<span class="hljs-number">60</span> <span class="hljs-operator">&gt;=</span> <span class="hljs-keyword">ALL</span>(<span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">count</span> (<span class="hljs-operator">*</span>) <span class="hljs-comment">/* 此断言的谓词涉及聚集操作count*/</span><br>    <span class="hljs-keyword">FROM</span> SC <span class="hljs-comment">/* 和分组函数group by的 SQL 语句*/</span><br>    <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">by</span> Cno, TERM));<br></code></pre></td></tr></table></figure>
+<li>然后定义断言<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> ASSERTION ASSE_SC_CNUM2<br>  <span class="hljs-keyword">CHECK</span> (<span class="hljs-number">60</span> <span class="hljs-operator">&gt;=</span> <span class="hljs-keyword">ALL</span>(<span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">count</span> (<span class="hljs-operator">*</span>) <span class="hljs-comment">/* 此断言的谓词涉及聚集操作 count */</span><br>    <span class="hljs-keyword">FROM</span> SC <span class="hljs-comment">/* 和分组函数 group by 的 SQL 语句*/</span><br>    <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">by</span> Cno, TERM));<br></code></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
@@ -6539,7 +6523,7 @@
 <p><strong>触发器</strong>：</p>
 <ul>
 <li>触发器（trigger）是用户定义在关系表上的<strong>一类由事件驱动的特殊过程</strong></li>
-<li><strong>通过触发器来定义用户的完整性规则</strong>：
+<li>通过触发器来定义用户的完整性规则：
 <ul>
 <li>定义其它的完整性约束时，需要用数据库触发器（Trigger）来实现</li>
 <li>一旦由某个用户定义，触发器将被<strong>保存在数据库服务器</strong>中</li>
@@ -6550,7 +6534,7 @@
 </ul>
 </li>
 <li>
-<p><strong>定义触发器</strong>：触发器又叫做事件-条件-动作（event-condition-action）规则</p>
+<p><strong>定义触发器</strong>：触发器又叫做<strong>事件-条件-动作</strong>（event-condition-action）规则</p>
 <ul>
 <li>SQL 使用 CREATE TRIGGER 命令建立触发器</li>
 <li><strong>一般格式</strong>：<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TRIGGER</span> <span class="hljs-operator">&lt;</span>触发器名<span class="hljs-operator">&gt;</span> <span class="hljs-comment">/* 每当触发事件发生时，该触发器被激活 */</span><br>&#123;BEFORE <span class="hljs-operator">|</span> AFTER&#125; <span class="hljs-operator">&lt;</span>触发事件<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">ON</span> <span class="hljs-operator">&lt;</span>表名<span class="hljs-operator">&gt;</span> 　<span class="hljs-comment">/* 指明触发器激活时间是在执行触发事件前或后 */</span><br><span class="hljs-keyword">REFERENCING</span> <span class="hljs-keyword">NEW</span> <span class="hljs-operator">|</span> <span class="hljs-keyword">OLD</span> <span class="hljs-type">ROW</span> <span class="hljs-keyword">AS</span> <span class="hljs-operator">&lt;</span>变量<span class="hljs-operator">&gt;</span> 　<span class="hljs-comment">/* REFERENCING 指出引用的变量 */</span><br><span class="hljs-keyword">FOR</span> <span class="hljs-keyword">EACH</span> &#123;<span class="hljs-type">ROW</span> <span class="hljs-operator">|</span> STATEMENT&#125; 　<span class="hljs-comment">/* 定义触发器的类型，指明动作体执行的频率 */</span><br>[<span class="hljs-keyword">WHEN</span> <span class="hljs-operator">&lt;</span>触发条件<span class="hljs-operator">&gt;</span>] <span class="hljs-operator">&lt;</span>触发动作<span class="hljs-operator">&gt;</span> 　<span class="hljs-comment">/* 仅当触发条件为真时，才执行触发动作体 */</span><br></code></pre></td></tr></table></figure>
@@ -6563,7 +6547,7 @@
 </li>
 <li><strong>触发器名</strong>：
 <ul>
-<li>触发器名可以包含模式名，也可以不包含模式名；</li>
+<li>触发器名可以包含模式名，也可以不包含模式名</li>
 <li>同一模式下，<strong>触发器名必须是唯一的</strong>，而且触发器名和表名必须在同一模式下</li>
 </ul>
 </li>
@@ -6576,13 +6560,13 @@
 <li><strong>触发事件</strong>：
 <ul>
 <li>触发事件可以是 INSERT、DELETE、UPDATE</li>
-<li>也<strong>可以是几个事件的组合</strong>，如 INSERT OR DELETE，或UPDATE OF &lt;触发列,…&gt;，<strong>进一步指明修改哪些列时激活触发器</strong></li>
+<li>也<strong>可以是几个事件的组合</strong>，如 <code>INSERT OR DELETE</code>，或 <code>UPDATE OF &lt;触发列,...&gt;</code>，<strong>进一步指明修改哪些列时激活触发器</strong></li>
 <li><strong>AFTER/BEFORE 是触发时机</strong>，AFTER 表示在触发事件的操作执行后激活触发器，BEFORE 表示在触发事件的操作执行之前激活触发器</li>
 </ul>
 </li>
 <li><strong>触发器类型</strong>：
 <ul>
-<li>触发器按照所触发动作的间隔尺寸可分为<strong>行级触发器</strong>（FOR EACH ROW）和<strong>语句触发器</strong>（FOR EACH STATEMENT）；</li>
+<li>触发器按照所触发动作的间隔尺寸可分为<strong>行级触发器</strong>（FOR EACH ROW）和<strong>语句触发器</strong>（FOR EACH STATEMENT）</li>
 <li>默认的触发器是语句级触发器</li>
 </ul>
 </li>
@@ -6603,9 +6587,9 @@
 </li>
 <li><strong>例</strong>：当对表 SC 的 Grade 属性进行修改时，若分数增加了 10%，则将此次操作记录到另一个表 SC_U (Sno、Cno、Oldgrade、Newgrade) 中，其中 Oldgrade 是修改前的分数，Newgrade 是修改后的分数<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TRIGGER</span> SC_T <span class="hljs-comment">/* SC_T 是触发器的名字 */</span><br>AFTER <span class="hljs-keyword">UPDATE</span> <span class="hljs-keyword">OF</span> Grade <span class="hljs-keyword">ON</span> SC 　　<span class="hljs-comment">/* UPDATE OF Grade ON SC 是触发事件 */</span><br>  <span class="hljs-comment">/* AFTER 是触发的时机，表示当对 SC 的 Grade 属性修改完后再触发下面的规则 */</span><br><span class="hljs-keyword">REFERENCING</span> 　　　<br>  OLDROW <span class="hljs-keyword">AS</span> OldTuple<br>  NEWROW <span class="hljs-keyword">AS</span> NewTuple<br><span class="hljs-keyword">FOR</span> <span class="hljs-keyword">EACH</span> <span class="hljs-type">ROW</span> <span class="hljs-comment">/* 行级触发器，每执行一次 Grade 更新，下面的规则就执行一次 */</span><br><span class="hljs-keyword">WHEN</span> (NewTuple.Grade<span class="hljs-operator">&gt;=</span><span class="hljs-number">1.1</span><span class="hljs-operator">*</span>OldTuple.Grade) <span class="hljs-comment">/* 触发条件，只有该条件为真时才执行 */</span><br><span class="hljs-keyword">BEGIN</span><br>  <span class="hljs-keyword">INSERT INTO</span> SC_U (Sno, Cno, OldGrade, NewGrade) <span class="hljs-comment">/* 下面的 insert 操作 */</span><br>  <span class="hljs-keyword">VALUES</span>(OldTuple.Sno, OldTuple.Cno, OldTuple.Grade, NewTuple.Grade)<br><span class="hljs-keyword">END</span><br></code></pre></td></tr></table></figure>
 </li>
-<li><strong>例</strong>：将每次对表 Student 的插入操作所增加的学生个数记录到表 StudentInsertLog 中<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TRIGGER</span> Student_Count <span class="hljs-comment">/* Student_Count 是触发器的名字 */</span><br>AFTER <span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">ON</span> Student <span class="hljs-comment">/* 指明触发器激活的时间是在执行 INSERT 之后*/</span><br><span class="hljs-keyword">REFERENCING</span> 　　　<br>  <span class="hljs-keyword">NEW</span> <span class="hljs-keyword">TABLE</span> <span class="hljs-keyword">AS</span> DELTA<br><span class="hljs-keyword">FOR</span> <span class="hljs-keyword">EACH</span> STATEMENT<br>  <span class="hljs-comment">/* 语句级触发器，即执行完 INSERT 语句后下面的触发动作体才执行一次*/</span><br><span class="hljs-keyword">BEGIN</span><br>  <span class="hljs-keyword">INSERT INTO</span> StudentInsertLog (Numbers)<br>  <span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">COUNT</span>(<span class="hljs-operator">*</span>) <span class="hljs-keyword">FROM</span> DELTA<br><span class="hljs-keyword">END</span><br></code></pre></td></tr></table></figure>
+<li><strong>例</strong>：将每次对表 Student 的插入操作所增加的学生个数记录到表 StudentInsertLog 中<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TRIGGER</span> Student_Count <span class="hljs-comment">/* Student_Count 是触发器的名字 */</span><br>AFTER <span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">ON</span> Student <span class="hljs-comment">/* 指明触发器激活的时间是在执行 INSERT 之后*/</span><br><span class="hljs-keyword">REFERENCING</span> 　　　<br>  <span class="hljs-keyword">NEW</span> <span class="hljs-keyword">TABLE</span> <span class="hljs-keyword">AS</span> DELTA <span class="hljs-comment">/* DELTA 是一个关系名，模式与 Student 相同，包含的元组是 INSERT 语句增加的元组 */</span><br><span class="hljs-keyword">FOR</span> <span class="hljs-keyword">EACH</span> STATEMENT<br>  <span class="hljs-comment">/* 语句级触发器，即执行完 INSERT 语句后下面的触发动作体才执行一次*/</span><br><span class="hljs-keyword">BEGIN</span><br>  <span class="hljs-keyword">INSERT INTO</span> StudentInsertLog (Numbers)<br>  <span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">COUNT</span>(<span class="hljs-operator">*</span>) <span class="hljs-keyword">FROM</span> DELTA<br><span class="hljs-keyword">END</span><br></code></pre></td></tr></table></figure>
 </li>
-<li><strong>例</strong>： 定义一个 BEFORE 行级触发器，为教师表 Teacher 定义完整性规则 “教授的工资不得低于 4000 元，如果低于 4000 元，自动改为 4000 元”<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TRIGGER</span> Insert_OR_Update_Sal <span class="hljs-comment">/* 对教师表插入或更新时激活触发器 */</span><br>BEFORE <span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">OR</span> <span class="hljs-keyword">UPDATE</span> <span class="hljs-keyword">ON</span> Teacher <span class="hljs-comment">/* BEFORE 触发事件 */</span><br><span class="hljs-keyword">REFERENCING</span><br>  <span class="hljs-keyword">NEW</span> <span class="hljs-type">row</span> <span class="hljs-keyword">AS</span> newtuple<br><span class="hljs-keyword">FOR</span> <span class="hljs-keyword">EACH</span> <span class="hljs-type">ROW</span> <span class="hljs-comment">/* 行级触发器 */</span><br><span class="hljs-keyword">BEGIN</span> <span class="hljs-comment">/* 定义触发动作，这是一个 PL/SQL 过程块 */</span><br>  IF (newtuple.Job <span class="hljs-operator">=</span> ‘教授’ <span class="hljs-keyword">AND</span> (newtuple.Sal <span class="hljs-operator">&lt;</span> <span class="hljs-number">4000</span>))<br>    <span class="hljs-keyword">THEN</span> newtuple.Sal <span class="hljs-operator">=</span> <span class="hljs-number">4000</span>;<br>    <span class="hljs-comment">/* 因为是行级触发器，可在过程体使用插入或更新操作后的新值 */</span><br>  <span class="hljs-keyword">END</span> IF;<br><span class="hljs-keyword">END</span>; <span class="hljs-comment">/* 触发动作体结束 */</span><br></code></pre></td></tr></table></figure>
+<li><strong>例</strong>： 定义一个 BEFORE 行级触发器，为教师表 Teacher 定义完整性规则 “教授的工资不得低于 4000 元，如果低于 4000 元，自动改为 4000 元”<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TRIGGER</span> Insert_OR_Update_Sal <span class="hljs-comment">/* 对教师表插入或更新时激活触发器 */</span><br>BEFORE <span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">OR</span> <span class="hljs-keyword">UPDATE</span> <span class="hljs-keyword">ON</span> Teacher <span class="hljs-comment">/* BEFORE 触发事件 */</span><br><span class="hljs-keyword">REFERENCING</span><br>  <span class="hljs-keyword">NEW</span> <span class="hljs-type">row</span> <span class="hljs-keyword">AS</span> newtuple<br><span class="hljs-keyword">FOR</span> <span class="hljs-keyword">EACH</span> <span class="hljs-type">ROW</span> <span class="hljs-comment">/* 行级触发器 */</span><br><span class="hljs-keyword">BEGIN</span> <span class="hljs-comment">/* 定义触发动作，这是一个 PL/SQL 过程块 */</span><br>  IF (newtuple.Job <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;教授&#x27;</span> <span class="hljs-keyword">AND</span> (newtuple.Sal <span class="hljs-operator">&lt;</span> <span class="hljs-number">4000</span>))<br>    <span class="hljs-keyword">THEN</span> newtuple.Sal <span class="hljs-operator">=</span> <span class="hljs-number">4000</span>;<br>    <span class="hljs-comment">/* 因为是行级触发器，可在过程体使用插入或更新操作后的新值 */</span><br>  <span class="hljs-keyword">END</span> IF;<br><span class="hljs-keyword">END</span>; <span class="hljs-comment">/* 触发动作体结束 */</span><br></code></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
@@ -6637,8 +6621,7 @@
 <li>完整性机制的实施会极大地影响系统性能；</li>
 <li>不同的数据库产品对完整性的支持策略和支持程度是不同的
 <ul>
-<li>许多数据库管理系统对完整性机制的支持比对安全性的支持要晚得多<br>
-也弱得多</li>
+<li>许多数据库管理系统对完整性机制的支持比对安全性的支持要晚得多也弱得多</li>
 <li>数据库厂商对完整性的支持越来越好，不仅在能保证实体完整性和参照完整性，而且能在 DBMS 核心定义、检查和保证用户定义的完整性约束条件</li>
 </ul>
 </li>
