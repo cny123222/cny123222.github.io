@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/db.png">
 <meta property="article:published_time" content="2026-03-09T08:30:32.000Z">
-<meta property="article:modified_time" content="2026-06-13T13:13:57.408Z">
+<meta property="article:modified_time" content="2026-06-13T16:39:39.601Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          79k words
+          81k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          658 mins
+          677 mins
         
       </span>
     
@@ -366,7 +366,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on June 13, 2026 pm
+                    Last updated on June 14, 2026 am
                   
                 
               </p>
@@ -6629,32 +6629,99 @@
 </li>
 </ul>
 <h2 id="第九章-数据库存储管理">第九章 数据库存储管理</h2>
-<h3 id="1-数据组织">1. 数据组织</h3>
+<h3 id="1-数据库的存储体系">1. 数据库的存储体系</h3>
 <ul>
-<li><strong>数据组织</strong>：
+<li>
+<p><strong>数据库的存储与检索问题</strong>：</p>
 <ul>
-<li>以<strong>最优的</strong>形式在外存上组织、存放庞大数据集
+<li><strong>两个基本问题</strong>：
+<ul>
+<li>如何高效率的存储——<strong>数据组织与索引</strong></li>
+<li>如何快速的检索——<strong>查询实现与查询优化</strong></li>
+</ul>
+</li>
+<li>面向大规模用户，又如何解决</li>
+<li>既是 DBA 职责，借助于软件管理与维护，又是计算机科学家需要研究和解决的问题（算法设计与实现、性能评估与改进）</li>
+</ul>
+</li>
+<li>
+<p><strong>数据的存储体系</strong>：数据组织的基础</p>
+<ul>
+<li>将不同性价比的存储器组织在一起，满足<strong>高速度、大容量、低价格</strong>要求</li>
+<li>CPU 与内存直接交换信息，按存储单元(<strong>存储字</strong>)进行访问</li>
+<li>外存按<strong>存储块</strong>进行访问，其信息先装入内存缓冲区，才能被 CPU 处理</li>
+</ul>
+</li>
+<li>
+<p><strong>操作系统的管理</strong></p>
+<ul>
+<li><strong>磁盘和数据</strong>：<strong>FAT-目录(文件夹)-磁盘块/簇</strong>
+<ul>
+<li>FAT(文件分配表, File AllocationTable)</li>
+</ul>
+</li>
+<li><strong>内存缓冲区</strong>：
+<ul>
+<li>一条记录的地址=存储单元/存储字的地址=内存地址=页面:页内偏移量</li>
+<li>页面(Page)=块(Block)</li>
+<li>内存页面的分配；内存页面的置换</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>磁盘</strong>：</p>
+<ul>
+<li><strong>磁盘的结构</strong>：<strong>盘面:磁道:扇区</strong>
+<ul>
+<li>磁盘读写单位:扇区Sector <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> 簇Cluster/<strong>块Block</strong>:连续若干个扇区</li>
+</ul>
+</li>
+<li><strong>磁盘数据读写时间</strong>：寻道时间、旋转时间、传输时间</li>
+<li><strong>物理存取算法考虑的关键</strong>：
+<ul>
+<li>降低 I/O 次数</li>
+<li>降低排队等待时间</li>
+<li>降低寻道/旋转延迟时间
+<ul>
+<li>同一磁道连续块存储</li>
+<li>同一柱面不同磁道并行块存储</li>
+<li>多个磁盘并行块存储</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>提高速度及可靠性</strong>：<strong>RAID</strong>(Redundant Arrays of Independent Disks, 独立磁盘冗余阵列)
+<ul>
+<li><strong>并行处理</strong>：并行读取多个磁盘</li>
+<li><strong>可靠性</strong>：奇偶校验与纠错</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-数据组织">2. 数据组织</h3>
+<ul>
+<li><strong>数据组织</strong>：以<strong>最优的</strong>形式在外存上组织、存放庞大数据集
 <ul>
 <li>存储效率高，节省存储空间</li>
 <li>存取效率高，访问速度快，代价小</li>
 </ul>
 </li>
 </ul>
-</li>
-</ul>
-<h4 id="1-1-数据库的逻辑组织方式与物理组织方式">1.1 数据库的逻辑组织方式与物理组织方式</h4>
+<h4 id="2-1-数据库的逻辑组织方式与物理组织方式">2.1 数据库的逻辑组织方式与物理组织方式</h4>
 <ul>
 <li>
 <p><strong>数据存储的管理方式</strong>：</p>
 <ul>
 <li><strong>方式一</strong>：每个 DB 对象（基本表、索引）对应一个操作系统文件
 <ul>
-<li>例如，PostgreSQL、Kingbase ES</li>
+<li>存储管理由操作系统完成</li>
 </ul>
 </li>
 <li><strong>方式二</strong>：整个 DB 对应一个或若干个文件（<strong>段页式存储</strong>）
 <ul>
-<li>例如，Oracle、SQL Server</li>
+<li>存储管理由数据库管理系统完成</li>
 </ul>
 </li>
 </ul>
@@ -6663,25 +6730,25 @@
 <p><strong>数据库的逻辑组织</strong>：表空间 – 段 – 分区 – 数据块，方便数据管理</p>
 <p><img src="9-%E9%80%BB%E8%BE%91%E7%BB%84%E7%BB%87.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <ul>
-<li><strong>表空间（Tablespace）</strong>：磁盘上的一个或多个物理文件，<strong>一个物理文件只能属于一个表空间</strong>；一个数据库可以有多个表空间，从逻辑上组织数据库的数据存储
+<li><strong>表空间(Tablespace)</strong>：磁盘上的一个或多个物理文件，<strong>一个物理文件只能属于一个表空间</strong>；一个数据库可以有多个表空间，从逻辑上组织数据库的数据存储
 <ul>
 <li>例如，系统表空间、联机表空间、临时表空间</li>
 </ul>
 </li>
-<li><strong>数据段（Segment）</strong>：一个表空间逻辑上由多个段组成，每个段可以<strong>逻辑上组织不同类型</strong>的数据
+<li><strong>数据段(Segment)</strong>：一个表空间逻辑上由多个段组成，每个段可以<strong>逻辑上组织不同类型</strong>的数据
 <ul>
 <li>例如，数据段、索引段、临时段</li>
 </ul>
 </li>
-<li><strong>分区（Extent）</strong>：一个段逻辑上由多个分区组成，每个分区由<strong>一组连续数据块</strong>组成</li>
-<li><strong>数据块（Block）</strong>：数据库的磁盘存取单元，大小为操作系统块的整数倍</li>
+<li><strong>分区(Extent)</strong>：一个段逻辑上由多个分区组成，每个分区由<strong>一组连续数据块</strong>组成</li>
+<li><strong>数据块(Block)</strong>：数据库的磁盘存取单元，大小为操作系统块的整数倍</li>
 </ul>
 </li>
 <li>
 <p><strong>数据库的物理组织</strong>：文件 – 块 – 记录</p>
 <ul>
-<li><strong>文件</strong>：操作系统文件</li>
-<li><strong>块</strong>：每个文件物理上分成<strong>定长的存储单元</strong>，即<strong>操作系统的物理块</strong>；存储分配和 I/O 的基本单位</li>
+<li><strong>文件(file)</strong>：操作系统文件</li>
+<li><strong>块(block)</strong>：每个文件物理上分成<strong>定长的存储单元</strong>，即<strong>操作系统的物理块</strong>；存储分配和 I/O 的基本单位</li>
 <li><strong>记录</strong>：物理块中存放的多条元组</li>
 </ul>
 </li>
@@ -6690,10 +6757,10 @@
 <p><img src="9-%E9%80%BB%E8%BE%91-%E7%89%A9%E7%90%86.png" srcset="/img/loading.gif" lazyload alt=""></p>
 </li>
 </ul>
-<h4 id="1-2-记录表示">1.2 记录表示</h4>
+<h4 id="2-2-记录表示">2.2 记录表示</h4>
 <ul>
 <li>
-<p><strong>元组存储</strong>：</p>
+<p><strong>数据库记录在磁盘上的存储（元组存储）</strong>：</p>
 <ul>
 <li><strong>形式一</strong>：定长记录存储</li>
 <li><strong>形式二</strong>：变长记录存储</li>
@@ -6702,9 +6769,9 @@
 <li>
 <p><strong>定长记录存储</strong>：</p>
 <ul>
-<li>关系表中的每条记录占据相同大小的空间</li>
-<li>变长字段以定长形式存储，预留最大长度空间</li>
-<li>有些硬件系统对内存数据的起始地址有要求（4 或 8 的倍数）</li>
+<li>关系表中的<strong>每条记录占据相同大小</strong>的空间</li>
+<li><strong>变长字段以定长形式存储</strong>，预留最大长度空间</li>
+<li>有些硬件系统对内存数据的起始地址有要求（4 或 8 的倍数），在外存中要保证各字段的起始地址是 4 或 8 的倍数</li>
 <li><strong>优势</strong>：快速定位到记录及其属性的物理位置；增删改比较方便快捷</li>
 <li><strong>劣势</strong>：浪费存储空间</li>
 </ul>
@@ -6722,8 +6789,8 @@
 <ul>
 <li><strong>方式一</strong>：
 <ul>
-<li>在每条记录的头部记录该条记录的长度</li>
-<li>在记录的每个变长字段前记录该字段的长度</li>
+<li>在每条记录的<strong>头部记录该条记录的长度</strong></li>
+<li>在记录的<strong>每个变长字段前记录该字段的长度</strong></li>
 </ul>
 </li>
 <li><strong>方式二</strong>：
@@ -6735,7 +6802,7 @@
 <li><strong>方式三</strong>：
 <ul>
 <li>将定长字段与变长字段分开存储在不同的块中</li>
-<li>多用于 BLOB（Binary Large Object）等类型数据存储</li>
+<li>多用于 BLOB(Binary Large Object) 等类型数据存储</li>
 <li>若经常访问定长字段，可减少数据存取时的 I/O 数量</li>
 </ul>
 </li>
@@ -6744,7 +6811,7 @@
 </ul>
 </li>
 </ul>
-<h4 id="1-3-块的组织">1.3 块的组织</h4>
+<h4 id="2-3-块的组织">2.3 块的组织</h4>
 <ul>
 <li>
 <p><strong>定长记录存储的块组织</strong>：</p>
@@ -6752,8 +6819,11 @@
 <li><strong>块组织</strong>：
 <ul>
 <li>表中元组依次存放在块中</li>
-<li>首部+记录+空闲空间</li>
-<li><strong>首部</strong>：块头信息、块 ID、最后一次修改和访问该块的时间戳、每条记录在块内的偏移量、空闲空间头指针</li>
+<li><strong>首部+记录+空闲空间</strong>
+<ul>
+<li>首部：块头信息、块 ID、最后一次修改和访问该块的时间戳、每条记录在块内的偏移量、空闲空间头指针</li>
+</ul>
+</li>
 </ul>
 </li>
 <li><strong>块维护</strong>：
@@ -6771,8 +6841,11 @@
 <li><strong>块组织</strong>：
 <ul>
 <li>表中元组从块的尾部连续存放</li>
-<li>首部+空闲空间+记录</li>
-<li><strong>首部</strong>：各记录的指针（块内偏移量）、空闲空间尾指针（块内偏移量）</li>
+<li><strong>首部+空闲空间+记录</strong>
+<ul>
+<li>首部：各记录的指针（块内偏移量）、空闲空间尾指针（块内偏移量）</li>
+</ul>
+</li>
 </ul>
 </li>
 <li><strong>块维护</strong>：
@@ -6785,10 +6858,30 @@
 </ul>
 </li>
 </ul>
-<h4 id="1-4-关系表的组织">1.4 关系表的组织</h4>
+<h4 id="2-4-文件的组织">2.4 文件的组织</h4>
 <ul>
 <li>
-<p><strong>关系表的存放方式</strong>：</p>
+<p><strong>数据库占磁盘块的分配方法</strong>：</p>
+<ul>
+<li><strong>连续分配</strong>：数据块被分配到连续磁盘块上（<strong>存在扩展困难问题</strong>）</li>
+<li><strong>链接分配</strong>：数据块包含指向下一个数据块的指针（<strong>访问速度问题</strong>）</li>
+<li><strong>按簇分配</strong>：簇是若干连续的磁盘块，簇之间靠指针连接</li>
+<li><strong>索引分配</strong>：索引块中存放指向实际数据块的指针</li>
+</ul>
+</li>
+<li>
+<p><strong>文件组织方法</strong>：</p>
+<ul>
+<li>数据组织要考虑更新（增删改）和检索需求：
+<ul>
+<li>更新涉及数据存储空间的扩展与回收问题</li>
+<li>检索涉及扫描整个数据库的问题、大批量处理数据问题</li>
+<li>不同的需求要求不同的数据组织方法和存取方法</li>
+</ul>
+</li>
+<li><strong>文件组织(File Organization)</strong>: 指数据组织成记录、块和访问结构的方式，包括把记录和块存储在磁盘上的方式，以及记录和块之间相互联系的方法</li>
+<li><strong>存取方法(Access Method)</strong>：指对文件采取的存取操作方法，一种文件组织可采取多种存取方法进行访问</li>
+<li><strong>关系表的存放方式</strong>：
 <ul>
 <li>堆存储</li>
 <li>顺序存储</li>
@@ -6797,25 +6890,62 @@
 <li>哈希存储</li>
 </ul>
 </li>
-<li>
-<p><strong>堆存储</strong>：</p>
-<ul>
-<li>表中的一条记录可以存放在该表的任何块中，没有顺序要求</li>
-<li>插入元组时，在该表的块中找到合适的空闲空间即可</li>
-<li>如果没有足够的空闲空间，就为该表申请新的块</li>
 </ul>
 </li>
 <li>
-<p><strong>顺序存储</strong>：</p>
+<p><strong>无序记录文件(堆文件 heap 或 pile file)</strong>：</p>
 <ul>
-<li>一个表中的各条记录根据指定的属性或属性组的取值大小顺序的存放</li>
-<li>同一个表的不同块之间通过指针链接实现有序</li>
-<li><strong>优势</strong>：可以高效地处理按排序属性（组）进行查询的请求</li>
-<li><strong>劣势</strong>：维护代价较高（在增改时需要移动已有的记录以保序）</li>
+<li><strong>特点</strong>：记录可存储于任意有空间的位置，磁盘上存储的记录是无序的；<strong>更新效率高，但检索效率低</strong></li>
+<li><strong>方法 1</strong>：新记录录总插入到文件尾部，删除记录时直接删除该记录所在位置内容，也可在该记录前标记&quot;删除标记&quot;</li>
+<li><strong>方法 2</strong>：新增记录可利用那些标记为&quot;删除标记&quot;的记录空间</li>
+<li>频繁删除记录会造成空间浪费，所以需要周期性重新组织数据库
+<ul>
+<li><strong>数据库重组(Reorganization)</strong>：通过移走被删除的记录，使有效记录连续存放，从而回收那些由删除记录而产生的未利用空间</li>
+</ul>
+</li>
 </ul>
 </li>
 <li>
-<p><strong>多表聚簇存储</strong>：</p>
+<p><strong>有序记录文件(排序文件，顺序文件 Sequential)</strong>：</p>
+<ul>
+<li><strong>特点</strong>：记录按某属性或属性组值的顺序插入，磁盘上存储的记录是有序的，检索效率可能高</li>
+<li>用于存储排序的属性通常称为<strong>排序字段(Ordering field)</strong>，通常排序字段使用关系中的主码，所以又称<strong>排序码(Ordering key)</strong></li>
+<li>当按排序字段进行检索时，速度得到很大提高，但当按非排序字段检索时，速度可能不会提高很多</li>
+<li><strong>优势</strong>：可以高效地处理按排序属性(组)进行查询的请求</li>
+<li><strong>劣势</strong>：更新效率可能很低，维护代价较高（在更新时需要大量移动已有的记录）</li>
+<li><strong>改进措施 1</strong>：为将来可能插入的元组<strong>预留空间</strong>（空间浪费）</li>
+<li><strong>改进措施 2</strong>：使用一个临时<strong>无序文件(溢出文件)</strong> 保留新增记录
+<ul>
+<li>当采取溢出文件措施时，检索操作既要操作主文件，又要操作溢出文件，所以需要周期性重新组织数据库</li>
+<li><strong>数据库重组</strong>，将溢出文件合并到主文件，并恢复主文件中的记录顺序</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>散列文件(Hash file)</strong>：</p>
+<ul>
+<li><strong>特点</strong>：用哈希函数计算表中指定属性的哈希值，以此确定相应记录应存放位置：<strong>哈希桶号</strong>(Bucket, 块号或簇号等)；检索效率和更新效率都有一定程度提高</li>
+<li>用于进行散列函数计算的属性，通常称为<strong>散列字段(Hash Field)</strong>，散列字段通常也采用关系中的主码，又称<strong>散列码(Hash Key)</strong></li>
+<li>不同记录可能被 hash 成同一桶号，此时需在桶内顺序检索出某一记录</li>
+<li>链接法处理溢出</li>
+<li>散列还有很多问题及处理技巧，如散列桶的数目以及桶的大小，动态散列技术等</li>
+</ul>
+</li>
+<li>
+<p><strong>聚簇文件(Clustering File)</strong>：</p>
+<ul>
+<li><strong>聚簇</strong>：将具有相同或相似属性值的记录存放于连续的磁盘簇块中</li>
+<li><strong>多表聚簇</strong>：将若干个相互关联的 Table 存储于一个文件中，可提高多表情况下的查询速度</li>
+<li>不同表的元组聚簇存放在同一组块中，减少连接操作</li>
+<li><strong>优势</strong>：可以减少连接操作带来的开销，快速回答某些查询</li>
+<li><strong>劣势</strong>：
+<ul>
+<li>降低某些查询的查询效率（同一表中的元组会分散在更多块中）</li>
+<li>在更新操作时会带来更频繁的数据迁移</li>
+</ul>
+</li>
+<li><strong>多表聚簇存储</strong>：
 <ul>
 <li>不同表的元组聚簇存放在同一组块中，减少连接操作</li>
 <li><strong>优势</strong>：可以减少连接操作带来的开销，快速回答某些查询</li>
@@ -6827,30 +6957,44 @@
 </li>
 </ul>
 </li>
+</ul>
+</li>
+</ul>
+<h3 id="3-索引结构">3. 索引结构</h3>
+<ul>
 <li>
-<p><strong>B+ 树存储</strong>：</p>
+<p><strong>索引结构</strong>：</p>
 <ul>
-<li>以 B+ 树索引的方式确定记录存放在哪个数据块中</li>
-<li>保持较高的访问效率的同时，降低数据维护开销</li>
+<li><strong>索引</strong>：定义在存储表(Table)基础之上，无需检查所有记录而快速定位所需记录的一种<strong>辅助存储结构</strong>，由一系列存储在磁盘上的<strong>索引项</strong>(Index Entries)组成，每一索引项又由两部分组成：
+<ul>
+<li><strong>索引字段</strong>：Table 中某些列串接而成，通常存储索引字段的每一个值</li>
+<li><strong>行指针</strong>：指向 Table 中包含索引字段值的记录在磁盘上的存储位置</li>
+</ul>
+</li>
+<li>存储索引项的文件，为<strong>索引文件</strong>；存储表称为<strong>主文件</strong></li>
 </ul>
 </li>
 <li>
-<p><strong>哈希存储</strong>：</p>
+<p><strong>索引文件</strong>：</p>
 <ul>
-<li>用哈希函数计算表中<strong>指定属性的哈希值</strong>，以此确定相应记录放在哪个块中
+<li>索引文件是辅助存储文件，其存在与否<strong>不改变存储表的物理存储结构</strong>；然而其的存在，可以<strong>提高存储表的访问速度</strong></li>
+<li>索引文件的组织有两种方式：
 <ul>
-<li><strong>哈希表</strong>：由 B 个哈希桶（bucket）组成，每个桶编号 0 到 B-1，对应一个或多个物理块，存放一条或多条记录</li>
-<li><strong>哈希函数</strong>：输入为记录的哈希属性，输出为介于 0 到 B-1 之间的整数，对应哈希桶号</li>
+<li><strong>排序索引文件</strong>：按索引字段值的某一种顺序组织存储</li>
+<li><strong>散列索引文件</strong>：依据索引字段值使用散列函数分配散列桶的方式存储</li>
 </ul>
 </li>
-<li>将记录的<strong>存储位置</strong>与其<strong>指定属性的哈希值</strong>之间建立一个对应关系，查找记录时可快速定位这条记录</li>
+<li>在一个表上，可针对不同属性或属性组合建立不同的索引文件，<strong>可建立多个索引文件</strong>；索引字段可以是 Table 中任何<strong>一个属性</strong>的值或<strong>多个属性值的组合</strong></li>
+<li>索引文件比主文件小很多，通过检索一个<strong>小的索引文件</strong>（可能全部装载进内存），快速定位后，再有针对性的读取<strong>非常大的主文件</strong>中有关记录</li>
+<li>有索引时，<strong>更新操作必须同步更新索引文件和主文件</strong></li>
 </ul>
 </li>
-</ul>
-<h3 id="2-索引结构">2. 索引结构</h3>
+<li>
+<p><strong>索引应用的评价问题</strong>：</p>
 <ul>
-<li><strong>索引</strong>：类似图书目录的附加结构，提高查询处理效率
-<ul>
+<li>索引技术应用，使检索效率大幅度提高，但也增加了存储空间，使维护负担加重（不仅要维护主文件，还要维护索引文件）</li>
+<li><strong>衡量索引性能的好坏</strong>：<strong>访问时间、插入时间、删除时间、空间负载、支持存取的有效性</strong></li>
+<li><strong>对哪些属性建立索引</strong>：经常出现在<strong>检索条件、连接条件、分组计算条件</strong>中</li>
 <li><strong>优势</strong>：
 <ul>
 <li>表的索引块数量通常比数据块数量少得多</li>
@@ -6867,11 +7011,20 @@
 </li>
 </ul>
 </li>
+<li>
+<p><strong>索引的基本知识</strong>：</p>
+<ul>
+<li>当定义 Table 后，如果定义了主码，系统将自动创建<strong>主索引</strong>，利用主索引对 Table 进行快速定位、检索与更新操作</li>
+<li>索引可由用户创建，也可由用户撤销</li>
+<li>当索引被创建后，无论是主索引，还是用户创建索引，DBMS 都自动维护所有索引，使其与 Table 保持一致，即当一条记录被插入到 Table，所有索引自动更新</li>
+<li>当 Table 被删除后，定义在该表上的所有索引将自动撤销</li>
 </ul>
-<h4 id="2-1-顺序表索引">2.1 顺序表索引</h4>
+</li>
+</ul>
+<h4 id="3-1-顺序表索引">3.1 顺序表索引</h4>
 <ul>
 <li>
-<p><strong>顺序表索引</strong>：在顺序表的<strong>排序属性</strong>（组）上建立索引，也称作主索引（Primary Index）或聚簇索引（Clustering Index）</p>
+<p><strong>顺序表索引</strong>：在顺序表的<strong>排序属性</strong>(组)上建立索引，也称作主索引(Primary Index)或聚簇索引(Clustering Index)</p>
 <ul>
 <li>稠密索引</li>
 <li>稀疏索引</li>
@@ -6879,21 +7032,21 @@
 </ul>
 </li>
 <li>
-<p><strong>稠密索引（Dense Index）</strong>：索引块中存放<strong>每条</strong>记录的<strong>索引属性值</strong>以及<strong>指向相应记录的指针</strong></p>
+<p><strong>稠密索引(Dense Index)</strong>：索引块中存放<strong>每条</strong>记录的<strong>索引属性值</strong>以及<strong>指向相应记录的指针</strong></p>
 <ul>
 <li>有序索引，索引较大时，可利用二分查找法在稠密索引查找指定索引项</li>
 <li>利用索引查询可减少 I/O</li>
 </ul>
 </li>
 <li>
-<p><strong>稀疏索引（Sparse Index）</strong>：基本表的<strong>每个物理存储块只对应一个索引项</strong>，每个索引项存放每个物理块的第一条记录的索引属性值及指向该物理块的指针</p>
+<p><strong>稀疏索引(Sparse Index)</strong>：基本表的<strong>每个物理存储块只对应一个索引项</strong>，每个索引项存放每个物理块的第一条记录的索引属性值及指向该物理块的指针</p>
 <ul>
-<li>尺寸小于稠密索引</li>
+<li>空间小于稠密索引</li>
 <li>索引维护代价较小：对基本表进行增删改时，只要不是存储块第一条记录的索引属性，稀疏索引就不需要维护</li>
 </ul>
 </li>
 <li>
-<p><strong>多多级索引（Multilevel Index）</strong>：解决索引尺寸大问题</p>
+<p><strong>多级索引(Multilevel Index)</strong>：解决索引尺寸大问题，<strong>对索引再建立索引</strong>，形成多级索引</p>
 <ul>
 <li><strong>索引建立</strong>：
 <ul>
@@ -6906,9 +7059,13 @@
 </ul>
 </li>
 </ul>
-<h4 id="2-2-辅助索引">2.2 辅助索引</h4>
+<h4 id="3-2-辅助索引">3.2 辅助索引</h4>
 <ul>
-<li><strong>辅助索引（Secondary Index）</strong>：建立在表的<strong>非排序属性上的索引</strong>
+<li>
+<p><strong>主索引</strong>：每个存储块有一个索引项，为当前存储块的第一条记录，索引项总数与存储表所占存储块的数目相同，通常建立在<strong>有序主文件的主码/排序码</strong>字段上</p>
+</li>
+<li>
+<p><strong>辅助索引(Secondary Index)</strong>：建立在表的<strong>非排序属性上的索引</strong></p>
 <ul>
 <li>一个表最多只能建立一个主索引，但可以在不同属性上建立多个辅助索引</li>
 <li>辅助索引必须是<strong>稠密索引</strong></li>
@@ -6918,7 +7075,20 @@
 </ul>
 </li>
 </ul>
-<h4 id="2-3-B-树索引">2.3 B+ 树索引</h4>
+<h4 id="3-3-聚簇索引">3.3 聚簇索引</h4>
+<ul>
+<li><strong>非聚簇索引</strong>：索引中邻近的记录在主文件中不一定是邻近存储</li>
+<li><strong>聚簇索引</strong>：索引中邻近的记录在主文件中也邻近存储
+<ul>
+<li>如果主文件的某一排序字段<strong>不是主码</strong>，则该字段上每个记录取值不唯一，则该字段称为聚簇字段，聚簇索引通常定义在聚簇字段上</li>
+<li>聚簇索引对聚簇字段上每一个不同值有一个索引项</li>
+<li><strong>一个主文件只能有一个聚簇索引文件</strong>，但可有多个非聚簇索引文件</li>
+<li>主索引通常是聚簇索引，辅助索引通常是非聚簇索引</li>
+<li><strong>主索引和聚簇索引是能决定存储位置的索引</strong>，非聚簇索引只能用于查询，指出已存储记录的位置</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-4-B-树索引">3.4 B+ 树索引</h4>
 <ul>
 <li>
 <p><strong>稠密索引与稀疏索引的问题</strong>：随着数据量增大</p>
@@ -6929,21 +7099,14 @@
 </ul>
 </li>
 <li>
-<p><strong>多级索引</strong>：</p>
-<ul>
-<li>缓解前两个问题</li>
-<li>加剧索引维护代价</li>
-</ul>
-</li>
-<li>
-<p><strong>B+ 树索引</strong>：</p>
+<p><strong>B+ 树索引/多级索引</strong>：</p>
 <ul>
 <li>解决大型索引的组织和维护</li>
 <li>查找效率高、按不同值查找性能平衡、易于维护等</li>
 </ul>
 </li>
 <li>
-<p><strong>B+ 树索引的结构</strong>：本质上是一个多级索引，将索引块组织成一棵平衡树，从树根到树叶的所有路径一样长</p>
+<p><strong>B+ 树索引的结构</strong>：本质上是一个<strong>多级索引</strong>，将索引块组织成一棵 <strong>M 叉平衡树</strong>，从树根到树叶的所有路径一样长</p>
 <ul>
 <li><strong>B+ 树的三类结点</strong>：根结点（只有一个）、中间结点、叶结点</li>
 <li><strong>B+ 树的秩（order）</strong>：一个索引块最多能存放的指针的个数，对于一棵秩为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 的 B+ 树索引：
@@ -6961,15 +7124,25 @@
 <li>结点中的属性值按序存放，如果 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>&lt;</mo><mi>j</mi></mrow><annotation encoding="application/x-tex">i&lt;j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6986em;vertical-align:-0.0391em;"></span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.854em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.05724em;">j</span></span></span></span>，则 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mi>i</mi></msub><mo>&lt;</mo><msub><mi>K</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">K_i &lt; K_j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span></li>
 </ul>
 </li>
-<li><strong>B+ 树索引的叶结点</strong>：</li>
-<li>指针 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">P_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 指向关系表中属性值为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">K_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 的元组<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>i</mi><mo>=</mo><mn>1</mn><mo separator="true">,</mo><mn>2</mn><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(i = 1, 2, \dots, n-1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span></span></span></span></li>
-<li>指针 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">P_n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 指向其兄弟叶结点，最后一个叶结点的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">P_n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 为空</li>
 <li><strong>B+ 树索引的非叶结点</strong>：
 <ul>
-<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">P_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 指向其下层的孩子结点 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>i</mi><mo>=</mo><mn>1</mn><mo separator="true">,</mo><mn>2</mn><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(i = 1, 2, \dots, n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">P_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 指向其下层的孩子结点 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>i</mi><mo>=</mo><mn>1</mn><mo separator="true">,</mo><mn>2</mn><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(i = 1, 2, \dots, n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span>（<strong>索引块</strong>）</li>
 <li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">P_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 指向的子树，其所有属性值 Key 均满足 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">K</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">y</mi></mrow><mo>&lt;</mo><msub><mi>K</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\mathrm{Key} &lt; K_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathrm" style="margin-right:0.01389em;">Key</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></li>
 <li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>i</mi></msub><mo stretchy="false">(</mo><mi>i</mi><mo>=</mo><mn>1</mn><mo separator="true">,</mo><mn>2</mn><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">P_i (i = 1, 2, \dots, n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span> 指向的子树，其所有属性值 Key 均满足 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>≤</mo><mrow><mi mathvariant="normal">K</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">y</mi></mrow><mo>&lt;</mo><msub><mi>K</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">K_{i-1} \le \mathrm{Key} &lt; K_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8917em;vertical-align:-0.2083em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathrm" style="margin-right:0.01389em;">Key</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></li>
 <li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">P_n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 指向的子树，其所有属性值 Key 均满足 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">K</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">y</mi></mrow><mo>≥</mo><msub><mi>K</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\mathrm{Key} \ge K_{n-1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathrm" style="margin-right:0.01389em;">Key</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8917em;vertical-align:-0.2083em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span></span></span></span></li>
+</ul>
+</li>
+<li><strong>B+ 树索引的叶结点</strong>：
+<ul>
+<li>指针 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">P_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 指向关系表中属性值为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">K_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 的元组<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>i</mi><mo>=</mo><mn>1</mn><mo separator="true">,</mo><mn>2</mn><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(i = 1, 2, \dots, n-1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span></span></span></span></li>
+<li><strong>指针 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">P_n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 指向其兄弟叶结点</strong>，最后一个叶结点的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">P_n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 为空</li>
+</ul>
+</li>
+<li>B+ 树可建立码属性稠密索引(记录)和稀疏索引(数据块)，非码属性的稠密索引
+<ul>
+<li>指向主文件的指针<strong>仅出现</strong>于叶结点</li>
+<li>所有叶结点<strong>可覆盖</strong>所有键值的索引</li>
+<li>索引字段值在叶结点中按<strong>顺序排列</strong></li>
 </ul>
 </li>
 </ul>
@@ -6984,12 +7157,13 @@
 <li>直到叶结点（匹配则返回结果，否则没有满足条件的元组）</li>
 </ul>
 </li>
-<li><strong>范围查找</strong>：between … and …
+<li><strong>范围查找(between … and …) 或顺序查找</strong>：
 <ul>
 <li>用随机查找的方法分别找到范围条件的入口点和结束点</li>
 <li>对入口点和结束点之间的属性值进行顺序搜索</li>
 </ul>
 </li>
+<li>无论查询条件中的属性值是什么，查询效率都相似</li>
 </ul>
 </li>
 <li>
@@ -7007,7 +7181,7 @@
 <li>当前叶结点分裂成 2 个叶结点</li>
 <li>父结点插入</li>
 <li>维护父结点</li>
-<li>逐层向上，直到插入完成（若根结点分裂会导致树的高度增加一层）</li>
+<li>逐层向上，直到插入完成（若根结点<strong>分裂</strong>会导致树的高度增加一层）</li>
 </ul>
 </li>
 </ul>
@@ -7026,7 +7200,7 @@
 <li>合并叶结点</li>
 <li>删除父结点索引项</li>
 <li>维护父结点</li>
-<li>逐层向上，直到删除完成（若合并传递至根结点会导致树的高度降低一层）</li>
+<li>逐层向上，直到删除完成（若<strong>合并</strong>传递至根结点会导致树的高度降低一层）</li>
 </ul>
 </li>
 </ul>
@@ -7034,7 +7208,7 @@
 </ul>
 </li>
 </ul>
-<h4 id="2-4-哈希索引">2.4 哈希索引</h4>
+<h4 id="3-5-哈希索引">3.5 哈希索引</h4>
 <ul>
 <li>
 <p><strong>两个关键要素</strong>：</p>
@@ -7052,10 +7226,10 @@
 <li>
 <p><strong>静态哈希索引</strong>：</p>
 <ul>
-<li><strong>哈希函数的设计原则</strong>：尽量保证函数的取值随机和均匀；不会出现某个桶的索引项远远超过其他桶</li>
+<li><strong>哈希函数的设计原则</strong>：尽量保证函数的<strong>取值随机和均匀分布</strong>，不会出现某个桶的索引项远远超过其他桶</li>
 <li><strong>哈希表的构成</strong>：
 <ul>
-<li>由一组桶组成，一个桶对应一个或多个物理块</li>
+<li>由一组桶组成，一个桶<strong>对应一个或多个物理块</strong></li>
 <li>桶中存放被映射到该桶的哈希索引项</li>
 <li>每条索引项包括索引属性值和指向相应记录的指针</li>
 </ul>
@@ -7072,7 +7246,7 @@
 <li><strong>减少桶溢出的措施</strong>：
 <ul>
 <li>预留一定百分比的空间：溢出仍不可避免</li>
-<li>分配溢出桶：当溢出桶空间充满时，追加新的溢出桶；用溢出链将一个桶及其溢出桶链接在一起</li>
+<li><strong>分配溢出桶</strong>：当溢出桶空间充满时，追加新的溢出桶；用溢出链将一个桶及其溢出桶链接在一起</li>
 </ul>
 </li>
 </ul>
@@ -7088,12 +7262,12 @@
 <ul>
 <li>插入元组时，需向哈希索引中插入相应的索引项
 <ul>
-<li>哈希函数计算桶号：若桶中有空间，直接插入；若桶中空间已满，申请溢出桶并插入</li>
+<li>哈希函数计算桶号：若桶中有空间，直接插入；若桶中空间已满，<strong>申请溢出桶并插入</strong></li>
 </ul>
 </li>
 <li>删除元组时，需删除相应的索引项
 <ul>
-<li>哈希函数计算桶号：若没有溢出块，直接删除；若有溢出块，判断是否有空间合并溢出块</li>
+<li>哈希函数计算桶号：若没有溢出块，直接删除；若有溢出块，判断是否有空间<strong>合并溢出块</strong></li>
 </ul>
 </li>
 </ul>
@@ -7103,26 +7277,32 @@
 <li>
 <p><strong>动态哈希索引</strong>：</p>
 <ul>
-<li><strong>静态哈希索引的问题</strong>：桶的个数事先确定且不再改变
+<li>静态哈希索引中，<strong>桶的个数事先确定且不再改变</strong>
 <ul>
 <li>桶溢出不可避免，影响查找效率</li>
+</ul>
+</li>
 <li><strong>两种解决方法</strong>：
 <ul>
 <li>适当预留桶空间：表数据量难以估算</li>
 <li>随着关系表的增大，周期性地增加哈希桶数目，并重组索引：耗时，影响正在进行的查询</li>
 </ul>
 </li>
-</ul>
-</li>
 <li><strong>动态哈希索引</strong>：随着关系表的增大，逐渐扩大桶的数目
 <ul>
+<li><strong>问题</strong>：
+<ul>
+<li>哈希函数和桶的数目 M 有关，M 的变化是否会影响原来存储的数据</li>
+<li>是否需要将原来散列数据按新的桶数重新散列存储</li>
+</ul>
+</li>
 <li><strong>两类动态哈希索引</strong>：可扩展哈希索引、线性哈希索引</li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
-<h4 id="2-5-位图索引">2.5 位图索引</h4>
+<h4 id="3-6-位图索引">3.6 位图索引</h4>
 <ul>
 <li>
 <p><strong>位图索引</strong>：</p>
