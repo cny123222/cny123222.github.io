@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/db.png">
 <meta property="article:published_time" content="2026-03-09T08:30:32.000Z">
-<meta property="article:modified_time" content="2026-06-14T08:59:45.330Z">
+<meta property="article:modified_time" content="2026-06-14T10:59:08.807Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="知识点整理">
@@ -8188,10 +8188,15 @@
 <li>并行事务发生死锁而被选中撤销该事务</li>
 </ul>
 </li>
-<li><strong>事务故障的恢复</strong>：事务撤消(UNDO)
+<li><strong>事务故障意味着</strong>：
+<ul>
+<li>事务没有达到预期的终点（COMMIT 或显式的 ROLLBACK）</li>
+<li>数据库可能处于<strong>不正确状态</strong></li>
+</ul>
+</li>
+<li><strong>事务故障的恢复</strong>：<strong>事务撤消(UNDO)</strong>
 <ul>
 <li>强行回滚(ROLLBACK)该事务</li>
-<li>发生事务故障时，夭折事务可能已把对数据库的部分修改写回磁盘</li>
 <li>撤销该事务对数据库的所有修改，使得该事务像根本没有启动过</li>
 </ul>
 </li>
@@ -8200,12 +8205,12 @@
 <li>
 <p><strong>系统故障</strong>：</p>
 <ul>
-<li><strong>什么是系统故障</strong>：
+<li><strong>什么是系统故障</strong>：又称软故障，是指造成系统停止运转的任何事件，使得系统要重新启动
 <ul>
-<li>整个系统的正常运行突然被破坏</li>
-<li>所有正在运行的事务都非正常终止</li>
-<li>内存中数据库缓冲区的信息全部丢失</li>
-<li>影响正在运行的所有事务，但不破坏数据库</li>
+<li>所有<strong>正在运行的事务</strong>都非正常终止</li>
+<li>影响正在运行的所有事务，但<strong>不破坏数据库</strong></li>
+<li><strong>内存中数据库缓冲区的信息全部丢失</strong></li>
+<li>部分尚<strong>未完成的事务</strong>的结果可能已送入物理数据库，从而造成数据库可能处于不正确的状态</li>
 </ul>
 </li>
 <li><strong>系统故障的常见原因</strong>：
@@ -8214,18 +8219,19 @@
 <li>操作员操作失误</li>
 <li>特定类型的硬件错误（如 CPU 故障）</li>
 <li>突然停电</li>
+<li>导致系统崩溃的计算机病毒</li>
 </ul>
 </li>
 <li><strong>系统故障的恢复</strong>：
 <ul>
-<li>清除尚未完成的事务对数据库的所有修改
+<li>清除尚<strong>未完成的事务</strong>对数据库的所有修改
 <ul>
-<li>系统重新启动时，恢复程序要强行撤消(UNDO)所有未完成事务</li>
+<li>系统<strong>重新启动时</strong>，恢复程序要<strong>强行撤消(UNDO)所有未完成事务</strong></li>
 </ul>
 </li>
-<li>将缓冲区中已完成事务提交的结果写入数据库
+<li>将缓冲区中<strong>已完成事务</strong>提交的结果写入数据库
 <ul>
-<li>系统重新启动时，恢复程序需要重做(REDO)所有已提交的事务</li>
+<li>系统<strong>重新启动</strong>时，恢复程序需要<strong>重做(REDO)所有已提交的事务</strong></li>
 </ul>
 </li>
 </ul>
@@ -8233,18 +8239,27 @@
 </ul>
 </li>
 <li>
-<p><strong>介质故障</strong>：</p>
+<p><strong>介质故障/磁盘故障</strong>：</p>
 <ul>
 <li><strong>什么是介质故障</strong>：
 <ul>
-<li>硬件故障使存储在外存中的数据部分丢失或全部丢失，并影响正在存取这部分数据的所有事务</li>
+<li><strong>硬件故障</strong>使存储在外存中的数据部分丢失或全部丢失，并影响<strong>正在存取这部分数据的所有事务</strong></li>
 <li>介质故障比前两类故障的可能性小得多，但破坏性最大</li>
+<li>需要借助存储在其他地方的<strong>数据备份</strong>来恢复数据库</li>
 </ul>
 </li>
-<li><strong>介质故障的常见原因</strong>：磁盘损坏、磁头碰撞、操作系统的某种潜在错误、瞬时强磁场干扰</li>
+<li><strong>介质故障的常见原因</strong>：
+<ul>
+<li>磁盘损坏</li>
+<li>磁头碰撞</li>
+<li>操作系统的某种潜在错误</li>
+<li>瞬时强磁场干扰</li>
+<li>破坏硬盘数据的计算机病毒</li>
+</ul>
+</li>
 <li><strong>介质故障的恢复</strong>：
 <ul>
-<li>装入数据库发生介质故障前某个时刻的数据副本</li>
+<li>装入数据库发生介质故障前某个时刻的<strong>数据副本</strong>（冗余）</li>
 <li>重做自此时开始的所有成功事务，将这些事务已提交的结果重新记入数据库</li>
 </ul>
 </li>
@@ -8255,7 +8270,7 @@
 <ul>
 <li><strong>恢复操作的基本原理</strong>：冗余
 <ul>
-<li>利用存储在系统其它地方的冗余数据来重建数据库中已被破坏或不正确的那部分数据</li>
+<li>利用存储在系统其它地方的<strong>冗余数据来重建</strong>数据库中已被破坏或不正确的那部分数据</li>
 </ul>
 </li>
 <li><strong>恢复的实现技术</strong>：复杂
@@ -8270,13 +8285,13 @@
 <ul>
 <li><strong>恢复机制涉及的关键问题</strong>：
 <ul>
-<li><strong>如何建立冗余数据</strong>：
+<li>如何建立冗余数据：
 <ul>
-<li>数据转储（backup）</li>
-<li>登录日志文件（logging）</li>
+<li>数据转储(backup)</li>
+<li>登录日志文件(logging)</li>
 </ul>
 </li>
-<li><strong>如何利用这些冗余数据实施数据库恢复</strong></li>
+<li>如何利用这些冗余数据实施数据库恢复</li>
 </ul>
 </li>
 </ul>
@@ -8286,24 +8301,19 @@
 <p><strong>什么是转储</strong>：</p>
 <ul>
 <li>转储是指 DBA 定期将整个数据库复制到磁带、磁盘或其他存储介质上保存起来的过程</li>
-<li>这些备用的数据文本称为后备副本或后援副本</li>
-<li>数据库遭到破坏后可以将后备副本重新装入，但重装后备副本只能将数据库恢复到转储时的状态</li>
+<li>这些备用的数据文本称为<strong>后备副本</strong>或后援副本</li>
+<li>数据库遭到破坏后可以将后备副本重新装入，但<strong>重装后备副本只能将数据库恢复到转储时的状态</strong></li>
 </ul>
 </li>
 <li>
 <p><strong>转储方法</strong>：</p>
 <ul>
-<li>静态转储与动态转储</li>
-<li>海量转储与增量转储</li>
-<li>转储方法小结</li>
-</ul>
-</li>
 <li>
 <p><strong>静态转储</strong>：</p>
 <ul>
 <li>在系统中无运行事务时进行转储</li>
 <li>转储开始时数据库处于一致性状态</li>
-<li>转储期间不允许对数据库的任何存取、修改活动</li>
+<li>转储期间<strong>不允许对数据库的任何存取、修改活动</strong></li>
 <li><strong>优点</strong>：实现简单</li>
 <li><strong>缺点</strong>：降低了数据库的可用性
 <ul>
@@ -8317,7 +8327,7 @@
 <p><strong>动态转储</strong>：</p>
 <ul>
 <li>转储操作与用户事务并发进行</li>
-<li>转储期间允许对数据库进行存取或修改</li>
+<li><strong>转储期间允许对数据库进行存取或修改</strong></li>
 <li><strong>优点</strong>：
 <ul>
 <li>不用等待正在运行的用户事务结束</li>
@@ -8326,13 +8336,13 @@
 </li>
 <li><strong>缺点</strong>：
 <ul>
-<li>不能保证副本中的数据正确有效</li>
+<li><strong>不能保证副本中的数据正确有效</strong></li>
 </ul>
 </li>
 <li><strong>利用动态转储得到的副本进行故障恢复</strong>：
 <ul>
-<li>需要把动态转储期间各事务对数据库的修改活动登记下来，建立日志文件（log file）</li>
-<li>后备副本加上日志文件才能把数据库恢复到某一时刻的正确状态</li>
+<li>需要把动态转储期间各事务对数据库的修改活动登记下来，建立<strong>日志文件(log file)</strong></li>
+<li><strong>后备副本</strong>加上<strong>日志文件</strong>才能把数据库恢复到某一时刻的正确状态</li>
 </ul>
 </li>
 </ul>
@@ -8340,12 +8350,14 @@
 <li>
 <p><strong>海量转储与增量转储</strong>：</p>
 <ul>
-<li><strong>海量转储</strong>：每次转储全部数据库</li>
-<li><strong>增量转储</strong>：只转储上次转储后更新过的数据</li>
+<li><strong>海量转储</strong>：<strong>每次转储全部数据库</strong></li>
+<li><strong>增量转储</strong>：只转储<strong>上次转储后更新过的数据</strong></li>
 <li><strong>海量转储与增量转储比较</strong>：
 <ul>
 <li>从恢复角度看，使用海量转储得到的后备副本进行恢复往往更方便</li>
 <li>但如果数据库很大，事务处理又十分频繁，则增量转储方式更实用更有效</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -8364,38 +8376,22 @@
 </li>
 </ul>
 </li>
-<li>
-<p><strong>Oracle 的恢复技术</strong>：转储</p>
-<ul>
-<li><strong>转储后备副本的方法</strong>：
-<ul>
-<li>文件拷贝</li>
-<li>EXPORT 实用程序</li>
-<li>用 SQL 命令 SPOOL</li>
-<li>自己编程实现</li>
-</ul>
-</li>
-<li><strong>重装后备副本的方法</strong>：
-<ul>
-<li>文件拷贝</li>
-<li>IMPORT 实用程序</li>
-<li>SQL*LOADER实用程序</li>
-<li>自己编程实现</li>
-</ul>
-</li>
-</ul>
-</li>
 </ul>
 <h4 id="3-2-登记日志文件">3.2 登记日志文件</h4>
 <ul>
 <li>
 <p><strong>日志文件的内容</strong>：</p>
 <ul>
-<li><strong>什么是日志文件</strong>：日志文件(log)是用来记录事务对数据库的更新操作的文件</li>
+<li><strong>什么是日志文件</strong>：
+<ul>
+<li>日志文件(log file)是用来<strong>记录事务对数据库的更新操作</strong>的文件</li>
+<li>运行日志<strong>直接写入介质存储</strong>上，所以会保持正确性</li>
+</ul>
+</li>
 <li><strong>日志文件的格式</strong>：
 <ul>
-<li>以记录为单位的日志文件</li>
-<li>以数据块为单位的日志文件</li>
+<li>以<strong>记录</strong>为单位的日志文件</li>
+<li>以<strong>数据块</strong>为单位的日志文件</li>
 </ul>
 </li>
 <li><strong>日志文件内容</strong>：均为日志文件中的一个日志记录(log record)
@@ -8410,17 +8406,16 @@
 <ul>
 <li>事务标识（标明是哪个事务）</li>
 <li>操作类型（插入、删除或修改）</li>
-<li>操作对象（记录 ID、Block NO.）</li>
+<li>操作对象（记录 ID、Block NO.、记录内部标识）</li>
 <li>更新前数据的旧值（对插入操作而言，此项为空值）</li>
 <li>更新后数据的新值（对删除操作而言，此项为空值）</li>
 </ul>
 </li>
-<li><strong>基于数据块的日志文件</strong>：每条日志记录的内容
+<li><strong>基于数据块的日志文件</strong>：每条日志记录的内容：
 <ul>
 <li>事务标识（标明是哪个事务）</li>
-<li>更新前数据的旧值（对插入操作而言，此项为空值）</li>
-<li>更新后数据的新值（对删除操作而言，此项为空值）</li>
-<li>取消了操作类型和操作对象</li>
+<li>被更新的数据块</li>
+<li>由于将更新前的整个块和更新后的整个块都放入日志文件中，操作类型和操作对象等信息就无需放入日志记录中</li>
 </ul>
 </li>
 </ul>
@@ -8428,18 +8423,11 @@
 <li>
 <p><strong>日志文件的用途</strong>：</p>
 <ul>
-<li><strong>用途</strong>：进行事务故障恢复；进行系统故障恢复；协助后备副本进行介质故障恢复</li>
-<li><strong>静态转储介质故障恢复</strong>：
-<ul>
-<li>静态转储的数据已是一致性的数据</li>
-<li>如果静态转储完成后，仍能定期转储日志文件，则在出现介质故障重装数据副本后，可利用日志文件副本对已完成的事务进行重做处理，对尚未完成的事务进行撤销处理</li>
-<li>这样不必重新运行那些已完成的事务程序就可把数据库恢复到故障前某一时刻的正确状态</li>
-</ul>
-</li>
+<li><strong>用途</strong>：进行<strong>事务故障</strong>恢复；进行<strong>系统故障</strong>恢复；协助后备副本进行<strong>介质故障</strong>恢复</li>
 <li><strong>动态转储介质故障恢复</strong>：LOG FILE + 动态转储后备副本
 <ul>
 <li>动态转储数据库：同时转储同一时点的日志文件</li>
-<li>后备副本与该日志文件结合起来才能将数据库恢复到一致性状态</li>
+<li><strong>后备副本</strong>与该<strong>日志文件</strong>结合起来才能将数据库恢复到一致性状态</li>
 <li>利用这些日志文件副本进一步恢复事务，避免重新运行事务程序</li>
 </ul>
 </li>
@@ -8453,16 +8441,15 @@
 <li>登记的次序严格按并行事务执行的时间次序</li>
 <li><strong>必须先写日志文件，后写数据库</strong>
 <ul>
-<li><strong>写日志文件操作</strong>：把表示这个修改的日志记录写到日志文件</li>
-<li><strong>写数据库操作</strong>：把对数据的修改写到数据库中</li>
+<li>写日志文件操作：把表示这个<strong>修改的日志记录</strong>写到日志文件</li>
+<li>写数据库操作：把对<strong>数据的修改</strong>写到数据库中</li>
 </ul>
 </li>
 </ul>
 </li>
 <li><strong>为什么要先写日志文件</strong>：
 <ul>
-<li>写数据库和写日志文件是两个不同的操作；</li>
-<li>在这两个操作之间可能发生故障；</li>
+<li>写数据库和写日志文件是两个不同的操作，在这两个操作之间可能发生故障</li>
 <li>如果先写了数据库修改，而在日志文件中没有登记下这个修改，则以后就无法恢复这个修改了</li>
 <li>如果先写日志，但没有修改数据库，按日志文件恢复时只不过是多执行一次不必要的 UNDO 操作，并不会影响数据库的正确性</li>
 </ul>
@@ -8472,16 +8459,16 @@
 <li>
 <p><strong>Oracle 登记日志文件</strong>：</p>
 <ul>
-<li><strong>ORACLE V.5</strong>：日志文件以数据块为单位，恢复操作不是基于操作，而是基于数据块</li>
+<li><strong>ORACLE V.5</strong>：<strong>日志文件以数据块为单位</strong>，恢复操作不是基于操作，而是基于数据块</li>
 <li>将更新前的旧值与更新后的新值分别放在两个不同的日志文件中
 <ul>
-<li>记录数据库更新前旧值的日志文件称为数据库前像文件（Before Image，简称 BI 文件）</li>
-<li>记录数据库更新后新值的日志文件称为数据库的后像文件（AfterImage，简称 AI 文件）；</li>
-<li>BI 文件是必须的，AI 文件是任选的；</li>
+<li>记录数据库更新前旧值的日志文件称为<strong>数据库前像文件(Before Image，简称 BI 文件)</strong></li>
+<li>记录数据库更新后新值的日志文件称为<strong>数据库后像文件(After Image，简称 AI 文件)</strong>；</li>
+<li>BI 文件是必须的，AI 文件是任选的</li>
 <li>没有 AI 文件：只能执行 UNDO 处理，不能执行 REDO 处理</li>
 </ul>
 </li>
-<li><strong>ORACLE V.7</strong>：REDO 日志 + 回滚段
+<li><strong>ORACLE V.7</strong>：<strong>REDO 日志 + 回滚段</strong>
 <ul>
 <li>REDO 日志文件：更新数据的前像和后像；</li>
 <li>回滚段(Rollback Segment)：记录尚未完成的更新事务的更新数据的前像</li>
@@ -8498,19 +8485,19 @@
 <p><strong>事务故障的恢复</strong>：</p>
 <ul>
 <li><strong>事务故障</strong>：事务在运行至正常终止点前被终止</li>
-<li><strong>恢复方法</strong>：恢复子系统应利用日志文件撤消（UNDO）此事务已对数据库进行的修改</li>
+<li><strong>恢复方法</strong>：恢复子系统应利用日志文件**撤消(UNDO)**此事务已对数据库进行的修改</li>
 <li>事务故障的恢复由系统自动完成，不需要用户干预</li>
 </ul>
 </li>
 <li>
 <p><strong>事务故障的恢复步骤</strong>：</p>
 <ul>
-<li>反向扫描日志文件（即从最后向前扫描日志文件），查找该事务的更新操作</li>
+<li><strong>反向</strong>扫描日志文件（即从最后向前扫描日志文件），查找该事务的更新操作</li>
 <li>对该事务的更新操作执行逆操作，即将日志记录中“更新前的值” (Before Image, BI) 写入数据库：
 <ul>
-<li>插入操作，“更新前的值”为空，则相当于做删除操作</li>
-<li>删除操作，“更新后的值”为空，则相当于做插入操作</li>
-<li>若是修改操作，则用 BI 代替 AI（After Image）</li>
+<li>插入操作，“<strong>更新前的值</strong>”为空，则相当于做删除操作</li>
+<li>删除操作，“<strong>更新后的值</strong>”为空，则相当于做插入操作</li>
+<li>若是修改操作，则用 BI 代替 AI(After Image)</li>
 </ul>
 </li>
 <li>继续反向扫描日志文件，查找该事务的其他更新操作，并做同样处理</li>
@@ -8523,7 +8510,7 @@
 <li>
 <p><strong>系统故障的恢复</strong>：</p>
 <ul>
-<li><strong>系统故障造成数据库不一致状态的原因</strong>：
+<li>系统故障造成数据库<strong>不一致状态的原因</strong>：
 <ul>
 <li>一些未完成事务对数据库的更新已写入数据库</li>
 <li>一些已提交事务对数据库的更新还留在缓冲区没来得及写入数据库</li>
@@ -8532,16 +8519,16 @@
 <li><strong>恢复方法</strong>：
 <ul>
 <li>Undo 故障发生时未完成的事务</li>
-<li>Redo 已完成的事务；</li>
+<li>Redo 已完成的事务</li>
 </ul>
 </li>
-<li>系统故障的恢复由系统在重新启动时自动完成，不需要用户干预</li>
+<li>系统故障的恢复由<strong>系统在重新启动时自动完成</strong>，不需要用户干预</li>
 </ul>
 </li>
 <li>
 <p><strong>系统故障的恢复步骤</strong>：</p>
 <ul>
-<li>正向扫描日志文件（即从头扫描日志文件）
+<li><strong>正向</strong>扫描日志文件（即从头扫描日志文件）
 <ul>
 <li>REDO-LIST 重做队列：在故障发生前已经提交的事务；这些事务既有 BEGIN TRANSACTION 记录，也有 COMMIT 记录</li>
 <li>UNDO-LIST 撤销队列：故障发生时尚未完成的事务；这些事务只有 BEGIN TRANSACTION 记录，无相应的 COMMIT 记录</li>
@@ -8549,12 +8536,12 @@
 </li>
 <li>对 Undo 撤销队列事务进行 UNDO 处理
 <ul>
-<li>反向扫描日志文件，对每个 UNDO 事务的更新操作执行逆操作，即将日志记录中“更新前的值”写入数据库</li>
+<li><strong>反向</strong>扫描日志文件，对每个 UNDO 事务的更新操作执行逆操作，即将日志记录中“<strong>更新前的值</strong>”写入数据库</li>
 </ul>
 </li>
 <li>对 Redo 重做队列事务进行 Redo 处理
 <ul>
-<li>正向扫描日志文件，对每个 Redo 事务重新执行日志文件登记的操作，即将日志记录中“更新后的值”写入数据库</li>
+<li><strong>正向</strong>扫描日志文件，对每个 Redo 事务重新执行日志文件登记的操作，即将日志记录中“<strong>更新后的值</strong>”写入数据库</li>
 </ul>
 </li>
 </ul>
@@ -8578,22 +8565,28 @@
 <p><strong>介质故障的恢复</strong>：</p>
 <ul>
 <li><strong>重装数据库</strong>：使数据库恢复到一致性状态</li>
-<li><strong>重做已完成的事务</strong></li>
+<li><strong>重做已完成的事务，撤销未完成事务</strong></li>
 </ul>
 </li>
 <li>
 <p><strong>介质故障的恢复步骤</strong>：</p>
 <ul>
-<li>装入最新的后备数据库副本，使数据库恢复到最近一次转储时的一致性状态
+<li>装入最新的<strong>后备数据库副本</strong>，使数据库<strong>恢复到最近一次转储时的一致性状态</strong>
 <ul>
 <li>对于静态转储的数据库副本，装入后数据库即处于一致性状态</li>
-<li>对于动态转储的数据库副本，还须同时装入转储时刻的日志文件副本，利用与恢复系统故障相同的方法（即 REDO+UNDO），才能将数据库恢复到一致性状态</li>
+<li>对于动态转储的数据库副本，还须同时装入<strong>转储时刻的日志文件副本</strong>，利用与恢复系统故障相同的方法（即 REDO+UNDO），才能将数据库恢复到一致性状态</li>
 </ul>
 </li>
-<li>装入有关的日志文件副本（转储结束时刻的日志文件副本），重做已完成的事务
+<li>装入有关的<strong>日志文件副本</strong>（即从转储结束点到故障发生点的日志），重做已完成的事务
 <ul>
-<li>首先扫描日志文件，找出故障发生时已提交的事务的标识，将其记入重做队列</li>
-<li>然后正向扫描日志文件，对重做队列中的所有事务进行重做处理，即将日志记录中“更新后的值”写入数据库。</li>
+<li>正向扫描日志，建立两个队列
+<ul>
+<li>重做队列：故障发生时已提交的事务</li>
+<li>撤销队列：故障发生时未提交的事务，</li>
+</ul>
+</li>
+<li>对撤销队列执行 UND0，将日志记录中的“<strong>更新前的值</strong>”写回数据库</li>
+<li>对重做队列执行 RED0，将日志记录中的“<strong>更新后的值</strong>”写入数据库</li>
 </ul>
 </li>
 </ul>
@@ -8608,13 +8601,12 @@
 </ul>
 </li>
 <li>具体的恢复操作仍由 DBMS 完成</li>
+<li>如何确定备份的时刻：<strong>转储点</strong>
+<ul>
+<li>过频，影响系统工作效率；过疏，日志过大，影响系统运行性能</li>
+<li>备份转储周期与运行日志的大小密切相关，应注意衔接不畅引起的漏洞</li>
 </ul>
 </li>
-<li>
-<p><strong>ORACLE V.7 的介质故障恢复</strong>：</p>
-<ul>
-<li>重装数据库后备副本文件，恢复到转储时的数据库一致性状态</li>
-<li>利用在此之后转储的 REDO 日志文件副本将数据库恢复到最近点（类似于系统故障恢复）</li>
 </ul>
 </li>
 </ul>
