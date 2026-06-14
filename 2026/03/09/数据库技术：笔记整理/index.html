@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/db.png">
 <meta property="article:published_time" content="2026-03-09T08:30:32.000Z">
-<meta property="article:modified_time" content="2026-06-13T16:39:39.601Z">
+<meta property="article:modified_time" content="2026-06-14T08:59:45.330Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          81k words
+          83k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          677 mins
+          691 mins
         
       </span>
     
@@ -366,7 +366,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on June 14, 2026 am
+                    Last updated on June 14, 2026 pm
                   
                 
               </p>
@@ -7351,16 +7351,16 @@
 <p><strong>查询分析</strong>：</p>
 <ul>
 <li><strong>查询分析的任务</strong>：对查询语句进行扫描、词法分析和语法分析</li>
-<li><strong>词法分析</strong>：从查询语句中识别出正确的语言符号</li>
-<li><strong>语法分析</strong>：进行语法检查，判断查询语句是否符合 SQL 语法规则</li>
+<li><strong>词法分析</strong>：从查询语句中识别出<strong>正确的语言符号</strong></li>
+<li><strong>语法分析</strong>：进行语法检查，判断查询语句<strong>是否符合 SQL 语法规则</strong></li>
 </ul>
 </li>
 <li>
 <p><strong>查询检查</strong>：</p>
 <ul>
-<li><strong>查询检查的任务</strong>：语义检查和分析、安全性检查、完整性初步检查</li>
+<li><strong>查询检查的任务</strong>：语义检查和分析、符号名转换、安全性检查、完整性初步检查</li>
 <li>根据数据字典中有关的模式定义检查语句中的数据库对象，如关系名、属性名是否存在和有效</li>
-<li>如果是对视图的操作，则要用视图消解方法把对视图的操作转换成对基本表的操作</li>
+<li>如果是对视图的操作，则要用<strong>视图消解方法</strong>把对视图的操作转换成对基本表的操作</li>
 <li>根据数据字典中的用户权限和完整性约束定义对用户的存取权限进行检查</li>
 <li>检查通过后把 SQL 查询语句转换成内部表示，即等价的<strong>关系代数表达式</strong></li>
 <li>关系数据库管理系统一般都用<strong>语法树</strong>来表示扩展的关系代数表达式</li>
@@ -7392,92 +7392,220 @@
 </ul>
 </li>
 </ul>
-<h4 id="1-2-实现查询操作的算法">1.2 实现查询操作的算法</h4>
+<h4 id="1-2-连接操作的实现算法">1.2 连接操作的实现算法</h4>
+<ul>
+<li><strong>数据库的三大类操作</strong>：
+<ul>
+<li><strong>一次单一元组的一元操作</strong>：迭代器算法
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo><mo separator="true">,</mo><mi>π</mi><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\sigma(R), \pi(R)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">π</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mclose">)</span></span></span></span> — SELECTION, PROJECTION</li>
+</ul>
+</li>
+<li><strong>整个关系的一元操作</strong>：
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo><mo separator="true">,</mo><mi>γ</mi><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo><mo separator="true">,</mo><mi>τ</mi><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\delta(R), \gamma(R), \tau(R)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03785em;">δ</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.05556em;">γ</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.1132em;">τ</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mclose">)</span></span></span></span> - DISTINCT, GROUP BY, SORTING</li>
+</ul>
+</li>
+<li><strong>整个关系的二元操作</strong>：一趟扫描、两趟扫描法、多趟扫描法
+<ul>
+<li><strong>集合上的操作</strong>：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mo>∪</mo><mi>S</mi></msub><mo separator="true">,</mo><msub><mo>∩</mo><mi>S</mi></msub><mo separator="true">,</mo><msub><mo>−</mo><mi>S</mi></msub></mrow><annotation encoding="application/x-tex">\cup_S, \cap_S, -_S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mbin">∪</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05764em;">S</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mbin">∩</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05764em;">S</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mbin">−</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05764em;">S</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></li>
+<li><strong>包上的操作</strong>：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mo>∪</mo><mi>B</mi></msub><mo separator="true">,</mo><msub><mo>∩</mo><mi>B</mi></msub><mo separator="true">,</mo><msub><mo>−</mo><mi>B</mi></msub></mrow><annotation encoding="application/x-tex">\cup_B, \cap_B, -_B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mbin">∪</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mbin">∩</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mbin">−</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></li>
+<li><strong>积，连接</strong>：PRODUCT、JOIN</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>连接操作是查询处理中最耗时的操作之一，本节只讨论等值连接(或自然连接)最常用的实现算法.</p>
 <ul>
 <li>
-<p><strong>选择操作典型实现方法</strong>：</p>
+<p><strong>逻辑实现</strong>：<strong>嵌套循环算法(nested loop join)</strong></p>
 <ul>
-<li><strong>全表扫描算法（full table scan）</strong>：
-<ul>
-<li>对查询的基本表顺序扫描，逐一检查每个元组是否满足选择条件，把满足条件的元组作为结果输出</li>
-<li>适合小表，不适合大表</li>
-</ul>
-</li>
-<li><strong>索引扫描算法（index scan）</strong>：
-<ul>
-<li>适合于选择条件中的属性上有索引（例如 B+ 树索引或 Hash 索引）</li>
-<li>通过索引先找到满足条件的元组主码或元组指针，再通过元组指针直接在查询的基本表中找到元组</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p><strong>连接操作的实现</strong>：连接操作是查询处理中最耗时的操作之一；本节只讨论等值连接(或自然连接)最常用的实现算法</p>
-<ul>
-<li><strong>嵌套循环算法(nested loop join)</strong>：
-<ul>
-<li>由两层循环组成，其基本思想：对外层循环(Student 表)的每一个元组(s)，检索内层循环(SC 表)中的每一个元组(sc)</li>
-<li>检查这两个元组在连接属性(Sno)上是否相等</li>
+<li>由<strong>两层循环</strong>组成，其基本思想：对外层循环的每一个元组，检索内层循环中的每一个元组</li>
+<li>检查这两个元组在连接属性上是否相等</li>
 <li>如果满足连接条件，则串接后作为结果输出，直到外层循环表中的元组处理完为止</li>
+<li><strong>执行过程</strong>：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">For i=1 to T_R<br>  read i-th record of R<br>  For j=1 to T_S<br>    read j-th record of S<br>    if R.A \theta S.B then<br>    &#123;串接 ith record of R 和 jth record of S;<br>    存入结果关系;&#125;<br>  NEXT j;<br>NEXT i;<br></code></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
-<li><strong>排序-合并算法(sort-merge join 或 merge join)</strong>：
+<li>
+<p><strong>物理算法</strong>：关系是存储在磁盘上的，磁盘以磁盘块为操作单位，首先要被装载进内存(I/O 操作)，然后再进行元组处理</p>
 <ul>
-<li><strong>步骤</strong>：
+<li><strong>相关参数</strong>：
 <ul>
-<li>如果连接的表没有排好序，先对 Student 表和 SC 表按连接属性 Sno 排序</li>
-<li>将排好序的 Student 表和 SC 表中的数据块读到内存中</li>
-<li>依次扫描 SC 表中与 Student 表具有相同 Sno 值的元组，把它们连接起来</li>
-<li>当扫描到 Sno 不相同的第一个 SC 元组时，返回 Student 表扫描它的下一个元组，再扫描 SC 表中具有相同 Sno 的元组，把它们连接起来</li>
-<li>在内存中的 Student 表或 SC 表扫描完后，继续将相应表余下的数据块读入内存，重复前两步，直到 Student 表或 SC 表全部扫描完</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mi>R</mi></msub></mrow><annotation encoding="application/x-tex">T_R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.00773em;">R</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>：关系 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi></mrow><annotation encoding="application/x-tex">R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span> 的元组数目</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mi>R</mi></msub></mrow><annotation encoding="application/x-tex">B_R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.00773em;">R</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>：关系 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi></mrow><annotation encoding="application/x-tex">R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span> 的磁盘数目</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi></mrow><annotation encoding="application/x-tex">M</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span></span></span></span>：主存缓冲区的页数(主存每页容量等于一个磁盘块的容量)</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mi>R</mi></msub></mrow><annotation encoding="application/x-tex">I_R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.00773em;">R</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>：关系 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi></mrow><annotation encoding="application/x-tex">R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span> 的每个元组的字节数</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span></span></span></span>：每个磁盘块的字节数</li>
 </ul>
 </li>
-<li>Student 表和 SC 表都只要扫描一遍</li>
-<li>如果两个表原来无序，执行时间要加上对两个表的排序时间</li>
-<li>对于大表，即使加上排序后使用排序-合并连接算法的总执行时间一般仍会减少</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mrow><mi>R</mi><mo>×</mo><mi>S</mi></mrow></msub><mo>=</mo><msub><mi>T</mi><mi>R</mi></msub><mo>×</mo><msub><mi>T</mi><mi>S</mi></msub><mo>×</mo><mrow><mo fence="true">(</mo><msub><mi>I</mi><mi>R</mi></msub><mo>+</mo><msub><mi>I</mi><mi>S</mi></msub><mo fence="true">)</mo></mrow><mi mathvariant="normal">/</mi><mi>b</mi></mrow><annotation encoding="application/x-tex">B_{R \times S}=T_R \times T_S \times\left(I_R+I_S\right) / b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8917em;vertical-align:-0.2083em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.00773em;">R</span><span class="mbin mtight">×</span><span class="mord mathnormal mtight" style="margin-right:0.05764em;">S</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.00773em;">R</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05764em;">S</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.00773em;">R</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0785em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05764em;">S</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;">)</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">/</span><span class="mord mathnormal">b</span></span></span></span></li>
 </ul>
 </li>
-<li><strong>索引连接算法(index join)</strong>：
+<li>
+<p><strong>基本实现算法</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">For i=1 to B_R<br>  read i-th block of R<br>  For j=1 to B_s<br>    read j-th block of S<br>    For p=1 to b/I_R //内存一页所能保存的关系R中元组个数  <br>      read p-th record of R;<br>      For q=1 to b/I_S<br>        read q-th record of S;<br>        if R.A \theta S.B then<br>        &#123;串接 pth record of R 和 qth record of S;<br>        存入结果关系;&#125;<br>      NEXT q;<br>    NEXT P;<br>  NEXT j;<br>NEXT i;<br></code></pre></td></tr></table></figure>
 <ul>
-<li>在 SC 表上建立属性 Sno 的索引，若已有 Sno 上的索引，则跳过该步骤</li>
-<li>对 Student 中每一个元组，由 Sno 值通过 SC 的索引查找相应的 SC 元组</li>
-<li>把这些 SC 元组和 Student 元组连接起来</li>
-<li>循环执行前两步，直到 Student 表中的元组处理完为止</li>
+<li><strong>算法复杂度</strong>：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mi>R</mi></msub><mo>+</mo><msub><mi>B</mi><mi>R</mi></msub><mo>×</mo><msub><mi>B</mi><mi>S</mi></msub></mrow><annotation encoding="application/x-tex">B_R+B_R \times B_S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.00773em;">R</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.00773em;">R</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05764em;">S</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></li>
+<li><strong>应用条件</strong>：需 3 个内存页，一页装 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi></mrow><annotation encoding="application/x-tex">R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span>，一页装 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span>，一页输出</li>
 </ul>
 </li>
-<li><strong>哈希连接算法 (hash join)</strong>：
+<li>
+<p><strong>全主存实现算法</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">For i=1 to B_R //一次性读入连续多块<br>  read i-th block of R<br>NEXT i;<br>For j=1 to B_S //一次性读入连续多块<br>  read j-th block of S<br>NEXT j;<br>For p=1 to T_R<br>  read p-th record of R;<br>  For q=1 to T_S<br>    read q-th record of S;<br>    if R.A \theta S.B then<br>    &#123;串接 p-th record of R 和 q-th record of S;<br>    存入结果关系;&#125;<br>  NEXT q;<br>NEXT p;<br></code></pre></td></tr></table></figure>
 <ul>
-<li>把连接属性作为 hash 码，用同一个 hash 函数把 Student 表和 SC 表中的元组散列到 hash 表中</li>
-<li><strong>划分阶段(building phase)</strong>：
+<li><strong>应用条件</strong>：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>≥</mo><msub><mi>B</mi><mi>R</mi></msub><mo>+</mo><msub><mi>B</mi><mi>S</mi></msub></mrow><annotation encoding="application/x-tex">M \ge B_R + B_S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8193em;vertical-align:-0.136em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.00773em;">R</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05764em;">S</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></li>
+<li><strong>算法复杂度</strong>：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mi>R</mi></msub><mo>+</mo><msub><mi>B</mi><mi>S</mi></msub></mrow><annotation encoding="application/x-tex">B_R + B_S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.00773em;">R</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05764em;">S</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></li>
+</ul>
+</li>
+<li>
+<p><strong>半主存实现算法</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">For i=1 to B_R //一次性读入连续多块<br>  read i-th block of R<br>NEXT i;<br>For j=1 to B_S //一次性读入连续多块<br>  read j-th block of S<br>  For p=1 to T_R<br>    read p-th record of R;<br>    For q=1 to T_S<br>      read q-th record of S;<br>      if R.A \theta S.B then<br>      &#123;串接 p-th record of R 和 q-th record of S;<br>      存入结果关系;&#125;<br>    NEXT q;<br>  NEXT p;<br>NEXT j;<br></code></pre></td></tr></table></figure>
 <ul>
-<li>对包含较少元组的表(如 Student 表)进行一遍处理</li>
-<li>把它的元组按 hash 函数分散到 hash 表的桶中</li>
+<li><strong>应用条件</strong>：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mi>S</mi></msub><mo>≥</mo><msub><mi>B</mi><mi>R</mi></msub></mrow><annotation encoding="application/x-tex">B_S \ge B_R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05764em;">S</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.00773em;">R</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mi>R</mi></msub><mo>≤</mo><mi>M</mi></mrow><annotation encoding="application/x-tex">B_R \le M</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.00773em;">R</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span></span></span></span></li>
+<li><strong>算法复杂度</strong>：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mi>R</mi></msub><mo>+</mo><msub><mi>B</mi><mi>S</mi></msub></mrow><annotation encoding="application/x-tex">B_R + B_S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.00773em;">R</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05764em;">S</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></li>
 </ul>
 </li>
-<li><strong>试探阶段(probing phase)</strong>：
+</ul>
+<h4 id="1-3-迭代器">1.3 迭代器</h4>
 <ul>
-<li>对另一个表(SC 表)进行一遍处理</li>
-<li>把 SC 表的元组也按同一个 hash 函数（hash 码是连接属性）进行散列，映射到相应的 Student 表哈希桶</li>
-<li>把 SC 元组与桶中来自 Student 表并与之相匹配的元组连接起来</li>
+<li>
+<p><strong>查询实现的两种策略</strong>：</p>
+<ul>
+<li><strong>物化计算策略</strong>：
+<ul>
+<li>一个关系操作扫描一遍数据库</li>
+<li>中间结果完整保存（存在内存或外存）</li>
 </ul>
 </li>
-<li><strong>前提</strong>：假设两个表中较小的表在第一阶段后可以完全放入内存的 hash 桶中</li>
+<li><strong>流水线计算策略</strong></li>
 </ul>
 </li>
+<li>
+<p><strong>迭代器</strong>：迭代读取集合中每一个元素，封装其读取细节</p>
+<ul>
+<li><strong>抽象类</strong>：<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">iterator</span>&#123;<br>  <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">open</span><span class="hljs-params">()</span></span>;<br>  <span class="hljs-function">tuple <span class="hljs-title">GetNext</span><span class="hljs-params">()</span></span>;<br>  <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Close</span><span class="hljs-params">()</span></span>;<br>  iterator &amp;inputs[];<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>所有关系操作可继承此迭代器进行构造</li>
+<li>为不同操作，构造不同的 <code>open()</code>、<code>GetNext()</code>、<code>Close()</code></li>
+</ul>
+</li>
+<li>
+<p><strong>迭代器示例 1</strong>：表空间扫描法一读取关系</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">void open()&#123;<br>  b := R的第一块;<br>  t := b的第一个元组;<br>&#125;<br>tuple GetNext()&#123;<br>  IF(t已超过块b的最后一个元组)<br>    将b前进到下一块<br>    IF(没有下一块) &#123;<br>      RETURN NotFound;<br>    ELse //b是一个新块<br>      t := b的第一个元组;<br>    &#125;<br>  oldt := t;<br>  将t前进到b的下一元组;<br>  RETURN oldt;<br>&#125;<br>void Close() &#123;&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>迭代器示例 2</strong>：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>∪</mo><mi>S</mi></mrow><annotation encoding="application/x-tex">R \cup S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∪</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">void open()&#123;<br>  R.Open();<br>  CurRel := R;<br>&#125;<br>tuple GetNext()&#123;<br>  IF(CurRel == R) &#123;<br>    t := R.GetNext();<br>    IF(t &lt;&gt; NotFound)<br>      RETURN t;<br>    ELSE &#123; //已处理完R<br>      S.Open();<br>      CurRel := S;<br>    &#125;<br>  &#125;<br>  RETURN S.GetNext();<br>&#125;<br>void Close()&#123;<br>  R.Close(); <br>  S.Close();<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>迭代器示例 3</strong>：SELECTION®</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">void open()&#123;<br>  R.Open();<br>&#125;<br>tuple GetNext()&#123;<br>  Continue:<br>    t:=R.GetNext();<br>    IF(t &lt;&gt; NotFound)<br>      IF F(t) == TRUE<br>        RETURN t;<br>      ELSE GOTO Continue;<br>    ELSE RETURN NotFound;<br>&#125;<br>void Close()&#123;<br>  R.Close();<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="1-4-一趟扫描算法">1.4 一趟扫描算法</h4>
+<ul>
+<li>
+<p><strong>关系/表数据的读取</strong>：<strong>完整读取一个关系</strong></p>
+<ul>
+<li><strong>聚簇关系</strong>：关系的元组集中存放（一个块中仅是一个关系的元组）
+<ul>
+<li>TableScan®-表空间扫描算法：扫描结果未排序，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">B(R)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mclose">)</span></span></span></span></li>
+<li>SortTableScan®：扫描结果排序，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mi>B</mi><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">3B(R)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">3</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mclose">)</span></span></span></span></li>
+<li>IndexScan®-索引扫描算法：扫描结果未排序，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">B(R)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mclose">)</span></span></span></span></li>
+<li>SortIndexScan®:扫描结果排序，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">B(R)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mclose">)</span></span></span></span> 或 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mi>B</mi><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">3B(R)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">3</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mclose">)</span></span></span></span></li>
+</ul>
+</li>
+<li><strong>非聚簇关系</strong>：关系元组不一定集中存放（一个块中不仅是一个关系元组）
+<ul>
+<li>扫描结果未排序：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">T(R)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mclose">)</span></span></span></span></li>
+<li>扫描结果排序：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo><mo>+</mo><mn>2</mn><mi>B</mi><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">T(R)+2B(R)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mclose">)</span></span></span></span></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>关系的一元操作实现算法</strong>：</p>
+<ul>
+<li><strong>去重复(DISTINCT)操作</strong>：
+<ul>
+<li>需要在内存中保存已处理过的元组</li>
+<li>当新元组到达，需与之前处理过的元组进行比较</li>
+<li>建立不同的<strong>内存数据结构</strong>（如<strong>排序结构、散列结构、B+ 树结构</strong>），来保存之前处理过的数据，以便快速处理整个关系上的操作</li>
+<li><strong>算法复杂度</strong>：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">B(R)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mclose">)</span></span></span></span></li>
+<li><strong>应用条件</strong>：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo stretchy="false">(</mo><mi mathvariant="normal">&amp;</mi><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mo>&lt;</mo><mo>=</mo><mi>M</mi></mrow><annotation encoding="application/x-tex">B(\&amp;(R))&lt;=M</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mopen">(</span><span class="mord">&amp;</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mclose">))</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span></span></span></span></li>
+</ul>
+</li>
+<li><strong>分组(GROUPBY)操作</strong>：建立<strong>散列</strong>内存结构
+<ul>
+<li>新元组通过散列值找到相应的桶，并判断是否是新的分组</li>
+<li>新元组通过散列插入到对应的桶(页)中</li>
+<li>要降低每个散列值对应桶的队列长度，最好只是一个桶</li>
+</ul>
+</li>
+<li><strong>选择(SELECTION)操作</strong>：建立<strong>索引</strong>内存结构示意
+<ul>
+<li>使用索引，辅助快速检索</li>
+<li>聚簇和非聚簇索引，效率不一样</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="1-5-两趟扫描算法">1.5 两趟扫描算法</h4>
+<ul>
+<li>
+<p><strong>为什么需要两趟算法</strong>：</p>
+<ul>
+<li>对于整个关系的一元操作(DISTINCT、GROUP BY、SORTING)，理论上任何一个元组需要与所有元组比较，才能确定是否重复、是否是一个新组、位于何序位置</li>
+<li>需保存的待处理数据块可能远远大于内存可用块</li>
+</ul>
+</li>
+<li>
+<p><strong>两趟算法的基本思路</strong>：与外排序的思路类似</p>
+<ul>
+<li><strong>第一趟</strong>：划分子集，使子集具有某种特性，如有序或相同散列值</li>
+<li><strong>第二趟</strong>：处理全局性内容的操作，形成结果关系，如多子集间的归并排序，相同散列值子集的操作等</li>
 </ul>
 </li>
 </ul>
 <h3 id="2-RDBMS-的查询优化">2. RDBMS 的查询优化</h3>
+<h4 id="2-1-查询优化概述">2.1 查询优化概述</h4>
 <ul>
-<li><strong>关系数据库系统的查询优化</strong>：
+<li>
+<p><strong>关系数据库系统的查询优化</strong>：</p>
 <ul>
-<li>查询优化在关系数据库系统中有着非常重要的地位</li>
-<li>关系查询优化是影响关系数据库管理系统性能的主要因素</li>
-<li>由于关系表达式的语义级别很高，使关系系统可以从关系表达式中分析查询语义，提供了执行查询优化的可能性</li>
+<li><strong>目标</strong>：使数据库查询的执行时间最短</li>
+<li><strong>三个优化的层面</strong>：
+<ul>
+<li><strong>语义优化</strong>：利用模型的语义及完整性规则，优化查询
+<ul>
+<li>去掉无关的表</li>
+<li>去掉无关的属性</li>
+<li>改写成<strong>等价效果更好</strong>语句</li>
+</ul>
+</li>
+<li><strong>语法优化</strong>：<strong>逻辑层优化</strong>(代数优化)，利用语法结构，优化操作执行顺序
+<ul>
+<li>尽早做选择运算</li>
+<li>尽早做投影运算</li>
+<li>关系代数操作次序优化</li>
+</ul>
+</li>
+<li><strong>执行优化</strong>：<strong>物理层优化</strong>，存取路径和执行算法的选择与执行次序优化
+<ul>
+<li>基于不同算法的实现程序</li>
+<li>构造代价估算</li>
+<li>算法选择与装配次序</li>
 </ul>
 </li>
 </ul>
-<h4 id="2-1-查询优化概述">2.1 查询优化概述</h4>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>查询优化概述</strong>：</p>
 <ul>
 <li>
 <p><strong>关系系统的查询优化</strong>：</p>
@@ -7501,26 +7629,28 @@
 <li>用户不必考虑如何最好地表达查询以获得较好的效率</li>
 <li>系统可以比用户程序的“优化”做得更好
 <ul>
-<li>优化器可以从数据字典中获取许多统计信息，而用户程序则难以获得这些信息</li>
-<li>如果数据库的物理统计信息改变了，系统可以自动对查询重新优化以选择相适应的执行计划；在非关系系统中必须重写程序，而重写程序在实际应用中往往是不太可能的</li>
-<li>优化器可以考虑成百上千种不同的执行计划，程序员一般只能考虑有限的几种可能性</li>
-<li>优化器中包括了很多复杂的优化技术，这些优化技术往往只有最好的程序员才能掌握；系统的自动优化相当于使得所有人都拥有这些优化技术</li>
+<li>优化器可以<strong>从数据字典中获取许多统计信息</strong>，而用户程序则难以获得这些信息</li>
+<li>如果数据库的物理统计信息改变了，系统可以<strong>自动对查询重新优化以选择相适应的执行计划</strong>；在非关系系统中必须重写程序，而重写程序在实际应用中往往是不太可能的</li>
+<li>优化器可以<strong>考虑成百上千种不同的执行计划</strong>，程序员一般只能考虑有限的几种可能性</li>
+<li>优化器中包括了很多<strong>复杂的优化技术</strong>，这些优化技术往往只有最好的程序员才能掌握；系统的自动优化相当于使得所有人都拥有这些优化技术</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 </li>
 <li>
-<p><strong>查询代价</strong>：关系数据库管理系统通过某种代价模型计算出各种查询执行策略的执行代价，然后选取代价最小的执行方案</p>
+<p><strong>查询优化的代价</strong>：关系数据库管理系统通过<strong>某种代价模型</strong>计算出各种查询执行策略的执行代价，然后选取代价最小的执行方案</p>
 <ul>
 <li><strong>集中式数据库</strong>：
 <ul>
 <li><strong>执行开销主要包括</strong>：磁盘存取块数(I/O 代价)、处理机时间(CPU 代价)、查询的内存开销</li>
-<li><strong>I/O 代价是最主要的</strong></li>
+<li><strong>从磁盘访问数据的 I/O 代价是最主要的</strong>（磁盘存储器上进行磁盘寻道），因此以查询处理<strong>读写块数</strong>作衡量单位</li>
 </ul>
 </li>
 <li><strong>分布式数据库</strong>：
 <ul>
-<li>总代价 = I/O 代价 + CPU 代价 + 内存代价 + 通信代价</li>
+<li>总代价 = I/O 代价 + CPU 代价 + 内存代价 + <strong>通信代价</strong></li>
 </ul>
 </li>
 </ul>
@@ -7534,6 +7664,7 @@
 </ul>
 </li>
 </ul>
+<h4 id="2-2-一个实例">2.2 一个实例</h4>
 <h3 id="3-代数优化">3. 代数优化</h3>
 <h4 id="3-1-关系代数表达式等价变换规则">3.1 关系代数表达式等价变换规则</h4>
 <ul>
@@ -7541,6 +7672,7 @@
 <p><strong>关系代数表达式等价变换规则</strong>：</p>
 <ul>
 <li><strong>代数优化策略</strong>：通过对关系代数表达式的等价变换来提高查询效率</li>
+<li><strong>基本思想</strong>：<strong>改变</strong>关系代数的操作次序，尽可能早做选择和投影运算</li>
 <li><strong>关系代数表达式的等价</strong>：指用相同的关系代替两个表达式中相应的关系所得到的结果是相同的
 <ul>
 <li>两个关系表达式 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">E_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">E_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 是等价的，可记为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mn>1</mn></msub><mo>≡</mo><msub><mi>E</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">E_1 \equiv E_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≡</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></li>
@@ -7576,8 +7708,8 @@
 <li><strong>4. 选择运算的串接律</strong>：<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>σ</mi><msub><mi>F</mi><mn>1</mn></msub></msub><mrow><mo fence="true">(</mo><msub><mi>σ</mi><msub><mi>F</mi><mn>2</mn></msub></msub><mo stretchy="false">(</mo><mi>E</mi><mo stretchy="false">)</mo><mo fence="true">)</mo></mrow><mo>≡</mo><msub><mi>σ</mi><mrow><msub><mi>F</mi><mn>1</mn></msub><mo>∧</mo><msub><mi>F</mi><mn>2</mn></msub></mrow></msub><mo stretchy="false">(</mo><mi>E</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\sigma_{F_1}\left(\sigma_{F_2}(E)\right) \equiv \sigma_{F_1 \wedge F_2} (E)
 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0001em;vertical-align:-0.2501em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3173em;"><span style="top:-2.357em;margin-left:-0.1389em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2501em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3173em;"><span style="top:-2.357em;margin-left:-0.1389em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2501em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mclose">)</span><span class="mclose delimcenter" style="top:0em;">)</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≡</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.0001em;vertical-align:-0.2501em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3173em;"><span style="top:-2.357em;margin-left:-0.1389em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span><span class="mbin mtight">∧</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3173em;"><span style="top:-2.357em;margin-left:-0.1389em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2501em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mclose">)</span></span></span></span></span></p>
 <ul>
-<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi></mrow><annotation encoding="application/x-tex">E</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span></span></span></span> 是关系代数表达式，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>F</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">F_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>F</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">F_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 是选择条件</li>
-<li>选择的串接律说明选择条件可以合并，这样一次就可检查全部条件</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi></mrow><annotation encoding="application/x-tex">E</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span></span></span></span> 是关系代数表达式，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>F</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>F</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">F_1, F_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 是选择条件</li>
+<li>选择的串接律说明选择条件可以合并，这样<strong>一次就可检查全部条件</strong></li>
 </ul>
 </li>
 <li><strong>5. 选择运算与投影运算的交换律</strong>：<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>σ</mi><mi>F</mi></msub><mrow><mo fence="true">(</mo><msub><mi>π</mi><mrow><msub><mi>A</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>A</mi><mn>2</mn></msub><mo separator="true">,</mo><mo>⋯</mo><msub><mi>A</mi><mi>n</mi></msub></mrow></msub><mo stretchy="false">(</mo><mi>E</mi><mo stretchy="false">)</mo><mo fence="true">)</mo></mrow><mo>≡</mo><msub><mi>π</mi><mrow><msub><mi>A</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>A</mi><mn>2</mn></msub><mo separator="true">,</mo><mo>⋯</mo><msub><mi>A</mi><mi>n</mi></msub></mrow></msub><mrow><mo fence="true">(</mo><msub><mi>σ</mi><mi>F</mi></msub><mo stretchy="false">(</mo><mi>E</mi><mo stretchy="false">)</mo><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">\sigma_{F}\left(\pi_{A_1, A_2, \cdots A_n}(E)\right) \equiv \pi_{A_1, A_2, \cdots A_n}\left(\sigma_{F}(E)\right)
@@ -7629,9 +7761,9 @@
 <p><strong>典型的启发式规则</strong>：</p>
 <ul>
 <li><strong>选择运算应尽可能先做</strong>：在优化策略中这是最重要、最基本的一条</li>
-<li><strong>把投影运算和选择运算同时进行</strong>：如有若干投影和选择运算，并且它们都对同一个关系操作，则可以在扫描此关系的同时完成所有的这些运算以避免重复扫描关系</li>
-<li>把投影同其前或其后的双目运算结合起来，没有必要为了去掉某些字段而扫描一遍关系</li>
-<li>把某些选择同在它前面要执行的笛卡儿积结合起来成为一个连接运算，连接特别是等值连接运算要比同样关系上的笛卡儿积省很多时间</li>
+<li><strong>把投影运算和选择运算同时进行</strong>：如有若干投影和选择运算，并且它们都对同一个关系操作，则可以在扫描此关系的同时完成所有的这些运算以<strong>避免重复扫描关系</strong></li>
+<li>把投影同其前或其后的<strong>双目运算</strong>结合起来，没有必要为了去掉某些字段而扫描一遍关系</li>
+<li>把某些选择同在它前面要执行的<strong>笛卡儿积结合起来成为一个连接运算</strong>，连接特别是等值连接运算要比同样关系上的笛卡儿积省很多时间</li>
 <li><strong>找出公共子表达式</strong>：如果这种重复出现的子表达式的结果不是很大的关系，并且从外存中读入这个关系比计算该子表达式的时间少得多，则先计算一次公共子表达式并把结果写入中间文件是合算的
 <ul>
 <li>当查询的是视图时，定义视图的表达式就是一种公共子表达式</li>
@@ -7650,15 +7782,15 @@
 <li>利用等价变换规则 4 把形如 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>σ</mi><mrow><msub><mi>F</mi><mn>1</mn></msub><mo>∧</mo><msub><mi>F</mi><mn>2</mn></msub><mo>∧</mo><mo>…</mo><mo>∧</mo><msub><mi>F</mi><mi>n</mi></msub></mrow></msub><mo stretchy="false">(</mo><mi>E</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\sigma_{F_1 \wedge F_2 \wedge \ldots \wedge F_n}(E)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0001em;vertical-align:-0.2501em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3173em;"><span style="top:-2.357em;margin-left:-0.1389em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span><span class="mbin mtight">∧</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3173em;"><span style="top:-2.357em;margin-left:-0.1389em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span><span class="mbin mtight">∧</span><span class="minner mtight">…</span><span class="mbin mtight">∧</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1645em;"><span style="top:-2.357em;margin-left:-0.1389em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2501em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mclose">)</span></span></span></span> 变换为<p class="katex-block "><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>σ</mi><msub><mi>F</mi><mn>1</mn></msub></msub><mrow><mo fence="true">(</mo><msub><mi>σ</mi><msub><mi>F</mi><mn>2</mn></msub></msub><mrow><mo fence="true">(</mo><mo>…</mo><mrow><mo fence="true">(</mo><msub><mi>σ</mi><msub><mi>F</mi><mi>n</mi></msub></msub><mo stretchy="false">(</mo><mi>E</mi><mo stretchy="false">)</mo><mo fence="true">)</mo></mrow><mo>…</mo><mo fence="true">)</mo></mrow><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">\sigma_{F_1}\left(\sigma_{F_2}\left(\ldots\left(\sigma_{F_ n}(E)\right) \ldots\right)\right)
 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0001em;vertical-align:-0.2501em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3173em;"><span style="top:-2.357em;margin-left:-0.1389em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2501em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3173em;"><span style="top:-2.357em;margin-left:-0.1389em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2501em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">(</span><span class="minner">…</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1645em;"><span style="top:-2.357em;margin-left:-0.1389em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2501em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mclose">)</span><span class="mclose delimcenter" style="top:0em;">)</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span><span class="mclose delimcenter" style="top:0em;">)</span></span><span class="mclose delimcenter" style="top:0em;">)</span></span></span></span></span></span></p>
 </li>
-<li>对每一个选择，利用等价变换规则 4 ~ 9 尽可能把它移到树的叶端</li>
-<li>对每一个投影利用等价变换规则 3，5，10，11 中的一般形式尽可能把它移向树的叶端
+<li>对每一个选择，利用等价变换规则 4 ~ 9 <strong>尽可能把选择操作移到树的叶端</strong></li>
+<li>对每一个投影利用等价变换规则 3，5，10，11 中的一般形式<strong>尽可能把它移向树的叶端</strong>
 <ul>
 <li>等价变换规则 3 使一些投影消失或使一些投影出现</li>
 <li>规则 5 把一个投影分裂为两个，其中一个有可能被移向树的叶端</li>
 </ul>
 </li>
-<li>利用等价变换规则 3 ~ 5，把选择和投影的串接合并成单个选择、单个投影或一个选择后跟一个投影，使多个选择或投影能同时执行，或在一次扫描中全部完成</li>
-<li>把经过上述变换得到的语法树的内节点分组
+<li>利用等价变换规则 3 ~ 5，把选择和投影的串接合并成单个选择、单个投影或一个选择后跟一个投影，使<strong>多个选择或投影能同时执行</strong>，或在一次扫描中全部完成</li>
+<li>把经过上述变换得到的语法树的<strong>内结点分组</strong>
 <ul>
 <li>每一双目运算(<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>×</mo><mo separator="true">,</mo><mo>⋈</mo><mo separator="true">,</mo><mo>∪</mo><mo separator="true">,</mo><mo>−</mo></mrow><annotation encoding="application/x-tex">\times, \bowtie, \cup, -</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.1944em;"></span><span class="mord">×</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⋈</span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.1944em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">∪</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">−</span></span></span></span>) 和它所有的直接祖先为一组，这些直接祖先是(<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi><mo separator="true">,</mo><mi>π</mi></mrow><annotation encoding="application/x-tex">\sigma, \pi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">π</span></span></span></span> 运算)</li>
 <li>如果其后代直到叶子全是单目运算，则也将它们并入该组</li>
@@ -7689,9 +7821,29 @@
 <h3 id="4-物理优化">4. 物理优化</h3>
 <ul>
 <li>
+<p><strong>物理查询运算符</strong>：通常是关系代数操作符的一个特定实现</p>
+<ul>
+<li><strong>获取关系元组的操作</strong>：
+<ul>
+<li>TableScan®-表空间扫描算法</li>
+<li>SortTableScan®-表空间扫描排序算法</li>
+<li>IndexScan®-索引扫描算法</li>
+<li>SortlndexScan®-索引扫描排序算法</li>
+</ul>
+</li>
+<li><strong>关系操作的各种实现算法</strong>：
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo><mtext>、</mtext><mi>π</mi><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo><mtext>、</mtext><mi>δ</mi><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo><mtext>、</mtext><mi>γ</mi><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo><mtext>、</mtext><mi>τ</mi><mo stretchy="false">(</mo><mi>R</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\sigma(R)、\pi(R)、\delta(R)、\gamma(R)、\tau(R)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mclose">)</span><span class="mord cjk_fallback">、</span><span class="mord mathnormal" style="margin-right:0.03588em;">π</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mclose">)</span><span class="mord cjk_fallback">、</span><span class="mord mathnormal" style="margin-right:0.03785em;">δ</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mclose">)</span><span class="mord cjk_fallback">、</span><span class="mord mathnormal" style="margin-right:0.05556em;">γ</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mclose">)</span><span class="mord cjk_fallback">、</span><span class="mord mathnormal" style="margin-right:0.1132em;">τ</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mclose">)</span></span></span></span>、集合操作：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mo>∪</mo><mi>S</mi></msub><mtext>、</mtext><msub><mo>∩</mo><mi>S</mi></msub><mtext>、</mtext><msub><mo>−</mo><mi>S</mi></msub></mrow><annotation encoding="application/x-tex">\cup_S、 \cap_S 、-_S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mbin">∪</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05764em;">S</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord cjk_fallback">、</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin"><span class="mbin">∩</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05764em;">S</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord cjk_fallback">、</span><span class="mord"><span class="mbin">−</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05764em;">S</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，包上操作：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mo>∪</mo><mi>B</mi></msub><mtext>、</mtext><msub><mo>∩</mo><mi>B</mi></msub><mtext>、</mtext><msub><mo>−</mo><mi>B</mi></msub></mrow><annotation encoding="application/x-tex">\cup_B、 \cap_B、-_B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mbin">∪</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord cjk_fallback">、</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin"><span class="mbin">∩</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord cjk_fallback">、</span><span class="mord"><span class="mbin">−</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，积 PRODUCT、连接 JOIN</li>
+<li>一趟算法、两趟算法、基于索引的算法、基于散列的算法、基于排序的算法</li>
+</ul>
+</li>
+<li><strong>迭代器构造</strong>：流水化、物化;</li>
+</ul>
+</li>
+<li>
 <p><strong>物理优化</strong>：</p>
 <ul>
-<li>代数优化改变查询语句中操作的次序和组合，不涉及底层存取路径</li>
+<li>代数优化改变查询语句中<strong>操作的次序和组合</strong>，不涉及底层存取路径</li>
 <li>对于一个查询语句有许多存取方案，它们的执行效率不同，仅仅进行代数优化是不够的</li>
 <li>物理优化就是要<strong>选择高效合理的操作算法或存取路径</strong>，求得优化查询计划</li>
 </ul>
@@ -7699,7 +7851,7 @@
 <li>
 <p><strong>物理优化方法</strong>：</p>
 <ul>
-<li><strong>基于启发式规则的启发式优化</strong>：启发式规则是指那些在大多数情况下都适用，但不是在每种情况下都是适用的规则</li>
+<li><strong>基于启发式规则的启发式优化</strong>：启发式规则是指那些在<strong>大多数情况下都适用</strong>，但不是在每种情况下都是适用的规则</li>
 <li><strong>基于代价估算的优化</strong>：优化器估算不同执行策略的代价，并选出具有最小代价的执行计划</li>
 <li><strong>两者结合的优化方法</strong>：常常先使用启发式规则，选取若干较优的候选方案，减少代价估算的工作量；然后分别计算这些候选方案的执行代价，较快地选出最终的优化方案</li>
 </ul>
@@ -7717,28 +7869,34 @@
 </li>
 <li>对于选择条件是“<strong>非主属性＝值</strong>”的查询，并且选择列上有索引
 <ul>
-<li>要估算查询结果的元组数目</li>
+<li>要估算查询结果的元组数目
+<ul>
 <li>如果比例较小(&lt;10%)，可以使用索引扫描方法</li>
 <li>否则还是使用全表顺序扫描</li>
 </ul>
 </li>
-<li>对于选择条件是属性上的非等值查询或者范围查询，并且选择列上有索引
+</ul>
+</li>
+<li>对于选择条件是<strong>属性上的非等值查询或者范围查询</strong>，并且选择列上有索引
 <ul>
-<li>要估算查询结果的元组数目</li>
-<li>如果比例较小(&lt;10%)可以使用索引扫描方法</li>
+<li>要估算查询结果的元组数目
+<ul>
+<li>如果比例较小(&lt;10%)，可以使用索引扫描方法</li>
 <li>否则还是使用全表顺序扫描</li>
+</ul>
+</li>
 </ul>
 </li>
 <li>对于用 AND 连接的合取选择条件
 <ul>
 <li>如果有涉及这些属性的组合索引
 <ul>
-<li>优先采用组合索引扫描方法</li>
+<li>优先采用<strong>组合索引</strong>扫描方法</li>
 </ul>
 </li>
 <li>如果某些属性上有单属性索引，可以用索引扫描方法
 <ul>
-<li>通过分别查找满足每个条件的指针，求指针的交集</li>
+<li>通过分别查找满足每个条件的指针，求<strong>指针的交集</strong></li>
 <li>通过索引查找满足部分条件的元组，然后在扫描这些元组时判断是否满足剩余条件</li>
 </ul>
 </li>
@@ -7752,12 +7910,12 @@
 <ul>
 <li>如果两个表都已经按照连接属性排序
 <ul>
-<li>选用排序-合并算法</li>
+<li>选用<strong>排序-合并</strong>算法</li>
 </ul>
 </li>
 <li>如果一个表在连接属性上有索引
 <ul>
-<li>选用索引连接算法</li>
+<li>选用<strong>索引连接</strong>算法</li>
 </ul>
 </li>
 <li>如果上面2个规则都不适用，其中一个表较小
@@ -7765,8 +7923,11 @@
 <li>选用哈希连接算法</li>
 </ul>
 </li>
-<li>可以选用嵌套循环方法，并选择其中较小的表，即占用的块数(B)较少的表，作为外表(外循环的表)</li>
-<li>设连接表 R 与 S 占用的块数分别为 Br 与 Bs；连接操作使用的内存缓冲区块数为 K，分配K-1块给外表；如果 R 为外表，则嵌套循环法存取的块数为 Br+BrBs/(K-1)；显然应该选块数小的表作为外表</li>
+<li>最后可以选用嵌套循环方法，并选择其中较小的表，即占用的块数(<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span></span></span></span>)较少的表，作为外表(外循环的表)
+<ul>
+<li>设连接表 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi></mrow><annotation encoding="application/x-tex">R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span> 与 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 占用的块数分别为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mi>r</mi></msub></mrow><annotation encoding="application/x-tex">B_r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 与 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mi>s</mi></msub></mrow><annotation encoding="application/x-tex">B_s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">s</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>；连接操作使用的内存缓冲区块数为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi></mrow><annotation encoding="application/x-tex">K</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span></span></span></span>，分配 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">K-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> 块给外表；如果 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi></mrow><annotation encoding="application/x-tex">R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span> 为外表，则嵌套循环法存取的块数为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mi>r</mi></msub><mo>+</mo><msub><mi>B</mi><mi>r</mi></msub><msub><mi>B</mi><mi>s</mi></msub><mi mathvariant="normal">/</mi><mo stretchy="false">(</mo><mi>K</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">B_r+B_rB_s/(K-1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">s</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">/</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span></span></span></span>；显然应该选块数小的表作为外表</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -7774,29 +7935,30 @@
 <li>
 <p><strong>基于代价的优化</strong>：</p>
 <ul>
-<li>启发式规则优化是定性的选择，适合解释执行的系统
+<li>启发式规则优化是定性的选择，适合<strong>解释执行的系统</strong>
 <ul>
 <li>解释执行的系统，优化开销包含在查询总开销之中</li>
 </ul>
 </li>
-<li>编译执行的系统中查询优化和查询执行是分开的
+<li><strong>编译执行的系统</strong>中查询优化和查询执行是分开的
 <ul>
-<li>可以采用精细复杂一些的基于代价的优化方法</li>
+<li>一次编译优化，多次执行，可以采用精细复杂一些的基于代价的优化方法</li>
 </ul>
 </li>
-<li><strong>统计信息</strong>：基于代价的优化方法要计算查询的各种不同执行方案的执行代价，它与数据库的状态密切相关，为此在数据字典中存储了优化器需要的数据库统计信息（database statistics information），优化器需要的统计信息
+<li><strong>衡量一个物理查询计划的优劣</strong>：I/O 访问次数、CPU 的占用时间、内存使用代价(缓冲区数目与大小的匹配)、中间结果存储代价、计算量(如搜索记录、合并记录、排序记录、字段值的计算等)、网络通信量</li>
+<li><strong>统计信息的收集</strong>：基于代价的优化方法要计算查询的各种不同执行方案的执行代价，它与数据库的状态密切相关，为此在<strong>数据字典</strong>中存储了<strong>优化器需要的数据库统计信息</strong>（database statistics information），优化器需要的统计信息：
 <ul>
 <li><strong>对每个基本表</strong>：该表的元组总数(N)、元组长度(l)、占用的块数(B)、占用的溢出块数(BO)</li>
-<li><strong>对基表的每个列</strong>：该列不同值的个数(m)、列最大值、最小值、列上是否已经建立了索引、哪种索引(B+ 树索引、Hash 索引、聚集索引)、可以计算选择率(f)：如果不同值的分布是均匀的，f＝1/m；如果不同值的分布不均匀，则要计算每个值的选择率，f＝具有该值的元组数/N</li>
-<li><strong>对索引</strong>：索引的层数(L)、不同索引值的个数、索引的选择基数 S(有 S 个元组具有某个索引值)、索引的叶结点数(Y)</li>
+<li><strong>对基表的每个列</strong>：该列不同值的个数(m)、列最大值、最小值、列上是否已经建立了索引、哪种索引(B+ 树索引、Hash 索引、聚集索引)、可以计算<strong>谓词条件的选择率</strong>(f)：如果不同值的分布是均匀的，f＝1/m；如果不同值的分布不均匀，则要计算每个值的选择率，f＝具有该值的元组数/N</li>
+<li><strong>对索引</strong>：以 B+ 树索引为例，索引的层数(L)、不同索引值的个数、索引的选择基数 S(有 S 个元组具有某个索引值)、索引的叶结点数(Y)</li>
 </ul>
 </li>
 <li><strong>代价估算示例</strong>：
 <ul>
 <li><strong>全表扫描算法的代价估算公式</strong>：
 <ul>
-<li>如果基本表大小为 B 块，全表扫描算法的代价 cost＝B</li>
-<li>如果选择条件是“码＝值”，那么平均搜索代价 cost＝B/2</li>
+<li>如果基本表大小为 B 块，全表扫描算法的代价 cost＝B，满足条件的元组占用 (f * B) 块</li>
+<li>如果选择条件是“码＝值”，那么平均搜索代价 cost＝B/2，最多只有一个元组满足条件</li>
 </ul>
 </li>
 <li><strong>索引扫描算法的代价估算公式</strong>：
@@ -7809,12 +7971,12 @@
 <li><strong>嵌套循环连接算法的代价估算公式</strong>：
 <ul>
 <li>嵌套循环连接算法的代价：cost＝Br+BrBs/(K-1)</li>
-<li>如果需要把连接结果写回磁盘：cost＝Br+Br Bs/(K-1)+(Frs<em>Nr</em>Ns)/Mrs，其中 Frs 为连接选择性(join selectivity)，表示连接结果元组数的比例；Mrs 是存放连接结果的块因子，表示每块中可以存放的结果元组数目</li>
+<li>如果需要把连接结果写回磁盘：cost＝Br+Br Bs/(K-1)+(Frs * Nr * Ns)/Mrs，其中 Frs 为连接选择性(join selectivity)，表示连接结果元组数的比例；Mrs 是存放连接结果的块因子，表示每块中可以存放的结果元组数目</li>
 </ul>
 </li>
 <li><strong>排序-合并连接算法的代价估算公式</strong>：
 <ul>
-<li>如果连接表已经按照连接属性排好序：cost＝Br+Bs+(Frs<em>Nr</em>Ns)/Mrs</li>
+<li>如果连接表已经按照连接属性排好序：cost＝Br+Bs+(Frs * Nr * Ns)/Mrs</li>
 <li>如果必须对文件排序，还需要在代价函数中加上排序的代价，对于包含 B 个块的文件排序的代价大约是 4B</li>
 </ul>
 </li>
@@ -7828,9 +7990,9 @@
 <li>
 <p><strong>自顶向下</strong>：</p>
 <ul>
-<li>系统反复向查询计划顶端的操作符发出需要查询结果元组的请求，操作符收到请求后，就试图计算下一个（几个）元组并返回这些元组</li>
+<li>系统反复向查询计划顶端的操作符发出需要查询结果元组的请求，操作符收到请求后，就试图计算下一个(几个)元组并返回这些元组</li>
 <li>在计算时，如果操作符的输入缓冲区为空，它就会向其孩子操作符发送需求元组的请求</li>
-<li>这种需求元组的请求一直传到叶子节点，启动叶子操作符运行，并返回其父操作符一个（几个）元组</li>
+<li>这种需求元组的请求一直传到叶子节点，启动叶子操作符运行，并返回其父操作符一个(几个)元组</li>
 <li>父操作符再计算自己的输入返回给上层操作符，直至顶端操作符</li>
 <li>重复这一过程，直到处理完整个关系</li>
 </ul>
@@ -7854,7 +8016,15 @@
 <h2 id="第十一章-数据库恢复技术">第十一章 数据库恢复技术</h2>
 <h3 id="1-事务的基本概念">1. 事务的基本概念</h3>
 <ul>
-<li><strong>数据库恢复概述</strong>：
+<li>
+<p><strong>DBMS 的运行方式</strong>：</p>
+<ul>
+<li>DBMS 利用内存(主存)和外存(辅助)组成的存储体系进行数据库管理</li>
+<li>在内存中，又分为程序数据(事务数据)和系统数据</li>
+</ul>
+</li>
+<li>
+<p><strong>数据库恢复概述</strong>：</p>
 <ul>
 <li><strong>故障是不可避免的</strong>：计算机硬件故障、系统软件和应用软件的错误、操作员的失误、恶意的破坏</li>
 <li><strong>故障的影响</strong>：运行事务非正常中断（影响数据正确性）、破坏数据库（数据丢失）</li>
@@ -7862,7 +8032,7 @@
 <ul>
 <li>DBMS 提供<strong>恢复子系统</strong></li>
 <li>保证故障发生后，能把数据库从错误状态恢复到某种逻辑一致的状态（某一已知的正确状态）</li>
-<li>保证事务 ACID；</li>
+<li><strong>保证事务 ACID</strong></li>
 </ul>
 </li>
 <li>恢复技术是衡量系统性能优劣的重要指标</li>
@@ -7871,10 +8041,10 @@
 </ul>
 <h4 id="1-1-什么是事务">1.1 什么是事务</h4>
 <ul>
-<li><strong>事务(Transaction)</strong>：用户定义的一个数据库操作序列，<strong>这些操作要么全做，要么全不做</strong>，是一个不可分割的工作单位
+<li><strong>事务(Transaction)</strong>：用户定义的一个数据库操作序列，<strong>这些操作要么全做，要么全不做</strong>，是一个不可分割的工作单位，以此来保证 DBMS 能够提供一致性状态转换
 <ul>
-<li><strong>事务和程序是两个概念</strong>：在关系数据库中，一个事务可以是一条 SQL 语句，一组 SQL 语句或整个程序；一个应用程序通常包含多个事务</li>
-<li><strong>事务是恢复和并发控制的基本单位</strong></li>
+<li>事务和程序是两个概念：在关系数据库中，一个事务可以是一条 SQL 语句，一组 SQL 语句或整个程序；一个应用程序通常包含多个事务</li>
+<li><strong>事务是数据库恢复和并发控制的基本单位</strong></li>
 </ul>
 </li>
 </ul>
@@ -7883,26 +8053,32 @@
 <li>
 <p><strong>定义事务</strong>：</p>
 <ul>
-<li><strong>显式定义方式</strong>：<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">BEGIN</span> TRANSACTION<br><span class="hljs-keyword">SQL</span> 语句<span class="hljs-number">1</span><br><span class="hljs-keyword">SQL</span> 语句<span class="hljs-number">2</span><br>...<br><span class="hljs-keyword">COMMIT</span> （提交）<br></code></pre></td></tr></table></figure>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">BEGIN</span> TRANSACTION<br><span class="hljs-keyword">SQL</span> 语句<span class="hljs-number">1</span><br><span class="hljs-keyword">SQL</span> 语句<span class="hljs-number">2</span><br>...<br><span class="hljs-keyword">ROLLBACK</span> （回滚）<br></code></pre></td></tr></table></figure>
+<li><strong>显式定义方式</strong>：<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">BEGIN</span> TRANSACTION<br>  <span class="hljs-keyword">SQL</span> 语句<span class="hljs-number">1</span><br>  <span class="hljs-keyword">SQL</span> 语句<span class="hljs-number">2</span><br>  ...<br>  <span class="hljs-keyword">COMMIT</span>（提交）<br><span class="hljs-keyword">END</span> TRANSACTION<br></code></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">BEGIN</span> TRANSACTION<br>  <span class="hljs-keyword">SQL</span> 语句<span class="hljs-number">1</span><br>  <span class="hljs-keyword">SQL</span> 语句<span class="hljs-number">2</span><br>  ...<br>  <span class="hljs-keyword">ROLLBACK</span>（回滚）<br><span class="hljs-keyword">END</span> TRANSACTION<br></code></pre></td></tr></table></figure>
 </li>
-<li><strong>隐式方式</strong>：当用户没有显式地定义事务时，DBMS 按缺省规定自动划分事务</li>
+<li><strong>隐式方式</strong>：
+<ul>
+<li>当用户没有显式地定义事务时，DBMS 按缺省规定自动划分事务</li>
+<li>例如，嵌入式 SQL 程序中，任何一条数据库操纵语句(如 <code>exec sql select</code>)，都会引发一个新事务的开始，结束需要程序员 <code>commit</code> 或 <code>rollback</code> 确认</li>
+</ul>
+</li>
 </ul>
 </li>
 <li>
 <p><strong>事务结束</strong>：</p>
 <ul>
-<li><strong>COMMIT (提交)</strong>：
+<li><strong>COMMIT(提交)</strong>：
 <ul>
 <li><strong>提交</strong>事务的所有操作（<strong>读+更新</strong>），事务正常结束</li>
 <li>将事务中所有对数据库的更新写回到磁盘上的物理数据库中</li>
 <li>事务中所有对数据库的更新<strong>永久</strong>生效</li>
 </ul>
 </li>
-<li><strong>ROLLBACK (回滚)</strong>：
+<li><strong>ROLLBACK(回滚)</strong>：
 <ul>
 <li>事务异常终止，事务运行的过程中发生了某种故障，不能继续执行</li>
-<li>系统将事务中对数据库的所有已完成操作全部撤销，事务滚回到<strong>开始时的状态</strong></li>
+<li>系统将事务中对数据库的<strong>所有已完成操作全部撤销</strong></li>
+<li>事务滚回到<strong>开始时的状态</strong></li>
 </ul>
 </li>
 </ul>
@@ -7913,36 +8089,37 @@
 <li>
 <p><strong>事务的 ACID 特性</strong>：</p>
 <ul>
-<li>原子性（Atomicity）</li>
-<li>一致性（Consistency）</li>
-<li>隔离性（Isolation）</li>
-<li>持续性（Durability）</li>
+<li>原子性(Atomicity)</li>
+<li>一致性(Consistency)</li>
+<li>隔离性(Isolation)</li>
+<li>持续性(Durability)</li>
 </ul>
 </li>
 <li>
-<p><strong>原子性</strong>：事务是数据库的逻辑工作单位</p>
+<p><strong>原子性</strong>：事务是数据库的<strong>逻辑工作单位</strong></p>
 <ul>
-<li>事务中包括的诸操作要么都做，要么都不做</li>
+<li>一个事务中的所有操作都是一个原子不可分割的操作序列</li>
+<li>事务中包括的诸操作<strong>要么都做，要么都不做</strong></li>
 </ul>
 </li>
 <li>
 <p><strong>一致性</strong>：事务执行的结果必须是使数据库从一个一致性状态变到另一个一致性状态</p>
 <ul>
-<li><strong>一致性状态</strong>：数据库中只包含成功事务提交的结果</li>
-<li><strong>不一致状态（不正确状态）</strong>：数据库系统运行故障，数据库中包含失败事务的结果</li>
+<li><strong>一致性状态</strong>：在事务间没有干扰的情况下，数据库中只包含成功事务提交的结果</li>
+<li><strong>不一致状态(不正确状态)</strong>：数据库系统运行故障，数据库中包含失败事务的结果</li>
 </ul>
 </li>
 <li>
-<p><strong>隔离性</strong>：对并发执行而言，一个事务的执行不能被其他事务干扰</p>
+<p><strong>隔离性</strong>：对并发执行而言，<strong>一个事务的执行不能被其他事务干扰</strong></p>
 <ul>
-<li>一个事务内部的操作及使用的数据对其他并发事务是隔离的</li>
+<li>一个事务内部的操作及使用的数据对其他并发事务是<strong>隔离</strong>的</li>
 <li>并发执行的各个事务之间不能互相干扰</li>
 </ul>
 </li>
 <li>
-<p><strong>持续性</strong>：持续性也称永久性（Permanence）</p>
+<p><strong>持续性</strong>：持续性也称<strong>永久性</strong>(Permanence)</p>
 <ul>
-<li>一个事务一旦提交，它对数据库中数据的改变就应该是永久性的</li>
+<li>一个事务一旦提交，它对数据库中数据的改变就应该是永久性的，被正确保存在外存磁盘上</li>
 <li>接下来的其他操作或故障不应该对其执行结果有任何影响</li>
 </ul>
 </li>
@@ -7950,7 +8127,7 @@
 <p><strong>事务的特性</strong>：</p>
 <ul>
 <li>保证事务 ACID 特性是事务管理的重要任务</li>
-<li><strong>破坏事务 ACID 特性的因素</strong>：
+<li>破坏事务 ACID 特性的因素：
 <ul>
 <li>多个事务并行运行时，不同事务的操作交叉执行</li>
 <li>事务在运行过程中被强行停止</li>
@@ -7958,19 +8135,48 @@
 </li>
 </ul>
 </li>
+<li>
+<p><strong>事务涉及到的元素</strong>：</p>
+<ul>
+<li>数据库的元素：通常，1元素=1磁盘块=1内存页/块，可以更小（1记录），或更大（1关系）</li>
+<li>每个事务都会读写某些元素：
+<ul>
+<li>Read(x,t)：将元素 X 读到事务的局部变量 t 中</li>
+<li>Write(x,t)：将事务的局部变量 t 写回元素 X</li>
+<li>Input(X)：将元素 X 从磁盘读入到内存缓冲区中</li>
+<li>Output(X)：将元素 X 从缓冲区写回磁盘</li>
+</ul>
+</li>
+<li>每个事务都以提交或撤销结束：
+<ul>
+<li>COMMIT：事务提交</li>
+<li>ROLLBACK：事务撤销</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>缓冲区处理策略</strong>：</p>
+<ul>
+<li><strong>Force</strong>：内存中的数据最晚在 commit 时写入磁盘</li>
+<li><strong>No steal</strong>：不允许在事务 commit 之前把内存中数据写入磁盘</li>
+<li><strong>No force</strong>：内存中数据一直保留，在 commit 之后过一段时间再写入磁盘（<strong>灵活</strong>）</li>
+<li><strong>Steal</strong>：允许在事务 commit 之前把内存中数据写入磁盘（<strong>灵活</strong>）</li>
+</ul>
+</li>
 </ul>
 <h3 id="2-故障的种类">2. 故障的种类</h3>
 <ul>
 <li>
-<p><strong>故障的种类</strong>：事务故障、系统故障、介质故障</p>
+<p><strong>故障的种类</strong>：事务内部的故障、系统故障、介质故障</p>
 </li>
 <li>
 <p><strong>事务内部的故障</strong>：</p>
 <ul>
-<li><strong>什么是事务故障</strong>：
+<li><strong>什么是事务故障(transaction failure)</strong>：
 <ul>
 <li>某个事务在运行过程中由于种种原因未运行至正常终止点就夭折了</li>
-<li>只影响该事务本身</li>
+<li><strong>只影响该事务本身</strong></li>
 </ul>
 </li>
 <li><strong>事务故障的常见原因</strong>：
@@ -9126,6 +9332,7 @@
 </ul>
 </li>
 </ul>
+<h2 id="第十三章-数据库管理系统">第十三章 数据库管理系统</h2>
 <h2 id="参考资料">参考资料</h2>
 <p>本文参考上海交通大学《数据库技术》课程 CS3321 郭捷老师的 PPT 课件整理。</p>
 
