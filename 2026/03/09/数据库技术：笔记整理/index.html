@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/db.png">
 <meta property="article:published_time" content="2026-03-09T08:30:32.000Z">
-<meta property="article:modified_time" content="2026-06-14T10:59:08.807Z">
+<meta property="article:modified_time" content="2026-06-14T11:16:30.094Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="知识点整理">
@@ -259,7 +259,7 @@
         
         
         
-          691 mins
+          692 mins
         
       </span>
     
@@ -8621,11 +8621,21 @@
 <li>REDO 处理：重新执行，浪费了大量时间</li>
 </ul>
 </li>
-<li><strong>解决方案</strong>：具有检查点（checkpoint）的恢复技术
+<li><strong>解决方案</strong>：
 <ul>
-<li>在日志文件中增加检查点记录（checkpoint）</li>
+<li>DBMS 在运行日志中定期设置和更新<strong>检查点(checkpoint)</strong>
+<ul>
+<li>在检查点时刻，DBMS 强制<strong>内存中内容和物理介质中内容保持一致</strong>，即将内存中更新的所有内容写入磁盘 DB</li>
+<li>保证在检查点之前内存中数据与介质数据保持一致</li>
+</ul>
+</li>
+<li>具有<strong>检查点</strong>的恢复技术
+<ul>
+<li>在日志文件中增加检查点记录(checkpoint)</li>
 <li>增加重新开始文件</li>
 <li>恢复子系统在登录日志文件期间动态地维护日志</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -8635,7 +8645,7 @@
 <ul>
 <li><strong>检查点记录的内容</strong>：
 <ul>
-<li>建立检查点时刻所有正在执行的事务清单</li>
+<li>建立检查点时刻<strong>所有正在执行</strong>的事务清单</li>
 <li>这些事务最近一个日志记录的地址</li>
 </ul>
 </li>
@@ -8644,11 +8654,11 @@
 <li>记录各个检查点记录在日志文件中的地址</li>
 </ul>
 </li>
-<li><strong>动态维护日志文件的方法</strong>：周期性地执行建立检查点、保存数据库状态的操作
+<li><strong>动态维护日志文件的方法</strong>：周期性地执行<strong>建立检查点、保存数据库状态</strong>的操作
 <ul>
-<li>将当前日志缓冲区中的所有日志记录写入磁盘的日志文件上</li>
+<li>将当前<strong>日志缓冲区</strong>中的所有日志记录写入磁盘的日志文件上</li>
 <li>在日志文件中写入一个检查点记录</li>
-<li>将当前数据缓冲区的所有数据记录写入磁盘的数据库中</li>
+<li>将当前<strong>数据缓冲区</strong>的所有数据记录写入磁盘的数据库中</li>
 <li>把检查点记录在日志文件中的地址写入一个重新开始文件</li>
 </ul>
 </li>
@@ -8661,14 +8671,13 @@
 </ul>
 </li>
 <li>
-<p><strong>利用检查点的恢复策略</strong>：</p>
+<p><strong>利用检查点的恢复策略</strong>：使用检查点法，可以改善恢复效率</p>
 <ul>
-<li>使用检查点法，可以改善恢复效率</li>
 <li>当事务 T 在一个检查点之前提交，T 对数据库所做的修改已写入数据库</li>
 <li>在进行恢复处理时，没有必要对事务 T 执行 REDO 操作</li>
 <li><strong>利用检查点的恢复步骤</strong>：
 <ul>
-<li>从重新开始文件中找到最后一个检查点记录在日志文件中的地址</li>
+<li>从<strong>重新开始文件中</strong>找到最后一个检查点记录在日志文件中的地址</li>
 <li>由该地址在日志文件中找到最后一个检查点记录</li>
 <li>由该检查点记录得到检查点建立时刻所有正在执行的事务清单 ACTIVE-LIST
 <ul>
@@ -8698,13 +8707,13 @@
 <li>
 <p><strong>问题提出</strong>：</p>
 <ul>
-<li>介质故障是对系统影响最为严重的一种故障，严重影响数据库的可用性；
+<li>介质故障是对系统影响最为严重的一种故障，严重影响数据库的可用性
 <ul>
-<li>介质故障恢复比较费时；</li>
+<li>介质故障恢复比较费时</li>
 <li>为预防介质故障，DBA 必须周期性地转储数据库</li>
 </ul>
 </li>
-<li><strong>提高数据库可用性的解决方案</strong>：数据库镜像（Mirror）</li>
+<li>提高数据库可用性的解决方案：数据库镜像(Mirror)</li>
 </ul>
 </li>
 <li>
@@ -8719,15 +8728,21 @@
 <ul>
 <li><strong>出现介质故障时</strong>：
 <ul>
-<li>镜像磁盘继续提供使用；</li>
-<li>DBMS 自动利用镜像磁盘数据进行数据库的恢复，不需要关闭系统和重装数据库副本</li>
+<li>镜像磁盘继续提供使用</li>
+<li>DBMS 自动利用镜像磁盘数据进行数据库的恢复</li>
+<li>不需要关闭系统和重装数据库副本</li>
 </ul>
 </li>
 <li><strong>没有出现故障时</strong>：
 <ul>
-<li>可用于并发操作</li>
-<li>一个用户对数据加排他锁修改数据</li>
-<li>其他用户可以读镜像数据库上的数据，不必等待该用户释放锁</li>
+<li>可用于<strong>并发操作</strong></li>
+<li>一个用户对数据加<strong>排他锁</strong>修改数据，其他用户可以读镜像数据库上的数据，不必等待该用户释放锁</li>
+</ul>
+</li>
+<li>频繁地复制数据自然会降低系统运行效率
+<ul>
+<li>在实际应用中用户往往只选择对<strong>关键数据</strong>和<strong>日志文件</strong>镜像</li>
+<li>不是对整个数据库进行镜像</li>
 </ul>
 </li>
 </ul>
@@ -8744,7 +8759,7 @@
 <ul>
 <li>事务故障的恢复：UNDO</li>
 <li>系统故障的恢复：UNDO + REDO</li>
-<li>介质故障的恢复：重装备份并恢复到一致性状态 + REDO</li>
+<li>介质故障的恢复：重装备份 + 日志文件（UNDO + REDO）</li>
 </ul>
 </li>
 <li>提高恢复效率的技术：
