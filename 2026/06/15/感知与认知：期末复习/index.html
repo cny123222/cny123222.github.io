@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/ai.png">
 <meta property="article:published_time" content="2026-06-15T11:52:22.000Z">
-<meta property="article:modified_time" content="2026-06-15T14:21:05.997Z">
+<meta property="article:modified_time" content="2026-06-15T17:52:02.045Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="知识点整理">
@@ -248,7 +248,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.4k words
+          4.6k words
         
       </span>
     
@@ -259,7 +259,7 @@
         
         
         
-          12 mins
+          39 mins
         
       </span>
     
@@ -429,7 +429,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on June 15, 2026 pm
+                    Last updated on June 16, 2026 am
                   
                 
               </p>
@@ -661,7 +661,536 @@
 <p><strong>Gestalt 原则</strong>：了解对应的例子</p>
 <ul>
 <li>Productive thinking/Reproductive thinking 与 System1/System2 类似</li>
+<li>Apparent movement 证明信号本身的物理属性和人感知到的不同</li>
+<li>Continuation、Pragnanz(as simple as possible)…</li>
+<li>Similarity/Proximity/Common fate/Common region/Uniform connectedness：相似/临近/朝一个方向运动/在一个区域中/连在一起的会归到一起</li>
 </ul>
+</li>
+</ul>
+<p><img src="5-gestalt.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>
+<p><strong>前景与背景</strong>：</p>
+<ul>
+<li>Rubin’s vase 区分人和杯子哪个是前景哪个是背景</li>
+<li>区分的结果与物体的横竖有关</li>
+<li>凸的东西、有意义的东西一般被认为是前景</li>
+</ul>
+</li>
+<li>
+<p><strong>场景</strong>：包括背景、物体、物体的交互</p>
+<ul>
+<li>A scene is acted within</li>
+<li>An object is acted upon</li>
+</ul>
+</li>
+<li>
+<p><strong>先验知识</strong>：根据贝叶斯公式，先验决定了我们看到的东西</p>
+<ul>
+<li>Light from above：鞋印的凹凸，盘子的正反</li>
+<li>blob 的内容：受到整体内容的影响</li>
+</ul>
+</li>
+<li>
+<p><strong>Mind Reading</strong>：</p>
+<ul>
+<li>用 fMRI 测量脑区活动，反推人眼看到的内容</li>
+<li>但 Attention 机制使得信息传导速度受限，因此通过光纤瞬间学会东西是不现实的</li>
+</ul>
+</li>
+</ul>
+<h2 id="Chapter-6-Visual-Attention">Chapter 6: Visual Attention</h2>
+<ul>
+<li>
+<p><strong>Attention</strong>：人不能同时处理很多的东西，attention 是一个信息选择的过程</p>
+<ul>
+<li>外显注意：眼睛移动过去；内隐注意：眼睛没有移过去</li>
+<li>也出现在听觉中，如集中注意力到一只耳朵</li>
+<li>目的是过滤无用内容，实现信息的缩减（可达到 10^10）</li>
+</ul>
+</li>
+<li>
+<p><strong>Feature Integration Theory</strong>：如何通过计算模拟 Attention 过程</p>
+<ul>
+<li>先获得特征，再组合特征</li>
+<li>实验中，人短时间内获得特征，但时间够长才会完成特征绑定</li>
+<li>单一特征的 visual search 容易实现，多个特征比较困难，且难度与图的大小正相关</li>
+<li>Eye scanning：人眼视线的移动，可以通过 scan path 反推视觉任务</li>
+</ul>
+</li>
+<li>
+<p>Attention 和脑区之间的关系可以通过实验验证</p>
+<ul>
+<li>Attention 会使得人类注意不到画面中的某些内容</li>
+</ul>
+</li>
+<li>
+<p>ASD、ADHD 等疾病会使得注意力产生异常</p>
+</li>
+</ul>
+<h2 id="Chapter-7-Taking-Action">Chapter 7: Taking Action</h2>
+<ul>
+<li>
+<p><strong>Ecological Approach to Perception</strong>：强调智能体和环境之间的相互作用</p>
+<ul>
+<li>通过光流判断自己移动的速度和方向（运动产生光流，光流引导运动）</li>
+<li>视觉能对运动产生帮助或影响，如后空翻睁眼、墙动导致人倒</li>
+</ul>
+</li>
+<li>
+<p><strong>Affordance(可用性)</strong>：物体可以用来做什么</p>
+<ul>
+<li>看到可用东西时，EEG 在特定时间有响应</li>
+</ul>
+</li>
+<li>
+<p><strong>寻路(Wayfinding)</strong>：如何到达目的地</p>
+<ul>
+<li>视觉信息辅助+人脑空间更新(spatial updating)</li>
+<li>人脑内部有地图来导航，通过地标帮助规划路线</li>
+<li>实验证明，这个现象是存在的</li>
+</ul>
+</li>
+<li>
+<p>Dorsal 对于运动和互动起到的作用更多</p>
+<ul>
+<li>视觉对运动起到调整作用，如拍番茄酱的瞬间会握紧</li>
+<li>脑区中不同区域负责不同的运动</li>
+<li>动作和意图有关，与环境有相互作用</li>
+<li>action depends on perception -&gt; perception depends on action</li>
+<li>action 和 perception 之间靠 prediction 实现</li>
+</ul>
+</li>
+<li>
+<p><strong>Visuomotor grip cells</strong>：对视觉和运动都有响应</p>
+</li>
+<li>
+<p><strong>Mirror neurons</strong>：</p>
+<ul>
+<li>看到别人做动作和自己做动作都会激活</li>
+<li>与听觉可以结合，即对声音也有响应</li>
+</ul>
+</li>
+</ul>
+<h2 id="Chapter-8-Perceiving-Motion">Chapter 8: Perceiving Motion</h2>
+<ul>
+<li>
+<p>运动能看到物体的不同视角，还能传递感情</p>
+</li>
+<li>
+<p><strong>三种运动</strong>：real、illusory、induced</p>
+<ul>
+<li>看到 real 和 apparent 的脑区激活差不多</li>
+</ul>
+</li>
+<li>
+<p><strong>Reichardt detectors</strong>：可以检测朝一个方向的运动</p>
+</li>
+<li>
+<p><strong>伴随放电理论(Corollary discharge theory)</strong>：重点</p>
+<ul>
+<li>MS：使眼睛运动的信号</li>
+<li>CDS：MS 的副本</li>
+<li>IDS：看到的运动信号</li>
+<li>CDS 和 IDS 比较，如果相等，表明使眼动导致的画面运动；否则是物体运动</li>
+<li>该理论对听觉也有作用</li>
+<li>睁眼的时候戳眼球会觉得世界在动，因为没有 CDS</li>
+</ul>
+</li>
+</ul>
+<p><img src="8-%E4%BC%B4%E9%9A%8F%E6%94%BE%E7%94%B5.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>MT 脑区能对看到的运动产生响应
+<ul>
+<li>如果脑区受到伤害，会对运动的判断失效</li>
+<li>只看一个小区域，无法判断运动的方向，因此运动是更大脑区判断的</li>
+<li>MT、V1、MST、STS 都和运动有关</li>
+<li>静止的图片也能产生运动的感觉</li>
+<li>新生的孩子和小鸡都会对 biological motion 吸引，因此可以作为自闭症等脑部发育异常的筛选手段</li>
+</ul>
+</li>
+</ul>
+<h2 id="Chapter-9-Perceiving-Color">Chapter 9: Perceiving Color</h2>
+<ul>
+<li>
+<p>颜色帮助我们快速找到食物，还能表达情绪</p>
+<ul>
+<li>物体会使得光反射或透射，不同的物体有不同光谱</li>
+</ul>
+</li>
+<li>
+<p><strong>加色系与减色系</strong>：光/颜料</p>
+</li>
+<li>
+<p><strong>三基色原理</strong>：三种颜色可以混合出人类能看到的所有颜色</p>
+<ul>
+<li>同色异谱：其他波长的混合也能产生对应的颜色</li>
+<li>不同颜色是 LMS 三种锥状细胞不同的响应组合产生的</li>
+<li>人类无法通过直观感受分辨颜色的光谱</li>
+<li>三基色是视网膜上响应(receptor 层面)，四基色是更高脑区的响应(opponent 层面)</li>
+<li>黄色：L + M 信号组合</li>
+</ul>
+</li>
+<li>
+<p><strong>色盲</strong>：三种，分别对应 L、M、S 异常</p>
+</li>
+<li>
+<p><strong>颜色的神经机制</strong>：</p>
+<ul>
+<li>颜色在脑区中分布没有明确规律</li>
+<li>opponent 神经元可以分为 center-surround、double center-surround 等</li>
+<li>double center-surround：比如对中波长负响应，对长波长正响应</li>
+<li>Color constancy：人类能在不同光照情况下判断颜色，即使光谱差别很大</li>
+<li>Light constancy：亮度相对值可以判断很准，但不是绝对值；靠模糊的边缘来判断影子</li>
+</ul>
+</li>
+<li>
+<p>不同生物之间看到的颜色差别很大</p>
+</li>
+</ul>
+<h2 id="Chapter-10-Perceiving-Depth-and-Size">Chapter 10: Perceiving Depth and Size</h2>
+<ul>
+<li>
+<p><strong>判断远近大小的途径</strong>：Oculomotor、Monocular、Binocular 三种 cues，要能举例子</p>
+<ul>
+<li>Oculomotor cues：眼球可以转动，看远处时视线平行，看近处时往内侧转</li>
+<li>Monocular cues：单目，遮挡、相对高度、大小、纹理密度、视差等</li>
+<li>Binocular cues：双目视差（越小越远）</li>
+<li>horopter(视野单向区)：在该圆上没有视差</li>
+</ul>
+</li>
+<li>
+<p>随机点可以造出立体图</p>
+</li>
+<li>
+<p>一些神经元与视差的多少有关</p>
+</li>
+<li>
+<p>实验：cues 来判断物体的远近</p>
+</li>
+<li>
+<p>Size consistency：S_p = K(R * D_p)，认为的距离正比于看到的大小乘以认为的距离</p>
+<ul>
+<li>凸的角看起来近，凹的角看起来远</li>
+<li>靠近地平线的东西认为比较远，所以看起来大（太阳落山、月亮较低）</li>
+</ul>
+</li>
+<li>
+<p>猫和兔子的视野不同：猫的视野更窄，中心重叠大；兔的视野更宽，中心重叠小，所以判断远近能力更弱</p>
+<ul>
+<li>蝙蝠能靠回声来定位</li>
+</ul>
+</li>
+<li>
+<p>发育过程中对远近的判断也是一个过程</p>
+</li>
+</ul>
+<h2 id="Chapter-11-Hearing">Chapter 11: Hearing</h2>
+<ul>
+<li>
+<p>人能听到的波长范围很窄</p>
+</li>
+<li>
+<p>声音可以定义为物理量，也可以定义为感知量</p>
+<ul>
+<li>声音靠空气的压缩和疏化来传播，是一种纵波</li>
+<li>传播速度与物体的密度、材料有关，固体中传播快，在空气中慢</li>
+</ul>
+</li>
+<li>
+<p><strong>声音强度定义</strong>：dB = 20 * log_10(p/p_0)</p>
+<ul>
+<li>其中 p_0 是最小能听到的基准声压</li>
+<li>因此，0 dB 是能听到的最小声压</li>
+<li>100+ dB 对人耳有害</li>
+</ul>
+</li>
+<li>
+<p>不同的声音可以通过傅立叶变换分解出不同频率</p>
+<ul>
+<li>不同的频率组合让我们产生了丰富的听觉</li>
+<li>Missing fundamental：即使不存在频率的最大公约数，也会听到对应频率</li>
+</ul>
+</li>
+<li>
+<p>声音主观响度(loudness)、可听的区域</p>
+</li>
+<li>
+<p>音高（频率）、音色（与启奏和衰减有关）</p>
+</li>
+<li>
+<p>周期性（音乐）、非周期性（非周期性）</p>
+</li>
+<li>
+<p><strong>耳朵的结构</strong>：</p>
+<ul>
+<li>鼓膜后面有三块骨头，起到放大作用</li>
+<li>后面是圆窗、椭圆窗</li>
+<li>耳蜗中有前庭阶和鼓阶，横断面中是科蒂氏器，里面有听神经细胞</li>
+<li>听神经细胞振动产生摩擦，进而放电（只有一个方向动会放电）</li>
+<li>耳蜗和频率之间的对应关系：越往输入端(Base)，频率越高，所以年纪大的听力损失从高频开始</li>
+<li>有些神经纤维只对特定频率区域又响应</li>
+</ul>
+</li>
+<li>
+<p>音乐中最高音是短笛，4500 Hz</p>
+</li>
+<li>
+<p>听神经的频率成分，从前到后有频率差别</p>
+</li>
+</ul>
+<h2 id="Chapter-12-Hearing-in-the-Environment">Chapter 12: Hearing in the Environment</h2>
+<ul>
+<li>
+<p>上下：Elevation；左右：Azimuth</p>
+</li>
+<li>
+<p><strong>双耳判断声音方向和远近</strong>：</p>
+<ul>
+<li>interaual level difference(ILD)：声音的强度差</li>
+<li>interaual time difference(ITD)：声音的时间差</li>
+<li>cone of confusion：两者都相等</li>
+</ul>
+</li>
+<li>
+<p>耳朵结构的进化能让我们分清不同朝向的声音</p>
+<ul>
+<li>因为不同朝向、不同频率的损耗不一致</li>
+<li>同时证明人有适应性</li>
+<li>鸟类对 ITD 更敏感</li>
+<li>听觉也存在 what/where 的 pathway</li>
+</ul>
+</li>
+<li>
+<p>室内有很多声音是反射听到的</p>
+<ul>
+<li>两个声源先后发生，如果时间差较大，可以听到两个声音</li>
+<li>但如果时间差小，只能听到一个声音（较早的）</li>
+<li>混响时间</li>
+</ul>
+</li>
+<li>
+<p>听觉中的 gestalt 效应，记得例子</p>
+<ul>
+<li>similarity：离得比较近的声音可能混到一起</li>
+</ul>
+</li>
+<li>
+<p>腹语效应：视觉压制听觉，口型和声音对上</p>
+</li>
+<li>
+<p>Two-Flash Illusion：听觉压制视觉，闪一次但听到两次，以为看到两次</p>
+</li>
+<li>
+<p>视觉和听觉在更高层脑区有互动</p>
+<ul>
+<li>有的神经元同时对视觉和听觉有响应，且与空间位置对应</li>
+<li>读故事和听故事的响应类似</li>
+</ul>
+</li>
+</ul>
+<h2 id="Chapter-13-Perceiving-Music">Chapter 13: Perceiving Music</h2>
+<ul>
+<li>
+<p>音乐有很强的进化意义，在语言产生之前，可以情感表达和协作有帮助</p>
+<ul>
+<li>很多音乐元素跨文化</li>
+<li>音乐爱好对人脑发育有利</li>
+<li>音乐与情绪有关，能唤起回忆，基本能激活所有脑区</li>
+<li>基底核对节拍有响应</li>
+</ul>
+</li>
+<li>
+<p>Mild over Meter</p>
+<ul>
+<li>语言的发音使得我们对音乐的理解也不同</li>
+</ul>
+</li>
+<li>
+<p>音乐会让我们产生运动</p>
+</li>
+<li>
+<p>tonality：人有预知能力，能补上和谐的东西</p>
+<ul>
+<li>人不喜欢不和谐的东西，会有脑区响应</li>
+</ul>
+</li>
+<li>
+<p>音乐与情感有关，两者的关系有不同观点</p>
+<ul>
+<li>在更高层脑区，对多巴胺分泌等有关</li>
+<li>音乐与语言有相似性，也有区别</li>
+<li>有些人失语无法欣赏音乐</li>
+</ul>
+</li>
+</ul>
+<h2 id="Chapter-14-Perceiving-Speech">Chapter 14: Perceiving Speech</h2>
+<ul>
+<li>
+<p>发音靠舌头、声带的综合作用</p>
+<ul>
+<li>元音：声带振动；辅音：嘴型变化</li>
+<li>用共振峰、声谱图描述</li>
+</ul>
+</li>
+<li>
+<p>发音的基本单位是音素(phoneme)</p>
+</li>
+<li>
+<p>coarticulation：后面音的发音会影响前面音的发音</p>
+</li>
+<li>
+<p>控制信号是发音的不变量</p>
+<ul>
+<li>找脑区的研究</li>
+</ul>
+</li>
+<li>
+<p>视觉影响听觉的感知</p>
+</li>
+<li>
+<p>能理解缺损的句子，因为有先验知识</p>
+</li>
+<li>
+<p>听不懂的语言很难分词</p>
+</li>
+<li>
+<p>学语言其实学转移概率</p>
+</li>
+<li>
+<p>有两种失语症，但有不同</p>
+</li>
+<li>
+<p>也有 what/where pathway</p>
+</li>
+<li>
+<p>实验：脑皮层和发出音素的关系</p>
+</li>
+</ul>
+<h2 id="Chapter-15-The-Cutaneous-Senses">Chapter 15: The Cutaneous Senses</h2>
+<ul>
+<li>
+<p>皮肤能感知到压力、疼痛、温度、振动</p>
+</li>
+<li>
+<p>皮肤分为上皮和真皮，有四种感受器（了解作用）</p>
+<ul>
+<li>上皮有默克尔感受器、迈斯纳小体</li>
+<li>真皮有鲁菲尼圆柱体、帕西尼氏环层小体</li>
+</ul>
+</li>
+<li>
+<p>触觉皮层和身体有对应关系</p>
+<ul>
+<li>人脸、人手比较敏感，背部、手肘不敏感</li>
+<li>一个区域负责感受，一个区域负责控制</li>
+<li>有两条神经通路，一条快一条慢</li>
+</ul>
+</li>
+<li>
+<p>盲文：触觉能力强</p>
+</li>
+<li>
+<p>触觉分辨率：方向、最小间隔</p>
+</li>
+<li>
+<p>判断物体表面的材质</p>
+<ul>
+<li>spatial cues：不动</li>
+<li>temporal cues：移动，感到振动</li>
+</ul>
+</li>
+<li>
+<p>感受野：手指上小，分辨率高；胳膊上大，分辨率低</p>
+</li>
+<li>
+<p>haptic exploration：通过触觉反馈感知物体</p>
+<ul>
+<li>active touch：主体是自我感受</li>
+<li>passive touch：主体是物体本身</li>
+<li>touch 有情感和社会属性</li>
+<li>social touch：无髓神经纤维起作用，有最佳速度，能降低疼痛</li>
+</ul>
+</li>
+<li>
+<p>触觉也存在侧抑制</p>
+<ul>
+<li>有的神经元只对固定方向运动有响应</li>
+<li>甚至只对特定物体的抓握有响应</li>
+</ul>
+</li>
+<li>
+<p>疼痛分为三种：炎症性、神经性、伤害性</p>
+<ul>
+<li>gate model：靠机械传感器的信号使得疼痛传感器关闭</li>
+<li>有 top-down 过程，安慰剂能够缓解</li>
+<li>药物和疼痛有关系，如纳洛酮让人更疼，因为内啡肽位置被占据</li>
+<li>social rejection 和疼痛有类似效果</li>
+</ul>
+</li>
+<li>
+<p>皮肤的感觉有可塑性</p>
+</li>
+</ul>
+<h2 id="Chapter-16-The-Chemical-Senses">Chapter 16: The Chemical Senses</h2>
+<ul>
+<li>
+<p>嗅觉和味觉是一起体现的 flavor</p>
+<ul>
+<li>gate keepers，可以分辨有害的东西</li>
+<li>化学反应来感受，容易消亡，需要再生</li>
+</ul>
+</li>
+<li>
+<p>taste：</p>
+<ul>
+<li>五种基本量：酸、甜、苦、咸、鲜</li>
+<li>其他化合物的味道都可以由基本量构成</li>
+<li>苦的东西大多有害</li>
+</ul>
+</li>
+<li>
+<p>乳突上有味蕾，味蕾上有感知细胞</p>
+<ul>
+<li>有四条神经可以往上传</li>
+</ul>
+</li>
+<li>
+<p>对味道的 coding 可以是 population，也可以是 specificity</p>
+<ul>
+<li>转基因老鼠，敲掉基因会尝不到</li>
+</ul>
+</li>
+<li>
+<p>super taster：味蕾发达，能尝到特殊味道</p>
+</li>
+<li>
+<p>人类嗅觉的分辨能力强</p>
+<ul>
+<li>与记忆有很强的绑定关系</li>
+<li>因人而异</li>
+<li>COVID-19 破坏 ACE2，使得失去嗅觉</li>
+<li>嗅觉与阿尔兹海默有关系</li>
+</ul>
+</li>
+<li>
+<p>嗅觉很复杂</p>
+<ul>
+<li>对类似的化合物有不同的嗅觉</li>
+<li>但不一样的东西可能气味很像</li>
+<li>嗅觉小球有很多种，使得我们能闻到不同气味</li>
+<li>嗅球的空间分布和味道有对应关系，但在高层脑区没有（有可能是网络）</li>
+<li>olfactory bulb 可以直接传递信号到杏仁核，因此嗅觉与情感记忆关系近</li>
+</ul>
+</li>
+<li>
+<p>吃东西感觉味道是嘴里来的，实际上是嗅觉和味觉的相互作用</p>
+<ul>
+<li>在脑岛和杏仁核有汇聚关系</li>
+</ul>
+</li>
+<li>
+<p>贵的东西吃起来好，是 top-down 关系</p>
 </li>
 </ul>
 
