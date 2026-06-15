@@ -1,0 +1,1121 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Nuoyan Chen">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="本文为 SJTU-ICE3611 感知与认知课程的期末复习。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="感知与认知：期末复习">
+<meta property="og:url" content="https://cny123222.github.io/2026/06/15/%E6%84%9F%E7%9F%A5%E4%B8%8E%E8%AE%A4%E7%9F%A5%EF%BC%9A%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Nuoyan Chen&#39;s Blog">
+<meta property="og:description" content="本文为 SJTU-ICE3611 感知与认知课程的期末复习。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cny123222.github.io/img/ai.png">
+<meta property="article:published_time" content="2026-06-15T11:52:22.000Z">
+<meta property="article:modified_time" content="2026-06-15T14:21:05.997Z">
+<meta property="article:author" content="Nuoyan Chen">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="知识点整理">
+<meta property="article:tag" content="感知与认知">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cny123222.github.io/img/ai.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>感知与认知：期末复习 - Nuoyan Chen&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"cny123222.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 80vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Nuoyan Chen&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/nanjing.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.4)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="感知与认知：期末复习"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Nuoyan Chen
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-06-15 19:52" pubdate>
+          June 15, 2026 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.4k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          12 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar category-bar" style="margin-right: -1rem">
+    
+
+
+
+
+
+<div class="category-list">
+  
+  
+    
+    
+    
+    <div class="category row nomargin-x">
+      <a class="category-item 
+          list-group-item category-item-action col-10 col-md-11 col-xm-11" title="AI"
+        id="heading-0a40e3c91a3a55c9a37428c6d194d0e5" role="tab" data-toggle="collapse" href="#collapse-0a40e3c91a3a55c9a37428c6d194d0e5"
+        aria-expanded="true"
+      >
+        AI
+        <span class="list-group-count">(8)</span>
+        <i class="iconfont icon-arrowright"></i>
+      </a>
+      
+      <div class="category-collapse collapse show" id="collapse-0a40e3c91a3a55c9a37428c6d194d0e5"
+           role="tabpanel" aria-labelledby="heading-0a40e3c91a3a55c9a37428c6d194d0e5">
+        
+        
+          
+  <div class="category-post-list">
+    
+    
+      
+      
+        <a href="/2026/01/28/AI-%E5%85%AB%E8%82%A1-1-%EF%BC%9ABN-LN-RMSNorm/" title="AI 八股(1)：BN, LN, RMSNorm"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">AI 八股(1)：BN, LN, RMSNorm</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/08/25/Batch-Layer-or-Instance-Normalization/" title="Batch, Layer, or Instance Normalization?"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Batch, Layer, or Instance Normalization?</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/08/14/Fancy-but-Useful-Tensor-Operations/" title="Fancy but Useful Tensor Operations"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Fancy but Useful Tensor Operations</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/08/16/Pytorch-Tensors-A-Beginner-s-Guide/" title="Pytorch Tensors: A Beginner&#39;s Guide"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Pytorch Tensors: A Beginner&#39;s Guide</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2025/07/11/Reinforcement-Learning-Memo/" title="Reinforcement Learning Memo"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">Reinforcement Learning Memo</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2026/06/15/%E6%84%9F%E7%9F%A5%E4%B8%8E%E8%AE%A4%E7%9F%A5%EF%BC%9A%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0/" title="感知与认知：期末复习"
+           class="list-group-item list-group-item-action
+           active">
+          <span class="category-post">感知与认知：期末复习</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2026/03/09/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%EF%BC%9A%E7%AC%94%E8%AE%B0%E6%95%B4%E7%90%86/" title="机器学习：笔记整理"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">机器学习：笔记整理</span>
+        </a>
+      
+    
+      
+      
+        <a href="/2026/01/14/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%EF%BC%9A%E7%AC%94%E8%AE%B0%E6%95%B4%E7%90%86/" title="自然语言处理：笔记整理"
+           class="list-group-item list-group-item-action
+           ">
+          <span class="category-post">自然语言处理：笔记整理</span>
+        </a>
+      
+    
+  </div>
+
+        
+      </div>
+    </div>
+  
+</div>
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">感知与认知：期末复习</h1>
+            
+              <p id="updated-time" class="note note-default" style="">
+                
+                  
+                    Last updated on June 15, 2026 pm
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>本文为 SJTU-ICE3611 感知与认知课程的<strong>期末复习</strong>。</p>
+<span id="more"></span>
+<h2 id="Chapter-1-Introduction-to-Perception">Chapter 1: Introduction to Perception</h2>
+<ul>
+<li><strong>感知认知的过程</strong>：从外部世界到内部刺激，再到 Perception、Recognition 和 Action，接着 Action 可以改变环境输入，形成闭环</li>
+</ul>
+<p><img src="1-%E8%AE%A4%E7%9F%A5%E8%BF%87%E7%A8%8B.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>
+<p><strong>知识(Knowledge)</strong>：对信息处理有影响</p>
+<ul>
+<li>自下而上(bottom-up)的处理：数据驱动</li>
+<li>自上而下(top-down)的处理：知识驱动，如识别成人脸</li>
+</ul>
+</li>
+<li>
+<p><strong>研究模式</strong>：外部刺激、生理表现、行为</p>
+<ul>
+<li>A：不测量生理信号，如主观打分</li>
+<li>B 和 C：需要测量生理信号，如使用磁共振或探针</li>
+</ul>
+</li>
+</ul>
+<p><img src="1-%E7%A0%94%E7%A9%B6%E6%96%B9%E6%B3%95.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>
+<p><strong>测量方法</strong>：</p>
+<ul>
+<li>Method of limits**</li>
+<li>Method of adjustment：最快(efficient)</li>
+<li>Method of constant stimuli：最准(accurate)</li>
+</ul>
+</li>
+<li>
+<p><strong>Weber’s Law</strong>：最小辨别量(Difference Threshold)与刺激本身成正比</p>
+</li>
+<li>
+<p><strong>强度估计</strong>：人的主观感受和物理量之间是非线性关系</p>
+<ul>
+<li>Response compression：压缩，一般是正面感觉，如光线、声音</li>
+<li>Response expansion：放大，一般是负面感觉，如痛觉</li>
+</ul>
+</li>
+</ul>
+<h2 id="Chapter-2-The-Beginning-of-the-Perceptual-Process">Chapter 2: The Beginning of the Perceptual Process</h2>
+<ul>
+<li>
+<p><strong>锥状(cone)细胞与杆状(rod)细胞</strong>：</p>
+<ul>
+<li>看起来长反了（视神经在细胞前面），但具有进化意义
+<ul>
+<li>后方的色素上皮对其有辅助作用</li>
+<li>Muller 细胞可以导光，使得能充分吸收光线</li>
+</ul>
+</li>
+<li>人眼具有盲点(blind spot)</li>
+<li>锥状细胞主要分布在中心黄斑处，中心没有杆状细胞</li>
+<li>周边的杆状细胞多于锥状细胞</li>
+</ul>
+</li>
+<li>
+<p><strong>两种视网膜疾病</strong>：</p>
+<ul>
+<li>MD(Macular Degeneration)：中心黄斑变性，损害中心视觉</li>
+<li>RP(Retinitis Pigmentosa)：视网膜色素变性，损害周边视觉</li>
+</ul>
+</li>
+<li>
+<p><strong>光电转换</strong>：由视蛋白(opsin)和视黄醛(retinal)完成，放电的过程是一个催化的过程，放电后需要恢复</p>
+</li>
+<li>
+<p><strong>暗适应</strong>：分两段，第一段锥状细胞适应，第二段杆状细胞适应（能看清的东西更多）</p>
+</li>
+<li>
+<p><strong>视觉细胞敏感度</strong>：可以看出白天和夜晚的敏感范围</p>
+<ul>
+<li>R 是杆状细胞，在 M 和 S 之间</li>
+<li>M 和 L 离得很近</li>
+</ul>
+</li>
+</ul>
+<p><img src="1-%E6%95%8F%E6%84%9F%E5%BA%A6.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="1-%E6%95%8F%E6%84%9F%E5%BA%A62.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>
+<p><strong>视神经的结构</strong>：有树突和轴突，轴突负责神经元之间的连接</p>
+</li>
+<li>
+<p><strong>视觉信号的传导</strong>：从人眼到纹状皮层(V1)</p>
+<ul>
+<li>放电靠钠离子(进)和钾离子(出)的流动，并配有离子泵</li>
+<li>放电可以被探针记录，频率起到指示作用，幅度不变</li>
+<li>刺激越大，放电频率越高</li>
+<li>在细胞之间靠神经递质(Neurotransmitters)，破膜传递信息</li>
+</ul>
+</li>
+<li>
+<p><strong>视网膜后的神经连接</strong>：</p>
+<ul>
+<li>bipolar cells(B)、ganglion cells(G)、horizontal cells(H)、amacrine cells(A)</li>
+<li>光线从下向上</li>
+<li>杆状细胞敏感度高但分辨率低，因为有多合一连接</li>
+<li>锥状细胞敏感度低但分辨率高，因为一对一连接</li>
+</ul>
+</li>
+</ul>
+<p><img src="1-%E8%A7%86%E7%BD%91%E8%86%9C%E5%90%8E.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<h2 id="Chapter-3-Neural-Processing">Chapter 3: Neural Processing</h2>
+<ul>
+<li>
+<p><strong>侧抑制(Lateral Inhibition)</strong>：一个神经元的兴奋会使得周围细胞兴奋被抑制</p>
+<ul>
+<li>实验：照 A 点时有神经响应，同时照周围 B 点，响应降低</li>
+<li>可以解释 Simultaneous Contrast、Chevreul Illusion/Mach Band(边缘反冲现象)、Herman Grid</li>
+</ul>
+</li>
+<li>
+<p><strong>感受野(receptive fields)</strong>：一根神经对应的一片连续的区域</p>
+<ul>
+<li>可以分类，有中心活跃周边抑制、中心抑制周边活跃等</li>
+<li>对于中心活跃周边抑制，只照中心时响应最大，扩大后响应降低</li>
+</ul>
+</li>
+<li>
+<p><strong>LGN(Lateral geniculate nucleus)</strong>：一种神经节细胞</p>
+<ul>
+<li>承担了一部分视觉处理的作用</li>
+<li>视网膜上来的信息少于视觉皮层(cortex)反馈的信息</li>
+</ul>
+</li>
+<li>
+<p><strong>视觉皮层中的细胞</strong>：</p>
+<ul>
+<li>分为简单细胞和复杂细胞，简单细胞跟方向有关，复杂细胞跟移动边缘有关</li>
+<li>物体方向与检测方向平行时，响应最大；转动一定角度，响应降低</li>
+<li>给猫看不同的视觉刺激，发现了这一现象</li>
+<li>Optic nerve fiber、LGN、Simple/Complex cortical、End-stopped cortical，起到了从简单到复杂的特征检测的作用</li>
+</ul>
+</li>
+<li>
+<p><strong>Selective Rearing</strong>：猫放在固定环境中培养，发现神经元检测特定方向能力降低</p>
+<ul>
+<li><strong>Selective Adaptation</strong>：短时间内降低该能力</li>
+</ul>
+</li>
+<li>
+<p><strong>FFA(fusiform face area)</strong>：高层脑区，与人脸检测相关（脸盲症）</p>
+<ul>
+<li>还有一些区域和人手有关</li>
+</ul>
+</li>
+<li>
+<p><strong>Sensory coding</strong>：</p>
+<ul>
+<li>Specificity coding：有一个神经元单独对一个人的身份响应，需要太多神经元</li>
+<li>Population coding：一些神经元的组合对一个人的身份响应</li>
+<li>Sparse coding：只有少数神经元对一个人的身份响应</li>
+</ul>
+</li>
+</ul>
+<h2 id="Chapter-4-Cortical-Organization">Chapter 4: Cortical Organization</h2>
+<ul>
+<li>
+<p><strong>视交叉</strong>：左脑处理左右眼的右侧信号，右脑处理左右眼的左侧信号</p>
+</li>
+<li>
+<p><strong>视网膜脑图</strong>：视野中内容与皮层上响应的对应关系</p>
+<ul>
+<li>视中心区域被放大，周边被压缩，不是等比例</li>
+<li>可以通过 PET 或 MRI 看响应</li>
+</ul>
+</li>
+<li>
+<p><strong>脑皮层中神经元的组织</strong>：</p>
+<ul>
+<li>按照 (location)column 组织，同一 column 对应的空间位置基本一致</li>
+<li>一个 location column 中有多个 orientation columns，处理这一位置的不同方向</li>
+<li>看树，不同位置的同一方向的 subcolumns 起作用</li>
+</ul>
+</li>
+<li>
+<p><strong>Dorsal(背流) 与 Ventral(腹流) Pathway</strong>：</p>
+<ul>
+<li>Dorsal：Where/How，与“在哪里/怎么用”有关</li>
+<li>Ventral：What，与“是什么”有关</li>
+</ul>
+</li>
+</ul>
+<p><img src="4-dorsal-ventral.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<ul>
+<li>
+<p><strong>人脑功能区</strong>：人脑的功能是分区域的</p>
+<ul>
+<li>FFA 与人脸有关</li>
+<li>PPA 与位置有关</li>
+<li>EBA 与身体结构有关</li>
+<li>A(Amygdala, 杏仁核) 与情感有关</li>
+</ul>
+</li>
+<li>
+<p><strong>行为来源于连接</strong>：果蝇脑结构+简单神经元，发现产生自主行为，表明智能来源于网络结构</p>
+</li>
+<li>
+<p><strong>Mind-body problem</strong>：人的思想看似不可研究，但可以归结为钠钾离子运行来解释，有不同观点</p>
+</li>
+<li>
+<p><strong>人脑的可塑性</strong>：记住自然界中不存在的事物的名字</p>
+</li>
+<li>
+<p><strong>Ponzo Effect</strong>：来源于对世界的大小的假设</p>
+</li>
+</ul>
+<h2 id="Chapter-5-Perceiving-Objects-and-Scenes">Chapter 5: Perceiving Objects and Scenes</h2>
+<ul>
+<li>
+<p>单目难以识别世界，因为世界有景深，需要两只眼睛</p>
+<ul>
+<li>先验知识可以帮助我们识别物体</li>
+</ul>
+</li>
+<li>
+<p><strong>Gestalt 原则</strong>：了解对应的例子</p>
+<ul>
+<li>Productive thinking/Reproductive thinking 与 System1/System2 类似</li>
+</ul>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/AI/" class="category-chain-item">AI</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AI/" class="print-no-link">#AI</a>
+      
+        <a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9%E6%95%B4%E7%90%86/" class="print-no-link">#知识点整理</a>
+      
+        <a href="/tags/%E6%84%9F%E7%9F%A5%E4%B8%8E%E8%AE%A4%E7%9F%A5/" class="print-no-link">#感知与认知</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>感知与认知：期末复习</div>
+      <div>https://cny123222.github.io/2026/06/15/感知与认知：期末复习/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Nuoyan Chen</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>June 15, 2026</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/03/31/Cheatsheet-Python/" title="Cheatsheet: Python">
+                        <span class="hidden-mobile">Cheatsheet: Python</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+    <div id="giscus" class="giscus"></div>
+    <script type="text/javascript">
+      Fluid.utils.loadComments('#giscus', function() {
+        var options = {"repo":"cny123222/cny123222.github.io","repo-id":"R_kgDOOFgnVw","category":"Announcements","category-id":"DIC_kwDOOFgnV84CnwXM","theme-light":"light","theme-dark":"dark","mapping":"pathname","reactions-enabled":1,"emit-metadata":0,"input-position":"top","lang":"en"};
+        var attributes = {};
+        for (let option in options) {
+          if (!option.startsWith('theme-')) {
+            var key = option.startsWith('data-') ? option : 'data-' + option;
+            attributes[key] = options[option];
+          }
+        }
+        var light = 'light';
+        var dark = 'dark';
+        window.GiscusThemeLight = light;
+        window.GiscusThemeDark = dark;
+        attributes['data-theme'] = document.documentElement.getAttribute('data-user-color-scheme') === 'dark' ? dark : light;
+        for (let attribute in attributes) {
+          var value = attributes[attribute];
+          if (value === undefined || value === null || value === '') {
+            delete attributes[attribute];
+          }
+        }
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://giscus.app/client.js');
+        s.setAttribute('crossorigin', 'anonymous');
+        for (let attribute in attributes) {
+          s.setAttribute(attribute, attributes[attribute]);
+        }
+        var ss = document.getElementsByTagName('script');
+        var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
+        e.parentNode.insertBefore(s, e.nextSibling);
+      });
+    </script>
+    <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        Views: 
+        <span id="busuanzi_value_site_pv"></span>
+        
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        Visitors: 
+        <span id="busuanzi_value_site_uv"></span>
+        
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
