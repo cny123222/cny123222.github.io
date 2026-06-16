@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/db.png">
 <meta property="article:published_time" content="2026-03-09T08:30:32.000Z">
-<meta property="article:modified_time" content="2026-06-16T05:43:47.152Z">
+<meta property="article:modified_time" content="2026-06-16T06:29:44.529Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="知识点整理">
@@ -9209,14 +9209,14 @@
 <li><strong>例</strong>：对整个数据库加锁、对某个属性值加锁</li>
 </ul>
 </li>
-<li>封锁对象的大小称为封锁的粒度(Granularity)</li>
-<li>多粒度封锁(multiple granularity locking)：在一个系统中同时支持多种封锁粒度供不同的事务选择</li>
+<li>封锁对象的大小称为<strong>封锁的粒度(Granularity)</strong></li>
+<li><strong>多粒度封锁(multiple granularity locking)</strong>：在一个系统中同时支持多种封锁粒度供不同的事务选择</li>
 </ul>
 </li>
 <li>
 <p><strong>选择封锁粒度的原则</strong>：</p>
 <ul>
-<li>考虑封锁开销和并发度两个因素</li>
+<li>考虑<strong>封锁开销</strong>和<strong>并发度</strong>两个因素</li>
 <li>对系统开销与并发度进行权衡</li>
 </ul>
 <table>
@@ -9257,8 +9257,8 @@
 <li>
 <p><strong>多粒度树</strong>：以树形结构来表示多级封锁粒度</p>
 <ul>
-<li>根结点是整个数据库，表示最大的数据粒度</li>
-<li>叶结点表示最小的数据粒度</li>
+<li><strong>根结点</strong>是整个数据库，表示最大的数据粒度</li>
+<li><strong>叶结点</strong>表示最小的数据粒度</li>
 <li><strong>例</strong>：三级粒度树，根结点为数据库，数据库的子结点为关系，关系的子结点为元组</li>
 </ul>
 </li>
@@ -9267,7 +9267,7 @@
 <ul>
 <li>允许多粒度树中的每个结点被独立地加锁</li>
 <li>对一个结点加锁意味着这个结点的所有后裔结点也被加以同样类型的锁</li>
-<li>在多粒度封锁中一个数据对象可能以两种方式封锁：显式封锁和隐式封锁
+<li>在多粒度封锁中一个数据对象可能以两种方式封锁：<strong>显式封锁</strong>和<strong>隐式封锁</strong>
 <ul>
 <li><strong>显式封锁</strong>：直接加到数据对象上的封锁</li>
 <li><strong>隐式封锁</strong>：由于其上级结点加锁而使该数据对象加上了锁</li>
@@ -9277,8 +9277,8 @@
 <li>对某个数据对象加锁时，执行系统检查：
 <ul>
 <li>该数据对象：有无显式封锁与之冲突</li>
-<li>所有上级结点：检查本事务的显式封锁是否与该数据对象上的隐式封锁冲突（由上级结点封锁造成的）</li>
-<li>所有下级结点：看上面的显式封锁是否与本事务的隐式封锁（将加到下级结点的封锁）冲突</li>
+<li>所有上级结点：检查本事务的显式封锁是否与该数据对象上的隐式封锁冲突（<strong>由上级结点封锁造成的</strong>）</li>
+<li>所有下级结点：看上面的显式封锁是否与本事务的隐式封锁（<strong>将加到下级结点的封锁</strong>）冲突</li>
 </ul>
 </li>
 </ul>
@@ -9287,16 +9287,16 @@
 <h4 id="7-3-意向锁">7.3 意向锁</h4>
 <ul>
 <li>
-<p><strong>什么是意向锁</strong>：</p>
+<p><strong>什么是意向锁(intention lock)</strong>：</p>
 <ul>
 <li><strong>意向锁的含义</strong>：
 <ul>
-<li>如果对一个结点加意向锁，则说明该结点的下层结点正在被加锁</li>
+<li>如果对一个结点加意向锁，则说明<strong>该结点的下层结点正在被加锁</strong></li>
 <li>对任一结点加锁时，必须先对它的上层结点加意向锁</li>
 </ul>
 </li>
-<li><strong>引进意向锁（intention lock）目的</strong>：提高对某个数据对象加锁时系统的检查效率</li>
-<li><strong>例</strong>：对任一元组 r 加锁，先对关系 R 加“意向锁”
+<li><strong>引进意向锁目的</strong>：<strong>提高对某个数据对象加锁时系统的检查效率</strong></li>
+<li><strong>例</strong>：对任一<strong>元组 r</strong> 加锁，先对<strong>关系 R</strong> 加“意向锁”
 <ul>
 <li>事务 T 要对关系 R 加 X 锁，系统只要检查根结点数据库和关系 R 是否已加了不相容的锁</li>
 <li>不需要搜索和检查 R 中的每一个元组是否加了 X 锁</li>
@@ -9311,25 +9311,29 @@
 <p><strong>意向共享锁(Intent Share Lock，简称 IS 锁)</strong>：</p>
 <ul>
 <li>如果对一个数据对象加 IS 锁，表示它的后裔结点拟（意向）加 S 锁</li>
-<li><strong>例</strong>：事务 T1 要对某个元组加 S 锁，则要首先对关系和数据库加 IS 锁</li>
+<li><strong>例</strong>：事务 T1 要对<strong>某个元组</strong>加 S 锁，则要首先对<strong>关系</strong>和<strong>数据库</strong>加 IS 锁</li>
 </ul>
 </li>
 <li>
 <p><strong>意向排它锁(Intent Exclusive Lock，简称 IX 锁)</strong>：</p>
 <ul>
 <li>如果对一个数据对象加 IX 锁，表示它的后裔结点拟（意向）加 X 锁</li>
-<li><strong>例</strong>：要对某个元组加 X 锁，则要首先对关系和数据库加 IX 锁</li>
+<li><strong>例</strong>：要对<strong>某个元组</strong>加 X 锁，则要首先对<strong>关系</strong>和<strong>数据库</strong>加 IX 锁</li>
 </ul>
 </li>
 <li>
 <p><strong>共享意向排它锁(Share Intent Exclusive Lock，简称 SIX 锁)</strong>：</p>
 <ul>
 <li>如果对一个数据对象加 SIX 锁，表示对它加 S 锁，再加 IX 锁，即 SIX = S + IX</li>
-<li><strong>例</strong>：对某个表加 SIX 锁，则表示该事务要读整个表（所以要对该表加 S 锁），同时会更新个别元组（所以要对该表加 IX 锁）</li>
+<li><strong>例</strong>：对某个表加 SIX 锁，则表示该事务要<strong>读整个表</strong>（所以要对该表加 S 锁），同时会<strong>更新个别元组</strong>（所以要对该表加 IX 锁）</li>
 </ul>
 </li>
 <li>
 <p><strong>意向锁的相容矩阵</strong>：</p>
+<ul>
+<li>同级别的意向锁之间是兼容的，<strong>冲突交由更低的粒度进行判</strong>断</li>
+<li>兼容性矩阵比较的是<strong>同层粒度不同类型锁</strong>之间的兼容性</li>
+</ul>
 <p><img src="12-%E6%84%8F%E5%90%91%E9%94%81%E7%9B%B8%E5%AE%B9.png" srcset="/img/loading.gif" lazyload alt=""></p>
 </li>
 </ul>
@@ -9345,8 +9349,8 @@
 <li>
 <p><strong>具有意向锁的多粒度封锁方法</strong>：</p>
 <ul>
-<li>申请封锁时应该按自上而下的次序进行</li>
-<li>释放封锁时则应该按自下而上的次序进行</li>
+<li>申请封锁时应该按<strong>自上而下</strong>的次序进行</li>
+<li>释放封锁时则应该按<strong>自下而上</strong>的次序进行</li>
 <li><strong>例</strong>：事务 T 要对一个数据对象加锁，必须先对它的上层结点加意向锁</li>
 </ul>
 </li>
@@ -9357,8 +9361,8 @@
 <ul>
 <li>数据库的价值在很大程度上取决于它所能提供的数据共享度
 <ul>
-<li>数据共享在很大程度上取决于系统允许对数据并发操作的程度</li>
-<li>数据并发程度又取决于数据库中的并发控制机制</li>
+<li>数据共享在很大程度上取决于系统允许对<strong>数据并发操作</strong>的程度</li>
+<li>数据并发程度又取决于数据库中的<strong>并发控制机制</strong></li>
 </ul>
 </li>
 <li>另一方面，数据的一致性也取决于并发控制的程度，施加的并发控制愈多，数据的一致性往往愈好</li>
@@ -9373,7 +9377,7 @@
 <li>死锁：预防方法（一次封锁法、顺序封锁法）、死锁的诊断与解除（超时法、等待图法）</li>
 </ul>
 </li>
-<li>并发控制机制调度并发事务操作是否正确的判别准则是可串行性
+<li>并发控制机制<strong>调度</strong>并发事务操作是否正确的判别准则是<strong>可串行性</strong>
 <ul>
 <li>并发操作的正确性则通常由两段锁协议来保证</li>
 <li>两段锁协议是可串行化调度的充分条件，但不是必要条件</li>
