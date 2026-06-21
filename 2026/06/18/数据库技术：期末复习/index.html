@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/db.png">
 <meta property="article:published_time" content="2026-06-18T12:22:11.000Z">
-<meta property="article:modified_time" content="2026-06-21T13:50:31.471Z">
+<meta property="article:modified_time" content="2026-06-21T14:09:49.701Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="期末复习">
@@ -259,7 +259,7 @@
         
         
         
-          151 mins
+          153 mins
         
       </span>
     
@@ -2271,6 +2271,57 @@
 </li>
 <li>
 <p><strong>位图索引</strong>：对每条记录用一个位向量标识索引属性的取值，每一个位向量对应于索引属性的一个可能的取值</p>
+</li>
+</ul>
+<h2 id="第十章-查询处理和优化">第十章 查询处理和优化</h2>
+<h3 id="1-RDBMS-的查询处理">1. RDBMS 的查询处理</h3>
+<ul>
+<li>
+<p><strong>查询处理的步骤</strong>：查询分析、查询检查、查询优化、查询执行</p>
+</li>
+<li>
+<p><strong>查询优化分类</strong>：</p>
+<ul>
+<li><strong>代数优化</strong>：通过<strong>对关系代数表达式的等价变换</strong>来提高查询效率</li>
+<li><strong>物理优化</strong>：<strong>选择高效合理的操作算法或存取路径</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="2-RDBMS-的查询优化">2. RDBMS 的查询优化</h3>
+<ul>
+<li>
+<p><strong>查询优化的目标</strong>：使数据库查询的执行时间最短</p>
+</li>
+<li>
+<p><strong>查询执行的代价</strong>：最主要的是<strong>从磁盘访问数据的 I/O 代价</strong></p>
+</li>
+</ul>
+<h3 id="3-代数优化">3. 代数优化</h3>
+<ul>
+<li>
+<p><strong>基本思想</strong>：<strong>改变</strong>关系代数的操作次序，<strong>尽可能早做选择和投影运算</strong></p>
+</li>
+<li>
+<p><strong>语法树的启发式优化</strong>：</p>
+<ul>
+<li><strong>方法</strong>：<strong>尽可能把选择和投影操作移动到树的叶端</strong></li>
+<li><strong>例</strong>：<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span>  Student.Sname<br><span class="hljs-keyword">FROM</span>    Student, SC<br><span class="hljs-keyword">WHERE</span>   Student.Sno<span class="hljs-operator">=</span>SC.Sno <span class="hljs-keyword">AND</span><br>        SC.Cno<span class="hljs-operator">=</span><span class="hljs-string">&#x27;81003&#x27;</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>把 SQL 语句转换成查询树</p>
+<p><img src="10-%E8%AF%AD%E6%B3%95%E6%A0%91.png" srcset="/img/loading.gif" lazyload alt=""></p>
+</li>
+<li>
+<p>为了使用关系代数表达式的优化法，假设内部表示是关系代数语法树</p>
+<p><img src="10-%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0%E8%AF%AD%E6%B3%95%E6%A0%91.png" srcset="/img/loading.gif" lazyload alt=""></p>
+</li>
+<li>
+<p>对语法树进行优化，把选择 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>σ</mi><mtext>SC.Cno=‘81003’</mtext></msub></mrow><annotation encoding="application/x-tex">\sigma_\text{SC.Cno=‘81003’}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord text mtight"><span class="mord mtight">SC.Cno=‘81003’</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 移到叶端</p>
+<p><img src="10-%E4%BC%98%E5%8C%96%E5%90%8E%E7%9A%84%E6%9F%A5%E8%AF%A2%E6%A0%91.png" srcset="/img/loading.gif" lazyload alt=""></p>
+</li>
+</ul>
+</li>
+</ul>
 </li>
 </ul>
 <h2 id="参考资料">参考资料</h2>
