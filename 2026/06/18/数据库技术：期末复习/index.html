@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/db.png">
 <meta property="article:published_time" content="2026-06-18T12:22:11.000Z">
-<meta property="article:modified_time" content="2026-06-22T10:06:47.424Z">
+<meta property="article:modified_time" content="2026-06-22T10:13:46.916Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="期末复习">
@@ -2022,19 +2022,23 @@
 </ul>
 <h3 id="3-视图机制">3. 视图机制</h3>
 <ul>
-<li><strong>视图机制</strong>：
+<li>
+<p><strong>视图机制</strong>：</p>
 <ul>
 <li>可以把要保密的数据对无权存取这些数据的用户隐藏起来，对数据提供一定程度的安全保护</li>
 <li>通常<strong>与授权机制配合使用</strong></li>
-<li><strong>例</strong>：建立计算机系学生的视图，把对该视图的 SELECT 权限授于王平，把该视图上的所有操作权限授于张明
-<ul>
-<li>先建立计算机系学生的视图 CS_Student<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">VIEW</span> CS_Student<br><span class="hljs-keyword">AS</span><br><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sdept<span class="hljs-operator">=</span><span class="hljs-string">&#x27;CS&#x27;</span>;<br></code></pre></td></tr></table></figure>
-</li>
-<li>在视图上进一步定义存取权限<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">SELECT</span><br><span class="hljs-keyword">ON</span> CS_Student<br><span class="hljs-keyword">TO</span> 王平;<br><br><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">ALL</span> PRIVILIGES<br><span class="hljs-keyword">ON</span> CS_Student<br><span class="hljs-keyword">TO</span> 张明;<br></code></pre></td></tr></table></figure>
-</li>
 </ul>
-</li>
-</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-080cbfea" role="button" aria-expanded="false" aria-controls="collapse-080cbfea">
+        <div class="fold-arrow">▶</div>例：
+      </div>
+      <div class="fold-collapse collapse" id="collapse-080cbfea">
+        <div class="fold-content">
+          <ul><li><strong>例</strong>：建立计算机系学生的视图，把对该视图的 SELECT 权限授于王平，把该视图上的所有操作权限授于张明<ul><li>先建立计算机系学生的视图 CS_Student<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">VIEW</span> CS_Student<br><span class="hljs-keyword">AS</span><br><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sdept<span class="hljs-operator">=</span><span class="hljs-string">&#x27;CS&#x27;</span>;<br></code></pre></td></tr></table></figure></li><li>在视图上进一步定义存取权限<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">SELECT</span><br><span class="hljs-keyword">ON</span> CS_Student<br><span class="hljs-keyword">TO</span> 王平;<br><br><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">ALL</span> PRIVILIGES<br><span class="hljs-keyword">ON</span> CS_Student<br><span class="hljs-keyword">TO</span> 张明;<br></code></pre></td></tr></table></figure></li></ul></li></ul>
+        </div>
+      </div>
+    </div>
 </li>
 </ul>
 <h3 id="4-审计">4. 审计</h3>
