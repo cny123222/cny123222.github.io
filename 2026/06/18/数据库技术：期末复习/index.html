@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/db.png">
 <meta property="article:published_time" content="2026-06-18T12:22:11.000Z">
-<meta property="article:modified_time" content="2026-06-22T08:32:54.583Z">
+<meta property="article:modified_time" content="2026-06-22T08:36:49.207Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="期末复习">
@@ -2423,23 +2423,18 @@
 <p><strong>语法树的启发式优化</strong>：</p>
 <ul>
 <li><strong>方法</strong>：<strong>尽可能把选择和投影操作移动到树的叶端</strong></li>
-<li><strong>例</strong>：<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span>  Student.Sname<br><span class="hljs-keyword">FROM</span>    Student, SC<br><span class="hljs-keyword">WHERE</span>   Student.Sno<span class="hljs-operator">=</span>SC.Sno <span class="hljs-keyword">AND</span><br>        SC.Cno<span class="hljs-operator">=</span><span class="hljs-string">&#x27;81003&#x27;</span><br></code></pre></td></tr></table></figure>
-<ul>
-<li>
-<p>把 SQL 语句转换成查询树</p>
-<p><img src="10-%E8%AF%AD%E6%B3%95%E6%A0%91.png" srcset="/img/loading.gif" lazyload alt=""></p>
-</li>
-<li>
-<p>为了使用关系代数表达式的优化法，假设内部表示是关系代数语法树</p>
-<p><img src="10-%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0%E8%AF%AD%E6%B3%95%E6%A0%91.png" srcset="/img/loading.gif" lazyload alt=""></p>
-</li>
-<li>
-<p>对语法树进行优化，把选择 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>σ</mi><mtext>SC.Cno=‘81003’</mtext></msub></mrow><annotation encoding="application/x-tex">\sigma_\text{SC.Cno=‘81003’}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord text mtight"><span class="mord mtight">SC.Cno=‘81003’</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 移到叶端</p>
-<p><img src="10-%E4%BC%98%E5%8C%96%E5%90%8E%E7%9A%84%E6%9F%A5%E8%AF%A2%E6%A0%91.png" srcset="/img/loading.gif" lazyload alt=""></p>
-</li>
 </ul>
-</li>
-</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-02f01f72" role="button" aria-expanded="false" aria-controls="collapse-02f01f72">
+        <div class="fold-arrow">▶</div>PPT 例题：
+      </div>
+      <div class="fold-collapse collapse" id="collapse-02f01f72">
+        <div class="fold-content">
+          <ul><li><strong>例</strong>：<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span>  Student.Sname<br><span class="hljs-keyword">FROM</span>    Student, SC<br><span class="hljs-keyword">WHERE</span>   Student.Sno<span class="hljs-operator">=</span>SC.Sno <span class="hljs-keyword">AND</span><br>        SC.Cno<span class="hljs-operator">=</span><span class="hljs-string">&#x27;81003&#x27;</span><br></code></pre></td></tr></table></figure><ul><li><p>把 SQL 语句转换成查询树</p><p><img src="10-%E8%AF%AD%E6%B3%95%E6%A0%91.png" srcset="/img/loading.gif" lazyload alt=""></p></li><li><p>为了使用关系代数表达式的优化法，假设内部表示是关系代数语法树</p><p><img src="10-%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0%E8%AF%AD%E6%B3%95%E6%A0%91.png" srcset="/img/loading.gif" lazyload alt=""></p></li><li><p>对语法树进行优化，把选择 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>σ</mi><mtext>SC.Cno=‘81003’</mtext></msub></mrow><annotation encoding="application/x-tex">\sigma_\text{SC.Cno=‘81003’}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord text mtight"><span class="mord mtight">SC.Cno=‘81003’</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 移到叶端</p><p><img src="10-%E4%BC%98%E5%8C%96%E5%90%8E%E7%9A%84%E6%9F%A5%E8%AF%A2%E6%A0%91.png" srcset="/img/loading.gif" lazyload alt=""></p></li></ul></li></ul>
+        </div>
+      </div>
+    </div>
 </li>
 </ul>
 <h2 id="第十一章-数据库恢复技术">第十一章 数据库恢复技术</h2>
