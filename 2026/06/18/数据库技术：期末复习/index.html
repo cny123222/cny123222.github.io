@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/db.png">
 <meta property="article:published_time" content="2026-06-18T12:22:11.000Z">
-<meta property="article:modified_time" content="2026-06-22T11:03:58.903Z">
+<meta property="article:modified_time" content="2026-06-22T11:12:58.686Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="期末复习">
@@ -1239,24 +1239,37 @@
 </li>
 <li>
 <p><strong>确定集合</strong>：使用谓词 <code>IN &lt;值表&gt;</code> 或 <code>NOT IN &lt;值表&gt;</code>，其中 <code>&lt;值表&gt;</code> 是用逗号分隔的一组取值</p>
-<ul>
-<li><strong>例</strong>：查询信息系(IS)、数学系(MA) 和计算机科学系(CS) 学生的姓名和性别<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname, Ssex<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sdept <span class="hljs-keyword">IN</span> (<span class="hljs-string">&#x27;IS&#x27;</span>, <span class="hljs-string">&#x27;MA&#x27;</span>, <span class="hljs-string">&#x27;CS&#x27;</span>);<br></code></pre></td></tr></table></figure>
-</li>
-<li><strong>例</strong>：查询既不是信息系、数学系，也不是计算机科学系的学生的姓名和性别<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname, Ssex<br><span class="hljs-keyword">FROM</span> Student <span class="hljs-keyword">WHERE</span> Sdept <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">IN</span> (<span class="hljs-string">&#x27;IS&#x27;</span>, <span class="hljs-string">&#x27;MA&#x27;</span>, <span class="hljs-string">&#x27;CS&#x27;</span>);<br></code></pre></td></tr></table></figure>
-</li>
-</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-524a5cb1" role="button" aria-expanded="false" aria-controls="collapse-524a5cb1">
+        <div class="fold-arrow">▶</div>例：
+      </div>
+      <div class="fold-collapse collapse" id="collapse-524a5cb1">
+        <div class="fold-content">
+          <ul><li><strong>例</strong>：查询信息系(IS)、数学系(MA) 和计算机科学系(CS) 学生的姓名和性别<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname, Ssex<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sdept <span class="hljs-keyword">IN</span> (<span class="hljs-string">&#x27;IS&#x27;</span>, <span class="hljs-string">&#x27;MA&#x27;</span>, <span class="hljs-string">&#x27;CS&#x27;</span>);<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：查询既不是信息系、数学系，也不是计算机科学系的学生的姓名和性别<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname, Ssex<br><span class="hljs-keyword">FROM</span> Student <br><span class="hljs-keyword">WHERE</span> Sdept <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">IN</span> (<span class="hljs-string">&#x27;IS&#x27;</span>, <span class="hljs-string">&#x27;MA&#x27;</span>, <span class="hljs-string">&#x27;CS&#x27;</span>);<br></code></pre></td></tr></table></figure></li></ul>
+        </div>
+      </div>
+    </div>
 </li>
 <li>
 <p><strong>字符串匹配</strong>：<code>[NOT] LIKE '&lt;匹配串&gt;' [ESCAPE '&lt;换码字符&gt;']</code></p>
 <ul>
-<li><strong>匹配串为固定字符串</strong>：
-<ul>
-<li><strong>例</strong>：查询学号为 201215121 的学生的详细情况<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sno <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;201215121&#x27;</span>;<br></code></pre></td></tr></table></figure>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sno <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;201215121&#x27;</span>;<br></code></pre></td></tr></table></figure>
+<li>
+<p><strong>匹配串为固定字符串</strong>：</p>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-23980fdc" role="button" aria-expanded="false" aria-controls="collapse-23980fdc">
+        <div class="fold-arrow">▶</div>例：
+      </div>
+      <div class="fold-collapse collapse" id="collapse-23980fdc">
+        <div class="fold-content">
+          <ul><li><strong>例</strong>：查询学号为 201215121 的学生的详细情况<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sno <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;201215121&#x27;</span>;<br></code></pre></td></tr></table></figure><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sno <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;201215121&#x27;</span>;<br></code></pre></td></tr></table></figure></li></ul>
+        </div>
+      </div>
+    </div>
 </li>
-</ul>
-</li>
-<li><strong>通配符</strong>：
+<li>
+<p><strong>通配符</strong>：</p>
 <ul>
 <li><strong>% (百分号)</strong>：代表<strong>任意长度（长度可以为 0）</strong> 的字符串
 <ul>
@@ -1270,47 +1283,63 @@
 </li>
 </ul>
 </li>
-<li><strong>匹配串为含通配符的字符串</strong>：
-<ul>
-<li><strong>例</strong>：查询所有姓刘学生的姓名、学号和性别<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname, Sno, Ssex<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sname <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;刘%&#x27;</span>; <span class="hljs-comment">/*%表示任意长度*/</span><br></code></pre></td></tr></table></figure>
+<li>
+<p><strong>匹配串为含通配符的字符串</strong>：</p>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-31287ff9" role="button" aria-expanded="false" aria-controls="collapse-31287ff9">
+        <div class="fold-arrow">▶</div>例：
+      </div>
+      <div class="fold-collapse collapse" id="collapse-31287ff9">
+        <div class="fold-content">
+          <ul><li><strong>例</strong>：查询所有姓刘学生的姓名、学号和性别<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname, Sno, Ssex<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sname <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;刘%&#x27;</span>; <span class="hljs-comment">/*%表示任意长度*/</span><br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：查询姓&quot;欧阳&quot;且全名为三个汉字的学生的姓名<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sname <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;欧阳_ _&#x27;</span>; <span class="hljs-comment">/*_ _代表任意单个字符*/</span><br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：查询名字中第2个字为&quot;阳&quot;字的学生的姓名和学号<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname, Sno<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sname <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;_ _阳%&#x27;</span>;<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：查询所有不姓刘的学生姓名<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname，Sno，Ssex<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sname <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;刘%&#x27;</span>;<br></code></pre></td></tr></table></figure></li></ul>
+        </div>
+      </div>
+    </div>
 </li>
-<li><strong>例</strong>：查询姓&quot;欧阳&quot;且全名为三个汉字的学生的姓名<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sname <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;欧阳_ _&#x27;</span>; <span class="hljs-comment">/*_ _代表任意单个字符*/</span><br></code></pre></td></tr></table></figure>
-</li>
-<li><strong>例</strong>：查询名字中第2个字为&quot;阳&quot;字的学生的姓名和学号<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname, Sno<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sname <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;_ _阳%&#x27;</span>;<br></code></pre></td></tr></table></figure>
-</li>
-<li><strong>例</strong>：查询所有不姓刘的学生姓名<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname，Sno，Ssex<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sname <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;刘%&#x27;</span>;<br></code></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><strong>使用换码字符将通配符转义为普通字符</strong>：
-<ul>
-<li><strong>例</strong>：查询 DB_Design 课程的课程号和学分<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Cno, Ccredit<br><span class="hljs-keyword">FROM</span> Course<br><span class="hljs-keyword">WHERE</span> Cname <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;DB\_Design&#x27;</span> <span class="hljs-keyword">ESCAPE</span> <span class="hljs-string">&#x27;\&#x27;</span>;<br></code></pre></td></tr></table></figure>
-</li>
-<li><strong>例</strong>：查询以 “DB_” 开头，且倒数第 3 个字符为 i 的课程情况<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br><span class="hljs-keyword">FROM</span> Course<br><span class="hljs-keyword">WHERE</span> Cname <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;DB\_%i_ _&#x27;</span> <span class="hljs-keyword">ESCAPE</span> <span class="hljs-string">&#x27;\&#x27;</span>;<br></code></pre></td></tr></table></figure>
-</li>
-</ul>
+<li>
+<p><strong>使用换码字符将通配符转义为普通字符</strong>：</p>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-aa047271" role="button" aria-expanded="false" aria-controls="collapse-aa047271">
+        <div class="fold-arrow">▶</div>例：
+      </div>
+      <div class="fold-collapse collapse" id="collapse-aa047271">
+        <div class="fold-content">
+          <ul><li><strong>例</strong>：查询 DB_Design 课程的课程号和学分<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Cno, Ccredit<br><span class="hljs-keyword">FROM</span> Course<br><span class="hljs-keyword">WHERE</span> Cname <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;DB\_Design&#x27;</span> <span class="hljs-keyword">ESCAPE</span> <span class="hljs-string">&#x27;\&#x27;</span>;<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：查询以 “DB_” 开头，且倒数第 3 个字符为 i 的课程情况<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br><span class="hljs-keyword">FROM</span> Course<br><span class="hljs-keyword">WHERE</span> Cname <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;DB\_%i_ _&#x27;</span> <span class="hljs-keyword">ESCAPE</span> <span class="hljs-string">&#x27;\&#x27;</span>;<br></code></pre></td></tr></table></figure></li></ul>
+        </div>
+      </div>
+    </div>
 </li>
 </ul>
 </li>
 <li>
 <p><strong>涉及空值的查询</strong>：使用谓词 <strong><code>IS NULL</code></strong> 或 <strong><code>IS NOT NULL</code></strong>；<code>IS NULL</code> 不能用 <code>= NULL</code> 代替</p>
-<ul>
-<li><strong>例</strong>：某些学生选修课程后没有参加考试，所以有选课记录，但没有考试成绩查询缺少成绩的学生学号和相应课程号<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno，Cno<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">WHERE</span> Grade <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span>;<br></code></pre></td></tr></table></figure>
-</li>
-<li><strong>例</strong>：查所有有成绩的学生学号和课程号<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno，Cno<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">WHERE</span> Grade <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NOT NULL</span>;<br></code></pre></td></tr></table></figure>
-</li>
-</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-b509cd5f" role="button" aria-expanded="false" aria-controls="collapse-b509cd5f">
+        <div class="fold-arrow">▶</div>例：
+      </div>
+      <div class="fold-collapse collapse" id="collapse-b509cd5f">
+        <div class="fold-content">
+          <ul><li><strong>例</strong>：某些学生选修课程后没有参加考试，所以有选课记录，但没有考试成绩查询缺少成绩的学生学号和相应课程号<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno，Cno<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">WHERE</span> Grade <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span>;<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：查所有有成绩的学生学号和课程号<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno，Cno<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">WHERE</span> Grade <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NOT NULL</span>;<br></code></pre></td></tr></table></figure></li></ul>
+        </div>
+      </div>
+    </div>
 </li>
 <li>
 <p><strong>多重条件查询</strong>：用逻辑运算符 <strong><code>AND</code></strong> 和 <strong><code>OR</code></strong> 来联结多个查询条件（<strong><code>AND</code> 的优先级高于 <code>OR</code></strong>）</p>
-<ul>
-<li><strong>例</strong>：查询计算机系年龄在 20 岁以下的学生姓名<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sdept<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;CS&#x27;</span> <span class="hljs-keyword">AND</span> Sage<span class="hljs-operator">&lt;</span><span class="hljs-number">20</span>;<br></code></pre></td></tr></table></figure>
-</li>
-<li><strong>例</strong>：查询信息系（IS）、数学系（MA）和计算机科学系（CS）学生的姓名和性别<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname, Ssex<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sdept<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;IS&#x27;</span> <span class="hljs-keyword">OR</span> Sdept<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;MA&#x27;</span> <span class="hljs-keyword">OR</span> Sdept<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;CS&#x27;</span>;<br></code></pre></td></tr></table></figure>
-</li>
-<li><strong>例</strong>：查询 1 号课程中考试成绩小于 60 或大于 90 的学生学号<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">WHERE</span> (Grade<span class="hljs-operator">&lt;</span><span class="hljs-number">60</span> <span class="hljs-keyword">or</span> Grade<span class="hljs-operator">&gt;</span><span class="hljs-number">90</span>) <span class="hljs-keyword">and</span> Cno<span class="hljs-operator">=</span><span class="hljs-number">1</span>;<br></code></pre></td></tr></table></figure>
-</li>
-</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-aaff3d5e" role="button" aria-expanded="false" aria-controls="collapse-aaff3d5e">
+        <div class="fold-arrow">▶</div>例：
+      </div>
+      <div class="fold-collapse collapse" id="collapse-aaff3d5e">
+        <div class="fold-content">
+          <ul><li><strong>例</strong>：查询计算机系年龄在 20 岁以下的学生姓名<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sdept<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;CS&#x27;</span> <span class="hljs-keyword">AND</span> Sage<span class="hljs-operator">&lt;</span><span class="hljs-number">20</span>;<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：查询信息系（IS）、数学系（MA）和计算机科学系（CS）学生的姓名和性别<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sname, Ssex<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sdept<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;IS&#x27;</span> <span class="hljs-keyword">OR</span> Sdept<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;MA&#x27;</span> <span class="hljs-keyword">OR</span> Sdept<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;CS&#x27;</span>;<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：查询 1 号课程中考试成绩小于 60 或大于 90 的学生学号<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">WHERE</span> (Grade<span class="hljs-operator">&lt;</span><span class="hljs-number">60</span> <span class="hljs-keyword">or</span> Grade<span class="hljs-operator">&gt;</span><span class="hljs-number">90</span>) <span class="hljs-keyword">and</span> Cno<span class="hljs-operator">=</span><span class="hljs-number">1</span>;<br></code></pre></td></tr></table></figure></li></ul>
+        </div>
+      </div>
+    </div>
 </li>
 </ul>
 </li>
@@ -1318,12 +1347,17 @@
 </li>
 <li>
 <p><strong>对查询结果排序</strong>：使用 <code>ORDER BY</code>子句，可以按一个或多个属性列排序；升序 <code>ASC</code>，降序 <code>DESC</code>，<strong>缺省值为升序</strong></p>
-<ul>
-<li><strong>例</strong>：查询选修了 3 号课程的学生的学号及其成绩，查询结果按分数降序排列<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno, Grade<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">WHERE</span> Cno<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;3&#x27;</span><br><span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> Grade <span class="hljs-keyword">DESC</span>;<br></code></pre></td></tr></table></figure>
-</li>
-<li><strong>例</strong>：查询全体学生情况，查询结果按所在系的系号升序排列，同一系中的学生按年龄降序排列<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> Sdept, Sage <span class="hljs-keyword">DESC</span>;<br></code></pre></td></tr></table></figure>
-</li>
-</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-b9732993" role="button" aria-expanded="false" aria-controls="collapse-b9732993">
+        <div class="fold-arrow">▶</div>例：
+      </div>
+      <div class="fold-collapse collapse" id="collapse-b9732993">
+        <div class="fold-content">
+          <ul><li><strong>例</strong>：查询选修了 3 号课程的学生的学号及其成绩，查询结果按分数降序排列<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno, Grade<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">WHERE</span> Cno<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;3&#x27;</span><br><span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> Grade <span class="hljs-keyword">DESC</span>;<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：查询全体学生情况，查询结果按所在系的系号升序排列，同一系中的学生按年龄降序排列<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> Sdept, Sage <span class="hljs-keyword">DESC</span>;<br></code></pre></td></tr></table></figure></li></ul>
+        </div>
+      </div>
+    </div>
 </li>
 <li>
 <p><strong>使用聚集函数</strong>：</p>
@@ -1341,45 +1375,62 @@
 <li><strong>求一列值中的最大最小值</strong>：<code>MAX/MIN ([DISTINCT|ALL] &lt;列名&gt;)</code></li>
 </ul>
 </li>
-<li><strong>例</strong>：查询学生总人数<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">COUNT</span>(<span class="hljs-operator">*</span>)<br><span class="hljs-keyword">FROM</span> Student;<br></code></pre></td></tr></table></figure>
-</li>
-<li><strong>例</strong>：查询选修了课程的学生人数<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">COUNT</span>(<span class="hljs-keyword">DISTINCT</span> Sno)<br><span class="hljs-keyword">FROM</span> SC;<br></code></pre></td></tr></table></figure>
-</li>
-<li><strong>例</strong>：计算 1 号课程的学生平均成绩<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">AVG</span>(Grade)<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">WHERE</span> Cno<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;1&#x27;</span>;<br></code></pre></td></tr></table></figure>
-</li>
-<li><strong>例</strong>：查询选修 1 号课程的学生最高分数<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">MAX</span>(Grade)<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">WHERE</span> Cno<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;1&#x27;</span>;<br></code></pre></td></tr></table></figure>
-</li>
-<li><strong>例</strong>：查询学生 201215012 选修课程的总学分数<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">SUM</span>(Ccredit)<br><span class="hljs-keyword">FROM</span> SC, Course<br><span class="hljs-keyword">WHERE</span> Sno<span class="hljs-operator">=</span><span class="hljs-string">&#x27;201215012&#x27;</span> <span class="hljs-keyword">AND</span> SC.Cno<span class="hljs-operator">=</span>Course.Cno;<br></code></pre></td></tr></table></figure>
-</li>
+</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-8bd77bc6" role="button" aria-expanded="false" aria-controls="collapse-8bd77bc6">
+        <div class="fold-arrow">▶</div>例：
+      </div>
+      <div class="fold-collapse collapse" id="collapse-8bd77bc6">
+        <div class="fold-content">
+          <ul><li><strong>例</strong>：查询学生总人数<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">COUNT</span>(<span class="hljs-operator">*</span>)<br><span class="hljs-keyword">FROM</span> Student;<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：查询选修了课程的学生人数<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">COUNT</span>(<span class="hljs-keyword">DISTINCT</span> Sno)<br><span class="hljs-keyword">FROM</span> SC;<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：计算 1 号课程的学生平均成绩<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">AVG</span>(Grade)<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">WHERE</span> Cno<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;1&#x27;</span>;<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：查询选修 1 号课程的学生最高分数<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">MAX</span>(Grade)<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">WHERE</span> Cno<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;1&#x27;</span>;<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：查询学生 201215012 选修课程的总学分数<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">SUM</span>(Ccredit)<br><span class="hljs-keyword">FROM</span> SC, Course<br><span class="hljs-keyword">WHERE</span> Sno<span class="hljs-operator">=</span><span class="hljs-string">&#x27;201215012&#x27;</span> <span class="hljs-keyword">AND</span> SC.Cno<span class="hljs-operator">=</span>Course.Cno;<br></code></pre></td></tr></table></figure></li></ul>
+        </div>
+      </div>
+    </div>
+<ul>
 <li><strong>WHERE 子句中不能用聚集函数作为条件表达式</strong>，因为 WHERE 子句对每一个元组进行条件过滤，而不是对集合进行条件过滤</li>
 </ul>
 </li>
 <li>
 <p><strong>对查询结果分组</strong>：使用 <code>GROUP BY</code> 子句分组，按某一列或多列的值分组，值相等的为一组</p>
 <ul>
-<li><strong>聚集函数的作用对象</strong>:
+<li>
+<p><strong>聚集函数的作用对象</strong>:</p>
 <ul>
 <li>未对查询结果分组，聚集函数将作用于整个查询结果</li>
 <li>对查询结果分组后，聚集函数将分别作用于每个组</li>
 </ul>
 </li>
-<li><strong>使用 GROUP BY 子句分组</strong>：
-<ul>
-<li><strong>例</strong>：求各个课程号及相应的选课人数<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Cno, <span class="hljs-built_in">COUNT</span>(Sno)<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> Cno;<br></code></pre></td></tr></table></figure>
+<li>
+<p><strong>使用 GROUP BY 子句分组</strong>：</p>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-d5539904" role="button" aria-expanded="false" aria-controls="collapse-d5539904">
+        <div class="fold-arrow">▶</div>例：
+      </div>
+      <div class="fold-collapse collapse" id="collapse-d5539904">
+        <div class="fold-content">
+          <ul><li><strong>例</strong>：求各个课程号及相应的选课人数<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Cno, <span class="hljs-built_in">COUNT</span>(Sno)<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> Cno;<br></code></pre></td></tr></table></figure></li></ul>
+        </div>
+      </div>
+    </div>
 </li>
-</ul>
+<li>
+<p><strong>使用 HAVING 短语筛选最终输出结果</strong>：</p>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-07d525f6" role="button" aria-expanded="false" aria-controls="collapse-07d525f6">
+        <div class="fold-arrow">▶</div>例：
+      </div>
+      <div class="fold-collapse collapse" id="collapse-07d525f6">
+        <div class="fold-content">
+          <ul><li><strong>例</strong>：查询选修了 3 门以上课程的学生学号<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> Sno<br><span class="hljs-keyword">HAVING</span> <span class="hljs-built_in">COUNT</span>(<span class="hljs-operator">*</span>)<span class="hljs-operator">&gt;</span><span class="hljs-number">3</span>;<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：查询平均成绩大于等于 90 分的学生学号和平均成绩<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno, <span class="hljs-built_in">AVG</span>(Grade)<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> Sno<br><span class="hljs-keyword">HAVING</span> <span class="hljs-built_in">AVG</span>(Grade)<span class="hljs-operator">&gt;=</span><span class="hljs-number">90</span>;<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：查询有两门及以上不及格课同学的学号和其平均成绩<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno, <span class="hljs-built_in">AVG</span>(GRADE)<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">WHERE</span> Sno <span class="hljs-keyword">in</span><br>      (<span class="hljs-keyword">SELECT</span> Sno<br>       <span class="hljs-keyword">FROM</span> SC<br>       <span class="hljs-keyword">WHERE</span> Grade<span class="hljs-operator">&lt;</span><span class="hljs-number">60</span><br>       <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> Sno<br>       <span class="hljs-keyword">HAVING</span> <span class="hljs-built_in">COUNT</span>(<span class="hljs-operator">*</span>)<span class="hljs-operator">&gt;</span><span class="hljs-number">2</span>)<br><span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> Sno;<br></code></pre></td></tr></table></figure></li></ul>
+        </div>
+      </div>
+    </div>
 </li>
-<li><strong>使用 HAVING 短语筛选最终输出结果</strong>：
-<ul>
-<li><strong>例</strong>：查询选修了 3 门以上课程的学生学号<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> Sno<br><span class="hljs-keyword">HAVING</span> <span class="hljs-built_in">COUNT</span>(<span class="hljs-operator">*</span>)<span class="hljs-operator">&gt;</span><span class="hljs-number">3</span>;<br></code></pre></td></tr></table></figure>
-</li>
-<li><strong>例</strong>：查询平均成绩大于等于 90 分的学生学号和平均成绩<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno, <span class="hljs-built_in">AVG</span>(Grade)<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> Sno<br><span class="hljs-keyword">HAVING</span> <span class="hljs-built_in">AVG</span>(Grade)<span class="hljs-operator">&gt;=</span><span class="hljs-number">90</span>;<br></code></pre></td></tr></table></figure>
-</li>
-<li><strong>例</strong>：查询有两门及以上不及格课同学的学号和其平均成绩<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno, <span class="hljs-built_in">AVG</span>(GRADE)<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">WHERE</span> Sno <span class="hljs-keyword">in</span><br>      (<span class="hljs-keyword">SELECT</span> Sno<br>       <span class="hljs-keyword">FROM</span> SC<br>       <span class="hljs-keyword">WHERE</span> Grade<span class="hljs-operator">&lt;</span><span class="hljs-number">60</span><br>       <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> Sno<br>       <span class="hljs-keyword">HAVING</span> <span class="hljs-built_in">COUNT</span>(<span class="hljs-operator">*</span>)<span class="hljs-operator">&gt;</span><span class="hljs-number">2</span>)<br><span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> Sno;<br></code></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><strong>注意</strong>：
+<li>
+<p><strong>注意</strong>：</p>
 <ul>
 <li>聚集函数只能用于 SELECT 子句和 GROUP BY 中的 HAVING 子句</li>
 <li><strong>WHERE 子句作用于基本表或视图</strong>，选择满足条件的元组</li>
@@ -1390,15 +1441,17 @@
 </li>
 <li>
 <p><strong>LIMIT 子句</strong>：<code>LIMIT &lt;行数1&gt; [OFFSET &lt;行数2&gt;];</code> 表示忽略前 <code>&lt;行数2&gt;</code> 行，然后取 <code>&lt;行数1&gt;</code> 作为查询结果数据</p>
-<ul>
-<li><strong>例</strong>：查询选修了数据库课程的成绩排名前 10 名的学生学号<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno<br><span class="hljs-keyword">FROM</span> SC, Course<br><span class="hljs-keyword">WHERE</span> Course.Cname<span class="hljs-operator">=</span><span class="hljs-string">&#x27;数据库&#x27;</span> <span class="hljs-keyword">AND</span> SC.Cno<span class="hljs-operator">=</span>Course.Cno<br><span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> Grade <span class="hljs-keyword">DESC</span><br>LIMIT <span class="hljs-number">10</span>;  <span class="hljs-comment">/*取前10行数据为查询结果*/</span><br></code></pre></td></tr></table></figure>
-<ul>
-<li>ORDER BY 可以使用不在 SELECT 列表中的列进行排序，这是 SQL 标准允许的</li>
-</ul>
-</li>
-<li><strong>例</strong>：查询平均成绩排名在 3-7 名的学生学号和平均成绩<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno, <span class="hljs-built_in">AVG</span>(Grade)<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> Sno<br><span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-built_in">AVG</span>(Grade) <span class="hljs-keyword">DESC</span><br>LIMIT <span class="hljs-number">5</span> <span class="hljs-keyword">OFFSET</span> <span class="hljs-number">2</span>; <span class="hljs-comment">/*取5行数据，忽略前2行，之后为查询结果数据*/</span><br></code></pre></td></tr></table></figure>
-</li>
-</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-14c6f2a5" role="button" aria-expanded="false" aria-controls="collapse-14c6f2a5">
+        <div class="fold-arrow">▶</div>例：
+      </div>
+      <div class="fold-collapse collapse" id="collapse-14c6f2a5">
+        <div class="fold-content">
+          <ul><li><strong>例</strong>：查询选修了数据库课程的成绩排名前 10 名的学生学号<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno<br><span class="hljs-keyword">FROM</span> SC, Course<br><span class="hljs-keyword">WHERE</span> Course.Cname<span class="hljs-operator">=</span><span class="hljs-string">&#x27;数据库&#x27;</span> <span class="hljs-keyword">AND</span> SC.Cno<span class="hljs-operator">=</span>Course.Cno<br><span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> Grade <span class="hljs-keyword">DESC</span><br>LIMIT <span class="hljs-number">10</span>;  <span class="hljs-comment">/*取前10行数据为查询结果*/</span><br></code></pre></td></tr></table></figure><ul><li>ORDER BY 可以使用不在 SELECT 列表中的列进行排序，这是 SQL 标准允许的</li></ul></li><li><strong>例</strong>：查询平均成绩排名在 3-7 名的学生学号和平均成绩<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Sno, <span class="hljs-built_in">AVG</span>(Grade)<br><span class="hljs-keyword">FROM</span> SC<br><span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> Sno<br><span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-built_in">AVG</span>(Grade) <span class="hljs-keyword">DESC</span><br>LIMIT <span class="hljs-number">5</span> <span class="hljs-keyword">OFFSET</span> <span class="hljs-number">2</span>; <span class="hljs-comment">/*取5行数据，忽略前2行，之后为查询结果数据*/</span><br></code></pre></td></tr></table></figure></li></ul>
+        </div>
+      </div>
+    </div>
 </li>
 </ul>
 <h4 id="3-2-连接查询">3.2 连接查询</h4>
@@ -1413,10 +1466,20 @@
 <li>
 <p><strong>等值与非等值连接查询 (INNER JOIN)</strong>：</p>
 <ul>
-<li><strong>等值连接</strong>：连接运算符为 =
+<li>
+<p><strong>等值连接</strong>：连接运算符为 =</p>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-02f967f0" role="button" aria-expanded="false" aria-controls="collapse-02f967f0">
+        <div class="fold-arrow">▶</div>例：
+      </div>
+      <div class="fold-collapse collapse" id="collapse-02f967f0">
+        <div class="fold-content">
+          <ul><li><strong>例</strong>：查询每个学生及其选修课程的情况<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Student.<span class="hljs-operator">*</span>, SC.<span class="hljs-operator">*</span><br><span class="hljs-keyword">FROM</span> Student，SC<br><span class="hljs-keyword">WHERE</span> Student.Sno <span class="hljs-operator">=</span> SC.Sno;<br></code></pre></td></tr></table></figure></li></ul>
+        </div>
+      </div>
+    </div>
 <ul>
-<li><strong>例</strong>：查询每个学生及其选修课程的情况<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Student.<span class="hljs-operator">*</span>, SC.<span class="hljs-operator">*</span><br><span class="hljs-keyword">FROM</span> Student，SC<br><span class="hljs-keyword">WHERE</span> Student.Sno <span class="hljs-operator">=</span> SC.Sno;<br></code></pre></td></tr></table></figure>
-</li>
 <li>任何子句中引用表 1 和表 2 中同名属性时，<strong>都必须加表名前缀</strong></li>
 <li>引用唯一属性名时可以加也可以省略表名前缀</li>
 </ul>
@@ -1425,17 +1488,31 @@
 </li>
 <li>
 <p><strong>自然连接</strong>：等值连接的一种特殊情况，把<strong>目标列中重复的属性列去掉</strong></p>
-<ul>
-<li><strong>例</strong>：查询每个学生及其选修课程的情况<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Student.Sno, Sname, Ssex, Sage, Sdept, Cno, Grade<br><span class="hljs-keyword">FROM</span> Student, SC<br><span class="hljs-keyword">WHERE</span> Student.Sno <span class="hljs-operator">=</span> SC.Sno;<br></code></pre></td></tr></table></figure>
-</li>
-</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-1a5647eb" role="button" aria-expanded="false" aria-controls="collapse-1a5647eb">
+        <div class="fold-arrow">▶</div>例：
+      </div>
+      <div class="fold-collapse collapse" id="collapse-1a5647eb">
+        <div class="fold-content">
+          <ul><li><strong>例</strong>：查询每个学生及其选修课程的情况<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Student.Sno, Sname, Ssex, Sage, Sdept, Cno, Grade<br><span class="hljs-keyword">FROM</span> Student, SC<br><span class="hljs-keyword">WHERE</span> Student.Sno <span class="hljs-operator">=</span> SC.Sno;<br></code></pre></td></tr></table></figure></li></ul>
+        </div>
+      </div>
+    </div>
 </li>
 <li>
 <p><strong>自身连接</strong>：需要给表起别名以示区别；由于所有属性名都是同名属性，因此<strong>必须使用别名前缀</strong></p>
-<ul>
-<li><strong>例</strong>：查询每一门课的间接先修课（即先修课的先修课）<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> FIRST.Cno, SECOND.Cpno<br><span class="hljs-keyword">FROM</span> Course <span class="hljs-keyword">FIRST</span>, Course <span class="hljs-keyword">SECOND</span><br><span class="hljs-keyword">WHERE</span> FIRST.Cpno <span class="hljs-operator">=</span> SECOND.Cno <span class="hljs-keyword">AND</span> SECOND.Cpno <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NOT NULL</span>;<br></code></pre></td></tr></table></figure>
-</li>
-</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-41960f32" role="button" aria-expanded="false" aria-controls="collapse-41960f32">
+        <div class="fold-arrow">▶</div>例：
+      </div>
+      <div class="fold-collapse collapse" id="collapse-41960f32">
+        <div class="fold-content">
+          <ul><li><strong>例</strong>：查询每一门课的间接先修课（即先修课的先修课）<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> FIRST.Cno, SECOND.Cpno<br><span class="hljs-keyword">FROM</span> Course <span class="hljs-keyword">FIRST</span>, Course <span class="hljs-keyword">SECOND</span><br><span class="hljs-keyword">WHERE</span> FIRST.Cpno <span class="hljs-operator">=</span> SECOND.Cno <span class="hljs-keyword">AND</span> SECOND.Cpno <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NOT NULL</span>;<br></code></pre></td></tr></table></figure></li></ul>
+        </div>
+      </div>
+    </div>
 </li>
 <li>
 <p><strong>外连接(OUTER JOIN)</strong>：</p>
@@ -1443,23 +1520,46 @@
 <li><strong>外连接(FULL OUTER JOIN)</strong>：列出左边关系和右边关系中所有元组（包括左边和右边关系的悬浮元组）</li>
 <li><strong>左外连接(LEFT OUTER JOIN)</strong>：列出左边关系中所有元组（包括左边关系的悬浮元组）</li>
 <li><strong>右外连接(RIGHT OUTER JOIN)</strong>：列出右边关系中所有元组（包括右边关系的悬浮元组）</li>
-<li><strong>例</strong>：查询每个学生及其选修课程的情况，包括没有选修课程的学生<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Student.Sno, Sname, Ssex, Sage, Sdept, Cno, Grade<br><span class="hljs-keyword">FROM</span> Student <span class="hljs-keyword">LEFT</span> <span class="hljs-keyword">OUTER</span> <span class="hljs-keyword">JOIN</span> SC <span class="hljs-keyword">ON</span> (Student.Sno <span class="hljs-operator">=</span> SC.Sno);<br></code></pre></td></tr></table></figure>
-</li>
 </ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-5a390e1c" role="button" aria-expanded="false" aria-controls="collapse-5a390e1c">
+        <div class="fold-arrow">▶</div>例：
+      </div>
+      <div class="fold-collapse collapse" id="collapse-5a390e1c">
+        <div class="fold-content">
+          <ul><li><strong>例</strong>：查询每个学生及其选修课程的情况，包括没有选修课程的学生<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Student.Sno, Sname, Ssex, Sage, Sdept, Cno, Grade<br><span class="hljs-keyword">FROM</span> Student <span class="hljs-keyword">LEFT</span> <span class="hljs-keyword">OUTER</span> <span class="hljs-keyword">JOIN</span> SC <span class="hljs-keyword">ON</span> (Student.Sno <span class="hljs-operator">=</span> SC.Sno);<br></code></pre></td></tr></table></figure></li></ul>
+        </div>
+      </div>
+    </div>
 </li>
 <li>
 <p><strong>复合条件连接</strong>：WHERE 子句中含多个连接条件</p>
-<ul>
-<li><strong>例</strong>：查询选修 2 号课程且成绩在 90 分以上的所有学生的学号和姓名<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Student.Sno, Student.Sname<br><span class="hljs-keyword">FROM</span> Student, SC<br><span class="hljs-keyword">WHERE</span> Student.Sno <span class="hljs-operator">=</span> SC.Sno <span class="hljs-keyword">AND</span> <span class="hljs-comment">/* 连接谓词 */</span><br>      SC.Cno<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;2&#x27;</span> <span class="hljs-keyword">AND</span> <span class="hljs-comment">/* 其他限定条件 */</span><br>      SC.Grade <span class="hljs-operator">&gt;</span> <span class="hljs-number">90</span>;  <span class="hljs-comment">/* 其他限定条件 */</span><br></code></pre></td></tr></table></figure>
-</li>
-</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-1c9a4dcc" role="button" aria-expanded="false" aria-controls="collapse-1c9a4dcc">
+        <div class="fold-arrow">▶</div>例：
+      </div>
+      <div class="fold-collapse collapse" id="collapse-1c9a4dcc">
+        <div class="fold-content">
+          <ul><li><strong>例</strong>：查询选修 2 号课程且成绩在 90 分以上的所有学生的学号和姓名<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Student.Sno, Student.Sname<br><span class="hljs-keyword">FROM</span> Student, SC<br><span class="hljs-keyword">WHERE</span> Student.Sno <span class="hljs-operator">=</span> SC.Sno <span class="hljs-keyword">AND</span> <span class="hljs-comment">/* 连接谓词 */</span><br>      SC.Cno<span class="hljs-operator">=</span> <span class="hljs-string">&#x27;2&#x27;</span> <span class="hljs-keyword">AND</span> <span class="hljs-comment">/* 其他限定条件 */</span><br>      SC.Grade <span class="hljs-operator">&gt;</span> <span class="hljs-number">90</span>;  <span class="hljs-comment">/* 其他限定条件 */</span><br></code></pre></td></tr></table></figure></li></ul>
+        </div>
+      </div>
+    </div>
 </li>
 <li>
 <p><strong>多表连接</strong>：</p>
-<ul>
-<li><strong>例</strong>：查询每个学生的学号、姓名、选修的课程名及成绩<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Student.Sno, Sname, Cname, Grade<br><span class="hljs-keyword">FROM</span> Student, SC, Course<br><span class="hljs-keyword">WHERE</span> Student.Sno <span class="hljs-operator">=</span> SC.Sno <span class="hljs-keyword">AND</span> <br>      SC.Cno <span class="hljs-operator">=</span> Course.Cno;<br></code></pre></td></tr></table></figure>
-</li>
-</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-dad6d3c8" role="button" aria-expanded="false" aria-controls="collapse-dad6d3c8">
+        <div class="fold-arrow">▶</div>例：
+      </div>
+      <div class="fold-collapse collapse" id="collapse-dad6d3c8">
+        <div class="fold-content">
+          <ul><li><strong>例</strong>：查询每个学生的学号、姓名、选修的课程名及成绩<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Student.Sno, Sname, Cname, Grade<br><span class="hljs-keyword">FROM</span> Student, SC, Course<br><span class="hljs-keyword">WHERE</span> Student.Sno <span class="hljs-operator">=</span> SC.Sno <span class="hljs-keyword">AND</span> <br>      SC.Cno <span class="hljs-operator">=</span> Course.Cno;<br></code></pre></td></tr></table></figure></li></ul>
+        </div>
+      </div>
+    </div>
 </li>
 </ul>
 <h4 id="3-3-嵌套查询">3.3 嵌套查询</h4>
