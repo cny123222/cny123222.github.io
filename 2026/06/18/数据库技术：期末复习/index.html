@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/db.png">
 <meta property="article:published_time" content="2026-06-18T12:22:11.000Z">
-<meta property="article:modified_time" content="2026-06-22T08:36:49.207Z">
+<meta property="article:modified_time" content="2026-06-22T10:06:47.424Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="期末复习">
@@ -1897,32 +1897,33 @@
 <li>如果有 <code>WITH GRANT OPTION</code> 子句，则获得权限的用户可以再授予其他用户；如果没有，则不能传播</li>
 </ul>
 </li>
-<li><strong>例</strong>：把查询 Student 表的权限授给用户 U1<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">SELECT</span><br><span class="hljs-keyword">ON</span> <span class="hljs-keyword">TABLE</span> Student<br><span class="hljs-keyword">TO</span> U1;<br></code></pre></td></tr></table></figure>
-</li>
-<li><strong>例</strong>：把对 Student 表和 Course 表的全部操作权限授予用户 U2 和 U3<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">ALL</span> PRIVILIGES<br><span class="hljs-keyword">ON</span> <span class="hljs-keyword">TABLE</span> Student, Course<br><span class="hljs-keyword">TO</span> U2, U3;<br></code></pre></td></tr></table></figure>
-</li>
-<li><strong>例</strong>：把对表 SC 的查询权限授予所有用户<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">SELECT</span><br><span class="hljs-keyword">ON</span> <span class="hljs-keyword">TABLE</span> SC<br><span class="hljs-keyword">TO</span> PUBLIC;<br></code></pre></td></tr></table></figure>
-</li>
-<li><strong>例</strong>：把查询 Student 表和修改学生学号的权限授给用户 U4<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">UPDATE</span>(Sno), <span class="hljs-keyword">SELECT</span><br><span class="hljs-keyword">ON</span> <span class="hljs-keyword">TABLE</span> Student<br><span class="hljs-keyword">TO</span> U4;<br></code></pre></td></tr></table></figure>
-</li>
-<li><strong>例</strong>：把对表 SC 的 INSERT 权限授予 U5 用户，并允许他再将此权限授予其他用户<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">INSERT</span><br><span class="hljs-keyword">ON</span> <span class="hljs-keyword">TABLE</span> SC<br><span class="hljs-keyword">TO</span> U5<br><span class="hljs-keyword">WITH</span> <span class="hljs-keyword">GRANT</span> OPTION;<br></code></pre></td></tr></table></figure>
-</li>
 </ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-2d8a1eea" role="button" aria-expanded="false" aria-controls="collapse-2d8a1eea">
+        <div class="fold-arrow">▶</div>例：
+      </div>
+      <div class="fold-collapse collapse" id="collapse-2d8a1eea">
+        <div class="fold-content">
+          <ul><li><strong>例</strong>：把查询 Student 表的权限授给用户 U1<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">SELECT</span><br><span class="hljs-keyword">ON</span> <span class="hljs-keyword">TABLE</span> Student<br><span class="hljs-keyword">TO</span> U1;<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：把对 Student 表和 Course 表的全部操作权限授予用户 U2 和 U3<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">ALL</span> PRIVILIGES<br><span class="hljs-keyword">ON</span> <span class="hljs-keyword">TABLE</span> Student, Course<br><span class="hljs-keyword">TO</span> U2, U3;<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：把对表 SC 的查询权限授予所有用户<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">SELECT</span><br><span class="hljs-keyword">ON</span> <span class="hljs-keyword">TABLE</span> SC<br><span class="hljs-keyword">TO</span> PUBLIC;<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：把查询 Student 表和修改学生学号的权限授给用户 U4<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">UPDATE</span>(Sno), <span class="hljs-keyword">SELECT</span><br><span class="hljs-keyword">ON</span> <span class="hljs-keyword">TABLE</span> Student<br><span class="hljs-keyword">TO</span> U4;<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：把对表 SC 的 INSERT 权限授予 U5 用户，并允许他再将此权限授予其他用户<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">INSERT</span><br><span class="hljs-keyword">ON</span> <span class="hljs-keyword">TABLE</span> SC<br><span class="hljs-keyword">TO</span> U5<br><span class="hljs-keyword">WITH</span> <span class="hljs-keyword">GRANT</span> OPTION;<br></code></pre></td></tr></table></figure></li></ul>
+        </div>
+      </div>
+    </div>
 </li>
 <li>
 <p><strong>回收(REVOKE)</strong>：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">REVOKE</span> <span class="hljs-operator">&lt;</span>权限<span class="hljs-operator">&gt;</span>[,<span class="hljs-operator">&lt;</span>权限<span class="hljs-operator">&gt;</span>]...<br><span class="hljs-keyword">ON</span> <span class="hljs-operator">&lt;</span>对象类型<span class="hljs-operator">&gt;</span> <span class="hljs-operator">&lt;</span>对象名<span class="hljs-operator">&gt;</span><br><span class="hljs-keyword">FROM</span> <span class="hljs-operator">&lt;</span>用户<span class="hljs-operator">&gt;</span>[,<span class="hljs-operator">&lt;</span>用户<span class="hljs-operator">&gt;</span>]...;<br></code></pre></td></tr></table></figure>
-<ul>
-<li><strong>例</strong>：把用户 U4 修改学生学号的权限收回<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">REVOKE</span> <span class="hljs-keyword">UPDATE</span>(Sno)<br><span class="hljs-keyword">ON</span> <span class="hljs-keyword">TABLE</span> Student<br><span class="hljs-keyword">FROM</span> U4;<br></code></pre></td></tr></table></figure>
-</li>
-<li><strong>例</strong>：收回所有用户对表 SC 的查询权限<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">REVOKE</span> <span class="hljs-keyword">SELECT</span><br><span class="hljs-keyword">ON</span> <span class="hljs-keyword">TABLE</span> SC<br><span class="hljs-keyword">FROM</span> PUBLIC;<br></code></pre></td></tr></table></figure>
-</li>
-<li><strong>例</strong>：把用户 U5 对 SC 表的 INSERT 权限收回<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">REVOKE</span> <span class="hljs-keyword">INSERT</span><br><span class="hljs-keyword">ON</span> <span class="hljs-keyword">TABLE</span> SC<br><span class="hljs-keyword">FROM</span> U5 CASCADE;<br></code></pre></td></tr></table></figure>
-<ul>
-<li>若 U5 授权过其他用户 INSERT 权限，将用户 U5 的该权限收回的时候<strong>必须级联(CASCADE)收回</strong>，不然系统将拒绝执行该命令</li>
-</ul>
-</li>
-</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-66cc573d" role="button" aria-expanded="false" aria-controls="collapse-66cc573d">
+        <div class="fold-arrow">▶</div>例：
+      </div>
+      <div class="fold-collapse collapse" id="collapse-66cc573d">
+        <div class="fold-content">
+          <ul><li><strong>例</strong>：把用户 U4 修改学生学号的权限收回<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">REVOKE</span> <span class="hljs-keyword">UPDATE</span>(Sno)<br><span class="hljs-keyword">ON</span> <span class="hljs-keyword">TABLE</span> Student<br><span class="hljs-keyword">FROM</span> U4;<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：收回所有用户对表 SC 的查询权限<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">REVOKE</span> <span class="hljs-keyword">SELECT</span><br><span class="hljs-keyword">ON</span> <span class="hljs-keyword">TABLE</span> SC<br><span class="hljs-keyword">FROM</span> PUBLIC;<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：把用户 U5 对 SC 表的 INSERT 权限收回<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">REVOKE</span> <span class="hljs-keyword">INSERT</span><br><span class="hljs-keyword">ON</span> <span class="hljs-keyword">TABLE</span> SC<br><span class="hljs-keyword">FROM</span> U5 CASCADE;<br></code></pre></td></tr></table></figure><ul><li>若 U5 授权过其他用户 INSERT 权限，将用户 U5 的该权限收回的时候<strong>必须级联(CASCADE)收回</strong>，不然系统将拒绝执行该命令</li></ul></li></ul>
+        </div>
+      </div>
+    </div>
 </li>
 <li>
 <p><strong>创建权限</strong>：DBA 在创建用户时实现</p>
@@ -1973,23 +1974,18 @@
 </li>
 <li><strong>角色权限的收回</strong>：<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">REVOKE</span> <span class="hljs-operator">&lt;</span>权限<span class="hljs-operator">&gt;</span> [,<span class="hljs-operator">&lt;</span>权限<span class="hljs-operator">&gt;</span>] ...<br><span class="hljs-keyword">ON</span> <span class="hljs-operator">&lt;</span>对象类型<span class="hljs-operator">&gt;</span> <span class="hljs-operator">&lt;</span>对象名<span class="hljs-operator">&gt;</span><br><span class="hljs-keyword">FROM</span> <span class="hljs-operator">&lt;</span>角色<span class="hljs-operator">&gt;</span> [,<span class="hljs-operator">&lt;</span>角色<span class="hljs-operator">&gt;</span>] ...<br></code></pre></td></tr></table></figure>
 </li>
-<li><strong>例</strong>：通过角色来实现将一组权限授予一个用户，步骤如下：
-<ul>
-<li>首先创建一个角色 R1<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> ROLE R1;<br></code></pre></td></tr></table></figure>
-</li>
-<li>然后使用 GRANT 语句，使角色 R1 拥有 Student 表的 SELECT、UPDATE、INSERT 权限<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">SELECT</span>, <span class="hljs-keyword">UPDATE</span>, <span class="hljs-keyword">INSERT</span><br><span class="hljs-keyword">ON</span> <span class="hljs-keyword">TABLE</span> Student<br><span class="hljs-keyword">TO</span> R1;<br></code></pre></td></tr></table></figure>
-</li>
-<li>将这个角色授予王平、张明、赵玲，使他们具有角色 R1 所包含的全部权限<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">GRANT</span> R1<br><span class="hljs-keyword">TO</span> 王平, 张明, 赵玲;<br></code></pre></td></tr></table></figure>
-</li>
-<li>可以一次性通过 R1 来回收王平的这 3 个权限<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">REVOKE</span> R1<br><span class="hljs-keyword">FROM</span> 王平;<br></code></pre></td></tr></table></figure>
-</li>
 </ul>
-</li>
-<li><strong>例</strong>：角色的权限修改<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">DELETE</span><br><span class="hljs-keyword">ON</span> <span class="hljs-keyword">TABLE</span> Student<br><span class="hljs-keyword">TO</span> R1;<br></code></pre></td></tr></table></figure>
-</li>
-<li><strong>例</strong>：角色的权限修改<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">REVOKE</span> <span class="hljs-keyword">SELECT</span><br><span class="hljs-keyword">ON</span> <span class="hljs-keyword">TABLE</span> Student<br><span class="hljs-keyword">FROM</span> R1;<br></code></pre></td></tr></table></figure>
-</li>
-</ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-c6c3d7e8" role="button" aria-expanded="false" aria-controls="collapse-c6c3d7e8">
+        <div class="fold-arrow">▶</div>例：
+      </div>
+      <div class="fold-collapse collapse" id="collapse-c6c3d7e8">
+        <div class="fold-content">
+          <ul><li><strong>例</strong>：通过角色来实现将一组权限授予一个用户，步骤如下：<ul><li>首先创建一个角色 R1<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> ROLE R1;<br></code></pre></td></tr></table></figure></li><li>然后使用 GRANT 语句，使角色 R1 拥有 Student 表的 SELECT、UPDATE、INSERT 权限<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">SELECT</span>, <span class="hljs-keyword">UPDATE</span>, <span class="hljs-keyword">INSERT</span><br><span class="hljs-keyword">ON</span> <span class="hljs-keyword">TABLE</span> Student<br><span class="hljs-keyword">TO</span> R1;<br></code></pre></td></tr></table></figure></li><li>将这个角色授予王平、张明、赵玲，使他们具有角色 R1 所包含的全部权限<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">GRANT</span> R1<br><span class="hljs-keyword">TO</span> 王平, 张明, 赵玲;<br></code></pre></td></tr></table></figure></li><li>可以一次性通过 R1 来回收王平的这 3 个权限<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">REVOKE</span> R1<br><span class="hljs-keyword">FROM</span> 王平;<br></code></pre></td></tr></table></figure></li></ul></li><li><strong>例</strong>：角色的权限修改<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">DELETE</span><br><span class="hljs-keyword">ON</span> <span class="hljs-keyword">TABLE</span> Student<br><span class="hljs-keyword">TO</span> R1;<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：角色的权限修改<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">REVOKE</span> <span class="hljs-keyword">SELECT</span><br><span class="hljs-keyword">ON</span> <span class="hljs-keyword">TABLE</span> Student<br><span class="hljs-keyword">FROM</span> R1;<br></code></pre></td></tr></table></figure></li></ul>
+        </div>
+      </div>
+    </div>
 </li>
 <li>
 <p><strong>授权粒度</strong>：授权粒度越细，授权子系统就越灵活</p>
@@ -2247,7 +2243,7 @@
 <h4 id="2-1-数据库的逻辑组织方式与物理组织方式">2.1 数据库的逻辑组织方式与物理组织方式</h4>
 <ul>
 <li>
-<p><strong>数据库的逻辑组织</strong>：表空间 – 段 – 分区 – 数据块，方便数据管理</p>
+<p><strong>数据库的逻辑组织</strong>：表空间 – 段 – 分区 – 数据块</p>
 </li>
 <li>
 <p><strong>数据库的物理组织</strong>：文件 – 块 – 记录</p>
@@ -2343,8 +2339,8 @@
 <ul>
 <li><strong>五种存放方式</strong>：
 <ul>
-<li><strong>堆存储</strong>：记录可存储于任意有空间的位置，磁盘上存储的记录是无序的</li>
-<li><strong>顺序存储</strong>：记录按某属性或属性组值的顺序插入，磁盘上存储的记录是有序的</li>
+<li><strong>堆存储</strong>：记录可存储于任意有空间的位置，磁盘上存储的记录是<strong>无序</strong>的</li>
+<li><strong>顺序存储</strong>：记录按某属性或属性组值的顺序插入，磁盘上存储的记录是<strong>有序</strong>的</li>
 <li><strong>多表聚簇存储</strong>：不同表的元组聚簇存放在同一组块中，减少连接操作</li>
 <li><strong>B+ 树存储</strong>：以 B+ 树索引的方式确定记录存放在哪个数据块中</li>
 <li><strong>哈希存储</strong>：用哈希函数计算表中指定属性的哈希值，以此确定相应记录放在哪个块中</li>
