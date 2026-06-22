@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/db.png">
 <meta property="article:published_time" content="2026-06-18T12:22:11.000Z">
-<meta property="article:modified_time" content="2026-06-22T10:28:46.904Z">
+<meta property="article:modified_time" content="2026-06-22T10:45:02.619Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="期末复习">
@@ -953,26 +953,51 @@
 <li>
 <p><strong>模式(SCHEMA)</strong>：</p>
 <ul>
-<li><strong>定义(CREATE)</strong>：<code>CREATE SCHEMA &lt;模式名&gt; AUTHORIZATION &lt;用户名&gt; [&lt;表定义子句&gt;|&lt;视图定义子句&gt;|&lt;授权定义子句&gt;]</code>
+<li>
+<p><strong>定义(CREATE)</strong>：<code>CREATE SCHEMA &lt;模式名&gt; AUTHORIZATION &lt;用户名&gt; [&lt;表定义子句&gt;|&lt;视图定义子句&gt;|&lt;授权定义子句&gt;]</code></p>
 <ul>
 <li>定义模式实际上定义了一个<strong>命名空间</strong>，在这个空间中可以<strong>定义该模式包含的数据库对象</strong>，例如基本表、视图、索引等</li>
 </ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-e32627f6" role="button" aria-expanded="false" aria-controls="collapse-e32627f6">
+        <div class="fold-arrow">▶</div>例：
+      </div>
+      <div class="fold-collapse collapse" id="collapse-e32627f6">
+        <div class="fold-content">
+          <ul><li><strong>例</strong>：为用户 WANG 定义一个&quot;学生-课程&quot;模式 S-T<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> SCHEMA “S<span class="hljs-operator">-</span>T” <span class="hljs-keyword">AUTHORIZATION</span> WANG;<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：为用户 ZHANG 创建了一个模式 TEST，并在其中定义了一个表 TAB1<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> SCHEMA TEST <span class="hljs-keyword">AUTHORIZATION</span> ZHANG<br><span class="hljs-keyword">CREATE TABLE</span> TAB1(COL1 <span class="hljs-type">SMALLINT</span>,<br>                  COL2 <span class="hljs-type">INT</span>,<br>                  COL3 <span class="hljs-type">CHAR</span>(<span class="hljs-number">20</span>),<br>                  COL4 <span class="hljs-type">NUMERIC</span>(<span class="hljs-number">10</span>, <span class="hljs-number">3</span>),<br>                  COL5 <span class="hljs-type">DECIMAL</span>(<span class="hljs-number">5</span>, <span class="hljs-number">2</span>)<br>                  );<br></code></pre></td></tr></table></figure></li></ul>
+        </div>
+      </div>
+    </div>
 </li>
-<li><strong>删除(DROP)</strong>：<code>DROP SCHEMA &lt;模式名&gt; &lt;CASCADE|RESTRICT&gt;</code>
+<li>
+<p><strong>删除(DROP)</strong>：<code>DROP SCHEMA &lt;模式名&gt; &lt;CASCADE|RESTRICT&gt;</code></p>
 <ul>
 <li><strong>CASCADE(级联)</strong>：删除模式的同时把该模式中所有的数据库对象全部删除</li>
 <li><strong>RESTRICT(限制)</strong>：如果该模式中定义了下属的数据库对象，则拒绝该删除语句的执行</li>
 </ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-c2d13547" role="button" aria-expanded="false" aria-controls="collapse-c2d13547">
+        <div class="fold-arrow">▶</div>例：
+      </div>
+      <div class="fold-collapse collapse" id="collapse-c2d13547">
+        <div class="fold-content">
+          <ul><li><strong>例</strong>：删除模式 TEST，同时该模式中定义的表 TAB1 也被删除<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DROP</span> SCHEMA TEST CASCADE;<br></code></pre></td></tr></table></figure></li></ul>
+        </div>
+      </div>
+    </div>
 </li>
 </ul>
 </li>
 <li>
 <p><strong>基本表(TABLE)</strong>：</p>
 <ul>
-<li><strong>定义(CREATE)</strong>：<strong>这是重点</strong><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> <span class="hljs-operator">&lt;</span>表名<span class="hljs-operator">&gt;</span><br>        (<span class="hljs-operator">&lt;</span>列名<span class="hljs-operator">&gt;</span> <span class="hljs-operator">&lt;</span>数据类型<span class="hljs-operator">&gt;</span>[<span class="hljs-operator">&lt;</span>列级完整性约束条件<span class="hljs-operator">&gt;</span>]<br>        [, <span class="hljs-operator">&lt;</span>列名<span class="hljs-operator">&gt;</span> <span class="hljs-operator">&lt;</span>数据类型<span class="hljs-operator">&gt;</span>[<span class="hljs-operator">&lt;</span>列级完整性约束条件<span class="hljs-operator">&gt;</span>]] <br>        ...<br>        [, <span class="hljs-operator">&lt;</span>表级完整性约束条件<span class="hljs-operator">&gt;</span>]);<br></code></pre></td></tr></table></figure>
-<ul>
 <li>
-<p><strong>常见的完整性约束</strong>：</p>
+<p><strong>定义(CREATE)</strong>：<strong>这是重点</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> <span class="hljs-operator">&lt;</span>表名<span class="hljs-operator">&gt;</span><br>        (<span class="hljs-operator">&lt;</span>列名<span class="hljs-operator">&gt;</span> <span class="hljs-operator">&lt;</span>数据类型<span class="hljs-operator">&gt;</span>[<span class="hljs-operator">&lt;</span>列级完整性约束条件<span class="hljs-operator">&gt;</span>]<br>        [, <span class="hljs-operator">&lt;</span>列名<span class="hljs-operator">&gt;</span> <span class="hljs-operator">&lt;</span>数据类型<span class="hljs-operator">&gt;</span>[<span class="hljs-operator">&lt;</span>列级完整性约束条件<span class="hljs-operator">&gt;</span>]] <br>        ...<br>        [, <span class="hljs-operator">&lt;</span>表级完整性约束条件<span class="hljs-operator">&gt;</span>]);<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>常见的完整性约束</strong>：
 <table>
 <thead>
 <tr>
@@ -1000,61 +1025,98 @@
 </tbody>
 </table>
 </li>
-<li>
-<p><strong>例</strong>：建立“学生”表 Student，学号是主码，姓名取值唯一</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> Student<br>(Sno <span class="hljs-type">CHAR</span>(<span class="hljs-number">9</span>) <span class="hljs-keyword">PRIMARY KEY</span>, <span class="hljs-comment">/* 列级完整性约束条件，主码*/</span> <br>Sname <span class="hljs-type">CHAR</span>(<span class="hljs-number">20</span>) <span class="hljs-keyword">UNIQUE</span>, <span class="hljs-comment">/* Sname取唯一值*/</span> <br>Ssex <span class="hljs-type">CHAR</span>(<span class="hljs-number">2</span>),<br>Sage <span class="hljs-type">SMALLINT</span>,<br>Sdept <span class="hljs-type">CHAR</span>(<span class="hljs-number">20</span>)<br>);<br></code></pre></td></tr></table></figure>
-</li>
-<li>
-<p><strong>例</strong>：建立一个“课程”表 Course</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> Course<br>(Cno <span class="hljs-type">CHAR</span>(<span class="hljs-number">4</span>) <span class="hljs-keyword">PRIMARY KEY</span>, <span class="hljs-comment">/* 列级完整性约束条件，主码*/</span> <br>Cname <span class="hljs-type">CHAR</span>(<span class="hljs-number">40</span>) <span class="hljs-keyword">NOT NULL</span>, <span class="hljs-comment">/* Cname不能取空值*/</span> <br>Cpno <span class="hljs-type">CHAR</span>(<span class="hljs-number">4</span>),<br>Ccredit <span class="hljs-type">SMALLINT</span>,<br><span class="hljs-keyword">FOREIGN KEY</span> (Cpno) <span class="hljs-keyword">REFERENCES</span> Course(Cno)<br>);<br></code></pre></td></tr></table></figure>
-</li>
-<li>
-<p><strong>例</strong>：建立一个“学生选课”表 SC，学生成绩在 0~100</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> SC<br>(Sno <span class="hljs-type">CHAR</span>(<span class="hljs-number">9</span>),<br>Cno <span class="hljs-type">CHAR</span>(<span class="hljs-number">4</span>),<br>Grade <span class="hljs-type">SMALLINT</span> <span class="hljs-keyword">CHECK</span> (Grade<span class="hljs-operator">&gt;=</span><span class="hljs-number">0</span> <span class="hljs-keyword">and</span> Grade<span class="hljs-operator">&lt;=</span><span class="hljs-number">100</span>),<br><span class="hljs-keyword">PRIMARY KEY</span> (Sno, Cno),<br><span class="hljs-comment">/* 主码由两个属性构成，必须作为表级完整性进行定义*/</span> <br><span class="hljs-keyword">FOREIGN KEY</span> (Sno) <span class="hljs-keyword">REFERENCES</span> Student(Sno),<br><span class="hljs-comment">/* 表级完整性约束条件，Sno是外码，被参照表是Student*/</span> <br><span class="hljs-keyword">FOREIGN KEY</span> (Cno) <span class="hljs-keyword">REFERENCES</span> Course(Cno)<br><span class="hljs-comment">/* 表级完整性约束条件，Cno是外码，被参照表是Course*/</span><br>);<br></code></pre></td></tr></table></figure>
-</li>
 </ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-c18fa75a" role="button" aria-expanded="false" aria-controls="collapse-c18fa75a">
+        <div class="fold-arrow">▶</div>例：
+      </div>
+      <div class="fold-collapse collapse" id="collapse-c18fa75a">
+        <div class="fold-content">
+          <ul><li><strong>例</strong>：建立“学生”表 Student，学号是主码，姓名取值唯一<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> Student<br>(Sno <span class="hljs-type">CHAR</span>(<span class="hljs-number">9</span>) <span class="hljs-keyword">PRIMARY KEY</span>, <span class="hljs-comment">/* 列级完整性约束条件，主码*/</span> <br>Sname <span class="hljs-type">CHAR</span>(<span class="hljs-number">20</span>) <span class="hljs-keyword">UNIQUE</span>, <span class="hljs-comment">/* Sname取唯一值*/</span> <br>Ssex <span class="hljs-type">CHAR</span>(<span class="hljs-number">2</span>),<br>Sage <span class="hljs-type">SMALLINT</span>,<br>Sdept <span class="hljs-type">CHAR</span>(<span class="hljs-number">20</span>)<br>);<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：建立一个“课程”表 Course<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> Course<br>(Cno <span class="hljs-type">CHAR</span>(<span class="hljs-number">4</span>) <span class="hljs-keyword">PRIMARY KEY</span>, <span class="hljs-comment">/* 列级完整性约束条件，主码*/</span> <br>Cname <span class="hljs-type">CHAR</span>(<span class="hljs-number">40</span>) <span class="hljs-keyword">NOT NULL</span>, <span class="hljs-comment">/* Cname不能取空值*/</span> <br>Cpno <span class="hljs-type">CHAR</span>(<span class="hljs-number">4</span>),<br>Ccredit <span class="hljs-type">SMALLINT</span>,<br><span class="hljs-keyword">FOREIGN KEY</span> (Cpno) <span class="hljs-keyword">REFERENCES</span> Course(Cno)<br>);<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：建立一个“学生选课”表 SC，学生成绩在 0~100<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> SC<br>(Sno <span class="hljs-type">CHAR</span>(<span class="hljs-number">9</span>),<br>Cno <span class="hljs-type">CHAR</span>(<span class="hljs-number">4</span>),<br>Grade <span class="hljs-type">SMALLINT</span> <span class="hljs-keyword">CHECK</span> (Grade<span class="hljs-operator">&gt;=</span><span class="hljs-number">0</span> <span class="hljs-keyword">and</span> Grade<span class="hljs-operator">&lt;=</span><span class="hljs-number">100</span>),<br><span class="hljs-keyword">PRIMARY KEY</span> (Sno, Cno),<br><span class="hljs-comment">/* 主码由两个属性构成，必须作为表级完整性进行定义*/</span> <br><span class="hljs-keyword">FOREIGN KEY</span> (Sno) <span class="hljs-keyword">REFERENCES</span> Student(Sno),<br><span class="hljs-comment">/* 表级完整性约束条件，Sno是外码，被参照表是Student*/</span> <br><span class="hljs-keyword">FOREIGN KEY</span> (Cno) <span class="hljs-keyword">REFERENCES</span> Course(Cno)<br><span class="hljs-comment">/* 表级完整性约束条件，Cno是外码，被参照表是Course*/</span><br>);<br></code></pre></td></tr></table></figure></li></ul>
+        </div>
+      </div>
+    </div>
 </li>
-<li><strong>修改(ALTER)</strong>：<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER TABLE</span> <span class="hljs-operator">&lt;</span>表名<span class="hljs-operator">&gt;</span><br>[ <span class="hljs-keyword">ADD</span> [<span class="hljs-keyword">COLUMN</span>] <span class="hljs-operator">&lt;</span>新列名<span class="hljs-operator">&gt;</span> <span class="hljs-operator">&lt;</span>数据类型<span class="hljs-operator">&gt;</span> [完整性约束] ]<br>[ <span class="hljs-keyword">ADD</span> <span class="hljs-operator">&lt;</span>表级完整性约束<span class="hljs-operator">&gt;</span>]<br>[ <span class="hljs-keyword">DROP</span> [<span class="hljs-keyword">COLUMN</span>] <span class="hljs-operator">&lt;</span>列名<span class="hljs-operator">&gt;</span> [CASCADE<span class="hljs-operator">|</span>RESTRICT] ]<br>[ <span class="hljs-keyword">DROP</span> <span class="hljs-keyword">CONSTRAINT</span> <span class="hljs-operator">&lt;</span>完整性约束名<span class="hljs-operator">&gt;</span> [CASCADE<span class="hljs-operator">|</span>RESTRICT] ]<br>[ RENAME <span class="hljs-keyword">COLUMN</span> <span class="hljs-operator">&lt;</span>列名<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">TO</span> <span class="hljs-operator">&lt;</span>新列名<span class="hljs-operator">&gt;</span> ]<br>[ <span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">COLUMN</span> <span class="hljs-operator">&lt;</span>列名<span class="hljs-operator">&gt;</span> TYPE <span class="hljs-operator">&lt;</span>数据类型<span class="hljs-operator">&gt;</span> ];<br></code></pre></td></tr></table></figure>
-<ul>
-<li><strong>例</strong>：向 Student 表增加“入学时间”列，其数据类型为日期型<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER TABLE</span> Student <span class="hljs-keyword">ADD</span> S_entrance <span class="hljs-type">DATE</span>;<br></code></pre></td></tr></table></figure>
+<li>
+<p><strong>修改(ALTER)</strong>：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER TABLE</span> <span class="hljs-operator">&lt;</span>表名<span class="hljs-operator">&gt;</span><br>[ <span class="hljs-keyword">ADD</span> [<span class="hljs-keyword">COLUMN</span>] <span class="hljs-operator">&lt;</span>新列名<span class="hljs-operator">&gt;</span> <span class="hljs-operator">&lt;</span>数据类型<span class="hljs-operator">&gt;</span> [完整性约束] ]<br>[ <span class="hljs-keyword">ADD</span> <span class="hljs-operator">&lt;</span>表级完整性约束<span class="hljs-operator">&gt;</span>]<br>[ <span class="hljs-keyword">DROP</span> [<span class="hljs-keyword">COLUMN</span>] <span class="hljs-operator">&lt;</span>列名<span class="hljs-operator">&gt;</span> [CASCADE<span class="hljs-operator">|</span>RESTRICT] ]<br>[ <span class="hljs-keyword">DROP</span> <span class="hljs-keyword">CONSTRAINT</span> <span class="hljs-operator">&lt;</span>完整性约束名<span class="hljs-operator">&gt;</span> [CASCADE<span class="hljs-operator">|</span>RESTRICT] ]<br>[ RENAME <span class="hljs-keyword">COLUMN</span> <span class="hljs-operator">&lt;</span>列名<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">TO</span> <span class="hljs-operator">&lt;</span>新列名<span class="hljs-operator">&gt;</span> ]<br>[ <span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">COLUMN</span> <span class="hljs-operator">&lt;</span>列名<span class="hljs-operator">&gt;</span> TYPE <span class="hljs-operator">&lt;</span>数据类型<span class="hljs-operator">&gt;</span> ];<br></code></pre></td></tr></table></figure>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-c68c032e" role="button" aria-expanded="false" aria-controls="collapse-c68c032e">
+        <div class="fold-arrow">▶</div>例：
+      </div>
+      <div class="fold-collapse collapse" id="collapse-c68c032e">
+        <div class="fold-content">
+          <ul><li><strong>例</strong>：向 Student 表增加“入学时间”列，其数据类型为日期型<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER TABLE</span> Student <span class="hljs-keyword">ADD</span> S_entrance <span class="hljs-type">DATE</span>;<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：将年龄的数据类型由字符型改为整数<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER TABLE</span> Student <span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">COLUMN</span> Sage TYPE <span class="hljs-type">INT</span>;<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：增加课程名称必须取唯一值的约束条件<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER TABLE</span> Course <span class="hljs-keyword">ADD</span> <span class="hljs-keyword">UNIQUE</span>(Cname);<br></code></pre></td></tr></table></figure></li></ul>
+        </div>
+      </div>
+    </div>
 </li>
-<li><strong>例</strong>：将年龄的数据类型由字符型改为整数<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER TABLE</span> Student <span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">COLUMN</span> Sage TYPE <span class="hljs-type">INT</span>;<br></code></pre></td></tr></table></figure>
-</li>
-<li><strong>例</strong>：增加课程名称必须取唯一值的约束条件<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER TABLE</span> Course <span class="hljs-keyword">ADD</span> <span class="hljs-keyword">UNIQUE</span>(Cname);<br></code></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><strong>删除(DROP)</strong>：<code>DROP TABLE &lt;表名&gt; [RESTRICT|CASCADE];</code>
-<ul>
-<li><strong>例</strong>：删除 Student 表，同时删除表上建立的对象<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TABLE</span> Student CASCADE;<br></code></pre></td></tr></table></figure>
-</li>
-</ul>
+<li>
+<p><strong>删除(DROP)</strong>：<code>DROP TABLE &lt;表名&gt; [RESTRICT|CASCADE];</code></p>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-2abf6b64" role="button" aria-expanded="false" aria-controls="collapse-2abf6b64">
+        <div class="fold-arrow">▶</div>例：
+      </div>
+      <div class="fold-collapse collapse" id="collapse-2abf6b64">
+        <div class="fold-content">
+          <ul><li><strong>例</strong>：删除 Student 表，同时删除表上建立的对象<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TABLE</span> Student CASCADE;<br></code></pre></td></tr></table></figure></li></ul>
+        </div>
+      </div>
+    </div>
 </li>
 </ul>
 </li>
 <li>
 <p><strong>索引(INDEX)</strong>：</p>
 <ul>
-<li><strong>建立(CREATE)</strong>：<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> [<span class="hljs-keyword">UNIQUE</span>] [CLUSTER] INDEX <span class="hljs-operator">&lt;</span>索引名<span class="hljs-operator">&gt;</span> <br><span class="hljs-keyword">ON</span> <span class="hljs-operator">&lt;</span>表名<span class="hljs-operator">&gt;</span>(<span class="hljs-operator">&lt;</span>列名<span class="hljs-operator">&gt;</span>[<span class="hljs-operator">&lt;</span>次序<span class="hljs-operator">&gt;</span>][,<span class="hljs-operator">&lt;</span>列名<span class="hljs-operator">&gt;</span>[<span class="hljs-operator">&lt;</span>次序<span class="hljs-operator">&gt;</span>] ]...);<br></code></pre></td></tr></table></figure>
+<li>
+<p><strong>建立(CREATE)</strong>：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> [<span class="hljs-keyword">UNIQUE</span>] [CLUSTER] INDEX <span class="hljs-operator">&lt;</span>索引名<span class="hljs-operator">&gt;</span> <br><span class="hljs-keyword">ON</span> <span class="hljs-operator">&lt;</span>表名<span class="hljs-operator">&gt;</span>(<span class="hljs-operator">&lt;</span>列名<span class="hljs-operator">&gt;</span>[<span class="hljs-operator">&lt;</span>次序<span class="hljs-operator">&gt;</span>][,<span class="hljs-operator">&lt;</span>列名<span class="hljs-operator">&gt;</span>[<span class="hljs-operator">&lt;</span>次序<span class="hljs-operator">&gt;</span>] ]...);<br></code></pre></td></tr></table></figure>
 <ul>
 <li><code>&lt;次序&gt;</code>：升序 ASC，降序 DESC（<strong>缺省值：ASC</strong>）</li>
-<li><strong>例</strong>：在 Student 表的 Sname（姓名）列上建立一个<strong>聚簇索引</strong><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> CLUSTER INDEX Stusname <span class="hljs-keyword">ON</span> Student(Sname);<br></code></pre></td></tr></table></figure>
-</li>
-<li><strong>例</strong>：为学生-课程数据库中的 Student，Course，SC 三个表建立索引，其中 Student 表按学号升序建<strong>唯一索引</strong>，Course 表按课程号升序建唯一索引，SC 表按学号升序和课程号降序建唯一索引<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">UNIQUE</span> INDEX Stusno <span class="hljs-keyword">ON</span> Student(Sno);<br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">UNIQUE</span> INDEX Coucno <span class="hljs-keyword">ON</span> Course(Cno);<br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">UNIQUE</span> INDEX SCno <span class="hljs-keyword">ON</span> SC(Sno <span class="hljs-keyword">ASC</span>, Cno <span class="hljs-keyword">DESC</span>);<br></code></pre></td></tr></table></figure>
-</li>
 </ul>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-94af4b93" role="button" aria-expanded="false" aria-controls="collapse-94af4b93">
+        <div class="fold-arrow">▶</div>例：
+      </div>
+      <div class="fold-collapse collapse" id="collapse-94af4b93">
+        <div class="fold-content">
+          <ul><li><strong>例</strong>：在 Student 表的 Sname（姓名）列上建立一个<strong>聚簇索引</strong><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> CLUSTER INDEX Stusname <span class="hljs-keyword">ON</span> Student(Sname);<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：为学生-课程数据库中的 Student，Course，SC 三个表建立索引，其中 Student 表按学号升序建<strong>唯一索引</strong>，Course 表按课程号升序建唯一索引，SC 表按学号升序和课程号降序建唯一索引<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">UNIQUE</span> INDEX Stusno <span class="hljs-keyword">ON</span> Student(Sno);<br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">UNIQUE</span> INDEX Coucno <span class="hljs-keyword">ON</span> Course(Cno);<br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">UNIQUE</span> INDEX SCno <span class="hljs-keyword">ON</span> SC(Sno <span class="hljs-keyword">ASC</span>, Cno <span class="hljs-keyword">DESC</span>);<br></code></pre></td></tr></table></figure></li></ul>
+        </div>
+      </div>
+    </div>
 </li>
-<li><strong>修改(ALTER)</strong>：<code>ALTER INDEX &lt;旧索引名&gt; RENAME TO &lt;新索引名&gt;;</code>
-<ul>
-<li><strong>例</strong>：将 SC 表的 SCno 索引名改为 SCSno<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER</span> INDEX Scno RENAME <span class="hljs-keyword">TO</span> SCSno;<br></code></pre></td></tr></table></figure>
+<li>
+<p><strong>修改(ALTER)</strong>：<code>ALTER INDEX &lt;旧索引名&gt; RENAME TO &lt;新索引名&gt;;</code></p>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-d06dc0ce" role="button" aria-expanded="false" aria-controls="collapse-d06dc0ce">
+        <div class="fold-arrow">▶</div>例：
+      </div>
+      <div class="fold-collapse collapse" id="collapse-d06dc0ce">
+        <div class="fold-content">
+          <ul><li><strong>例</strong>：将 SC 表的 SCno 索引名改为 SCSno<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER</span> INDEX Scno RENAME <span class="hljs-keyword">TO</span> SCSno;<br></code></pre></td></tr></table></figure></li></ul>
+        </div>
+      </div>
+    </div>
 </li>
-</ul>
-</li>
-<li><strong>删除(DROP)</strong>：<code>DROP INDEX &lt;索引名&gt;;</code>
-<ul>
-<li><strong>例</strong>：删除 Student 表的 Stusname 索引<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DROP</span> INDEX Stusname;<br></code></pre></td></tr></table></figure>
-</li>
-</ul>
+<li>
+<p><strong>删除(DROP)</strong>：<code>DROP INDEX &lt;索引名&gt;;</code></p>
+
+    <div class="fold">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-4b2d64ad" role="button" aria-expanded="false" aria-controls="collapse-4b2d64ad">
+        <div class="fold-arrow">▶</div>例：
+      </div>
+      <div class="fold-collapse collapse" id="collapse-4b2d64ad">
+        <div class="fold-content">
+          <ul><li><strong>例</strong>：删除 Student 表的 Stusname 索引<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DROP</span> INDEX Stusname;<br></code></pre></td></tr></table></figure></li></ul>
+        </div>
+      </div>
+    </div>
 </li>
 </ul>
 </li>
@@ -1706,6 +1768,9 @@
 </ul>
 </li>
 </ul>
+<div class="note note-primary">
+            <p>本章需要掌握 SQL 的基本语法，<strong>例题</strong>参考第四章作业.</p>
+          </div>
 <h2 id="第六章-数据库设计">第六章 数据库设计</h2>
 <h3 id="1-数据库设计概述">1. 数据库设计概述</h3>
 <ul>
@@ -1900,10 +1965,10 @@
 </ul>
 
     <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-2d8a1eea" role="button" aria-expanded="false" aria-controls="collapse-2d8a1eea">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-39602a25" role="button" aria-expanded="false" aria-controls="collapse-39602a25">
         <div class="fold-arrow">▶</div>例：
       </div>
-      <div class="fold-collapse collapse" id="collapse-2d8a1eea">
+      <div class="fold-collapse collapse" id="collapse-39602a25">
         <div class="fold-content">
           <ul><li><strong>例</strong>：把查询 Student 表的权限授给用户 U1<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">SELECT</span><br><span class="hljs-keyword">ON</span> <span class="hljs-keyword">TABLE</span> Student<br><span class="hljs-keyword">TO</span> U1;<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：把对 Student 表和 Course 表的全部操作权限授予用户 U2 和 U3<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">ALL</span> PRIVILIGES<br><span class="hljs-keyword">ON</span> <span class="hljs-keyword">TABLE</span> Student, Course<br><span class="hljs-keyword">TO</span> U2, U3;<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：把对表 SC 的查询权限授予所有用户<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">SELECT</span><br><span class="hljs-keyword">ON</span> <span class="hljs-keyword">TABLE</span> SC<br><span class="hljs-keyword">TO</span> PUBLIC;<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：把查询 Student 表和修改学生学号的权限授给用户 U4<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">UPDATE</span>(Sno), <span class="hljs-keyword">SELECT</span><br><span class="hljs-keyword">ON</span> <span class="hljs-keyword">TABLE</span> Student<br><span class="hljs-keyword">TO</span> U4;<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：把对表 SC 的 INSERT 权限授予 U5 用户，并允许他再将此权限授予其他用户<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">INSERT</span><br><span class="hljs-keyword">ON</span> <span class="hljs-keyword">TABLE</span> SC<br><span class="hljs-keyword">TO</span> U5<br><span class="hljs-keyword">WITH</span> <span class="hljs-keyword">GRANT</span> OPTION;<br></code></pre></td></tr></table></figure></li></ul>
         </div>
@@ -1915,10 +1980,10 @@
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">REVOKE</span> <span class="hljs-operator">&lt;</span>权限<span class="hljs-operator">&gt;</span>[,<span class="hljs-operator">&lt;</span>权限<span class="hljs-operator">&gt;</span>]...<br><span class="hljs-keyword">ON</span> <span class="hljs-operator">&lt;</span>对象类型<span class="hljs-operator">&gt;</span> <span class="hljs-operator">&lt;</span>对象名<span class="hljs-operator">&gt;</span><br><span class="hljs-keyword">FROM</span> <span class="hljs-operator">&lt;</span>用户<span class="hljs-operator">&gt;</span>[,<span class="hljs-operator">&lt;</span>用户<span class="hljs-operator">&gt;</span>]...;<br></code></pre></td></tr></table></figure>
 
     <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-66cc573d" role="button" aria-expanded="false" aria-controls="collapse-66cc573d">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-6e0a11b5" role="button" aria-expanded="false" aria-controls="collapse-6e0a11b5">
         <div class="fold-arrow">▶</div>例：
       </div>
-      <div class="fold-collapse collapse" id="collapse-66cc573d">
+      <div class="fold-collapse collapse" id="collapse-6e0a11b5">
         <div class="fold-content">
           <ul><li><strong>例</strong>：把用户 U4 修改学生学号的权限收回<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">REVOKE</span> <span class="hljs-keyword">UPDATE</span>(Sno)<br><span class="hljs-keyword">ON</span> <span class="hljs-keyword">TABLE</span> Student<br><span class="hljs-keyword">FROM</span> U4;<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：收回所有用户对表 SC 的查询权限<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">REVOKE</span> <span class="hljs-keyword">SELECT</span><br><span class="hljs-keyword">ON</span> <span class="hljs-keyword">TABLE</span> SC<br><span class="hljs-keyword">FROM</span> PUBLIC;<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：把用户 U5 对 SC 表的 INSERT 权限收回<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">REVOKE</span> <span class="hljs-keyword">INSERT</span><br><span class="hljs-keyword">ON</span> <span class="hljs-keyword">TABLE</span> SC<br><span class="hljs-keyword">FROM</span> U5 CASCADE;<br></code></pre></td></tr></table></figure><ul><li>若 U5 授权过其他用户 INSERT 权限，将用户 U5 的该权限收回的时候<strong>必须级联(CASCADE)收回</strong>，不然系统将拒绝执行该命令</li></ul></li></ul>
         </div>
@@ -1977,10 +2042,10 @@
 </ul>
 
     <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-c6c3d7e8" role="button" aria-expanded="false" aria-controls="collapse-c6c3d7e8">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-bf139ace" role="button" aria-expanded="false" aria-controls="collapse-bf139ace">
         <div class="fold-arrow">▶</div>例：
       </div>
-      <div class="fold-collapse collapse" id="collapse-c6c3d7e8">
+      <div class="fold-collapse collapse" id="collapse-bf139ace">
         <div class="fold-content">
           <ul><li><strong>例</strong>：通过角色来实现将一组权限授予一个用户，步骤如下：<ul><li>首先创建一个角色 R1<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> ROLE R1;<br></code></pre></td></tr></table></figure></li><li>然后使用 GRANT 语句，使角色 R1 拥有 Student 表的 SELECT、UPDATE、INSERT 权限<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">SELECT</span>, <span class="hljs-keyword">UPDATE</span>, <span class="hljs-keyword">INSERT</span><br><span class="hljs-keyword">ON</span> <span class="hljs-keyword">TABLE</span> Student<br><span class="hljs-keyword">TO</span> R1;<br></code></pre></td></tr></table></figure></li><li>将这个角色授予王平、张明、赵玲，使他们具有角色 R1 所包含的全部权限<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">GRANT</span> R1<br><span class="hljs-keyword">TO</span> 王平, 张明, 赵玲;<br></code></pre></td></tr></table></figure></li><li>可以一次性通过 R1 来回收王平的这 3 个权限<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">REVOKE</span> R1<br><span class="hljs-keyword">FROM</span> 王平;<br></code></pre></td></tr></table></figure></li></ul></li><li><strong>例</strong>：角色的权限修改<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">DELETE</span><br><span class="hljs-keyword">ON</span> <span class="hljs-keyword">TABLE</span> Student<br><span class="hljs-keyword">TO</span> R1;<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：角色的权限修改<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">REVOKE</span> <span class="hljs-keyword">SELECT</span><br><span class="hljs-keyword">ON</span> <span class="hljs-keyword">TABLE</span> Student<br><span class="hljs-keyword">FROM</span> R1;<br></code></pre></td></tr></table></figure></li></ul>
         </div>
@@ -2030,10 +2095,10 @@
 </ul>
 
     <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-080cbfea" role="button" aria-expanded="false" aria-controls="collapse-080cbfea">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-bedb0667" role="button" aria-expanded="false" aria-controls="collapse-bedb0667">
         <div class="fold-arrow">▶</div>例：
       </div>
-      <div class="fold-collapse collapse" id="collapse-080cbfea">
+      <div class="fold-collapse collapse" id="collapse-bedb0667">
         <div class="fold-content">
           <ul><li><strong>例</strong>：建立计算机系学生的视图，把对该视图的 SELECT 权限授于王平，把该视图上的所有操作权限授于张明<ul><li>先建立计算机系学生的视图 CS_Student<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">VIEW</span> CS_Student<br><span class="hljs-keyword">AS</span><br><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">WHERE</span> Sdept<span class="hljs-operator">=</span><span class="hljs-string">&#x27;CS&#x27;</span>;<br></code></pre></td></tr></table></figure></li><li>在视图上进一步定义存取权限<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">SELECT</span><br><span class="hljs-keyword">ON</span> CS_Student<br><span class="hljs-keyword">TO</span> 王平;<br><br><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">ALL</span> PRIVILIGES<br><span class="hljs-keyword">ON</span> CS_Student<br><span class="hljs-keyword">TO</span> 张明;<br></code></pre></td></tr></table></figure></li></ul></li></ul>
         </div>
@@ -2079,10 +2144,10 @@
 <p><strong>实体完整性的定义</strong>：PRIMARY KEY 子句</p>
 
     <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-c4528208" role="button" aria-expanded="false" aria-controls="collapse-c4528208">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-33a60dce" role="button" aria-expanded="false" aria-controls="collapse-33a60dce">
         <div class="fold-arrow">▶</div>例：
       </div>
-      <div class="fold-collapse collapse" id="collapse-c4528208">
+      <div class="fold-collapse collapse" id="collapse-33a60dce">
         <div class="fold-content">
           <ul><li><strong>例</strong>：在学生选课数据库中，要定义 Student 表的 Sno 属性为主码<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> Student<br>  (Sno NUMBER(<span class="hljs-number">8</span>),<br>  Sname <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">20</span>) <span class="hljs-keyword">NOT NULL</span>,<br>  Sage NUMBER(<span class="hljs-number">20</span>),<br>  <span class="hljs-keyword">PRIMARY KEY</span> (Sno)); 　<span class="hljs-comment">/* 在表级定义主码 */</span><br></code></pre></td></tr></table></figure><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> Student<br>  (Sno NUMBER(<span class="hljs-number">8</span>) <span class="hljs-keyword">PRIMARY KEY</span> ,　<span class="hljs-comment">/* 在列级定义主码 */</span><br>  Sname <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">20</span>) <span class="hljs-keyword">NOT NULL</span>,<br>  Sage NUMBER(<span class="hljs-number">20</span>));<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：要在 SC 表中定义 (Sno, Cno) 为主码<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> SC<br>  (Sno NUMBER(<span class="hljs-number">8</span>) <span class="hljs-keyword">NOT NULL</span>,<br>  Cno NUMBER(<span class="hljs-number">2</span>) <span class="hljs-keyword">NOT NULL</span>,<br>  Grade NUMBER(<span class="hljs-number">2</span>),<br>  <span class="hljs-keyword">PRIMARY KEY</span> (Sno, Cno)　<span class="hljs-comment">/* 只能在表级定义主码 */</span><br>  <span class="hljs-keyword">FOREIGN KEY</span> (Sno) <span class="hljs-keyword">REFERENCES</span> Student(Sno) <span class="hljs-comment">/* 在表级定义参照完整性 */</span><br>  <span class="hljs-keyword">FOREIGN KEY</span> (Cno) <span class="hljs-keyword">REFERENCES</span> Course(Cno) <span class="hljs-comment">/* 在表级定义参照完整性 */</span><br>  );<br></code></pre></td></tr></table></figure></li></ul>
         </div>
@@ -2106,10 +2171,10 @@
 <p><strong>参照完整性的定义</strong>：FOREIGN KEY 子句及 REFERENCES 子句</p>
 
     <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-970d24e3" role="button" aria-expanded="false" aria-controls="collapse-970d24e3">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-2999cc73" role="button" aria-expanded="false" aria-controls="collapse-2999cc73">
         <div class="fold-arrow">▶</div>例：
       </div>
-      <div class="fold-collapse collapse" id="collapse-970d24e3">
+      <div class="fold-collapse collapse" id="collapse-2999cc73">
         <div class="fold-content">
           <ul><li><strong>例</strong>：建立表 SC<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> SC<br>  (Sno <span class="hljs-type">CHAR</span>(<span class="hljs-number">9</span>)　<span class="hljs-keyword">NOT NULL</span>,<br>  Cno <span class="hljs-type">CHAR</span>(<span class="hljs-number">4</span>) <span class="hljs-keyword">NOT NULL</span>,<br>  Grade <span class="hljs-type">SMALLINT</span>,<br>  <span class="hljs-keyword">PRIMARY KEY</span> (Sno, Cno), <span class="hljs-comment">/* 表级定义实体完整性 */</span><br>  <span class="hljs-keyword">FOREIGN KEY</span> (Sno) <span class="hljs-keyword">REFERENCES</span> Student(Sno) <span class="hljs-comment">/* 在表级定义参照完整性 */</span><br>  <span class="hljs-keyword">FOREIGN KEY</span> (Cno) <span class="hljs-keyword">REFERENCES</span> Course(Cno) <span class="hljs-comment">/* 在表级定义参照完整性 */</span><br>  );<br></code></pre></td></tr></table></figure></li></ul>
         </div>
@@ -2134,10 +2199,10 @@
 </ul>
 
     <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-046dfb30" role="button" aria-expanded="false" aria-controls="collapse-046dfb30">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-0aabf8d3" role="button" aria-expanded="false" aria-controls="collapse-0aabf8d3">
         <div class="fold-arrow">▶</div>例：
       </div>
-      <div class="fold-collapse collapse" id="collapse-046dfb30">
+      <div class="fold-collapse collapse" id="collapse-0aabf8d3">
         <div class="fold-content">
           <ul><li><strong>例</strong>：建立表 SC<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> SC<br>  (Sno <span class="hljs-type">CHAR</span>(<span class="hljs-number">9</span>)　<span class="hljs-keyword">NOT NULL</span>,<br>  Cno <span class="hljs-type">CHAR</span>(<span class="hljs-number">4</span>) <span class="hljs-keyword">NOT NULL</span>,<br>  Grade <span class="hljs-type">SMALLINT</span>,<br>  <span class="hljs-keyword">PRIMARY KEY</span> (Sno, Cno), <span class="hljs-comment">/* 表级定义实体完整性，Sno、Con 都不能取空值 */</span> <br>  <span class="hljs-keyword">FOREIGN KEY</span> (Sno) <span class="hljs-keyword">REFERENCES</span> Student(Sno) <span class="hljs-comment">/* 在表级定义参照完整性 */</span><br>    <span class="hljs-keyword">ON</span> <span class="hljs-keyword">DELETE</span> CASCADE 　 <span class="hljs-comment">/* 删除 Student 元组时，级联删除 SC 中相应元组 */</span><br>    <span class="hljs-keyword">ON</span> <span class="hljs-keyword">UPDATE</span> CASCADE, 　<span class="hljs-comment">/* 更新 Student 表中 Sno 时，级联更新 SC 中相应元组 */</span><br>  <span class="hljs-keyword">FOREIGN KEY</span> (Cno) <span class="hljs-keyword">REFERENCES</span> Course(Cno) <span class="hljs-comment">/* 在表级定义参照完整性*/</span><br>    <span class="hljs-keyword">ON</span> <span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">NO</span> ACTION <span class="hljs-comment">/* 删除 Course 元组造成与 SC 表不一致时，拒绝删除 */</span><br>    <span class="hljs-keyword">ON</span> <span class="hljs-keyword">UPDATE</span> CASCADE, 　 <span class="hljs-comment">/* 更新 Course 表中 Cno 时，级联更新 SC 中相应元组 */</span><br>  );<br></code></pre></td></tr></table></figure></li></ul>
         </div>
@@ -2157,10 +2222,10 @@
 <p><strong>列值非空(NOT NULL 短语)</strong>：</p>
 
     <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-8512b626" role="button" aria-expanded="false" aria-controls="collapse-8512b626">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-ee599a06" role="button" aria-expanded="false" aria-controls="collapse-ee599a06">
         <div class="fold-arrow">▶</div>例：
       </div>
-      <div class="fold-collapse collapse" id="collapse-8512b626">
+      <div class="fold-collapse collapse" id="collapse-ee599a06">
         <div class="fold-content">
           <ul><li><strong>例</strong>：建立表 SC，说明 Sno、Con、Grade 属性不允许取空值<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> SC<br>  (Sno <span class="hljs-type">CHAR</span>(<span class="hljs-number">9</span>)　<span class="hljs-keyword">NOT NULL</span>,　<span class="hljs-comment">/* Sno 属性不允许取空值 */</span><br>  Cno <span class="hljs-type">CHAR</span>(<span class="hljs-number">4</span>) <span class="hljs-keyword">NOT NULL</span>,　<span class="hljs-comment">/* Cno 属性不允许取空值 */</span><br>  Grade <span class="hljs-type">SMALLINT</span> <span class="hljs-keyword">NOT NULL</span>,　<span class="hljs-comment">/* Grade 属性不允许取空值 */</span><br>  <span class="hljs-keyword">PRIMARY KEY</span> (Sno, Cno), <span class="hljs-comment">/* 表级定义实体完整性 */</span> <br>  <span class="hljs-keyword">FOREIGN KEY</span> (Sno) <span class="hljs-keyword">REFERENCES</span> Student(Sno) <span class="hljs-comment">/* 在表级定义参照完整性 */</span><br>  <span class="hljs-keyword">FOREIGN KEY</span> (Cno) <span class="hljs-keyword">REFERENCES</span> Course(Cno) <span class="hljs-comment">/* 在表级定义参照完整性 */</span><br>  );<br></code></pre></td></tr></table></figure></li></ul>
         </div>
@@ -2171,10 +2236,10 @@
 <p><strong>列值唯一(UNIQUE 短语)</strong>：</p>
 
     <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-47574bb6" role="button" aria-expanded="false" aria-controls="collapse-47574bb6">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-f4b163a9" role="button" aria-expanded="false" aria-controls="collapse-f4b163a9">
         <div class="fold-arrow">▶</div>例：
       </div>
-      <div class="fold-collapse collapse" id="collapse-47574bb6">
+      <div class="fold-collapse collapse" id="collapse-f4b163a9">
         <div class="fold-content">
           <ul><li><strong>例</strong>：建立部门表 DEPT，要求部门名称 Dname 列取值唯一，部门编号 Deptno 列为主码<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> DEPT <br>  (Deptno <span class="hljs-type">NUMERIC</span>(<span class="hljs-number">2</span>), 　　 <br>  Dname <span class="hljs-type">CHAR</span>(<span class="hljs-number">9</span>) <span class="hljs-keyword">UNIQUE</span> <span class="hljs-keyword">NOT NULL</span>, <span class="hljs-comment">/* 要求 Dname 列值唯一，且不能取空值 */</span> 　　 <br>  Loc <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">10</span>), 　　 <br>  <span class="hljs-keyword">PRIMARY KEY</span> (Deptno)<br>  );<br></code></pre></td></tr></table></figure></li></ul>
         </div>
@@ -2185,10 +2250,10 @@
 <p><strong>检查列值是否满足一个条件表达式(CHECK 短语)</strong>：</p>
 
     <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-40323cc2" role="button" aria-expanded="false" aria-controls="collapse-40323cc2">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-306ab41b" role="button" aria-expanded="false" aria-controls="collapse-306ab41b">
         <div class="fold-arrow">▶</div>例：
       </div>
-      <div class="fold-collapse collapse" id="collapse-40323cc2">
+      <div class="fold-collapse collapse" id="collapse-306ab41b">
         <div class="fold-content">
           <ul><li><strong>例</strong>： 建立学生登记表 Student，要求年龄 &lt;29，性别只能是‘男’或‘女’，姓名非空<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> Student 　　 <br>  (Sno NUMBER(<span class="hljs-number">5</span>) <span class="hljs-keyword">PRIMARY KEY</span>, 　<span class="hljs-comment">/* 在列级定义主码 */</span><br>  Sname <span class="hljs-type">CHAR</span>(<span class="hljs-number">20</span>) <span class="hljs-keyword">NOT NULL</span>,　<span class="hljs-comment">/* Sname 属性不允许取空值 */</span><br>  Sage <span class="hljs-type">SMALLINT</span> <span class="hljs-keyword">CHECK</span> (Sage <span class="hljs-operator">&lt;</span> <span class="hljs-number">29</span>),　<span class="hljs-comment">/* Sage属性小于 29 */</span><br>  Ssex <span class="hljs-type">CHAR</span>(<span class="hljs-number">2</span>) <span class="hljs-keyword">CHECK</span> (Ssex <span class="hljs-keyword">IN</span> (<span class="hljs-string">&#x27;男&#x27;</span>,<span class="hljs-string">&#x27;女&#x27;</span>)) <span class="hljs-comment">/* Ssex 属性只允许取‘男’或‘女’ */</span><br>  );<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：建立表 SC，Grade 的值在 0 和 100 之间<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> SC<br>  (Sno <span class="hljs-type">CHAR</span>(<span class="hljs-number">9</span>),　　　　　　　　　<br>  Cno <span class="hljs-type">CHAR</span>(<span class="hljs-number">4</span>),　　　　　　　　　　<br>  Grade <span class="hljs-type">SMALLINT</span> <span class="hljs-keyword">CHECK</span> (Grade<span class="hljs-operator">&gt;=</span><span class="hljs-number">0</span> <span class="hljs-keyword">AND</span> Grade<span class="hljs-operator">&lt;=</span><span class="hljs-number">100</span>),　<span class="hljs-comment">/* Grade取值范围 0-100 */</span><br>  <span class="hljs-keyword">PRIMARY KEY</span> (Sno, Cno), 　<br>  <span class="hljs-keyword">FOREIGN KEY</span> (Sno) <span class="hljs-keyword">REFERENCES</span> Student(Sno),<br>  <span class="hljs-keyword">FOREIGN KEY</span> (Cno) <span class="hljs-keyword">REFERENCES</span> Course(Cno));<br></code></pre></td></tr></table></figure></li></ul>
         </div>
@@ -2201,10 +2266,10 @@
 <p><strong>元组上的约束条件</strong>：用 CHECK 短语设置<strong>不同属性之间取值的相互约束条件</strong></p>
 
     <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-07a445e3" role="button" aria-expanded="false" aria-controls="collapse-07a445e3">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-7b844fe4" role="button" aria-expanded="false" aria-controls="collapse-7b844fe4">
         <div class="fold-arrow">▶</div>例：
       </div>
-      <div class="fold-collapse collapse" id="collapse-07a445e3">
+      <div class="fold-collapse collapse" id="collapse-7b844fe4">
         <div class="fold-content">
           <ul><li><strong>例</strong>：当学生的性别是男时，其名字不能以 Ms. 打头<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> Student<br>  (Sno <span class="hljs-type">CHAR</span>(<span class="hljs-number">9</span>), <br>  Sname <span class="hljs-type">CHAR</span>(<span class="hljs-number">20</span>) <span class="hljs-keyword">NOT NULL</span>， <span class="hljs-comment">/* Sname 非空值 */</span><br>  Ssex <span class="hljs-type">CHAR</span>(<span class="hljs-number">2</span>),<br>  Sage <span class="hljs-type">SMALLINT</span>，<br>  Sdept <span class="hljs-type">CHAR</span>(<span class="hljs-number">20</span>),<br>  <span class="hljs-keyword">PRIMARY KEY</span> (Sno),<br>  <span class="hljs-keyword">CHECK</span> (Ssex<span class="hljs-operator">=</span><span class="hljs-string">&#x27;女&#x27;</span> <span class="hljs-keyword">OR</span> Sname <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;MS.%&#x27;</span>)<br>  );<br></code></pre></td></tr></table></figure></li></ul>
         </div>
@@ -2222,10 +2287,10 @@
 </ul>
 
     <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-f4857c26" role="button" aria-expanded="false" aria-controls="collapse-f4857c26">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-715cf9ba" role="button" aria-expanded="false" aria-controls="collapse-715cf9ba">
         <div class="fold-arrow">▶</div>例：
       </div>
-      <div class="fold-collapse collapse" id="collapse-f4857c26">
+      <div class="fold-collapse collapse" id="collapse-715cf9ba">
         <div class="fold-content">
           <ul><li><strong>例</strong>：建立学生登记表 Student，要求学号在 90000～99999 之间，年龄 &lt; 30，性别只能是‘男’或‘女’，姓名非空<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> Student<br>  (Sno <span class="hljs-type">NUMERIC</span>(<span class="hljs-number">6</span>)<br>    <span class="hljs-keyword">CONSTRAINT</span> C1 <span class="hljs-keyword">CHECK</span> (Sno <span class="hljs-keyword">BETWEEN</span> <span class="hljs-number">90000</span> <span class="hljs-keyword">AND</span> <span class="hljs-number">99999</span>),<br>  Sname <span class="hljs-type">CHAR</span>(<span class="hljs-number">20</span>) <br>    <span class="hljs-keyword">CONSTRAINT</span> C2 <span class="hljs-keyword">NOT NULL</span>,<br>  Sage <span class="hljs-type">NUMERIC</span>(<span class="hljs-number">3</span>) <br>    <span class="hljs-keyword">CONSTRAINT</span> C3 <span class="hljs-keyword">CHECK</span> (Sage <span class="hljs-operator">&lt;</span> <span class="hljs-number">30</span>),<br>  Ssex <span class="hljs-type">CHAR</span>(<span class="hljs-number">2</span>)<br>    <span class="hljs-keyword">CONSTRAINT</span> C4 <span class="hljs-keyword">CHECK</span> (Ssex <span class="hljs-keyword">IN</span> (<span class="hljs-string">&#x27;男&#x27;</span>, <span class="hljs-string">&#x27;女&#x27;</span>)),<br>    <span class="hljs-keyword">CONSTRAINT</span> StudentKey <span class="hljs-keyword">PRIMARY KEY</span>(Sno));<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：建立职工表 EMP，要求每个职工的应发工资不低于 3000 元，应发工资实际上就是实发工资列 Sal 与扣除项 Deduct 之和<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> EMP<br>  (Eno <span class="hljs-type">NUMERIC</span>(<span class="hljs-number">4</span>) <span class="hljs-keyword">PRIMARY KEY</span>, <span class="hljs-comment">/* 在列级定义主码 */</span><br>  Ename <span class="hljs-type">CHAR</span>(<span class="hljs-number">10</span>),<br>  Job <span class="hljs-type">CHAR</span>(<span class="hljs-number">8</span>),<br>  Sal <span class="hljs-type">NUMERIC</span>(<span class="hljs-number">7</span>,<span class="hljs-number">2</span>),<br>  Deduct <span class="hljs-type">NUMERIC</span>(<span class="hljs-number">7</span>,<span class="hljs-number">2</span>)<br>  Deptno <span class="hljs-type">NUMERIC</span>(<span class="hljs-number">2</span>),<br>  <span class="hljs-keyword">CONSTRAINT</span> TeacherKey <span class="hljs-keyword">FOREIGN KEY</span> (Deptno) <span class="hljs-keyword">REFERENCES</span> DEPT(Deptno),<br>  <span class="hljs-keyword">CONSTRAINT</span> C1 <span class="hljs-keyword">CHECK</span> (Sal <span class="hljs-operator">+</span> Deduct <span class="hljs-operator">&gt;=</span><span class="hljs-number">3000</span>));<br></code></pre></td></tr></table></figure></li></ul>
         </div>
@@ -2236,10 +2301,10 @@
 <p><strong>修改表中的完整性限制</strong>：ALTER TABLE 子句</p>
 
     <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-629e13e1" role="button" aria-expanded="false" aria-controls="collapse-629e13e1">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-a8438968" role="button" aria-expanded="false" aria-controls="collapse-a8438968">
         <div class="fold-arrow">▶</div>例：
       </div>
-      <div class="fold-collapse collapse" id="collapse-629e13e1">
+      <div class="fold-collapse collapse" id="collapse-a8438968">
         <div class="fold-content">
           <ul><li><strong>例</strong>：去掉 Student 表中对性别的限制<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER TABLE</span> Student<br>  <span class="hljs-keyword">DROP</span> <span class="hljs-keyword">CONSTRAINT</span> C4;<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：修改 Student 表中的约束条件，要求学号改为 900000～999999之间，年龄由小于 30 改为小于 40<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER TABLE</span> Student<br>  <span class="hljs-keyword">DROP</span> <span class="hljs-keyword">CONSTRAINT</span> C1;<br><span class="hljs-keyword">ALTER TABLE</span> Student<br>  <span class="hljs-keyword">ADD CONSTRAINT</span> C1 <span class="hljs-keyword">CHECK</span>(Sno <span class="hljs-keyword">BETWEEN</span> <span class="hljs-number">900000</span> <span class="hljs-keyword">AND</span> <span class="hljs-number">999999</span>);<br><span class="hljs-keyword">ALTER TABLE</span> Student<br>  <span class="hljs-keyword">DROP</span> <span class="hljs-keyword">CONSTRAINT</span> C3;<br><span class="hljs-keyword">ALTER TABLE</span> Student<br>  <span class="hljs-keyword">ADD CONSTRAINT</span> C3 <span class="hljs-keyword">CHECK</span>(Sage <span class="hljs-operator">&lt;</span> <span class="hljs-number">40</span>);<br></code></pre></td></tr></table></figure></li></ul>
         </div>
@@ -2257,10 +2322,10 @@
 </ul>
 
     <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-9f1ad241" role="button" aria-expanded="false" aria-controls="collapse-9f1ad241">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-697ffd24" role="button" aria-expanded="false" aria-controls="collapse-697ffd24">
         <div class="fold-arrow">▶</div>例：
       </div>
-      <div class="fold-collapse collapse" id="collapse-9f1ad241">
+      <div class="fold-collapse collapse" id="collapse-697ffd24">
         <div class="fold-content">
           <ul><li><strong>例</strong>：限制数据库课程最多 60 名学生选修<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> ASSERTION ASSE_SC_DB_NUM<br>  <span class="hljs-keyword">CHECK</span> (<span class="hljs-number">60</span> <span class="hljs-operator">&gt;=</span> (<span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">count</span> (<span class="hljs-operator">*</span>) <span class="hljs-comment">/* 此断言的谓词涉及聚集操作 count */</span><br>    <span class="hljs-keyword">FROM</span> Course, SC<br>    <span class="hljs-keyword">WHERE</span> SC.CNO<span class="hljs-operator">=</span>COURSE.CNO <span class="hljs-keyword">AND</span> COURSE.CNAME<span class="hljs-operator">=</span><span class="hljs-string">&#x27;数据库&#x27;</span>));<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：限制每一门课程最多 60 名学生选修<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> ASSERTION ASSE_SC_CNUM1<br>  <span class="hljs-keyword">CHECK</span> (<span class="hljs-number">60</span> <span class="hljs-operator">&gt;=</span> <span class="hljs-keyword">ALL</span>(<span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">count</span> (<span class="hljs-operator">*</span>) <span class="hljs-comment">/* 此断言的谓词涉及聚集操作 count */</span><br>    <span class="hljs-keyword">FROM</span> SC <span class="hljs-comment">/* 和分组函数 group by 的 SQL 语句 */</span><br>    <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">by</span> Cno));<br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：限制每个学期每一门课程最多 60 名学生选修<ul><li>首先修改 SC 表的模式，增加一个‘学期(TERM)’的属性<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER TABLE</span> SC <span class="hljs-comment">/* 先修改 SC 表，增加 TERM 属性，类型是DATE */</span> <br>  <span class="hljs-keyword">ADD</span> TERM <span class="hljs-type">DATE</span>;<br></code></pre></td></tr></table></figure></li><li>然后定义断言<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> ASSERTION ASSE_SC_CNUM2<br>  <span class="hljs-keyword">CHECK</span> (<span class="hljs-number">60</span> <span class="hljs-operator">&gt;=</span> <span class="hljs-keyword">ALL</span>(<span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">count</span> (<span class="hljs-operator">*</span>) <span class="hljs-comment">/* 此断言的谓词涉及聚集操作 count */</span><br>    <span class="hljs-keyword">FROM</span> SC <span class="hljs-comment">/* 和分组函数 group by 的 SQL 语句*/</span><br>    <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">by</span> Cno, TERM));<br></code></pre></td></tr></table></figure></li></ul></li></ul>
         </div>
@@ -2293,10 +2358,10 @@
 </ul>
 
     <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-7e97edff" role="button" aria-expanded="false" aria-controls="collapse-7e97edff">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-263bf6a7" role="button" aria-expanded="false" aria-controls="collapse-263bf6a7">
         <div class="fold-arrow">▶</div>例：
       </div>
-      <div class="fold-collapse collapse" id="collapse-7e97edff">
+      <div class="fold-collapse collapse" id="collapse-263bf6a7">
         <div class="fold-content">
           <ul><li><strong>例</strong>：当对表 SC 的 Grade 属性进行修改时，若分数增加了 10%，则将此次操作记录到另一个表 SC_U (Sno、Cno、Oldgrade、Newgrade) 中，其中 Oldgrade 是修改前的分数，Newgrade 是修改后的分数<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TRIGGER</span> SC_T <span class="hljs-comment">/* SC_T 是触发器的名字 */</span><br>AFTER <span class="hljs-keyword">UPDATE</span> <span class="hljs-keyword">OF</span> Grade <span class="hljs-keyword">ON</span> SC 　　<span class="hljs-comment">/* UPDATE OF Grade ON SC 是触发事件 */</span><br>  <span class="hljs-comment">/* AFTER 是触发的时机，表示当对 SC 的 Grade 属性修改完后再触发下面的规则 */</span><br><span class="hljs-keyword">REFERENCING</span> 　　　<br>  OLDROW <span class="hljs-keyword">AS</span> OldTuple<br>  NEWROW <span class="hljs-keyword">AS</span> NewTuple<br><span class="hljs-keyword">FOR</span> <span class="hljs-keyword">EACH</span> <span class="hljs-type">ROW</span> <span class="hljs-comment">/* 行级触发器，每执行一次 Grade 更新，下面的规则就执行一次 */</span><br><span class="hljs-keyword">WHEN</span> (NewTuple.Grade<span class="hljs-operator">&gt;=</span><span class="hljs-number">1.1</span><span class="hljs-operator">*</span>OldTuple.Grade) <span class="hljs-comment">/* 触发条件，只有该条件为真时才执行 */</span><br><span class="hljs-keyword">BEGIN</span><br>  <span class="hljs-keyword">INSERT INTO</span> SC_U (Sno, Cno, OldGrade, NewGrade) <span class="hljs-comment">/* 下面的 insert 操作 */</span><br>  <span class="hljs-keyword">VALUES</span>(OldTuple.Sno, OldTuple.Cno, OldTuple.Grade, NewTuple.Grade)<br><span class="hljs-keyword">END</span><br></code></pre></td></tr></table></figure></li><li><strong>例</strong>：将每次对表 Student 的插入操作所增加的学生个数记录到表 StudentInsertLog 中<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TRIGGER</span> Student_Count <span class="hljs-comment">/* Student_Count 是触发器的名字 */</span><br>AFTER <span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">ON</span> Student <span class="hljs-comment">/* 指明触发器激活的时间是在执行 INSERT 之后*/</span><br><span class="hljs-keyword">REFERENCING</span> 　　　<br>  <span class="hljs-keyword">NEW</span> <span class="hljs-keyword">TABLE</span> <span class="hljs-keyword">AS</span> DELTA <span class="hljs-comment">/* DELTA 是一个关系名，模式与 Student 相同，包含的元组是 INSERT 语句增加的元组 */</span><br><span class="hljs-keyword">FOR</span> <span class="hljs-keyword">EACH</span> STATEMENT<br>  <span class="hljs-comment">/* 语句级触发器，即执行完 INSERT 语句后下面的触发动作体才执行一次*/</span><br><span class="hljs-keyword">BEGIN</span><br>  <span class="hljs-keyword">INSERT INTO</span> StudentInsertLog (Numbers)<br>  <span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">COUNT</span>(<span class="hljs-operator">*</span>) <span class="hljs-keyword">FROM</span> DELTA<br><span class="hljs-keyword">END</span><br></code></pre></td></tr></table></figure></li><li><strong>例</strong>： 定义一个 BEFORE 行级触发器，为教师表 Teacher 定义完整性规则 “教授的工资不得低于 4000 元，如果低于 4000 元，自动改为 4000 元”<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TRIGGER</span> Insert_OR_Update_Sal <span class="hljs-comment">/* 对教师表插入或更新时激活触发器 */</span><br>BEFORE <span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">OR</span> <span class="hljs-keyword">UPDATE</span> <span class="hljs-keyword">ON</span> Teacher <span class="hljs-comment">/* BEFORE 触发事件 */</span><br><span class="hljs-keyword">REFERENCING</span><br>  <span class="hljs-keyword">NEW</span> <span class="hljs-type">row</span> <span class="hljs-keyword">AS</span> newtuple<br><span class="hljs-keyword">FOR</span> <span class="hljs-keyword">EACH</span> <span class="hljs-type">ROW</span> <span class="hljs-comment">/* 行级触发器 */</span><br><span class="hljs-keyword">BEGIN</span> <span class="hljs-comment">/* 定义触发动作，这是一个 PL/SQL 过程块 */</span><br>  IF (newtuple.Job <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;教授&#x27;</span> <span class="hljs-keyword">AND</span> (newtuple.Sal <span class="hljs-operator">&lt;</span> <span class="hljs-number">4000</span>))<br>    <span class="hljs-keyword">THEN</span> newtuple.Sal <span class="hljs-operator">=</span> <span class="hljs-number">4000</span>;<br>    <span class="hljs-comment">/* 因为是行级触发器，可在过程体使用插入或更新操作后的新值 */</span><br>  <span class="hljs-keyword">END</span> IF;<br><span class="hljs-keyword">END</span>; <span class="hljs-comment">/* 触发动作体结束 */</span><br></code></pre></td></tr></table></figure></li></ul>
         </div>
@@ -2491,10 +2556,10 @@
 </ul>
 
     <div class="fold">
-      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-02f01f72" role="button" aria-expanded="false" aria-controls="collapse-02f01f72">
+      <div class="fold-title fold-info collapsed" data-toggle="collapse" href="#collapse-ebd22fbd" role="button" aria-expanded="false" aria-controls="collapse-ebd22fbd">
         <div class="fold-arrow">▶</div>PPT 例题：
       </div>
-      <div class="fold-collapse collapse" id="collapse-02f01f72">
+      <div class="fold-collapse collapse" id="collapse-ebd22fbd">
         <div class="fold-content">
           <ul><li><strong>例</strong>：<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span>  Student.Sname<br><span class="hljs-keyword">FROM</span>    Student, SC<br><span class="hljs-keyword">WHERE</span>   Student.Sno<span class="hljs-operator">=</span>SC.Sno <span class="hljs-keyword">AND</span><br>        SC.Cno<span class="hljs-operator">=</span><span class="hljs-string">&#x27;81003&#x27;</span><br></code></pre></td></tr></table></figure><ul><li><p>把 SQL 语句转换成查询树</p><p><img src="10-%E8%AF%AD%E6%B3%95%E6%A0%91.png" srcset="/img/loading.gif" lazyload alt=""></p></li><li><p>为了使用关系代数表达式的优化法，假设内部表示是关系代数语法树</p><p><img src="10-%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0%E8%AF%AD%E6%B3%95%E6%A0%91.png" srcset="/img/loading.gif" lazyload alt=""></p></li><li><p>对语法树进行优化，把选择 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>σ</mi><mtext>SC.Cno=‘81003’</mtext></msub></mrow><annotation encoding="application/x-tex">\sigma_\text{SC.Cno=‘81003’}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord text mtight"><span class="mord mtight">SC.Cno=‘81003’</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 移到叶端</p><p><img src="10-%E4%BC%98%E5%8C%96%E5%90%8E%E7%9A%84%E6%9F%A5%E8%AF%A2%E6%A0%91.png" srcset="/img/loading.gif" lazyload alt=""></p></li></ul></li></ul>
         </div>
