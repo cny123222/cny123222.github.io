@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/ml.png">
 <meta property="article:published_time" content="2026-06-18T15:20:20.000Z">
-<meta property="article:modified_time" content="2026-06-25T00:44:15.657Z">
+<meta property="article:modified_time" content="2026-06-25T02:14:38.514Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="期末复习">
@@ -1061,7 +1061,7 @@ c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
 <ul>
 <li>FC 层之间要加 ReLU 层；</li>
 <li>Softmax 之前不可以加 ReLU 层；</li>
-<li>不可以在 ReLU 和 MaxPooling 之后直接加 ReLU 层；</li>
+<li>不可以在 ReLU <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">→</span></span></span></span> MaxPooling 之后直接加 ReLU 层；</li>
 <li>不可以连续两个卷积层 / FC 层 / ReLU 层；</li>
 <li>不可以在卷积层后直接到 FC 层；</li>
 <li>残差网络连接处之前不可以直接加 ReLU 层.</li>
