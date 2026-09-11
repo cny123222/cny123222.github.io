@@ -28,7 +28,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cny123222.github.io/img/nlp.png">
 <meta property="article:published_time" content="2026-01-14T14:43:02.000Z">
-<meta property="article:modified_time" content="2026-06-03T08:17:29.545Z">
+<meta property="article:modified_time" content="2026-09-11T14:32:26.809Z">
 <meta property="article:author" content="Nuoyan Chen">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="知识点整理">
@@ -438,7 +438,7 @@
               <p id="updated-time" class="note note-default" style="">
                 
                   
-                    Last updated on June 3, 2026 pm
+                    Last updated on September 11, 2026 pm
                   
                 
               </p>
@@ -4445,8 +4445,7 @@ qk^T = (hW_Q)(cW_K^U) = hW_Q {W_K^U}^Tc^T
 <h3 id="算法层面之外的优化">算法层面之外的优化</h3>
 <p>除了从算法层面压缩 KV 缓存，我们还可以从更底层的计算和硬件利用角度进行优化，以及通过模型间的协同来加速。</p>
 <h4 id="更高效地利用硬件架构：Flash-Attention-与-Flash-Decoding">更高效地利用硬件架构：Flash Attention 与 Flash Decoding</h4>
-<pre><code class="hljs">动机：标准Attention计算是内存受限 (memory-bound) 的。其瓶颈不在于GPU的浮点计算能力，而在于在GPU的不同层级内存（高速但小的SRAM和低速但大的HBM）之间反复读写巨大的注意力矩阵 S 和 P。
-</code></pre>
+<p>动机：标准Attention计算是内存受限 (memory-bound) 的。其瓶颈不在于GPU的浮点计算能力，而在于在GPU的不同层级内存（高速但小的SRAM和低速但大的HBM）之间反复读写巨大的注意力矩阵 S 和 P。</p>
 <ul>
 <li>
 <p><strong>FlashAttention</strong>：针对训练</p>
